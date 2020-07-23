@@ -27,8 +27,8 @@ namespace Horoscope.Controllers
         };
 
         [HttpGet]
-        [Route("/random-prediction")]
-        public List<HoroscopePrediction> GetRandomPredictions()
+        [Route("/predictions")]
+        public List<HoroscopePrediction> GetPredictions()
         {
             var rnd = new Random();
             var sign = _signs[rnd.Next(_signs.Count)];
