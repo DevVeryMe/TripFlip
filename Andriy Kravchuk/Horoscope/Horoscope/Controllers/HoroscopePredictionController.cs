@@ -12,82 +12,43 @@ namespace Horoscope.Controllers
     {
         private static readonly List<string> _signs = new List<string>()
         {
-            "aquarius",
-            "pisces",
-            "aries",
-            "taurus",
-            "gemini",
-            "cancer",
-            "leo",
-            "virgo",
-            "libra",
-            "scorpio",
-            "sagittarius",
-            "capricorn",
+            "Aquarius",
+            "Pisces",
+            "Aries",
+            "Taurus",
+            "Gemini",
+            "Cancer",
+            "Leo",
+            "Virgo",
+            "Libra",
+            "Scorpio",
+            "Sagittarius",
+            "Capricorn",
         };
-
-        private static readonly List<string> _personList = new List<string>()
-        {
-            "you"
-        };
-
-        private static readonly List<string> _eventsTimes = new List<string>()
-        {
-            "next day",
-            "this week",
-            "next weekend",
-            "tonight",
-            "today",
-            "soon",
-        };
-
-        private static readonly List<string> _events = new List<string>()
-        {
-            "will feel as if you are out of the loop",
-            "should be ready for action",
-            "have to behave with politeness",
-            "should pay attention to",
-            "want to be the fish swimming upstream",
-            "need to feel free to go your own way",
-            "will get pressured by your loved ones",
-            "will be quite sure how to approach a certain subject",
-            "want to feel in your heart that your new lover is quite passionate about you"
-        };
-
-        private static readonly List<string> _conditions = new List<string>()
-        {
-            "while the affairs head downstream",
-            "regardless of what others can say about you",
-            "even though you are not ready for it",
-            "when you aren’t recognized for it"
-        };
-
-        private readonly ILogger<HoroscopePredictionController> _logger;
-
-        public HoroscopePredictionController(ILogger<HoroscopePredictionController> logger)
-        {
-            _logger = logger;
-        }
 
         [HttpGet]
         [Route("/random-prediction")]
         public HoroscopePrediction GetRandomPrediction()
         {
-            var rng = new Random();
-            var sign = _signs[rng.Next(_signs.Count)];
-            var str = _eventsTimes[rng.Next(_eventsTimes.Count)] + " ";
-            str += _personList[rng.Next(_personList.Count)] + " ";
-            str += _events[rng.Next(_events.Count)] + " ";
-            str += _conditions[rng.Next(_conditions.Count)] + ".";
+            var rnd = new Random();
+            var sign = _signs[rnd.Next(_signs.Count)];
+            var predictionGenerator = new PredictionGenerator();
 
-            return new HoroscopePrediction(sign, str);
+            return predictionGenerator.GeneratePrediction(sign);
         }
 
         [HttpGet]
         [Route("/prediction")]
         public HoroscopePrediction GetPrediction(string sign)
         {
-            return null;
+            if (string.IsNullOrWhiteSpace(sign))
+                throw new ArgumentNullException("Invalid argument " + nameof(sign));
+
+            if (!_signs.Exists(x => string.Equals(x, sign, StringComparison.CurrentCultureIgnoreCase)))
+                throw new ArgumentException("Invalid argument " + nameof(sign));
+
+            var predictionGenerator = new PredictionGenerator();
+            return predictionGenerator.GeneratePrediction(sign);
         }
     }
 }
