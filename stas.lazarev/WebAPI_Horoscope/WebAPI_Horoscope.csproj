@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Resources\HoroscopeData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties resources_4horoscopedata_1json__JsonSchema="https://bucklescript.github.io/bucklescript/docson/build-schema.json" /></VisualStudio></ProjectExtensions>
 
 
 </Project>

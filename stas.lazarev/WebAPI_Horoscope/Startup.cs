@@ -11,6 +11,10 @@ namespace WebAPI_Horoscope
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // using 'HoroscopeDataService' service to read text data for Horoscope
+            services.AddSingleton<HoroscopeDataService>();
+            services.AddTransient<HoroscopeDataMiddleware>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -19,6 +23,8 @@ namespace WebAPI_Horoscope
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<HoroscopeDataMiddleware>();
 
             app.UseRouting();
 
