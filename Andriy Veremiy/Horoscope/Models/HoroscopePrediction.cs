@@ -6,6 +6,6 @@ namespace Horoscope
     {
         public string HoroscopeSingn { get; set; }
         public string Prediction { get; set; }
-        public string Date { get; set; }
+        public string TimePeriod { get; set; }
     }
 }

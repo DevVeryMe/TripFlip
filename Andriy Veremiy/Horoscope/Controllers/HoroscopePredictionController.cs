@@ -11,12 +11,6 @@ namespace Horoscope.Controllers
     [Route("[controller]")]
     public class HoroscopePredictionController : ControllerBase
     {
-        private static readonly string[] HoroscopeSigns = new[]
-        {
-            "ARIES", "TAURUS", "GEMINI", "CANCER", "LEO", "VIRGO", 
-            "LIBRA", "SCORPIO", "SAGITTARUS", "CAPROCORN", "AQUARIUS", "PISCES"
-        };
-
         private readonly IPredictionRepository _predictionRepository;
 
         public HoroscopePredictionController(IPredictionRepository predictionRepository)
@@ -27,30 +21,23 @@ namespace Horoscope.Controllers
         [HttpGet]
         public IEnumerable<HoroscopePrediction> GetAllPredictions()
         {
-            List<HoroscopePrediction> predictions = new List<HoroscopePrediction>();
-            foreach (var sing in HoroscopeSigns)
-            {
-                predictions.Add(new HoroscopePrediction
-                {
-                    HoroscopeSingn = sing,
-                    Prediction = _predictionRepository.GetPrediction(),
-                    Date = DateTime.Now.ToShortDateString()
-                });
-            }
-            return predictions;
+            return _predictionRepository.GetAllPredictions();
         }
 
-        [Route("{signId}")]
+        [Route("{sign}")]
         [HttpGet]
-        public HoroscopePrediction GetPrediction(int signId)
+        public HoroscopePrediction GetPrediction(string sign)
         {
-            int id = (signId >= 0 && signId < 12) ? signId : 0;
-            return new HoroscopePrediction
+            try
             {
-                HoroscopeSingn = HoroscopeSigns[id],
-                Prediction = _predictionRepository.GetPrediction(),
-                Date = DateTime.Now.ToShortDateString()
-            };
+                return _predictionRepository.GetPredictionBySign(sign);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return new HoroscopePrediction();
         }
     }
 }

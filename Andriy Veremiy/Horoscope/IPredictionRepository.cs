@@ -7,6 +7,8 @@ namespace Horoscope
 {
     public interface IPredictionRepository
     {
-        string GetPrediction();
+        HoroscopePrediction GetPredictionBySign(string sign);
+
+        IEnumerable<HoroscopePrediction> GetAllPredictions();
     }
 }
