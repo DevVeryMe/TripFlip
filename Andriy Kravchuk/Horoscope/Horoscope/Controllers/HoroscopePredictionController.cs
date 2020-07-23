@@ -28,13 +28,13 @@ namespace Horoscope.Controllers
 
         [HttpGet]
         [Route("/random-prediction")]
-        public HoroscopePrediction GetRandomPrediction()
+        public List<HoroscopePrediction> GetRandomPredictions()
         {
             var rnd = new Random();
             var sign = _signs[rnd.Next(_signs.Count)];
             var predictionGenerator = new PredictionGenerator();
 
-            return predictionGenerator.GeneratePrediction(sign);
+            return predictionGenerator.GeneratePredictions(_signs);
         }
 
         [HttpGet]
@@ -44,11 +44,14 @@ namespace Horoscope.Controllers
             if (string.IsNullOrWhiteSpace(sign))
                 throw new ArgumentNullException("Invalid argument " + nameof(sign));
 
-            if (!_signs.Exists(x => string.Equals(x, sign, StringComparison.CurrentCultureIgnoreCase)))
+            var signFromList =
+                _signs.FirstOrDefault(x => string.Equals(x, sign, StringComparison.CurrentCultureIgnoreCase));
+
+            if (signFromList == null)
                 throw new ArgumentException("Invalid argument " + nameof(sign));
 
             var predictionGenerator = new PredictionGenerator();
-            return predictionGenerator.GeneratePrediction(sign);
+            return predictionGenerator.GeneratePrediction(signFromList);
         }
     }
 }
