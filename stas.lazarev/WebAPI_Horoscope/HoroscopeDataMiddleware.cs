@@ -20,6 +20,7 @@ namespace WebAPI_Horoscope
         {
             if (_horoscopeData.Data == null)
             {
+                context.Response.StatusCode = 500;
                 await context.Response.WriteAsync("Error: Horoscope data collection has failed to initialize");
             }
             else

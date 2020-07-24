@@ -49,7 +49,10 @@ namespace WebAPI_Horoscope.Controllers
             // check the validity of a user-given zodiac sign
             string result = CheckZodiacSign(userZodiacSign);
             if (result == null)
+            {
+                Response.StatusCode = 418;
                 return $"Error: {userZodiacSign} is not a zodiac sign. At least not the one that I know :)";
+            }
 
             // generate horoscope string
             var h = horoscopeData;

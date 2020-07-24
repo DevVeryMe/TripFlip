@@ -15,6 +15,8 @@ namespace WebAPI_Horoscope
             // using 'HoroscopeDataService' service to read text data for Horoscope
             services.AddSingleton<HoroscopeDataService>();
             services.AddTransient<HoroscopeDataMiddleware>();
+
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,6 +34,11 @@ namespace WebAPI_Horoscope
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "my API v1")
+            );
         }
     }
 }
