@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Repository
 {
-    public interface IRepository<T> : IDisposable
+    public interface IRepository<T>
         where T : class
     {
         IEnumerable<T> GetItems();
 
-        T GetBook(int id);
+        T GetItem(int id);
 
         void Create(T item);
 

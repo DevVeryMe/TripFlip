@@ -15,21 +15,21 @@ namespace Horoscope.Controllers
     [ApiController]
     public class BookShopController : ControllerBase
     {
-        public IConfiguration Configuration { get; set; }
+        private string _sqlConnectionString;
 
-        public SqlConnection _sqlConnection;
+        private BookRepository _bookRepository;
 
         public BookShopController(IConfiguration configuration)
         {
-            Configuration = configuration;
-            _sqlConnection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            _sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
+            _bookRepository = new BookRepository(_sqlConnectionString);
         }
 
         [HttpGet]
         [Route("/books")]
-        public bool GetBooks()
+        public IEnumerable<Book> GetBooks()
         {
-            throw new NotImplementedException();
+            return _bookRepository.GetItems();
         }
 
         [HttpGet]
