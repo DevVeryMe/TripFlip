@@ -10,7 +10,7 @@ namespace Repository
 
         T GetItem(int id);
 
-        void Create(T item);
+        T Create(T item);
 
         void Update(T item);
 

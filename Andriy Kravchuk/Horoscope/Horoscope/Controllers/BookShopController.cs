@@ -43,7 +43,7 @@ namespace Horoscope.Controllers
         [Route("/add-book")]
         public Book AddBook(Book book)
         {
-            throw new NotImplementedException();
+            return _bookRepository.Create(book);
         }
 
         [HttpPut]

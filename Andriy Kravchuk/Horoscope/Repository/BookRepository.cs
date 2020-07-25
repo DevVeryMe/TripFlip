@@ -88,9 +88,30 @@ namespace Repository
             return book;
         }
 
-        public void Create(Book item)
+        public Book Create(Book item)
         {
-            throw new System.NotImplementedException();
+            using (var sqlConnection = new SqlConnection(_sqlConnectionString))
+            {
+                var command = new SqlCommand("spCreateBook", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+
+                command.Parameters.AddWithValue("@Title", item.Title);
+                command.Parameters.AddWithValue("@Description", item.Description);
+                command.Parameters.AddWithValue("@Author", item.Author);
+                command.Parameters.AddWithValue("@Price", item.Price);
+                command.Parameters.AddWithValue("@Count", item.Count);
+                command.Parameters.AddWithValue("@ReleaseDate", item.ReleaseDate);
+                command.Parameters.AddWithValue("@Rating", item.Rating);
+                command.Parameters.AddWithValue("@Publisher", item.Publisher);
+
+                sqlConnection.Open();
+                var id = command.ExecuteScalar();
+                item.Id = Convert.ToInt32(id);
+            }
+
+            return item;
         }
 
         public void Update(Book item)
