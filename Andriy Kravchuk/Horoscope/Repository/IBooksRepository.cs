@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Horoscope.models;
+﻿using System.Collections.Generic;
+using Repository.models;
 
 namespace Repository
 {
@@ -14,8 +13,6 @@ namespace Repository
 
         Book Update(Book book);
 
-        void Delete(int id);
-
-        void Save();
+        bool Delete(int id);
     }
 }

@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Horoscope.models;
+using Repository.models;
 
 namespace Repository
 {
-    public class BookRepository : IBooksRepository
+    public class BooksRepository : IBooksRepository
     {
         private string _sqlConnectionString;
 
-        public BookRepository(string sqlConnectionString)
+        public BooksRepository(string sqlConnectionString)
         {
             _sqlConnectionString = sqlConnectionString;
         }
 
         public IEnumerable<Book> GetBooks()
         {
-            List<Book> books = new List<Book>();
+            var books = new List<Book>();
 
             using (var sqlConnection = new SqlConnection(_sqlConnectionString))
             {
@@ -42,7 +42,7 @@ namespace Repository
                             Price = Convert.ToDecimal(reader["Price"]),
                             Count = Convert.ToInt32(reader["Count"]),
                             ReleaseDate = Convert.ToDateTime(reader["ReleaseDate"]),
-                            Rating = Convert.ToDouble(reader["Rating"]),
+                            Language = Convert.ToString(reader["Language"]),
                             Publisher = reader["Publisher"].ToString()
                         };
 
@@ -62,7 +62,7 @@ namespace Repository
             {
                 var command = new SqlCommand("spGetBook", sqlConnection)
                 {
-                    CommandType = CommandType.StoredProcedure,
+                    CommandType = CommandType.StoredProcedure
                 };
 
                 command.Parameters.AddWithValue("@Id", id);
@@ -73,6 +73,7 @@ namespace Repository
                 if (reader.HasRows)
                 {
                     reader.Read();
+
                     book.Id = Convert.ToInt32(reader["Id"]);
                     book.Title = reader["Title"].ToString();
                     book.Description = reader["Description"].ToString();
@@ -80,7 +81,7 @@ namespace Repository
                     book.Price = Convert.ToDecimal(reader["Price"]);
                     book.Count = Convert.ToInt32(reader["Count"]);
                     book.ReleaseDate = Convert.ToDateTime(reader["ReleaseDate"]);
-                    book.Rating = Convert.ToDouble(reader["Rating"]);
+                    book.Language = Convert.ToString(reader["Language"]);
                     book.Publisher = reader["Publisher"].ToString();
                 }
             }
@@ -103,7 +104,7 @@ namespace Repository
                 command.Parameters.AddWithValue("@Price", item.Price);
                 command.Parameters.AddWithValue("@Count", item.Count);
                 command.Parameters.AddWithValue("@ReleaseDate", item.ReleaseDate);
-                command.Parameters.AddWithValue("@Rating", item.Rating);
+                command.Parameters.AddWithValue("@Language", item.Language);
                 command.Parameters.AddWithValue("@Publisher", item.Publisher);
 
                 sqlConnection.Open();
@@ -130,7 +131,7 @@ namespace Repository
                 command.Parameters.AddWithValue("@Price", book.Price);
                 command.Parameters.AddWithValue("@Count", book.Count);
                 command.Parameters.AddWithValue("@ReleaseDate", book.ReleaseDate);
-                command.Parameters.AddWithValue("@Rating", book.Rating);
+                command.Parameters.AddWithValue("@Language", book.Language);
                 command.Parameters.AddWithValue("@Publisher", book.Publisher);
 
                 sqlConnection.Open();
@@ -140,7 +141,7 @@ namespace Repository
             return book;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             using (var sqlConnection = new SqlConnection(_sqlConnectionString))
             {
@@ -154,11 +155,8 @@ namespace Repository
                 sqlConnection.Open();
                 command.ExecuteNonQuery();
             }
-        }
 
-        public void Save()
-        {
-            throw new System.NotImplementedException();
+            return true;
         }
     }
 }

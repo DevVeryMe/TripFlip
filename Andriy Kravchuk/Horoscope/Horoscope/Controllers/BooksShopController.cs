@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Horoscope.models;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Repository;
-using System.Data.SqlClient;
+using Repository.models;
 
 namespace Horoscope.Controllers
 {
@@ -17,12 +12,12 @@ namespace Horoscope.Controllers
     {
         private string _sqlConnectionString;
 
-        private BookRepository _bookRepository;
+        private readonly BooksRepository _bookRepository;
 
         public BooksShopController(IConfiguration configuration)
         {
             _sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
-            _bookRepository = new BookRepository(_sqlConnectionString);
+            _bookRepository = new BooksRepository(_sqlConnectionString);
         }
 
         [HttpGet]
@@ -33,7 +28,7 @@ namespace Horoscope.Controllers
         }
 
         [HttpGet]
-        [Route("/book")]
+        [Route("/book/{id}")]
         public Book GetBook(int id)
         {
             return _bookRepository.GetBookById(id);
@@ -43,7 +38,7 @@ namespace Horoscope.Controllers
         [Route("/add-book")]
         public Book AddBook(Book book)
         {
-            return _bookRepository.Create(book);
+            return _bookRepository.Create(book); ;
         }
 
         [HttpPut]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Horoscope.models
+namespace Repository.models
 {
     public class Book
     {
@@ -18,8 +18,8 @@ namespace Horoscope.models
 
         public DateTime ReleaseDate { get; set; }
 
-        public double Rating { get; set; }
-
         public string Publisher { get; set; }
+
+        public string Language { get; set; }
     }
 }
