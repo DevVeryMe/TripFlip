@@ -6,7 +6,7 @@ using Horoscope.models;
 
 namespace Repository
 {
-    public class BookRepository : IRepository<Book>
+    public class BookRepository : IBooksRepository
     {
         private string _sqlConnectionString;
 
@@ -15,7 +15,7 @@ namespace Repository
             _sqlConnectionString = sqlConnectionString;
         }
 
-        public IEnumerable<Book> GetItems()
+        public IEnumerable<Book> GetBooks()
         {
             List<Book> books = new List<Book>();
 
@@ -54,7 +54,7 @@ namespace Repository
             return books;
         }
 
-        public Book GetItem(int id)
+        public Book GetBookById(int id)
         {
             var book = new Book();
 
@@ -114,14 +114,46 @@ namespace Repository
             return item;
         }
 
-        public void Update(Book item)
+        public Book Update(Book book)
         {
-            throw new System.NotImplementedException();
+            using (var sqlConnection = new SqlConnection(_sqlConnectionString))
+            {
+                var command = new SqlCommand("spUpdateBook", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+
+                command.Parameters.AddWithValue("@Id", book.Id);
+                command.Parameters.AddWithValue("@Title", book.Title);
+                command.Parameters.AddWithValue("@Description", book.Description);
+                command.Parameters.AddWithValue("@Author", book.Author);
+                command.Parameters.AddWithValue("@Price", book.Price);
+                command.Parameters.AddWithValue("@Count", book.Count);
+                command.Parameters.AddWithValue("@ReleaseDate", book.ReleaseDate);
+                command.Parameters.AddWithValue("@Rating", book.Rating);
+                command.Parameters.AddWithValue("@Publisher", book.Publisher);
+
+                sqlConnection.Open();
+                command.ExecuteNonQuery();
+            }
+
+            return book;
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            using (var sqlConnection = new SqlConnection(_sqlConnectionString))
+            {
+                var command = new SqlCommand("spDeleteBook", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+
+                command.Parameters.AddWithValue("@Id", id);
+
+                sqlConnection.Open();
+                command.ExecuteNonQuery();
+            }
         }
 
         public void Save()

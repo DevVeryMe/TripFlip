@@ -13,13 +13,13 @@ namespace Horoscope.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookShopController : ControllerBase
+    public class BooksShopController : ControllerBase
     {
         private string _sqlConnectionString;
 
         private BookRepository _bookRepository;
 
-        public BookShopController(IConfiguration configuration)
+        public BooksShopController(IConfiguration configuration)
         {
             _sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
             _bookRepository = new BookRepository(_sqlConnectionString);
@@ -29,14 +29,14 @@ namespace Horoscope.Controllers
         [Route("/books")]
         public IEnumerable<Book> GetBooks()
         {
-            return _bookRepository.GetItems();
+            return _bookRepository.GetBooks();
         }
 
         [HttpGet]
         [Route("/book")]
         public Book GetBook(int id)
         {
-            return _bookRepository.GetItem(id);
+            return _bookRepository.GetBookById(id);
         }
 
         [HttpPost]
@@ -47,17 +47,17 @@ namespace Horoscope.Controllers
         }
 
         [HttpPut]
-        [Route("/edit-book")]
-        public Book EditBook(Book book)
+        [Route("/update-book")]
+        public Book UpdateBook(Book book)
         {
-            throw new NotImplementedException();
+            return _bookRepository.Update(book);
         }
 
         [HttpDelete]
         [Route("/delete-book")]
-        public Book DeleteBook(Book book)
+        public void DeleteBook(int id)
         {
-            throw new NotImplementedException();
+            _bookRepository.Delete(id);
         }
     }
 }
