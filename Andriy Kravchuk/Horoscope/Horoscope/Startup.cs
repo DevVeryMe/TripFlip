@@ -1,3 +1,5 @@
+using System.Data.SqlClient;
+using Horoscope.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,11 @@ namespace Horoscope
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //services.Configure<BookShopController>(options =>
+            //{
+            //    options.Configuration = Configuration;
+            //});
 
             services.AddSwaggerGen((options) =>
             {
