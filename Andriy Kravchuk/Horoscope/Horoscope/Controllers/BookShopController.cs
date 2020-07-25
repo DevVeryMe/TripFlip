@@ -36,7 +36,7 @@ namespace Horoscope.Controllers
         [Route("/book")]
         public Book GetBook(int id)
         {
-            throw new NotImplementedException();
+            return _bookRepository.GetItem(id);
         }
 
         [HttpPost]

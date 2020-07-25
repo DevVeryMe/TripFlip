@@ -21,14 +21,13 @@ namespace Repository
 
             using (var sqlConnection = new SqlConnection(_sqlConnectionString))
             {
-                SqlCommand command = new SqlCommand("spGetBooks", sqlConnection)
+                var command = new SqlCommand("spGetBooks", sqlConnection)
                 {
                     CommandType = CommandType.StoredProcedure,
-                    CommandText = "spGetBooks"
                 };
 
                 sqlConnection.Open();
-                SqlDataReader reader = command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 if (reader.HasRows)
                 {
@@ -57,7 +56,36 @@ namespace Repository
 
         public Book GetItem(int id)
         {
-            throw new System.NotImplementedException();
+            var book = new Book();
+
+            using (var sqlConnection = new SqlConnection(_sqlConnectionString))
+            {
+                var command = new SqlCommand("spGetBook", sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure,
+                };
+
+                command.Parameters.AddWithValue("@Id", id);
+
+                sqlConnection.Open();
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    book.Id = Convert.ToInt32(reader["Id"]);
+                    book.Title = reader["Title"].ToString();
+                    book.Description = reader["Description"].ToString();
+                    book.Author = reader["Author"].ToString();
+                    book.Price = Convert.ToDecimal(reader["Price"]);
+                    book.Count = Convert.ToInt32(reader["Count"]);
+                    book.ReleaseDate = Convert.ToDateTime(reader["ReleaseDate"]);
+                    book.Rating = Convert.ToDouble(reader["Rating"]);
+                    book.Publisher = reader["Publisher"].ToString();
+                }
+            }
+
+            return book;
         }
 
         public void Create(Book item)
