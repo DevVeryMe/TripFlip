@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.Linq.Mapping;
 
-namespace RepositoryLibrary.Models
+namespace Repository.Models
 {
     [Table(Name = "Cars")]
     public class Car
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true)]
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         [Column]
         public string CarName { get; set; }
@@ -18,7 +18,7 @@ namespace RepositoryLibrary.Models
         public string CarModel { get; set; }
 
         [Column]
-        public double CarMileage { get; set; }
+        public float CarMileage { get; set; }
 
         [Column]
         public DateTime ManufactureDate { get; set; }

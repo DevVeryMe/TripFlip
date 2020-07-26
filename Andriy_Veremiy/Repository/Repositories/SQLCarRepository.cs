@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
-using RepositoryLibrary.Models;
+using Repository.Models;
+using Repository.Iterfaces;
 
-namespace RepositoryLibrary
+namespace Repository
 {
     public class SQLCarRepository : IRepository<Car>
     {
@@ -20,14 +21,12 @@ namespace RepositoryLibrary
         {
             _db.GetTable<Car>().InsertOnSubmit(car);
 
-            return _db.GetTable<Car>().Where(c => c.CarName == car.CarName 
-            && c.CarModel == car.CarModel 
-            && c.CarMileage == c.CarMileage).FirstOrDefault();
+            return car;
         }
 
         public void Delete(int id)
         {
-            Car car = _db.GetTable<Car>().Where(c => c.Id == id).FirstOrDefault();
+            Car car = _db.GetTable<Car>().Where(c => c.ID == id).FirstOrDefault();
 
             if (car != null)
             {
@@ -41,7 +40,12 @@ namespace RepositoryLibrary
 
         public Car GetObject(int id)
         {
-            Car car = _db.GetTable<Car>().Where(c => c.Id == id).FirstOrDefault();
+            Car car = _db.GetTable<Car>().Where(c => c.ID == id).FirstOrDefault();
+            if (car == null)
+            {
+                throw new Exception("Car Id out of range.(Get)");
+            }
+
             return car;
         }
 
@@ -60,6 +64,11 @@ namespace RepositoryLibrary
         {
             Car carToEdit = GetObject(id);
 
+            if(carToEdit == null)
+            {
+                throw new Exception("Car Id out of range.(Update)");
+            }
+
             carToEdit.CarName = car.CarName;
             carToEdit.CarModel = car.CarModel;
             carToEdit.CarMileage = car.CarMileage;
@@ -68,7 +77,7 @@ namespace RepositoryLibrary
             carToEdit.ManufactureDate = car.ManufactureDate;
             carToEdit.Price = car.Price;
 
-            return _db.GetTable<Car>().Where(c => c.Id == id).FirstOrDefault();
+            return carToEdit;
         }
     }
 }

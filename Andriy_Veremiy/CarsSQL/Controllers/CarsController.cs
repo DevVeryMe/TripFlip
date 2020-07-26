@@ -1,69 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
 using Microsoft.Extensions.Configuration;
-using Repository.DotNetCore;
+using Repository;
 using Repository.Iterfaces;
-using Repository.Models.DotNetCore;
+using Repository.Models;
 
 
 namespace Horoscope.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CarsController : ControllerBase
+    public class CarsController : ApiController
     {
         IRepository<Car> _db;
-        IConfiguration _configuration;
 
-        public CarsController(IConfiguration configuration)
+        public CarsController()
         {
-            _configuration = configuration;
-            _db = new SQLCarRepository(_configuration.GetConnectionString("Default"));
+            string connection = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
+            _db = new SQLCarRepository(connection);
         }
 
         // GET: api/<CarsController>
-        [Route("")]
-        [HttpGet]
         public IEnumerable<Car> Get()
         {
             return _db.GetObjectList();
         }
 
         // GET api/<CarsController>/5
-        [Route("{id}")]
-        [HttpGet]
         public Car Get(int id)
         {
+            Car car = _db.GetObject(id);
             return _db.GetObject(id);
         }
 
         // POST api/<CarsController>
-        [Route("")]
-        [HttpPost]
         public Car Create([FromBody] Car car)
         {
             Car createdCar = _db.Create(car);
+            _db.Save();
+
             return createdCar;
         }
 
         // PUT api/<CarsController>/5
-        [Route("{id}")]
-        [HttpPut]
         public Car Edit(int id, [FromBody] Car car)
         {
             Car editedCar = _db.Update(id, car);
+            _db.Save();
+
             return editedCar;
         }
 
         // DELETE api/<CarsController>/5
-        [Route("{id}")]
-        [HttpDelete]
         public void Delete(int id)
         {
             _db.Delete(id);
+            _db.Save();
         }
     }
 }
