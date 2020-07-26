@@ -23,20 +23,23 @@ namespace Horoscope.Controllers
         }
 
         // GET: api/<CarsController>
-        public IEnumerable<Car> Get()
+        [HttpGet]
+        public IEnumerable<Car> GetAllCars()
         {
             return _db.GetObjectList();
         }
 
         // GET api/<CarsController>/5
-        public Car Get(int id)
+        [HttpGet]
+        public Car GetCar(int id)
         {
             Car car = _db.GetObject(id);
             return _db.GetObject(id);
         }
 
         // POST api/<CarsController>
-        public Car Create([FromBody] Car car)
+        [HttpPost]
+        public Car CreateCar([FromBody] Car car)
         {
             Car createdCar = _db.Create(car);
             _db.Save();
@@ -45,7 +48,8 @@ namespace Horoscope.Controllers
         }
 
         // PUT api/<CarsController>/5
-        public Car Edit(int id, [FromBody] Car car)
+        [HttpPut]
+        public Car EditCar(int id, [FromBody] Car car)
         {
             Car editedCar = _db.Update(id, car);
             _db.Save();
@@ -54,7 +58,8 @@ namespace Horoscope.Controllers
         }
 
         // DELETE api/<CarsController>/5
-        public void Delete(int id)
+        [HttpDelete]
+        public void DeleteCar(int id)
         {
             _db.Delete(id);
             _db.Save();
