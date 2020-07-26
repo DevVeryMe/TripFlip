@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -68,9 +66,9 @@ namespace API.Controllers
                 var prediction = $"{when[whenKey]} {who[whoKey]} {whatHappens[whatKey]}";
                 return Ok(prediction);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
             {
-                return NotFound(ex.Message);
+                return NotFound("There is no such sign");
             }
         }
     }
