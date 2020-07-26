@@ -50,6 +50,13 @@ namespace SqlPersonRepository
                 if (added_rows == 1)
                 {
                     result.ResultType = ResultType.Ok;
+
+                    // get new entry id
+                    string sql_command = $"SELECT MAX(Id) FROM Person";
+                    SqlCommand command = new SqlCommand(sql_command, conn);
+                    int new_entry_id = (int)command.ExecuteScalar();
+
+                    p.Id = new_entry_id;
                     result.Value = p;
                 }
                 else
@@ -194,7 +201,7 @@ namespace SqlPersonRepository
         public QueryResult<Person> Update(int id, Person p)
         {
             var result = new QueryResult<Person>();
-            result.Value = p;
+            p.Id = id;
 
             conn = new SqlConnection(ConnectionString);
 
@@ -205,12 +212,12 @@ namespace SqlPersonRepository
                 // load data from the table into 'DataTable' object
                 SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Person", conn);
                 DataTable dt = new DataTable();
+                da.Fill(dt);
                 if (dt.Rows.Count == 0)
                 {
                     conn.Close();
                     return result;
                 }
-                da.Fill(dt);
                 dt.PrimaryKey = new DataColumn[] { dt.Columns[0] };
 
                 // modify the existing row with the new data
@@ -224,6 +231,7 @@ namespace SqlPersonRepository
                 if (affected_rows == 1)
                 {
                     result.ResultType = ResultType.Ok;
+                    result.Value = p;
                 }
                 else
                 {
