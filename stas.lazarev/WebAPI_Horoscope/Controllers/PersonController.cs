@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -23,92 +24,100 @@ namespace WebAPI_Horoscope.Controllers
         /// Returns all entries from 'Person' table
         /// </summary>
         [HttpGet]
-        public IEnumerable<Person> Get()
+        public ActionResult<IEnumerable<Person>> Get()
         {
             person = new SqlPersonRepo(ConnectionString);
 
             var result = person.Read();
-            if (CheckResultOnErrors(result))
-                return null;
 
-            return result.ValuesCollection;
+            if (result.ResultType != ResultType.Ok)
+            {
+                if (result.ResultType == ResultType.Exception) ; // todo exception handling
+                if (result.ResultType == ResultType.Error)
+                    return NotFound(result.ErrorMsg);
+            }
+
+            return Ok(result.ValuesCollection);
         }
 
         /// <summary>
         /// Returns an entry from 'Person' table with a given id
         /// </summary>
         [HttpGet("{id}")]
-        public Person Get(int id)
+        public ActionResult<Person> Get(int id)
         {
             person = new SqlPersonRepo(ConnectionString);
 
             var result = person.Read(id);
-            if (CheckResultOnErrors(result))
-                return null;
 
-            return result.Value;
+            if (result.ResultType != ResultType.Ok)
+            {
+                if (result.ResultType == ResultType.Exception) ; // todo exception handling
+                if (result.ResultType == ResultType.Error)
+                    return NotFound(result.ErrorMsg);
+            }
+
+            return Ok(result.Value);
         }
 
+        /// <summary>
+        /// Adds a new table entry with a given object
+        /// </summary>
         [HttpPost]
-        public Person Post(Person p)
+        public ActionResult<Person> Post(Person p)
         {
             person = new SqlPersonRepo(ConnectionString);
 
             var result = person.Create(p);
 
-            if (CheckResultOnErrors(result))
-                return null;
+            if (result.ResultType != ResultType.Ok)
+            {
+                if (result.ResultType == ResultType.Exception) ; // todo exception handling
+                if (result.ResultType == ResultType.Error)
+                    return BadRequest(result.ErrorMsg);
+            }
 
-            return result.Value;
+            return Ok(result.Value);
         }
 
+        /// <summary>
+        /// Modifies a table entry by the given id with a given object
+        /// </summary>
         [HttpPut]
-        public Person Put(int id, Person p)
+        public ActionResult<Person> Put(int id, Person p)
         {
             person = new SqlPersonRepo(ConnectionString);
 
             var result = person.Update(id, p);
 
-            if (CheckResultOnErrors(result))
-                return null;
+            if (result.ResultType != ResultType.Ok)
+            {
+                if (result.ResultType == ResultType.Exception) ; // todo exception handling
+                if (result.ResultType == ResultType.Error)
+                    return BadRequest(result.ErrorMsg);
+            }
 
-            return result.Value;
+            return Ok(result.Value);
         }
 
+        /// <summary>
+        /// Deletes a table entry by the given id
+        /// </summary>
         [HttpDelete]
-        public string Delete(int id)
+        public ActionResult Delete(int id)
         {
             person = new SqlPersonRepo(ConnectionString);
 
             var result = person.Delete(id);
 
-            if (CheckResultOnErrors(result))
-                return null;
-
-            return $"Entry #{id} is now deleted";
-        }
-
-        /// <summary>
-        /// Returns TRUE if ResultType is anything but 'OK' and sets up a corresponding HTTP Status Code
-        /// </summary>
-        bool CheckResultOnErrors(QueryResult<Person> result)
-        {
-            bool flag = false;
-
-            if (result.ResultType == ResultType.Error)
+            if (result.ResultType != ResultType.Ok)
             {
-                //new ErrorHandler(person);
-                flag = true;
-                Response.StatusCode = 400;
-            }
-            else if (result.ResultType == ResultType.Exception)
-            {
-                //new ErrorHandler(person);
-                flag = true;
-                Response.StatusCode = 500;
+                if (result.ResultType == ResultType.Exception) ; // todo exception handling
+                if (result.ResultType == ResultType.Error)
+                    return BadRequest(result.ErrorMsg);
             }
 
-            return flag;
+            return Ok($"Entry #{id} is now deleted");
         }
     }
 }

@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SqlPersonRepository">
-      <HintPath>..\SqlPersonRepository\bin\Debug\netcoreapp3.1\SqlPersonRepository.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\SqlPersonRepository\SqlPersonRepository.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties resources_4horoscopedata_1json__JsonSchema="https://bucklescript.github.io/bucklescript/docson/build-schema.json" /></VisualStudio></ProjectExtensions>
