@@ -5,15 +5,15 @@ namespace ShapesAreas
 {
     class Program
     {
-        static AreaCalculator _calculator = new AreaCalculator();
+        static readonly AreaCalculator _calculator = new AreaCalculator();
 
         static void Main(string[] args)
         {
-            var continueCycle = true;
+            var continueLoop = true;
 
             do
             {
-                Console.WriteLine(StringConstants.ShapeChoice);
+                Console.WriteLine(StringConstants.ShapeChoiceRequest);
 
                 var symbol = Console.Read();
                 Console.Read();
@@ -22,30 +22,32 @@ namespace ShapesAreas
                 switch (symbol)
                 {
                     case 'e':
-                        continueCycle = false;
+                        continueLoop = false;
                         break;
                     case 'c':
-                        PrintCircle(out continueCycle);
+                        PrintRequestCircleData(out continueLoop);
                         break;
                     case 'p':
-                        PrintParallelogram(out continueCycle);
+                        PrintRequestParallelogramData(out continueLoop);
                         break;
                     case 'h':
-                        PrintHexagon(out continueCycle);
+                        PrintRequestHexagonData(out continueLoop);
                         break;
                     case 't':
-                        PrintTriangle(out continueCycle);
+                        PrintRequestTriangleData(out continueLoop);
                         break;
                     default:
-                        continueCycle = ContinueCalculation();
+                        continueLoop = PrintContinueCalculation(StringConstants.EnteredIncorrectSymbol);
                         break;
                 }
-            } while (continueCycle);
+            } while (continueLoop);
+
         }
 
-        static bool ContinueCalculation()
+        static bool PrintContinueCalculation(string errorStr)
         {
-            Console.WriteLine(StringConstants.EnteredBadSymbol);
+            Console.WriteLine(errorStr);
+            Console.WriteLine(StringConstants.ContinueCalculationQuestion);
 
             var symbol = Console.Read();
             Console.Read();
@@ -60,39 +62,40 @@ namespace ShapesAreas
             Console.WriteLine(_calculator.CalculateArea());
         }
 
-        static void PrintCircle(out bool continueCycle)
+        static void PrintRequestCircleData(out bool continueLoop)
         {
-            continueCycle = true;
-            Console.WriteLine(StringConstants.EnterRadius);
+            continueLoop = true;
+            Console.WriteLine(StringConstants.RadiusRequest);
 
-            if (!double.TryParse(Console.ReadLine(), out var radius))
+            if (!double.TryParse(Console.ReadLine(), out var radius) || !ValidateCircle(radius))
             {
-                continueCycle = ContinueCalculation();
+                continueLoop = PrintContinueCalculation(StringConstants.IncorrectRadius);
                 return;
             }
 
             PrintShapeArea(new Circle(radius));
         }
 
-        static void PrintTriangle(out bool continueCycle)
+        static bool ValidateCircle(double radius)
         {
-            continueCycle = true;
-            Console.WriteLine(StringConstants.EnterSides);
+            return radius > 0;
+        }
 
-            if (double.TryParse(Console.ReadLine(), out var sideA) &&
-                double.TryParse(Console.ReadLine(), out var sideB) &&
-                double.TryParse(Console.ReadLine(), out var sideC))
+        static void PrintRequestTriangleData(out bool continueLoop)
+        {
+            continueLoop = true;
+            Console.WriteLine(StringConstants.SidesRequest);
+
+            if (!double.TryParse(Console.ReadLine(), out var sideA) ||
+                !double.TryParse(Console.ReadLine(), out var sideB) ||
+                !double.TryParse(Console.ReadLine(), out var sideC) ||
+                !ValidateTriangle(sideA, sideB, sideC))
             {
-                if (!ValidateTriangle(sideA, sideB, sideC))
-                {
-                    Console.WriteLine(StringConstants.IncorrectTriangleSides);
-                    continueCycle = ContinueCalculation();
-                }
-                else
-                    PrintShapeArea(new Triangle(sideA, sideB, sideC));
+                continueLoop = PrintContinueCalculation(StringConstants.IncorrectTriangleSides);
             }
             else
-                continueCycle = ContinueCalculation();
+                PrintShapeArea(new Triangle(sideA, sideB, sideC));
+
         }
 
         static bool ValidateTriangle(double sideA, double sideB, double sideC)
@@ -103,25 +106,21 @@ namespace ShapesAreas
                    (sideB + sideC > sideA);
         }
 
-        static void PrintParallelogram(out bool continueCycle)
+        static void PrintRequestParallelogramData(out bool continueLoop)
         {
-            continueCycle = true;
-            Console.WriteLine(StringConstants.EnterSidesAndAngle);
+            continueLoop = true;
+            Console.WriteLine(StringConstants.SidesAndAngleRequest);
 
-            if (double.TryParse(Console.ReadLine(), out var sideA) &&
-                double.TryParse(Console.ReadLine(), out var sideB) &&
-                double.TryParse(Console.ReadLine(), out var angle))
+            if (!double.TryParse(Console.ReadLine(), out var sideA) ||
+                !double.TryParse(Console.ReadLine(), out var sideB) ||
+                !double.TryParse(Console.ReadLine(), out var angle) ||
+                !ValidateParallelogram(sideA, sideB, angle))
             {
-                if (!ValidateParallelogram(sideA, sideB, angle))
-                {
-                    Console.WriteLine(StringConstants.IncorrectParallelogramData);
-                    continueCycle = ContinueCalculation();
-                }
-                else
-                    PrintShapeArea(new Parallelogram(sideA, sideB, angle));
+                continueLoop = PrintContinueCalculation(StringConstants.IncorrectParallelogramData);
             }
             else
-                continueCycle = ContinueCalculation();
+                PrintShapeArea(new Parallelogram(sideA, sideB, angle));
+
         }
 
         static bool ValidateParallelogram(double sideA, double sideB, double angle)
@@ -130,18 +129,23 @@ namespace ShapesAreas
                    angle > 0 && angle < Math.PI;
         }
 
-        static void PrintHexagon(out bool continueCycle)
+        static void PrintRequestHexagonData(out bool continueLoop)
         {
-            continueCycle = true;
-            Console.WriteLine(StringConstants.EnterSide);
+            continueLoop = true;
+            Console.WriteLine(StringConstants.SideRequest);
 
             if (!double.TryParse(Console.ReadLine(), out var side))
             {
-                continueCycle = ContinueCalculation();
+                continueLoop = PrintContinueCalculation(StringConstants.IncorrectSide);
                 return;
             }
 
             PrintShapeArea(new Hexagon(side));
+        }
+
+        static bool ValidateHexagon(double side)
+        {
+            return side > 0;
         }
     }
 }
