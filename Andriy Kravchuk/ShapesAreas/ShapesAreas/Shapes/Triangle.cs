@@ -1,16 +1,27 @@
-﻿using ShapesAreas.AreaCalculators;
+﻿using System;
 
 namespace ShapesAreas.Shapes
 {
-    public class Triangle : Shape
+    public class Triangle : IShape
     {
-        public Triangle(IAreaCalculator calculator) : base(calculator)
+        public double SideA { get; set; }
+
+        public double SideB { get; set; }
+
+        public double SideC { get; set; }
+
+        public Triangle(double sideA, double sideB, double sideC)
         {
+            SideA = sideA;
+            SideB = sideB;
+            SideC = sideC;
         }
 
-        public override string ToString()
+        public double CalculateArea()
         {
-            return "Triangle";
+            var semiPerimeter = (SideA + SideB + SideC) / 2;
+            return Math.Sqrt(
+                semiPerimeter * (semiPerimeter - SideA) * (semiPerimeter - SideB) * (semiPerimeter - SideC));
         }
     }
 }

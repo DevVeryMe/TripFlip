@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ShapesAreas.Shapes;
 
 namespace ShapesAreas
 {
-    class AreaCalculator
+    public class AreaCalculator
     {
+        public IShape Shape { get; set; }
+
+        public double CalculateArea()
+        {
+            return Shape.CalculateArea();
+        }
     }
 }

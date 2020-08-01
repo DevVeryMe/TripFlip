@@ -1,16 +1,19 @@
-﻿using ShapesAreas.AreaCalculators;
+﻿using System;
 
 namespace ShapesAreas.Shapes
 {
-    public class Hexagon : Shape
+    public class Hexagon : IShape
     {
-        public Hexagon(IAreaCalculator calculator) : base(calculator)
+        public double Side { get; set; }
+
+        public Hexagon(double side)
         {
+            Side = side;
         }
 
-        public override string ToString()
+        public double CalculateArea()
         {
-            return "Hexagon";
+            return 1.5 * Math.Sqrt(3) * Side;
         }
     }
 }

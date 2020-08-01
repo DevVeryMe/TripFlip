@@ -1,16 +1,19 @@
-﻿using ShapesAreas.AreaCalculators;
+﻿using System;
 
 namespace ShapesAreas.Shapes
 {
-    public class Circle : Shape
+    public class Circle : IShape
     {
-        public Circle(IAreaCalculator calculator) : base(calculator)
+        public double Radius { get; set; }
+
+        public Circle(double radius)
         {
+            Radius = radius;
         }
 
-        public override string ToString()
+        public double CalculateArea()
         {
-            return "Circle";
+            return Math.PI * Radius * Radius;
         }
     }
 }

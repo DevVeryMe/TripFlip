@@ -1,14 +1,7 @@
-﻿using ShapesAreas.AreaCalculators;
-
-namespace ShapesAreas.Shapes
+﻿namespace ShapesAreas.Shapes
 {
-    public abstract class Shape
+    public interface IShape
     {
-        protected IAreaCalculator Calculator;
-
-        protected Shape(IAreaCalculator calculator)
-        {
-            Calculator = calculator;
-        }
+        double CalculateArea();
     }
 }

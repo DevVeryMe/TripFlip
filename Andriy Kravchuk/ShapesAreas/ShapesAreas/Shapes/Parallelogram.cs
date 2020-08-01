@@ -1,16 +1,25 @@
-﻿using ShapesAreas.AreaCalculators;
+﻿using System;
 
 namespace ShapesAreas.Shapes
 {
-    public class Parallelogram : Shape
+    public class Parallelogram : IShape
     {
-        public Parallelogram(IAreaCalculator calculator) : base(calculator)
+        public double SideA { get; set; }
+
+        public double SideB { get; set; }
+
+        public double Angle { get; set; }
+
+        public Parallelogram(double sideA, double sideB, double angle)
         {
+            SideA = sideA;
+            SideB = sideB;
+            Angle = angle;
         }
 
-        public override string ToString()
+        public double CalculateArea()
         {
-            return "Parallelogram";
+            return SideA * SideB * Math.Sin(Angle);
         }
     }
 }
