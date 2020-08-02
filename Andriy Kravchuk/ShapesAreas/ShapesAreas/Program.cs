@@ -15,9 +15,9 @@ namespace ShapesAreas
             {
                 Console.WriteLine(StringConstants.ShapeChoiceRequest);
 
-                var strToParse = Console.ReadLine();
+                var stringToParse = Console.ReadLine();
 
-                if (int.TryParse(strToParse, out int value))
+                if (int.TryParse(stringToParse, out int value))
                 {
                     switch (value)
                     {
