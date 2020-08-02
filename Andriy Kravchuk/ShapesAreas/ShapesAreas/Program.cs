@@ -46,14 +46,14 @@ namespace ShapesAreas
 
         }
 
-        static bool PrintContinueCalculation(string errorStr)
+        static bool PrintContinueCalculation(string errorString)
         {
-            Console.WriteLine(errorStr);
+            Console.WriteLine(errorString);
             Console.WriteLine(StringConstants.ContinueCalculationQuestion);
 
-            var strToParse = Console.ReadLine();
+            var stringToParse = Console.ReadLine();
 
-            return int.TryParse(strToParse, out var value) && value == 1;
+            return int.TryParse(stringToParse, out var value) && value == 1;
         }
 
         static void PrintShapeArea(IShape shape)
