@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleCryptography.Interfaces;
 
 namespace ConsoleCryptography.CryptoMethods
 {
-    class VigenereMethod : CryptoMetod, IEncryptor, IDecryptor
+    class VigenereMethod : CryptoMetod
     {
         readonly int _characterCount = 128; // ASCII character count
 
@@ -13,7 +12,7 @@ namespace ConsoleCryptography.CryptoMethods
 
         }
 
-        public string Encrypt()
+        public override string Encrypt()
         {
             string encryptedText = string.Empty;
             string encryptionReadyKey = GetReadyKey();
@@ -30,7 +29,7 @@ namespace ConsoleCryptography.CryptoMethods
             return encryptedText;
         }
 
-        public string Decrypt()
+        public override string Decrypt()
         {
             string decryptedText = string.Empty;
             string decryptionReadyKey = GetReadyKey();

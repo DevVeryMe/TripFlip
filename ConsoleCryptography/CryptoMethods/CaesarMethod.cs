@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleCryptography.Interfaces;
 
 namespace ConsoleCryptography.CryptoMethods
 {
-    class CaesarMethod : CryptoMetod, IEncryptor, IDecryptor
+    class CaesarMethod : CryptoMetod
     {
         public int CharacterShiftValue { get; set; }
         public CharacterShiftDirection ShiftDirection { get; set; }
@@ -18,7 +17,7 @@ namespace ConsoleCryptography.CryptoMethods
             ShiftDirection = direction;
         }
 
-        public string Encrypt()
+        public override string Encrypt()
         {
             string encryptedText = string.Empty;
 
@@ -40,7 +39,7 @@ namespace ConsoleCryptography.CryptoMethods
             return encryptedText;
         }
 
-        public string Decrypt()
+        public override string Decrypt()
         {
             string decryptedText = string.Empty;
 

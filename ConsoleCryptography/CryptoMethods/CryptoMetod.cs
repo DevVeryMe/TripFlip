@@ -1,8 +1,9 @@
 ﻿using System;
+using ConsoleCryptography.Interfaces;
 
 namespace ConsoleCryptography.CryptoMethods
 {
-    abstract class CryptoMetod
+    abstract class CryptoMetod : IEncryptor, IDecryptor
     {
         public string Key { get; set; }
         public string Text { get; set; }
@@ -39,5 +40,9 @@ namespace ConsoleCryptography.CryptoMethods
 
             return resultKey;
         }
+
+        abstract public string Encrypt();
+
+        abstract public string Decrypt();
     }
 }

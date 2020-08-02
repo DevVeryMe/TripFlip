@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleCryptography.Interfaces;
 
 namespace ConsoleCryptography.CryptoMethods
 {
-    class XorMethod : CryptoMetod, IEncryptor, IDecryptor
+    class XorMethod : CryptoMetod
     {
         public XorMethod(string text, string key)
             : base(text, key)
@@ -11,9 +10,9 @@ namespace ConsoleCryptography.CryptoMethods
 
         }
 
-        public string Encrypt() => EncryptDecrypt();
+        public override string Encrypt() => EncryptDecrypt();
 
-        public string Decrypt() => EncryptDecrypt();
+        public override string Decrypt() => EncryptDecrypt();
 
         string EncryptDecrypt()
         {
