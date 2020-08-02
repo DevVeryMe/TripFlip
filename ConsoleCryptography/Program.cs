@@ -6,7 +6,10 @@ namespace ConsoleCryptography
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.Title = "Legit Cryptography App";
+
+            ConsoleCrypto consoleCrypto = new ConsoleCrypto();
+            consoleCrypto.Run();
         }
     }
 }
