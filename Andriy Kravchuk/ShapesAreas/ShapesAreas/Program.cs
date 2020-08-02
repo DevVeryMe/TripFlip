@@ -51,7 +51,7 @@ namespace ShapesAreas
             Console.WriteLine(errorStr);
             Console.WriteLine(StringConstants.ContinueCalculationQuestion);
 
-            var strToParse = Console.ReadLine();
+            var stringToParse = Console.ReadLine();
 
             return int.TryParse(strToParse, out var value) && value == 1;
         }
