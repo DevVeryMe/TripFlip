@@ -47,8 +47,14 @@ namespace ConsoleCryptography
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Choose an action:");
-            stringBuilder.AppendLine("   1. Encrypt");
-            stringBuilder.AppendLine("   2. Decrypt");
+
+            string[] actionNames = Enum.GetNames(typeof(UserActionChoice));
+            int counter = 1; // counting menu items starting with 1
+            foreach (var actionName in actionNames)
+            {
+                stringBuilder.AppendLine($"  {counter}. {actionName}");
+                counter++;
+            }
 
             Console.Clear();
             Console.WriteLine(stringBuilder.ToString());
@@ -67,14 +73,18 @@ namespace ConsoleCryptography
             {
                 userInput = Console.ReadLine();
 
-                if (int.TryParse(userInput, out userChoice) == false)
-                    inputIsInvalid = true;
-                else
+                inputIsInvalid = int.TryParse(userInput, out userChoice) == false;
+
+                if (!inputIsInvalid)
                 {
                     if (userChoice < 1 || userChoice > menuOptionsCount)
+                    {
                         inputIsInvalid = true;
+                    }
                     else
+                    {
                         inputIsInvalid = false;
+                    }
                 }
             } while (inputIsInvalid);
 
@@ -104,9 +114,14 @@ namespace ConsoleCryptography
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Choose a method:");
-            stringBuilder.AppendLine("   1. Caesar cipher");
-            stringBuilder.AppendLine("   2. XOR cipher");
-            stringBuilder.AppendLine("   3. Vigenere cipher");
+
+            string[] cryptoMethodNames = Enum.GetNames(typeof(UserCryptoMethodChoice));
+            int counter = 1; // counting menu items starting with 1
+            foreach (var methodName in cryptoMethodNames)
+            {
+                stringBuilder.AppendLine($"  {counter}. {methodName} cipher");
+                counter++;
+            }
 
             Console.Clear();
             Console.WriteLine(stringBuilder.ToString());
@@ -127,6 +142,9 @@ namespace ConsoleCryptography
                     break;
                 case 3:
                     CryptoMethodChoice = UserCryptoMethodChoice.Vigenere;
+                    break;
+                default:
+                    CryptoMethodChoice = UserCryptoMethodChoice.Caesar;
                     break;
             }
         }
@@ -166,6 +184,9 @@ namespace ConsoleCryptography
                     break;
                 case UserCryptoMethodChoice.XOR:
                     CryptoMetod = new XorMethod(UserText, UserKey);
+                    break;
+                default:
+                    CryptoMetod = new CaesarMethod(UserText);
                     break;
             }
 

@@ -4,14 +4,15 @@ namespace ConsoleCryptography.CryptoMethods
 {
     class CaesarMethod : CryptoMetod
     {
+        const int DefaultCaesarShiftValue = 3;
+
         public int CharacterShiftValue { get; set; }
         public CharacterShiftDirection ShiftDirection { get; set; }
 
         public CaesarMethod(string text,
-            int characterShiftValue = 3,
-            CharacterShiftDirection direction = CharacterShiftDirection.Right,
-            string key = "")
-            : base(text, key)
+            int characterShiftValue = DefaultCaesarShiftValue,
+            CharacterShiftDirection direction = CharacterShiftDirection.Right)
+            : base(text, string.Empty)
         {
             CharacterShiftValue = characterShiftValue;
             ShiftDirection = direction;
