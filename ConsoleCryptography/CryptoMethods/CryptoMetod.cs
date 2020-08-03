@@ -1,5 +1,4 @@
-﻿using System;
-using ConsoleCryptography.Interfaces;
+﻿using ConsoleCryptography.Interfaces;
 
 namespace ConsoleCryptography.CryptoMethods
 {

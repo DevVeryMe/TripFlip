@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ConsoleCryptography.Enums;
 
 namespace ConsoleCryptography.CryptoMethods
 {
@@ -60,12 +60,6 @@ namespace ConsoleCryptography.CryptoMethods
             }
 
             return decryptedText;
-        }
-
-        public enum CharacterShiftDirection
-        {
-            Left,
-            Right
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using ConsoleCryptography.CryptoMethods;
+using ConsoleCryptography.Enums;
 
 namespace ConsoleCryptography
 {
@@ -138,10 +139,10 @@ namespace ConsoleCryptography
                     CryptoMethodChoice = UserCryptoMethodChoice.Caesar;
                     break;
                 case 2:
-                    CryptoMethodChoice = UserCryptoMethodChoice.XOR;
+                    CryptoMethodChoice = UserCryptoMethodChoice.Vigenere;
                     break;
                 case 3:
-                    CryptoMethodChoice = UserCryptoMethodChoice.Vigenere;
+                    CryptoMethodChoice = UserCryptoMethodChoice.XOR;
                     break;
                 default:
                     CryptoMethodChoice = UserCryptoMethodChoice.Caesar;
@@ -205,19 +206,6 @@ namespace ConsoleCryptography
 
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
-        }
-
-        enum UserCryptoMethodChoice
-        {
-            Caesar,
-            Vigenere,
-            XOR
-        }
-
-        enum UserActionChoice
-        {
-            Encrypt,
-            Decrypt
         }
     }
 }
