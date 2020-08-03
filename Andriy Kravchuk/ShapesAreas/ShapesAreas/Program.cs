@@ -5,7 +5,7 @@ namespace ShapesAreas
 {
     class Program
     {
-        static readonly AreaCalculator _calculator = new AreaCalculator(new Circle(1));
+        static readonly AreaCalculator _areaCalculator = new AreaCalculator(new Circle(1));
 
         static void Main(string[] args)
         {
@@ -58,8 +58,8 @@ namespace ShapesAreas
 
         static void PrintShapeArea(IShape shape)
         {
-            _calculator.Shape = shape;
-            Console.WriteLine(StringConstants.AreaOutput + " " + Math.Round(_calculator.CalculateArea(), 2));
+            _areaCalculator.Shape = shape;
+            Console.WriteLine(StringConstants.AreaOutput + " " + Math.Round(_areaCalculator.CalculateArea(), 2));
         }
 
         static void PrintRequestCircleData(out bool continueLoop)
