@@ -7,9 +7,9 @@ namespace StrategyPattern.SortingAlgorithms
     class StoogeSort<T> : ISortable<T>
         where T : IComparable<T>
     {
-        private List<T> _valueList;
+        private IList<T> _valueList;
 
-        public void Sort(ref IEnumerable<T> values)
+        public void Sort(IEnumerable<T> values)
         {
             _valueList = values.ToList();
 
@@ -18,8 +18,6 @@ namespace StrategyPattern.SortingAlgorithms
 
             SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
             SortingAlgorithmsPrinter<T>.PrintSortComplete(StringConstants.StoogeSort, iteration);
-
-            values = _valueList;
         }
 
         // Used in Sort() method.
@@ -28,8 +26,8 @@ namespace StrategyPattern.SortingAlgorithms
             SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
             ++iteration;
 
-            T firstElement = _valueList[startIndex];
-            T lastElement = _valueList[endIndex];
+            var firstElement = _valueList[startIndex];
+            var lastElement = _valueList[endIndex];
 
             if (firstElement.CompareTo(lastElement) > 0)
             {
@@ -49,7 +47,7 @@ namespace StrategyPattern.SortingAlgorithms
         // Used in DoNextIteration method.
         private void Swap(int firstIndex, int secondIndex)
         {
-            T swapValue = _valueList[firstIndex];
+            var swapValue = _valueList[firstIndex];
             _valueList[firstIndex] = _valueList[secondIndex];
             _valueList[secondIndex] = swapValue;
         }

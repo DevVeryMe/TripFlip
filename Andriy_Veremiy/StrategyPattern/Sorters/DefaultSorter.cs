@@ -8,19 +8,19 @@ namespace StrategyPattern.Sorters
     class DefaultSorter<T> : ISortable<T>
         where T : IComparable<T>
     {
-        public ISortable<T> Sortable { private get; set; }
+        public ISortable<T> Sorter { private get; set; }
 
         public DefaultSorter(ISortable<T> sortable)
         {
-            Sortable = sortable;
+            Sorter = sortable;
         }
 
-        public void Sort(ref IEnumerable<T> values)
+        public void Sort(IEnumerable<T> values)
         {
             Stopwatch stopwatch = new Stopwatch();
 
             stopwatch.Start();
-            Sortable.Sort(ref values);
+            Sorter.Sort(values);
             stopwatch.Stop();
 
             SortingAlgorithmsPrinter<T>.PrintSortingTime(stopwatch.Elapsed);

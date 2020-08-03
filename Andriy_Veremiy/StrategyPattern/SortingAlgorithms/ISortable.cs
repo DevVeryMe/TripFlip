@@ -4,6 +4,6 @@ namespace StrategyPattern.SortingAlgorithms
 {
     interface ISortable<T>
     {
-        void Sort(ref IEnumerable<T> values);
+        void Sort(IEnumerable<T> values);
     }
 }

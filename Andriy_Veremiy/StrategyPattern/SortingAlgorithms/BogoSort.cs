@@ -7,9 +7,9 @@ namespace StrategyPattern.SortingAlgorithms
     class BogoSort <T> : ISortable<T>
         where T: IComparable <T>
     {
-		private List<T> _valueList;
+		private IList<T> _valueList;
 
-		public void Sort(ref IEnumerable<T> values)
+		public void Sort(IEnumerable<T> values)
 		{
 			_valueList = values.ToList();
 
@@ -25,8 +25,6 @@ namespace StrategyPattern.SortingAlgorithms
 
 			SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
 			SortingAlgorithmsPrinter<T>.PrintSortComplete(StringConstants.BogoSort, iteration);
-
-			values = _valueList;
 		}
 
 		// Used in Sort() method to check if _valueList is sorted.
@@ -51,7 +49,7 @@ namespace StrategyPattern.SortingAlgorithms
 		private List<T> Remap()
 		{
 			int randomIndex;
-			List<T> listToReturn = new List<T>();
+			var listToReturn = new List<T>();
 			Random random = new Random();
 
 			while (_valueList.Count > 0)

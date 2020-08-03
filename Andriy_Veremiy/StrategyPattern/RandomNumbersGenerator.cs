@@ -8,7 +8,7 @@ namespace StrategyPattern
         public static List<int> GetRandomIntsList(int size)
         {
             Random random = new Random();
-            List<int> list = new List<int>();
+            var list = new List<int>();
 
             for (int i = 0; i < size; i++)
             {

@@ -7,9 +7,9 @@ namespace StrategyPattern.SortingAlgorithms
     class BubbleSort<T> : ISortable<T>
         where T : IComparable<T>
     {
-		private List<T> _valueList;
+		private IList<T> _valueList;
 
-		public void Sort(ref IEnumerable<T> values)
+		public void Sort(IEnumerable<T> values)
 		{
 			_valueList = values.ToList();
 
@@ -25,8 +25,8 @@ namespace StrategyPattern.SortingAlgorithms
 					SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
 					++iteration;
 
-					T currentElement = _valueList[i];
-					T nextElement = _valueList[i + 1];
+					var currentElement = _valueList[i];
+					var nextElement = _valueList[i + 1];
 
 					if (currentElement.CompareTo(nextElement) > 0)
 					{
@@ -40,14 +40,12 @@ namespace StrategyPattern.SortingAlgorithms
 
 			SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
 			SortingAlgorithmsPrinter<T>.PrintSortComplete(StringConstants.BubbleSort, iteration);
-
-			values = _valueList;
 		}
 
 		// Used in Sort() method.
 		private void Swap(int firstIndex, int secondIndex)
 		{
-			T swapValue = _valueList[firstIndex];
+			var swapValue = _valueList[firstIndex];
 			_valueList[firstIndex] = _valueList[secondIndex];
 			_valueList[secondIndex] = swapValue;
 		}

@@ -7,9 +7,9 @@ namespace StrategyPattern.SortingAlgorithms
     class PancakeSort<T> : ISortable<T>
         where T : IComparable<T>
     {
-		private List<T> _valueList;
+		private IList<T> _valueList;
 
-		public void Sort(ref IEnumerable<T> values)
+		public void Sort(IEnumerable<T> values)
         {
             _valueList = values.ToList();
 
@@ -32,8 +32,6 @@ namespace StrategyPattern.SortingAlgorithms
 
             SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
             SortingAlgorithmsPrinter<T>.PrintSortComplete(StringConstants.PancakeSort, iteration);
-
-            values = _valueList;
         }
 
         // Reverses _valueList[0..i] 
@@ -58,8 +56,8 @@ namespace StrategyPattern.SortingAlgorithms
 
             for (int i = 0; i < size; ++i)
             {
-                T currentElement = _valueList[i];
-                T currentMaxElement = _valueList[maxElementIndex];
+                var currentElement = _valueList[i];
+                var currentMaxElement = _valueList[maxElementIndex];
 
                 if (currentElement.CompareTo(currentMaxElement) > 0)
                 {
@@ -74,7 +72,7 @@ namespace StrategyPattern.SortingAlgorithms
         // Used in Flip method.
         private void Swap(int firstIndex, int secondIndex)
         {
-            T swapValue = _valueList[firstIndex];
+            var swapValue = _valueList[firstIndex];
             _valueList[firstIndex] = _valueList[secondIndex];
             _valueList[secondIndex] = swapValue;
         }

@@ -16,7 +16,7 @@ namespace StrategyPattern
 
         static void ShowMenu()
         {
-            DefaultSorter<int> defaultSorter = new DefaultSorter<int>(new BubbleSort<int>());
+            var sorter = new DefaultSorter<int>(new BubbleSort<int>());
             SetValues();
 
             bool isExitCommand = false;
@@ -33,19 +33,19 @@ namespace StrategyPattern
                             isExitCommand = true;
                             break;
                         case 1:
-                            defaultSorter.Sort(ref _values);
+                            sorter.Sort(_values);
                             break;
                         case 2:
-                            defaultSorter.Sortable = new BubbleSort<int>();
+                            sorter.Sorter = new BubbleSort<int>();
                             break;
                         case 3:
-                            defaultSorter.Sortable = new BogoSort<int>();
+                            sorter.Sorter = new BogoSort<int>();
                             break;
                         case 4:
-                            defaultSorter.Sortable = new StoogeSort<int>();
+                            sorter.Sorter = new StoogeSort<int>();
                             break;
                         case 5:
-                            defaultSorter.Sortable = new PancakeSort<int>();
+                            sorter.Sorter = new PancakeSort<int>();
                             break;
                         case 6:
                             SortingAlgorithmsPrinter<int>.PrintList(_values);
