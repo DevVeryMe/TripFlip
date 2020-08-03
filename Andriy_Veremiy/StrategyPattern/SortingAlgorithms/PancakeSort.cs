@@ -20,11 +20,11 @@ namespace StrategyPattern.SortingAlgorithms
                 SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
                 ++iteration;
 
-                int mi = FindMax(currentSize);
+                int maxElementIndex = FindMax(currentSize);
 
-                if (mi != currentSize - 1)
+                if (maxElementIndex != currentSize - 1)
                 {
-                    Flip(mi);
+                    Flip(maxElementIndex);
                     Flip(currentSize - 1);
                 }
 
@@ -52,21 +52,23 @@ namespace StrategyPattern.SortingAlgorithms
         }
  
         // Used in Sort() method.
-        private int FindMax(int n)
+        private int FindMax(int size)
         {
-            int mi, i;
+            int maxElementIndex = 0;
 
-            for (mi = 0, i = 0; i < n; ++i)
+            for (int i = 0; i < size; ++i)
             {
+                T currentElement = _valueList[i];
+                T currentMaxElement = _valueList[maxElementIndex];
 
-                if (_valueList[i].CompareTo(_valueList[mi]) > 0)
+                if (currentElement.CompareTo(currentMaxElement) > 0)
                 {
-                    mi = i;
+                    maxElementIndex = i;
                 }
 
             }
 
-            return mi;
+            return maxElementIndex;
         }
 
         // Used in Flip method.

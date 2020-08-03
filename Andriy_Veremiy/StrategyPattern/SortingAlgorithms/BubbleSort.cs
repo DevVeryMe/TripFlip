@@ -10,7 +10,7 @@ namespace StrategyPattern.SortingAlgorithms
 		private List<T> _valueList;
 
 		public void Sort(ref IEnumerable<T> values)
-        {
+		{
 			_valueList = values.ToList();
 
 			int iteration = 0;
@@ -25,7 +25,10 @@ namespace StrategyPattern.SortingAlgorithms
 					SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
 					++iteration;
 
-					if (_valueList[i].CompareTo(_valueList[i + 1]) > 0)
+					T currentElement = _valueList[i];
+					T nextElement = _valueList[i + 1];
+
+					if (currentElement.CompareTo(nextElement) > 0)
 					{
 						Swap(i, i + 1);
 						isSwapped = true;

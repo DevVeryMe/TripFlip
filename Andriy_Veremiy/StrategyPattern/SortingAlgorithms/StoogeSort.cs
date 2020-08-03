@@ -28,7 +28,10 @@ namespace StrategyPattern.SortingAlgorithms
             SortingAlgorithmsPrinter<T>.PrintIteration(_valueList, iteration);
             ++iteration;
 
-            if (_valueList[startIndex].CompareTo(_valueList[endIndex]) > 0)
+            T firstElement = _valueList[startIndex];
+            T lastElement = _valueList[endIndex];
+
+            if (firstElement.CompareTo(lastElement) > 0)
             {
                 Swap(startIndex, endIndex);
             }

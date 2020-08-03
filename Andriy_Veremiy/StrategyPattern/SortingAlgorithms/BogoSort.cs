@@ -34,8 +34,10 @@ namespace StrategyPattern.SortingAlgorithms
 		{
 			for (int i = 0; i < _valueList.Count - 1; i++)
 			{
+				T currentElement = _valueList[i];
+				T nextElement = _valueList[i + 1];
 
-				if (_valueList[i].CompareTo(_valueList[i + 1]) > 0)
+				if (currentElement.CompareTo(nextElement) > 0)
 				{
 					return false;
 				}
