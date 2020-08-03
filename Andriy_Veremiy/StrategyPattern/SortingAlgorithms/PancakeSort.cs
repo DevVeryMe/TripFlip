@@ -7,9 +7,9 @@ namespace StrategyPattern.SortingAlgorithms
     class PancakeSort<T> : ISortable<T>
         where T : IComparable<T>
     {
-		private IList<T> _valueList;
-
-		public void Sort(IEnumerable<T> values)
+        private IList<T> _valueList;
+        
+        public void Sort(IEnumerable<T> values)
         {
             _valueList = values.ToList();
 

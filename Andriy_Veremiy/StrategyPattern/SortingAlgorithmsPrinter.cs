@@ -16,7 +16,7 @@ namespace StrategyPattern
 		{
 
 			foreach (T value in values)
-            {
+			{
 				Console.Write(value);
 				Console.Write(" ");
 			}
