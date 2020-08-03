@@ -7,7 +7,7 @@ namespace StrategyPattern.SortingAlgorithms
     class BogoSort <T> : ISortable<T>
         where T: IComparable <T>
     {
-        private List<T> _valueList;
+		private List<T> _valueList;
 
 		public void Sort(ref IEnumerable<T> values)
 		{

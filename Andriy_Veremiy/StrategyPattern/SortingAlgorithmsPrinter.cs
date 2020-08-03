@@ -13,7 +13,7 @@ namespace StrategyPattern
 		}
 
 		public static void PrintList(IEnumerable<T> values)
-        {
+		{
 
 			foreach (T value in values)
             {
@@ -25,13 +25,13 @@ namespace StrategyPattern
 		}
 
 		public static void PrintSortComplete(string algorithmName, int iterationsCount)
-        {
+		{
 			Console.WriteLine();
 			Console.WriteLine($"{algorithmName} completed after {iterationsCount} iterations.");
 		}
 
 		public static void PrintSortingTime(TimeSpan time)
-        {
+		{
 			Console.WriteLine($"Time of sorting - {time}");
 		}
 	}
