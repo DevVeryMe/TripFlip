@@ -50,11 +50,10 @@ namespace ConsoleCryptography
             stringBuilder.AppendLine("Choose an action:");
 
             string[] actionNames = Enum.GetNames(typeof(UserActionChoice));
-            int counter = 1; // counting menu items starting with 1
             foreach (var actionName in actionNames)
             {
-                stringBuilder.AppendLine($"  {counter}. {actionName}");
-                counter++;
+                int menuItemIndex = (int)Enum.Parse(typeof(UserActionChoice), actionName);
+                stringBuilder.AppendLine($"  {menuItemIndex}. {actionName}");
             }
 
             Console.Clear();
@@ -78,7 +77,7 @@ namespace ConsoleCryptography
 
                 if (!inputIsInvalid)
                 {
-                    if (userChoice < 1 || userChoice > menuOptionsCount)
+                    if (userChoice < 0 || userChoice > menuOptionsCount)
                     {
                         inputIsInvalid = true;
                     }
@@ -99,11 +98,14 @@ namespace ConsoleCryptography
         {
             switch (menuChoice)
             {
-                case 1:
+                case (int)UserActionChoice.Encrypt:
                     ActionChoice = UserActionChoice.Encrypt;
                     break;
-                case 2:
+                case (int)UserActionChoice.Decrypt:
                     ActionChoice = UserActionChoice.Decrypt;
+                    break;
+                default:
+                    ActionChoice = UserActionChoice.Encrypt;
                     break;
             }
         }
@@ -117,11 +119,10 @@ namespace ConsoleCryptography
             stringBuilder.AppendLine("Choose a method:");
 
             string[] cryptoMethodNames = Enum.GetNames(typeof(UserCryptoMethodChoice));
-            int counter = 1; // counting menu items starting with 1
             foreach (var methodName in cryptoMethodNames)
             {
-                stringBuilder.AppendLine($"  {counter}. {methodName} cipher");
-                counter++;
+                int menuItemIndex = (int)Enum.Parse(typeof(UserCryptoMethodChoice), methodName);
+                stringBuilder.AppendLine($"  {menuItemIndex}. {methodName} cipher");
             }
 
             Console.Clear();
@@ -135,13 +136,13 @@ namespace ConsoleCryptography
         {
             switch (menuChoice)
             {
-                case 1:
+                case (int)UserCryptoMethodChoice.Caesar:
                     CryptoMethodChoice = UserCryptoMethodChoice.Caesar;
                     break;
-                case 2:
+                case (int)UserCryptoMethodChoice.Vigenere:
                     CryptoMethodChoice = UserCryptoMethodChoice.Vigenere;
                     break;
-                case 3:
+                case (int)UserCryptoMethodChoice.XOR:
                     CryptoMethodChoice = UserCryptoMethodChoice.XOR;
                     break;
                 default:
