@@ -1,4 +1,5 @@
-﻿
+﻿using System.Text;
+using ConsoleCryptography.Enums;
 
 namespace ConsoleCryptography.CryptoMethods
 {
@@ -6,44 +7,35 @@ namespace ConsoleCryptography.CryptoMethods
     {
         readonly int _characterCount = 128; // ASCII character count
 
-        public VigenereMethod(string text, string key)
-            : base(text, key)
+        public override string Encrypt(string text, string key)
+            => EncryptDecrypt(text, key, UserActionChoice.Encrypt);
+
+        public override string Decrypt(string text, string key)
+            => EncryptDecrypt(text, key, UserActionChoice.Decrypt);
+
+        string EncryptDecrypt(string text,
+            string key,
+            UserActionChoice actionChoice)
         {
+            var resultTextBuilder = new StringBuilder();
+            string readyKey = CryptoHelper.ExtendKeyToTextLength(text.Length, key);
 
-        }
-
-        public override string Encrypt()
-        {
-            string encryptedText = string.Empty;
-            string encryptionReadyKey = GetReadyKey();
-
-            for (int i = 0; i < Text.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
-                int keyCharCode = encryptionReadyKey[i];
-                int textCharCode = Text[i];
+                int keyCharCode = readyKey[i];
+                int textCharCode = text[i];
 
-                // According to Vigenere encryption formula
-                encryptedText += (char)((keyCharCode + textCharCode) % _characterCount);
+                if (actionChoice == UserActionChoice.Decrypt)
+                {
+                    keyCharCode *= -1;
+                }
+
+                // According to Vigenere encryption/decryption formula
+                int characterCode = (textCharCode + _characterCount + keyCharCode) % _characterCount;
+                resultTextBuilder.Append( (char)characterCode );
             }
 
-            return encryptedText;
-        }
-
-        public override string Decrypt()
-        {
-            string decryptedText = string.Empty;
-            string decryptionReadyKey = GetReadyKey();
-
-            for (int i = 0; i < Text.Length; i++)
-            {
-                int keyCharCode = decryptionReadyKey[i];
-                int textCharCode = Text[i];
-
-                // According to Vigenere decryption formula
-                decryptedText += (char)((textCharCode + _characterCount - keyCharCode) % _characterCount);
-            }
-
-            return decryptedText;
+            return resultTextBuilder.ToString();
         }
     }
 }

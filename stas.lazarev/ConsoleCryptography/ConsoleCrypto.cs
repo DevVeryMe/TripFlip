@@ -24,18 +24,14 @@ namespace ConsoleCryptography
 
             do
             {
-                // choose an action (encrypt/decrypt)
                 PrintChooseActionMsg();
                 SelectAction( GetUserMenuChoice(actionsCount) );
 
-                // choose crypto method
                 PrintChooseCryptoMethodMsg();
                 SelectCryptoMethod( GetUserMenuChoice(cryptoMethodsCount) );
 
-                // enter text and key
                 SetUserData();
 
-                // run the process
                 RunCryptoProcess();
 
             } while (true);
@@ -77,14 +73,7 @@ namespace ConsoleCryptography
 
                 if (!inputIsInvalid)
                 {
-                    if (userChoice < 0 || userChoice > menuOptionsCount)
-                    {
-                        inputIsInvalid = true;
-                    }
-                    else
-                    {
-                        inputIsInvalid = false;
-                    }
+                    inputIsInvalid = userChoice < 0 || userChoice > menuOptionsCount;
                 }
             } while (inputIsInvalid);
 
@@ -157,16 +146,25 @@ namespace ConsoleCryptography
         void SetUserData()
         {
             string action = ActionChoice == UserActionChoice.Encrypt ? "encryprion" : "decryption";
+            string message;
 
-            string message = $"Enter text for {action}:";
-            Console.Clear();
-            Console.WriteLine(message);
-            UserText = Console.ReadLine();
+            do
+            {
+                message = $"Enter text for {action}:";
+                Console.Clear();
+                Console.WriteLine(message);
+                UserText = Console.ReadLine().Trim();
 
-            message = $"Enter key for {action}:";
-            Console.Clear();
-            Console.WriteLine(message);
-            UserKey = Console.ReadLine();
+            } while ( string.IsNullOrWhiteSpace(UserText) );
+
+            do
+            {
+                message = $"Enter key for {action}:";
+                Console.Clear();
+                Console.WriteLine(message);
+                UserKey = Console.ReadLine().Trim();
+
+            } while ( string.IsNullOrWhiteSpace(UserKey) );
         }
 
         /// <summary>
@@ -179,26 +177,26 @@ namespace ConsoleCryptography
             switch (CryptoMethodChoice)
             {
                 case UserCryptoMethodChoice.Caesar:
-                    CryptoMetod = new CaesarMethod(UserText);
+                    CryptoMetod = new CaesarMethod();
                     break;
                 case UserCryptoMethodChoice.Vigenere:
-                    CryptoMetod = new VigenereMethod(UserText, UserKey);
+                    CryptoMetod = new VigenereMethod();
                     break;
                 case UserCryptoMethodChoice.XOR:
-                    CryptoMetod = new XorMethod(UserText, UserKey);
+                    CryptoMetod = new XorMethod();
                     break;
                 default:
-                    CryptoMetod = new CaesarMethod(UserText);
+                    CryptoMetod = new CaesarMethod();
                     break;
             }
 
             switch (ActionChoice)
             {
                 case UserActionChoice.Encrypt:
-                    result = CryptoMetod.Encrypt();
+                    result = CryptoMetod.Encrypt(UserText, UserKey);
                     break;
                 case UserActionChoice.Decrypt:
-                    result = CryptoMetod.Decrypt();
+                    result = CryptoMetod.Decrypt(UserText, UserKey);
                     break;
             }
 

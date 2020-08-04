@@ -4,6 +4,6 @@ namespace ConsoleCryptography.Interfaces
 {
     interface IDecryptor
     {
-        string Decrypt();
+        string Decrypt(string text, string key);
     }
 }
