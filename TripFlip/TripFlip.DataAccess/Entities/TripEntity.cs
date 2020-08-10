@@ -11,6 +11,8 @@ namespace TripFlip.DataAccess.Entities
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset? StartsAt { get; set; }
         public DateTimeOffset? EndsAt { get; set; }
+
         public ICollection<RouteEntity> Routes { get; set; }
+        public ICollection<TripFileEntity> TripFiles { get; set; }
     }
 }

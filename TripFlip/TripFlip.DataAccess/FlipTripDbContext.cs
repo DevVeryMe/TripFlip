@@ -33,6 +33,12 @@ namespace TripFlip.DataAccess
         {
             modelBuilder.ApplyConfiguration(new RouteEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RoutePointEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemListEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskListEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TripEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TripFileEntityConfiguration());
         }
     }
 }
