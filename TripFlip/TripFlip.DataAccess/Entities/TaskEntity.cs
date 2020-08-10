@@ -11,10 +11,12 @@ namespace TripFlip.DataAccess.Entities
 
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public int TaskListId { get; set; }
-
         public DateTimeOffset DateCreated { get; set; }
 
         public bool isCompleted { get; set; }
+
+        public int TaskListId { get; set; }
+
+        public TaskListEntity TaskList { get; set; }
     }
 }
