@@ -2,7 +2,7 @@
 
 namespace TripFlip.DataAccess.Migrations
 {
-    public partial class ConfigureRoutesAndRoutePoints : Migration
+    public partial class AddRouteAndRoutePointConfiguration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

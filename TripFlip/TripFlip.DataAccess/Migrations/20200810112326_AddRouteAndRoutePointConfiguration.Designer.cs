@@ -10,8 +10,8 @@ using TripFlip.DataAccess;
 namespace TripFlip.DataAccess.Migrations
 {
     [DbContext(typeof(FlipTripDbContext))]
-    [Migration("20200810110811_ConfigureRoutesAndRoutePoints")]
-    partial class ConfigureRoutesAndRoutePoints
+    [Migration("20200810112326_AddRouteAndRoutePointConfiguration")]
+    partial class AddRouteAndRoutePointConfiguration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
