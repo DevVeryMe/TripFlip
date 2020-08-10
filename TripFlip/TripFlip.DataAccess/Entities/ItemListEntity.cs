@@ -10,8 +10,12 @@ namespace TripFlip.DataAccess.Entities
 
         public string Title { get; set; }
 
+        public DateTimeOffset DateCreated { get; set; }
+
         public int RouteId { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
+        public RouteEntity Route { get; set; }
+
+        public ICollection<ItemEntity> Items { get; set; }
     }
 }

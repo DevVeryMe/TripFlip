@@ -13,6 +13,10 @@ namespace TripFlip.DataAccess.Entities.Configurations
             builder.Property(t => t.Description).HasMaxLength(250).IsUnicode().IsRequired();
             builder.Property(t => t.isCompleted).HasDefaultValue(false);
             builder.Property(t => t.PriorityLevel).HasDefaultValue(TaskPriorityLevel.Low);
+
+            builder.HasOne<TaskListEntity>(t => t.TaskList)
+                .WithMany(t => t.Tasks)
+                .HasForeignKey(t => t.TaskListId);
         }
     }
 }

@@ -13,6 +13,10 @@ namespace TripFlip.DataAccess.Entities.Configurations
             builder.Property(i => i.Comment).HasMaxLength(250).IsUnicode().IsRequired(false);
             builder.Property(i => i.Quantity).HasMaxLength(50).IsUnicode().IsRequired(false);
             builder.Property(i => i.IsCompleted).HasDefaultValue(false);
+
+            builder.HasOne<ItemListEntity>(i => i.ItemList)
+                .WithMany(i => i.Items)
+                .HasForeignKey(i => i.ItemListId);
         }
     }
 }
