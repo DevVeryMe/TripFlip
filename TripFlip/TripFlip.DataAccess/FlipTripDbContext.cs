@@ -22,8 +22,6 @@ namespace TripFlip.DataAccess
 
         public DbSet<TripFileEntity> TripFiles { get; set; }
 
-        public DbSet<UserEntity> Users { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Constants.MsSqlLocalDbConnection);
