@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TripFlip.DataAccess.Entities
 {
@@ -11,5 +12,9 @@ namespace TripFlip.DataAccess.Entities
         public DateTimeOffset DateCreated { get; set; }
 
         public int TripId { get; set; }
+
+        public TripEntity Trip { get; set; }
+
+        public ICollection<RoutePointEntity> RoutePoints { get; set; } 
     }
 }

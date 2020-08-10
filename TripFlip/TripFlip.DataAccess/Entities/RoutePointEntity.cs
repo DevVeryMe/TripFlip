@@ -16,5 +16,7 @@ namespace TripFlip.DataAccess.Entities
 
         public int RouteId { get; set; }
 
+        public RouteEntity Route { get; set; }
+
     }
 }

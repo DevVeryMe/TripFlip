@@ -10,6 +10,10 @@ namespace TripFlip.DataAccess.Entities.Configurations
             builder.HasKey(r => r.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.Title).IsRequired().HasMaxLength(100);
+
+            builder.HasOne<TripEntity>(r => r.Trip).
+                WithMany(t => t.Routes).
+                HasForeignKey(r => r.TripId);
         }
     }
 }
