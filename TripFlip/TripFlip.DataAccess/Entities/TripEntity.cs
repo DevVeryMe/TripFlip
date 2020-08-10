@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TripFlip.DataAccess.Entities
 {
@@ -10,5 +11,6 @@ namespace TripFlip.DataAccess.Entities
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset? StartsAt { get; set; }
         public DateTimeOffset? EndsAt { get; set; }
+        public ICollection<RouteEntity> Routes { get; set; }
     }
 }

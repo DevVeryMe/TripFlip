@@ -9,6 +9,9 @@ namespace TripFlip.DataAccess.Entities.Configurations
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
+
+            builder.HasOne<RouteEntity>(p => p.Route).
+                WithMany(r => r.RoutePoints);
         }
     }
 }

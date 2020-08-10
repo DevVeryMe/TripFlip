@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess.Entities;
+using TripFlip.DataAccess.Entities.Configurations;
 
 namespace TripFlip.DataAccess
 {
@@ -26,6 +27,12 @@ namespace TripFlip.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Constants.MsSqlLocalDbConnection);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new RouteEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RoutePointEntityConfiguration());
         }
     }
 }
