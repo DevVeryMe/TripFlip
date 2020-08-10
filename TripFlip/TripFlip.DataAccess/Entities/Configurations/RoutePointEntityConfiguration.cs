@@ -7,7 +7,7 @@ namespace TripFlip.DataAccess.Entities.Configurations
     {
         public void Configure(EntityTypeBuilder<RoutePointEntity> builder)
         {
-            builder.ToTable("RoutePoints").HasKey(p => p.Id);
+            builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
         }
     }
