@@ -11,8 +11,10 @@ namespace TripFlip.DataAccess.Entities
 
         public string Quantity { get; set; }
 
+        public bool IsCompleted { get; set; }
+
         public int ItemListId { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public ItemListEntity ItemList { get; set; }
     }
 }
