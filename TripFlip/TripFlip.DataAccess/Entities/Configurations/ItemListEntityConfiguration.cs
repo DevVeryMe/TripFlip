@@ -9,7 +9,7 @@ namespace TripFlip.DataAccess.Entities.Configurations
         {
             builder.HasKey(i => i.Id);
             builder.Property(i => i.Id).ValueGeneratedOnAdd();
-            builder.Property(i => i.Title).HasMaxLength(100).IsUnicode().IsRequired();
+            builder.Property(i => i.Title).IsRequired().HasMaxLength(100);
 
             builder.HasOne<RouteEntity>(i => i.Route)
                 .WithMany(r => r.ItemLists)

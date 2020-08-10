@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200810110811_ConfigureRoutesAndRoutePoints.cs" />
     <Compile Remove="Migrations\20200810110811_ConfigureRoutesAndRoutePoints.Designer.cs" />
+    <Compile Remove="Migrations\20200810133216_FixTaskAndItemColumnRestrictions.cs" />
+    <Compile Remove="Migrations\20200810133216_FixTaskAndItemColumnRestrictions.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
