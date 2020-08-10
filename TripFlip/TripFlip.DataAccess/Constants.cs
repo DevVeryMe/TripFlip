@@ -3,6 +3,6 @@
     static class Constants
     {
         public static readonly string MsSqlLocalDbConnection =
-        "Data Source=DESKTOP-JLP38RO;Initial Catalog=TripFlip;Integrated Security=True";
+        "Data Source=(localdb)\\MSSQLLocalDb;Initial Catalog=FlipTrip;Integrated Security=True;Pooling=False";
     }
 }
