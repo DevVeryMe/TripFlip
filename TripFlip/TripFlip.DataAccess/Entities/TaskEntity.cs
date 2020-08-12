@@ -1,7 +1,8 @@
 ﻿using System;
-using TripFlip.DataAccess.Entities.Enums;
+using TripFlip.DataAccess.Entities;
+using TripFlip.Domain.Entities.Entities.Enums;
 
-namespace TripFlip.DataAccess.Entities
+namespace TripFlip.Domain.Entities.Entities
 {
     public class TaskEntity
     {

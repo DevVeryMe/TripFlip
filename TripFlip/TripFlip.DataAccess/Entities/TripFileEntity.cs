@@ -1,4 +1,4 @@
-﻿namespace TripFlip.DataAccess.Entities
+﻿namespace TripFlip.Domain.Entities.Entities
 {
     public class TripFileEntity
     {
