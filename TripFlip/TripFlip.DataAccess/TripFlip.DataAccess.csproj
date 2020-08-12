@@ -20,9 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="TripFlip.Domain.Entities">
-      <HintPath>..\TripFlip.Domain.Entities\bin\Debug\netcoreapp3.0\TripFlip.Domain.Entities.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\TripFlip.DataAccess.Interfaces\TripFlip.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
   </ItemGroup>
 
 </Project>
