@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TripFlip.Domain.Entities.Entities;
 using TripFlip.Domain.Entities.Entities.Enums;
 
-namespace TripFlip.DataAccess.Entities.Configurations
+namespace TripFlip.DataAccess.Configurations
 {
     class TaskEntityConfiguration : IEntityTypeConfiguration<TaskEntity>
     {

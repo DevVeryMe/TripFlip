@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TripFlip.Domain.Entities.Entities;
 
-namespace TripFlip.DataAccess.Entities.Configurations
+namespace TripFlip.DataAccess.Configurations
 {
     class ItemListEntityConfiguration : IEntityTypeConfiguration<ItemListEntity>
     {

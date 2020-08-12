@@ -1,5 +1,4 @@
 ﻿using System;
-using TripFlip.DataAccess.Entities;
 using TripFlip.Domain.Entities.Entities.Enums;
 
 namespace TripFlip.Domain.Entities.Entities
