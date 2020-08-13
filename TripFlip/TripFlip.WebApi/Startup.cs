@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TripFlip.WebApi.ExceptionFilters;
 
 namespace TripFlip.WebApi
 {
@@ -28,6 +29,8 @@ namespace TripFlip.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.ConfigureExceptionHandler(env);
 
             app.UseRouting();
 
