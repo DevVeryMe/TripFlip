@@ -10,5 +10,9 @@
     <ProjectReference Include="..\TripFlip.ViewModels\TripFlip.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 
 </Project>
