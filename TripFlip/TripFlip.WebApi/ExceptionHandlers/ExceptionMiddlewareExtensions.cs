@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using TripFlip.WebApi.ExceptionFilters.Models;
 
-namespace TripFlip.WebApi.ExceptionFilters
+namespace TripFlip.WebApi.ExceptionHandlers
 {
     public static class ExceptionMiddlewareExtensions
     {
@@ -15,18 +15,18 @@ namespace TripFlip.WebApi.ExceptionFilters
         {
             var logger = LogManager.GetCurrentClassLogger();
 
-            app.UseExceptionHandler(appError =>
+            app.UseExceptionHandler(options =>
             {
-                appError.Run(async context =>
+                options.Run(async context =>
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
 
-                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    var exception = context.Features.Get<IExceptionHandlerFeature>();
 
-                    if (contextFeature != null)
+                    if (exception != null)
                     {
-                        logger.Error(contextFeature);
+                        logger.Error(exception);
 
                         var errorDetails = new ErrorDetails
                         {
@@ -36,7 +36,7 @@ namespace TripFlip.WebApi.ExceptionFilters
 
                         if (environment.IsDevelopment())
                         {
-                            errorDetails.DroppedException = contextFeature.Error;
+                            errorDetails.DroppedException = exception.Error;
                         }
 
                         await context.Response.WriteAsync(errorDetails.ToString());
