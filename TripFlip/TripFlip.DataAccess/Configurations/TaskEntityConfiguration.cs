@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TripFlip.DataAccess.Entities.Enums;
+using TripFlip.Domain.Entities;
+using TripFlip.Domain.Entities.Enums;
 
-namespace TripFlip.DataAccess.Entities.Configurations
+namespace TripFlip.DataAccess.Configurations
 {
     class TaskEntityConfiguration : IEntityTypeConfiguration<TaskEntity>
     {

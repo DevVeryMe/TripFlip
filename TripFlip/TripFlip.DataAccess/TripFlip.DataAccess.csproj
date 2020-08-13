@@ -1,22 +1,35 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200810110811_ConfigureRoutesAndRoutePoints.cs" />
-    <Compile Remove="Migrations\20200810110811_ConfigureRoutesAndRoutePoints.Designer.cs" />
-    <Compile Remove="Migrations\20200810133216_FixTaskAndItemColumnRestrictions.cs" />
-    <Compile Remove="Migrations\20200810133216_FixTaskAndItemColumnRestrictions.Designer.cs" />
+    <Compile Remove="Migrations\20200812180952_Test.cs" />
+    <Compile Remove="Migrations\20200812180952_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200812191046_Test.cs" />
+    <Compile Remove="Migrations\20200812191046_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200812194929_Test.cs" />
+    <Compile Remove="Migrations\20200812194929_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200812195244_Test.cs" />
+    <Compile Remove="Migrations\20200812195244_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200812195411_Test.cs" />
+    <Compile Remove="Migrations\20200812195411_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200813064851_Test.cs" />
+    <Compile Remove="Migrations\20200813064851_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TripFlip.DataAccess.Interfaces\TripFlip.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
   </ItemGroup>
 
 </Project>

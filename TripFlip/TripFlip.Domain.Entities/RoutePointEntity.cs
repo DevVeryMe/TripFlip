@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TripFlip.DataAccess.Entities
+namespace TripFlip.Domain.Entities
 {
     public class RoutePointEntity
     {

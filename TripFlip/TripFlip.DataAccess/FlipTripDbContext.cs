@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TripFlip.DataAccess.Entities;
-using TripFlip.DataAccess.Entities.Configurations;
+using TripFlip.DataAccess.Configurations;
+using TripFlip.Domain.Entities;
 
 namespace TripFlip.DataAccess
 {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TripFlip.Domain.Entities;
 
-namespace TripFlip.DataAccess.Entities.Configurations
+namespace TripFlip.DataAccess.Configurations
 {
     class TripEntityConfiguration : IEntityTypeConfiguration<TripEntity>
     {

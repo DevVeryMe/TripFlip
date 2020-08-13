@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TripFlip.DataAccess.Entities
+namespace TripFlip.Domain.Entities
 {
     public class TripEntity
     {

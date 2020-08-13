@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace TripFlip.DataAccess.Entities
+namespace TripFlip.Domain.Entities
 {
     public class ItemListEntity
     {
