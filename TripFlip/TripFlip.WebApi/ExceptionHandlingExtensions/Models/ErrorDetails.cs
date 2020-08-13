@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace TripFlip.WebApi.ExceptionFilters.Models
+namespace TripFlip.WebApi.ExceptionHandlingExtensions.Models
 {
     public class ErrorDetails
     {
