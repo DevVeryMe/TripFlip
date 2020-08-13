@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TripFlip.DataAccess.Interfaces\TripFlip.DataAccess.Interfaces.csproj" />
     <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
   </ItemGroup>
 

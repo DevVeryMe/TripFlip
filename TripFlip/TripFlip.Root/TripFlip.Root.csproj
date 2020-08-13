@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TripFlip.DataAccess.Interfaces\TripFlip.DataAccess.Interfaces.csproj" />
     <ProjectReference Include="..\TripFlip.DataAccess\TripFlip.DataAccess.csproj" />
     <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
     <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.DTO.csproj" />
