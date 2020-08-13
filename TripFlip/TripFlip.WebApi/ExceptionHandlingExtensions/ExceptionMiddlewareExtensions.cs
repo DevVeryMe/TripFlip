@@ -11,6 +11,9 @@ namespace TripFlip.WebApi.ExceptionHandlingExtensions
 {
     public static class ExceptionMiddlewareExtensions
     {
+        /// <summary>
+        /// Configures logging and handling exceptions.
+        /// </summary>
         public static void ConfigureExceptionHandler(this IApplicationBuilder app, IWebHostEnvironment environment)
         {
             var logger = LogManager.GetCurrentClassLogger();
