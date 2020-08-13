@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TripFlip.DataAccess.Interfaces\TripFlip.DataAccess.Interfaces.csproj" />
     <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
     <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.DTO.csproj" />
