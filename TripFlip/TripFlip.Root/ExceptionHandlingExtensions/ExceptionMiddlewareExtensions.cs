@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using NLog;
-using TripFlip.WebApi.ExceptionHandlingExtensions.Models;
+using TripFlip.Root.ExceptionHandlingExtensions.Models;
 
-namespace TripFlip.WebApi.ExceptionHandlingExtensions
+namespace TripFlip.Root.ExceptionHandlingExtensions
 {
     public static class ExceptionMiddlewareExtensions
     {
