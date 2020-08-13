@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TripFlip.Root.ExceptionHandlingExtensions;
+using TripFlip.Root.ConfigureServicesExtension;
 
 namespace TripFlip.WebApi
 {
@@ -20,6 +21,8 @@ namespace TripFlip.WebApi
             services.AddControllers();
 
             services.AddSwaggerGen();
+
+            services.ConfigureServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
