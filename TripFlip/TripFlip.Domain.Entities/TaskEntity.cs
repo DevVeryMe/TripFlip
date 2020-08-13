@@ -1,7 +1,7 @@
 ﻿using System;
-using TripFlip.Domain.Entities.Entities.Enums;
+using TripFlip.Domain.Entities.Enums;
 
-namespace TripFlip.Domain.Entities.Entities
+namespace TripFlip.Domain.Entities
 {
     public class TaskEntity
     {

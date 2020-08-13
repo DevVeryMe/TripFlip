@@ -1,4 +1,4 @@
-﻿namespace TripFlip.Domain.Entities.Entities
+﻿namespace TripFlip.Domain.Entities
 {
     public class ItemEntity
     {

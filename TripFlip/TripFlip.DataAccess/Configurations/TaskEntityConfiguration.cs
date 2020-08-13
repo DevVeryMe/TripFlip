@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TripFlip.Domain.Entities.Entities;
-using TripFlip.Domain.Entities.Entities.Enums;
+using TripFlip.Domain.Entities;
+using TripFlip.Domain.Entities.Enums;
 
 namespace TripFlip.DataAccess.Configurations
 {
