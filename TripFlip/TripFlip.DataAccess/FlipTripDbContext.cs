@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess.Configurations;
+using TripFlip.DataAccess.Extensions;
 using TripFlip.Domain.Entities;
 
 namespace TripFlip.DataAccess
@@ -37,6 +38,8 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new TaskListEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripFileEntityConfiguration());
+
+            modelBuilder.Seed();
         }
     }
 }
