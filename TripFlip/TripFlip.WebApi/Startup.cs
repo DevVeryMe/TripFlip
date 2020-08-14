@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TripFlip.Root.ExceptionHandlingExtensions;
+using TripFlip.Root.ConfigureServicesExtension;
 
 namespace TripFlip.WebApi
 {
@@ -15,13 +16,15 @@ namespace TripFlip.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSwaggerGen();
+
+            services.ConfigureServices();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.ConfigureExceptionHandler(env);
@@ -34,6 +37,13 @@ namespace TripFlip.WebApi
             {
                 endpoints.MapControllers();
             });
+
+            string swaggerEndpointUrl = Configuration.GetSection("OpenApiInfo")["url"];
+            string swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
+            );
         }
     }
 }
