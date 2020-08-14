@@ -34,7 +34,7 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                         var errorDetails = new ErrorDetails
                         {
                             StatusCode = (int) HttpStatusCode.InternalServerError,
-                            Message = "Internal server error."
+                            Message = exception.Error.Message
                         };
 
                         if (environment.IsDevelopment())
