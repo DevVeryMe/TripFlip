@@ -25,12 +25,12 @@ namespace TripFlip.Root.ConfigureServicesExtension
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            string defaultConnectionStringName = "DefaultConnection";
+            
             services.AddDbContext<FlipTripDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
                         configuration, 
-                        defaultConnectionStringName
+                        Constants.defaultConnectionStringName
                     )
                 )
             );
