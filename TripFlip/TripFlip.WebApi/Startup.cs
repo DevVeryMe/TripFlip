@@ -38,9 +38,11 @@ namespace TripFlip.WebApi
                 endpoints.MapControllers();
             });
 
+            string swaggerEndpointUrl = Configuration.GetSection("OpenApiInfo")["url"];
+            string swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
             app.UseSwagger();
             app.UseSwaggerUI(
-                options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1")
+                options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
             );
         }
     }
