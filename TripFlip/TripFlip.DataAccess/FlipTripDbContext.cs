@@ -23,10 +23,7 @@ namespace TripFlip.DataAccess
 
         public DbSet<TripFileEntity> TripFiles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(Constants.MsSqlLocalDbConnection);
-        }
+        public FlipTripDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

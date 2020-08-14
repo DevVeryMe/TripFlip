@@ -22,7 +22,7 @@ namespace TripFlip.WebApi
 
             services.AddSwaggerGen();
 
-            services.ConfigureServices();
+            services.ConfigureServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
