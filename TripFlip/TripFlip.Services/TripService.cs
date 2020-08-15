@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,11 +30,18 @@ namespace TripFlip.Services
             return tripDtos;
         }
 
-        public TripDto GetTrip(int id)
+        public async Task<TripDto> GetAsync(int id)
         {
-            var trip = _flipTripDbContext.Trips.FindAsync(id);
+            var trip = await _flipTripDbContext.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
 
-            return trip;
+            if (trip is null)
+            {
+                throw new InvalidOperationException(ErrorConstants.TripNotFound);
+            }
+
+            var tripDto = _mapper.Map<TripDto>(trip);
+
+            return tripDto;
         }
 
         public void CreateTrip(TripDto tripDto)

@@ -8,7 +8,7 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
     {
         Task<IEnumerable<TripDto>>GetAllTripsAsync();
 
-        TripDto GetTrip(int id);
+        Task<TripDto> GetAsync(int id);
 
         void CreateTrip(TripDto tripDto);
 

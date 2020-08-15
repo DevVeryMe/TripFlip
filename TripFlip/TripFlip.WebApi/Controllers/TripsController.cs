@@ -36,11 +36,5 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModels);
         }
-
-        [HttpPost]
-        public IActionResult Get([FromBody] TripViewModel tripViewModel)
-        {
-            return ModelState.IsValid ? Ok("ok") : Ok("Ne ok");
-        }
     }
 }
