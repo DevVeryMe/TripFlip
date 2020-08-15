@@ -36,7 +36,7 @@ namespace TripFlip.Services
 
             if (trip is null)
             {
-                throw new InvalidOperationException(ErrorConstants.TripNotFound);
+                throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
             var tripDto = _mapper.Map<TripDto>(trip);
