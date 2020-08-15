@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 
 namespace TripFlip.Services.Interfaces.TripInterfaces
 {
     public interface ITripService
     {
-        IEnumerable<TripDto>GetAllTrips();
+        Task<IEnumerable<TripDto>>GetAllTripsAsync();
 
         TripDto GetTrip(int id);
 

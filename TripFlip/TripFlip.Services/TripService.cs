@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
@@ -20,9 +21,9 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<TripDto> GetAllTrips()
+        public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
         {
-            var trips = _flipTripDbContext.Trips.AsNoTracking().ToList();
+            var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
             var tripDtos = _mapper.Map<List<TripDto>>(trips);
 
             return tripDtos;

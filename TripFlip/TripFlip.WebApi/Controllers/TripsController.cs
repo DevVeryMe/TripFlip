@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TripFlip.Services.DTO;
@@ -28,9 +29,9 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            var trips = _tripService.GetAllTrips();
+            var trips = await _tripService.GetAllTripsAsync();
             var tripViewModels = _mapper.Map<List<TripViewModel>>(trips);
 
             return Ok(tripViewModels);
