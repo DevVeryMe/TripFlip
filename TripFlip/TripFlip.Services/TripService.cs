@@ -30,7 +30,9 @@ namespace TripFlip.Services
 
         public TripDto GetTrip(int id)
         {
-            throw new System.NotImplementedException();
+            var trip = _flipTripDbContext.Trips.FindAsync(id);
+
+            return trip;
         }
 
         public void CreateTrip(TripDto tripDto)
