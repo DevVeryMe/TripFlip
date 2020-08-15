@@ -2,9 +2,9 @@
 {
     static class ErrorConstants
     {
-        public const string RequiredFieldIdError = "Id cannot be null.";
+        public const string RequiredIdError = "Id cannot be null.";
 
-        public const string IdFieldLessThanOneError = "Id cannot be less than 1.";
+        public const string IdLessThanOneError = "Id cannot be less than 1.";
 
         public const string EmptyTitleError = "Title cannot be empty.";
 
@@ -18,6 +18,6 @@
 
         public const string EndDateEarlierThanNowError = "End date cannot be earlier than now.";
 
-        public const string EndDateLessThanStartDateError = "End date cannot be earlier than start date.";
+        public const string EndDateEarlierThanStartDateError = "End date cannot be earlier than start date.";
     }
 }
