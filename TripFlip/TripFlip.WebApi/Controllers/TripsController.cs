@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TripFlip.Services.DTO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TripFlip.WebApi.Controllers
 {

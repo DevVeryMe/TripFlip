@@ -6,8 +6,8 @@ namespace TripFlip.ViewModels
 {
     public class TripViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.RequiredFieldIdError)]
-        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdFieldLessThanOneError)]
+        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleError)]
@@ -21,7 +21,7 @@ namespace TripFlip.ViewModels
         [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.StartDateEarlierThanNowError)]
         public DateTimeOffset? StartsAt { get; set; }
 
-        [ValidateGreaterThanStartAt("StartsAt", ErrorMessage = ErrorConstants.EndDateLessThanStartDateError)]
+        [ValidateLaterThanAttribute("StartsAt", ErrorMessage = ErrorConstants.EndDateEarlierThanStartDateError)]
         [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.EndDateEarlierThanNowError)]
         public DateTimeOffset? EndsAt { get; set; }
     }

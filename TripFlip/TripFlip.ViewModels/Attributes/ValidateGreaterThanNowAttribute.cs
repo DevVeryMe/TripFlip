@@ -8,13 +8,13 @@ namespace TripFlip.ViewModels.Attributes
     {
         public override bool IsValid(object value)
         {
-            DateTimeOffset? dateTimeOffset = value as DateTimeOffset?;
-            var todayDateTimeOffset = new DateTimeOffset(DateTime.Now);
+            DateTimeOffset? startDateTime = value as DateTimeOffset?;
+            var nowDateTime = new DateTimeOffset(DateTime.Now);
             var isValid = true;
 
-            if (dateTimeOffset != null)
+            if (startDateTime != null)
             {
-                isValid = dateTimeOffset > todayDateTimeOffset;
+                isValid = startDateTime > nowDateTime;
             }
 
             return isValid;
