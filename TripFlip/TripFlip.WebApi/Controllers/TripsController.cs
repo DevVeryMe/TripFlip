@@ -36,5 +36,20 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModels);
         }
+
+        /// <summary>
+        /// Returns trip from database by id mapping it to TripViewModel.
+        /// </summary>
+        /// <param name="id">trip id</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/trips/{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var trip = await _tripService.GetAsync(id);
+            var tripViewModel = _mapper.Map<TripViewModel>(trip);
+
+            return Ok(tripViewModel);
+        }
     }
 }
