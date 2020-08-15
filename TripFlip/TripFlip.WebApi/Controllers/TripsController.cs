@@ -22,7 +22,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all trips.
+        /// Returns all trips from database mapping them to TripViewModel.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
