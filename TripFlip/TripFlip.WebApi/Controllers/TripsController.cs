@@ -23,7 +23,10 @@ namespace TripFlip.WebApi.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<TripsController>
+        /// <summary>
+        /// Returns all trips from database mapping them to TripViewModel.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
