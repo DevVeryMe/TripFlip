@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace TripFlip.ViewModels.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    class ValidateGreaterThanNowAttribute : ValidationAttribute
+    class ValidateLaterThanNowAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {

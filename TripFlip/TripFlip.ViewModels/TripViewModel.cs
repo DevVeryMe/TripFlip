@@ -18,11 +18,11 @@ namespace TripFlip.ViewModels
         [StringLength(500, ErrorMessage = ErrorConstants.DescriptionLengthError)]
         public string Description { get; set; }
 
-        [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.StartDateEarlierThanNowError)]
+        [ValidateLaterThanNow(ErrorMessage = ErrorConstants.StartDateEarlierThanNowError)]
         public DateTimeOffset? StartsAt { get; set; }
 
         [ValidateLaterThanAttribute("StartsAt", ErrorMessage = ErrorConstants.EndDateEarlierThanStartDateError)]
-        [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.EndDateEarlierThanNowError)]
+        [ValidateLaterThanNow(ErrorMessage = ErrorConstants.EndDateEarlierThanNowError)]
         public DateTimeOffset? EndsAt { get; set; }
     }
 }
