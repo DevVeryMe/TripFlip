@@ -2,7 +2,7 @@
 
 namespace TripFlip.Root.MappingProfiles
 {
-    public class ViewModelFromDTO : Profile
+    public class ViewModelFromDto : Profile
     {
     }
 }
