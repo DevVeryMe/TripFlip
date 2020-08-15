@@ -6,11 +6,11 @@ namespace TripFlip.ViewModels.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     class ValidateGreaterThanStartAt : ValidationAttribute
     {
-        private readonly string _startsAt;
+        private readonly string _startsAtPropertyName;
 
-        public ValidateGreaterThanStartAt(string startsAt)
+        public ValidateGreaterThanStartAt(string startsAtPropertyName)
         {
-            _startsAt = startsAt;
+            _startsAtPropertyName = startsAtPropertyName;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -18,7 +18,7 @@ namespace TripFlip.ViewModels.Attributes
             ErrorMessage = ErrorMessageString;
             DateTimeOffset? endsAt = value as DateTimeOffset?;
 
-            var startsAtProperty = validationContext.ObjectType.GetProperty(_startsAt);
+            var startsAtProperty = validationContext.ObjectType.GetProperty(_startsAtPropertyName);
 
             if (startsAtProperty == null)
             {
@@ -28,9 +28,9 @@ namespace TripFlip.ViewModels.Attributes
             if (startsAtProperty.GetValue(validationContext.ObjectInstance) is 
                 DateTimeOffset startsAtPropertyValue && endsAt != null)
             {
-                return endsAt > startsAtPropertyValue ? 
-                    new ValidationResult(ErrorMessage) : 
-                    ValidationResult.Success;
+                return endsAt > startsAtPropertyValue ?
+                     ValidationResult.Success :
+                     new ValidationResult(ErrorMessage);
             }
                 
             return ValidationResult.Success;
