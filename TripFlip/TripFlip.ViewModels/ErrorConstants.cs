@@ -16,6 +16,8 @@
 
         public const string StartDateEarlierThanNowError = "Start date cannot be earlier than now.";
 
+        public const string EndDateEarlierThanNowError = "End date cannot be earlier than now.";
+
         public const string EndDateLessThanStartDateError = "End date cannot be earlier than start date.";
     }
 }

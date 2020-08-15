@@ -22,7 +22,7 @@ namespace TripFlip.ViewModels
         public DateTimeOffset? StartsAt { get; set; }
 
         [ValidateGreaterThanStartAt("StartsAt", ErrorMessage = ErrorConstants.EndDateLessThanStartDateError)]
-        [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.StartDateEarlierThanNowError)]
+        [ValidateGreaterThanNow(ErrorMessage = ErrorConstants.EndDateEarlierThanNowError)]
         public DateTimeOffset? EndsAt { get; set; }
     }
 }
