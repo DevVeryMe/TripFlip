@@ -23,7 +23,9 @@ namespace TripFlip.Root.ConfigureServicesExtension
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
             services.AddTransient<ITripService, TripService>();
+            services.AddTransient<IRouteService, RouteService>();
 
             
             services.AddDbContext<FlipTripDbContext>(options =>
