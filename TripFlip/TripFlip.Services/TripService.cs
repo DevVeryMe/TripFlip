@@ -42,5 +42,10 @@ namespace TripFlip.Services
         {
             throw new System.NotImplementedException();
         }
+
+        public void DeleteTrip(TripDto tripDto)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         void CreateTrip(TripDto tripDto);
 
         void UpdateTrip(TripDto tripDto);
+
+        void DeleteTrip(TripDto tripDto);
     }
 }
