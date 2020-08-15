@@ -24,6 +24,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Gets all trips.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("/trips")]
         public async Task<IActionResult> GetAsync()

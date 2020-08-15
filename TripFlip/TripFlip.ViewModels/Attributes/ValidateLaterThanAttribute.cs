@@ -6,11 +6,11 @@ namespace TripFlip.ViewModels.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     class ValidateLaterThanAttribute : ValidationAttribute
     {
-        private readonly string comparingDateTimePropertyName;
+        private readonly string _comparingDateTimePropertyName;
 
-        public ValidateLaterThanAttribute(string startsAtPropertyName)
+        public ValidateLaterThanAttribute(string comparingDateTimePropertyName)
         {
-            comparingDateTimePropertyName = startsAtPropertyName;
+            _comparingDateTimePropertyName = comparingDateTimePropertyName;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -18,7 +18,7 @@ namespace TripFlip.ViewModels.Attributes
             ErrorMessage = ErrorMessageString;
             DateTimeOffset? currentDateTime = value as DateTimeOffset?;
 
-            var comparingDateTimeProperty = validationContext.ObjectType.GetProperty(comparingDateTimePropertyName);
+            var comparingDateTimeProperty = validationContext.ObjectType.GetProperty(_comparingDateTimePropertyName);
 
             if (comparingDateTimeProperty == null)
             {
