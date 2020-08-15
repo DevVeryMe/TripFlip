@@ -22,9 +22,8 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all trips from database mapping them to TripViewModel.
+        /// Gets all trips.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("/trips")]
         public async Task<IActionResult> GetAsync()
