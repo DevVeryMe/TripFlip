@@ -14,8 +14,6 @@ namespace TripFlip.Root.ConfigureServicesExtension
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IGreetingService, GreetingService>();
-
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile<EntityToDto>();
