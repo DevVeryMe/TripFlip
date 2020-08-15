@@ -7,7 +7,7 @@ namespace TripFlip.ViewModels
     public class TripViewModel
     {
         [Required(ErrorMessage = ErrorConstants.RequiredFieldIdError)]
-        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.RequiredFieldIdError)]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdFieldLessThanOneError)]
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleError)]
