@@ -7,6 +7,9 @@ using TripFlip.Domain.Entities;
 
 namespace TripFlip.Services
 {
+    /// <summary>
+    /// Class that performs CRUD operations related to <see cref="RouteEntity"/>
+    /// </summary>
     public class RouteService : IRouteService
     {
         IMapper _mapper;

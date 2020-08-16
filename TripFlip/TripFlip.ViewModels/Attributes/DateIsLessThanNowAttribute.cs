@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TripFlip.ViewModels.Attributes
 {
+    /// <summary>
+    /// Validation attribute that checks if the given DateTimeOffset is earlier than the current DateTimeOffset
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     class DateIsLessThanNowAttribute : ValidationAttribute
     {

@@ -4,6 +4,9 @@ using TripFlip.ViewModels.Attributes;
 
 namespace TripFlip.ViewModels.RouteViewModels
 {
+    /// <summary>
+    /// ViewModel that represents the Route to be created
+    /// </summary>
     public class CreateRouteViewModel
     {
         [Required (AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleError)]

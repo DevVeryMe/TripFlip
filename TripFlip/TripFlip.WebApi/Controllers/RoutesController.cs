@@ -20,6 +20,10 @@ namespace TripFlip.WebApi.Controllers
             _routeService = routeService;
         }
 
+        /// <summary>
+        /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object
+        /// </summary>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateRouteViewModel createRouteViewModel)
         {
