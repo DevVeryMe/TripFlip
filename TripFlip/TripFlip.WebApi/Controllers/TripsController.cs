@@ -55,6 +55,11 @@ namespace TripFlip.WebApi.Controllers
         [Route("trips/add-trip")]
         public async Task<IActionResult> Create(CreateTripViewModel tripViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var tripDto = _mapper.Map<CreateTripDto>(tripViewModel);
             await _tripService.CreateAsync(tripDto);
 
