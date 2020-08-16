@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
+using TripFlip.Services.DTO;
+using TripFlip.ViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {
-    public class ViewModelToDto : Profile
+    public class ViewModelToDTO : Profile
     {
+        public ViewModelToDTO()
+        {
+            CreateMap<TaskViewModel, TaskDto>();
+        }
     }
 }
