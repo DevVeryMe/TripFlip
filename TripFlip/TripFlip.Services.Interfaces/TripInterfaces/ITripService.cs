@@ -28,7 +28,7 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Updates existing trip.
         /// </summary>
         /// <param name="tripDto">new trip data</param>
-        void UpdateTrip(TripDto tripDto);
+        Task<TripDto> UpdateAsync(TripDto tripDto);
 
         /// <summary>
         /// Deletes trip.

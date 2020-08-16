@@ -63,5 +63,15 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripDto);
         }
+
+        [HttpPut]
+        [Route("/trips/update-trip")]
+        public async Task<IActionResult> Create(TripViewModel tripViewModel)
+        {
+            var tripDto = _mapper.Map<TripDto>(tripViewModel);
+            tripDto = await _tripService.UpdateAsync(tripDto);
+
+            return Ok(tripDto);
+        }
     }
 }

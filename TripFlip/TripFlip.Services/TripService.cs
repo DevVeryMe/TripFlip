@@ -61,9 +61,19 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public void UpdateTrip(TripDto tripDto)
+        public async Task<TripDto> UpdateAsync(TripDto tripDto)
         {
-            throw new System.NotImplementedException();
+            var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
+
+            tripToUpdate.Description = tripDto.Description;
+            tripToUpdate.Title = tripDto.Title;
+            tripToUpdate.StartsAt = tripDto.StartsAt;
+            tripToUpdate.EndsAt = tripDto.EndsAt;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
+
+            return newTripDto;
         }
 
         /// <inheritdoc />
