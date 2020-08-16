@@ -29,7 +29,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
         [Route("/create")]
-        public async Task<IActionResult> Create(CreateTaskViewModel taskViewModel)
+        public async Task<IActionResult> CreateAsync(CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
             await _taskService.CreateTaskAsync(taskDto);
