@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
@@ -79,6 +80,15 @@ namespace TripFlip.WebApi.Controllers
             tripViewModel = _mapper.Map<TripViewModel>(tripDto);
 
             return Ok(tripViewModel);
+        }
+
+        [HttpDelete]
+        [Route("/trips/delete-trip")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _tripService.DeleteAsync(id);
+
+            return Ok();
         }
     }
 }
