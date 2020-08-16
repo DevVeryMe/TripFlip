@@ -56,6 +56,7 @@ namespace TripFlip.Services
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc />
         public void DeleteTrip(TripDto tripDto)
         {
             throw new System.NotImplementedException();
