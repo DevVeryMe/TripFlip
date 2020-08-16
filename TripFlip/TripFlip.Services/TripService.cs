@@ -48,13 +48,14 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<TripDto> CreateAsync(TripDto tripDto)
+        public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
-            var mappedTrip = _mapper.Map<TripEntity>(tripDto);
-            mappedTrip.DateCreated = DateTimeOffset.Now;
+            var trip = _mapper.Map<TripEntity>(createTripDto);
+            trip.DateCreated = DateTimeOffset.Now;
 
-            var newTrip = _flipTripDbContext.Add(mappedTrip);
+            _flipTripDbContext.Add(trip);
             await _flipTripDbContext.SaveChangesAsync();
+            var tripDto = _mapper.Map<TripDto>(trip);
 
             return tripDto;
         }

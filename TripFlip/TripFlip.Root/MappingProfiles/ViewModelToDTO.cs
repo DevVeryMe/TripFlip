@@ -10,7 +10,7 @@ namespace TripFlip.Root.MappingProfiles
         {
             CreateMap<TripViewModel, TripDto>();
 
-            CreateMap<CreateTripViewModel, TripDto>();
+            CreateMap<CreateTripViewModel, CreateTripDto>();
         }
     }
 }
