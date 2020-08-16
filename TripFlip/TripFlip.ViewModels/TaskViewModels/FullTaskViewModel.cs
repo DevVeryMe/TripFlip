@@ -2,9 +2,9 @@
 using TripFlip.ViewModels.Enums;
 using TripFlip.ViewModels.Attributes;
 
-namespace TripFlip.ViewModels
+namespace TripFlip.ViewModels.TaskViewModels
 {
-    public class GetTaskViewModel
+    public class FullTaskViewModel
     {
         public int Id { get; set; }
 

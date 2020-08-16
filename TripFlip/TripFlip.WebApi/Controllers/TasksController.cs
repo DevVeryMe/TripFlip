@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.Interfaces;
-using TripFlip.ViewModels;
+using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -50,7 +50,7 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var tasks = await _taskService.GetAllTasksAsync();
-            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
+            var taskViewModels = _mapper.Map<List<FullTaskViewModel>>(tasks);
 
             return Ok(taskViewModels);
         }
