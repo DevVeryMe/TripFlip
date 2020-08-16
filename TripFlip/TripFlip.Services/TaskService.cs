@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -12,26 +10,28 @@ namespace TripFlip.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly FlipTripDbContext _tripFlipDbContext;
+        private readonly FlipTripDbContext _flipTripDbContext;
         private readonly IMapper _mapper;
 
-        public TaskService(FlipTripDbContext tripFlipDbContext, IMapper mapper)
+        public TaskService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
-            _tripFlipDbContext = tripFlipDbContext;
+            _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        public void CreateTask(TaskDto task)
+        public async Task CreateTaskAsync(TaskDto task)
         {
             var taskEntity = _mapper.Map<TaskEntity>(task);
-            _tripFlipDbContext.Tasks.Add(taskEntity);
+
+            await _flipTripDbContext.Tasks.AddAsync(taskEntity);
+            await _flipTripDbContext.SaveChangesAsync();
         }
 
-        public void DeleteTask(int id)
+        public async Task DeleteTaskAsync(int id)
         {
         }
 
-        public TaskDto GetTask(int id)
+        public async Task<TaskDto> GetTaskAsync(int id)
         {
             return null;
         }
@@ -41,7 +41,7 @@ namespace TripFlip.Services
             return null;
         }
 
-        public void UpdateTask(TaskDto task)
+        public async Task UpdateTaskAsync(TaskDto task)
         {
         }
     }

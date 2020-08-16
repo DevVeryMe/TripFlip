@@ -8,7 +8,7 @@ namespace TripFlip.Root.MappingProfiles
     {
         public ViewModelToDTO()
         {
-            CreateMap<TaskViewModel, TaskDto>();
+            CreateMap<CreateTaskViewModel, TaskDto>();
         }
     }
 }
