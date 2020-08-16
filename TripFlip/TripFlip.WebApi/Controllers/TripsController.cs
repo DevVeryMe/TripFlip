@@ -56,7 +56,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>created trip</returns>
         [HttpPost]
         [Route("/trips/add-trip")]
-        public async Task<IActionResult> Create(CreateTripViewModel createTripViewModel)
+        public async Task<IActionResult> Create([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
             var tripDto = await _tripService.CreateAsync(createTripDto);
@@ -71,7 +71,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>updated trip</returns>
         [HttpPut]
         [Route("/trips/update-trip")]
-        public async Task<IActionResult> Update(TripViewModel tripViewModel)
+        public async Task<IActionResult> Update([FromBody] TripViewModel tripViewModel)
         {
             var tripDto = _mapper.Map<TripDto>(tripViewModel);
             tripDto = await _tripService.UpdateAsync(tripDto);
