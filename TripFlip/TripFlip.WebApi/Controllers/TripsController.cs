@@ -60,8 +60,9 @@ namespace TripFlip.WebApi.Controllers
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
             var tripDto = await _tripService.CreateAsync(createTripDto);
+            var tripViewModel = _mapper.Map<TripViewModel>(tripDto);
 
-            return Ok(tripDto);
+            return Ok(tripViewModel);
         }
 
         /// <summary>
