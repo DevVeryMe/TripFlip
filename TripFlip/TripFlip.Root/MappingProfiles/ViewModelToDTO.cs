@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TripFlip.Services.DTO;
 using TripFlip.ViewModels;
+using TripFlip.ViewModels.RouteViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {

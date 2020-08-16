@@ -5,6 +5,6 @@ namespace TripFlip.Services.Interfaces
 {
     public interface IRouteService
     {
-        Task CreateAsync(RouteDto routeDto);
+        Task<RouteDto> CreateAsync(RouteDto routeDto);
     }
 }

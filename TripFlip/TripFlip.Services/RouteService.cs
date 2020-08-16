@@ -18,12 +18,16 @@ namespace TripFlip.Services
             _flipTripDbContext = flipTripDbContext;
         }
 
-        public async Task CreateAsync(RouteDto routeDto)
+        public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
             RouteEntity routeEntity = EntityFromDto(routeDto);
 
-            _flipTripDbContext.Routes.Add(routeEntity);
+            var entityEntry = _flipTripDbContext.Routes.Add(routeEntity);
             await _flipTripDbContext.SaveChangesAsync();
+
+            routeDto.Id = entityEntry.Entity.Id;
+
+            return routeDto;
         }
 
         RouteEntity EntityFromDto(RouteDto routeDto)

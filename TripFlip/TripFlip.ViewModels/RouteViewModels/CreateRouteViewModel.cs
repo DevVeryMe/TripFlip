@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.Attributes;
 
-namespace TripFlip.ViewModels
+namespace TripFlip.ViewModels.RouteViewModels
 {
     public class CreateRouteViewModel
     {

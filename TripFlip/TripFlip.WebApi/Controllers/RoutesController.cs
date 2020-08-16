@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
-using TripFlip.ViewModels;
+using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.Services.DTO;
 
 namespace TripFlip.WebApi.Controllers
@@ -28,10 +28,13 @@ namespace TripFlip.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            RouteDto routeDto = _mapper.Map<RouteDto>(createRouteViewModel);
-            await _routeService.CreateAsync(routeDto);
+            var routeDto = _mapper.Map<RouteDto>(createRouteViewModel);
+            
+            var resultDto = await _routeService.CreateAsync(routeDto);
 
-            return Ok();
+            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+
+            return Ok(resultViewModel);
         }
     }
 }
