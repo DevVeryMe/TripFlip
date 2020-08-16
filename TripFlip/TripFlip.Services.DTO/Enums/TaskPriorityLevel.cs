@@ -1,5 +1,5 @@
 ﻿
-namespace TripFlip.Domain.Entities.Enums
+namespace TripFlip.Services.DTO.Enums
 {
     public enum TaskPriorityLevel
     {
