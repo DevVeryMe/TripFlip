@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
+using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 
 namespace TripFlip.Services
@@ -46,9 +48,15 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public void CreateTrip(TripDto tripDto)
+        public async Task<TripDto> CreateAsync(TripDto tripDto)
         {
-            throw new System.NotImplementedException();
+            var mappedTrip = _mapper.Map<TripEntity>(tripDto);
+            mappedTrip.DateCreated = DateTimeOffset.Now;
+
+            var newTrip = _flipTripDbContext.Add(mappedTrip);
+            await _flipTripDbContext.SaveChangesAsync();
+
+            return tripDto;
         }
 
         /// <inheritdoc />

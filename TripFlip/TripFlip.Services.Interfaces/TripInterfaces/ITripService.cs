@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TripDtos;
 
 namespace TripFlip.Services.Interfaces.TripInterfaces
 {
@@ -21,7 +22,7 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Creates new trip.
         /// </summary>
         /// <param name="tripDto">trip data</param>
-        void CreateTrip(TripDto tripDto);
+        Task<TripDto> CreateAsync(TripDto tripDto);
 
         /// <summary>
         /// Updates existing trip.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TripFlip.Services.DTO
+namespace TripFlip.Services.DTO.TripDtos
 {
     public class TripDto
     {

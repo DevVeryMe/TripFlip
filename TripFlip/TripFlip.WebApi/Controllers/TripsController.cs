@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
+using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -46,6 +49,16 @@ namespace TripFlip.WebApi.Controllers
             var tripViewModel = _mapper.Map<TripViewModel>(trip);
 
             return Ok(tripViewModel);
+        }
+
+        [HttpPost]
+        [Route("trips/add-trip")]
+        public async Task<IActionResult> Create(CreateTripViewModel tripViewModel)
+        {
+            var tripDto = _mapper.Map<TripDto>(tripViewModel);
+            await _tripService.CreateAsync(tripDto);
+
+            return Ok();
         }
     }
 }
