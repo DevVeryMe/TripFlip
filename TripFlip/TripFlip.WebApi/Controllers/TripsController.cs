@@ -64,6 +64,11 @@ namespace TripFlip.WebApi.Controllers
             return Ok(tripDto);
         }
 
+        /// <summary>
+        /// Updates existing trip.
+        /// </summary>
+        /// <param name="tripViewModel">new trip data with existing trip id</param>
+        /// <returns>updated trip</returns>
         [HttpPut]
         [Route("/trips/update-trip")]
         public async Task<IActionResult> Create(TripViewModel tripViewModel)
