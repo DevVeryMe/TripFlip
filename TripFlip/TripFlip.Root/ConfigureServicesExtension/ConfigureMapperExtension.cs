@@ -12,7 +12,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
             {
                 mc.AddProfile<EntityToDto>();
                 mc.AddProfile<EntityFromDto>();
-                mc.AddProfile<ViewModelToDTO>();
+                mc.AddProfile<ViewModelToDto>();
                 mc.AddProfile<ViewModelFromDto>();
             });
 

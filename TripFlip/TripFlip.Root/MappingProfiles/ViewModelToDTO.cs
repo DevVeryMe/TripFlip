@@ -4,9 +4,9 @@ using TripFlip.ViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {
-    public class ViewModelToDTO : Profile
+    public class ViewModelToDto : Profile
     {
-        public ViewModelToDTO()
+        public ViewModelToDto()
         {
             CreateMap<CreateTaskViewModel, TaskDto>();
         }
