@@ -19,29 +19,34 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task CreateTaskAsync(TaskDto task)
+        /// <inheritdoc />
+        public async Task CreateTaskAsync(TaskDto taskDto)
         {
-            var taskEntity = _mapper.Map<TaskEntity>(task);
+            var taskEntity = _mapper.Map<TaskEntity>(taskDto);
 
             await _flipTripDbContext.Tasks.AddAsync(taskEntity);
             await _flipTripDbContext.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task DeleteTaskAsync(int id)
         {
         }
 
+        /// <inheritdoc />
         public async Task<TaskDto> GetTaskAsync(int id)
         {
             return null;
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<TaskDto>> GetAllTasksAsync()
         {
             return null;
         }
 
-        public async Task UpdateTaskAsync(TaskDto task)
+        /// <inheritdoc />
+        public async Task UpdateTaskAsync(TaskDto taskDto)
         {
         }
     }
