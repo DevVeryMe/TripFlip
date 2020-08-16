@@ -31,10 +31,28 @@ namespace TripFlip.WebApi.Controllers
         [Route("/create")]
         public async Task<IActionResult> CreateAsync(CreateTaskViewModel taskViewModel)
         {
-            var taskDto = _mapper.Map<TaskDto>(taskViewModel);
-            await _taskService.CreateTaskAsync(taskDto);
+            if (ModelState.IsValid)
+            {
+                var taskDto = _mapper.Map<TaskDto>(taskViewModel);
+                await _taskService.CreateTaskAsync(taskDto);
 
-            return Ok(taskDto);
+                return Ok(taskViewModel);
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Gets all Tasks.
+        /// </summary>
+        [HttpGet]
+        [Route("/all")]
+        public async Task<IActionResult> GetAsync()
+        {
+            var tasks = await _taskService.GetAllTasksAsync();
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
+
+            return Ok(taskViewModels);
         }
     }
 }

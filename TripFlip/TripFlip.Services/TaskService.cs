@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -42,7 +43,10 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<IEnumerable<TaskDto>> GetAllTasksAsync()
         {
-            return null;
+            var tasks = await _flipTripDbContext.Tasks.AsNoTracking().ToListAsync();
+            var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
+
+            return taskDtos;
         }
 
         /// <inheritdoc />
