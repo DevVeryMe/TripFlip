@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace TripFlip.ViewModels.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     class ValidateOptionalEnumFieldAttribute : ValidationAttribute
     {
+        private Type _enumType;
+
+        public ValidateOptionalEnumFieldAttribute(Type enumType)
+        {
+            _enumType = enumType;
+        }
+
         public override bool IsValid(object value)
         {
             if (value == null)
@@ -17,7 +21,8 @@ namespace TripFlip.ViewModels.Attributes
             }
 
             var type = value.GetType();
-            bool isValid = type.IsEnum && Enum.IsDefined(type, value);
+
+            bool isValid = (type.IsEnum && Enum.IsDefined(type, value) && (type == _enumType));
 
             return isValid;
         }
