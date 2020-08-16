@@ -51,19 +51,19 @@ namespace TripFlip.WebApi.Controllers
             return Ok(tripViewModel);
         }
 
+        /// <summary>
+        /// Creates trip.
+        /// </summary>
+        /// <param name="createTripViewModel">new trip data</param>
+        /// <returns>created trip</returns>
         [HttpPost]
-        [Route("trips/add-trip")]
-        public async Task<IActionResult> Create(CreateTripViewModel tripViewModel)
+        [Route("/trips/add-trip")]
+        public async Task<IActionResult> Create(CreateTripViewModel createTripViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
+            var tripDto = await _tripService.CreateAsync(createTripDto);
 
-            var tripDto = _mapper.Map<CreateTripDto>(tripViewModel);
-            await _tripService.CreateAsync(tripDto);
-
-            return Ok();
+            return Ok(tripDto);
         }
     }
 }
