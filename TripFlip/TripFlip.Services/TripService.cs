@@ -65,6 +65,11 @@ namespace TripFlip.Services
         {
             var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
 
+            if (tripToUpdate is null)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
             tripToUpdate.Description = tripDto.Description;
             tripToUpdate.Title = tripDto.Title;
             tripToUpdate.StartsAt = tripDto.StartsAt;
