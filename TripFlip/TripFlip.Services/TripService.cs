@@ -82,9 +82,17 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public void DeleteTrip(TripDto tripDto)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var tripToDelete = await _flipTripDbContext.Trips.FindAsync(id);
+
+            if (tripToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
+            _flipTripDbContext.Remove(tripToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
     }
 }

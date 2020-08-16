@@ -34,6 +34,6 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Deletes trip.
         /// </summary>
         /// <param name="tripDto">trip to delete</param>
-        void DeleteTrip(TripDto tripDto);
+        Task DeleteAsync(int id);
     }
 }
