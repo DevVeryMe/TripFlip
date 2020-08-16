@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
-using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
