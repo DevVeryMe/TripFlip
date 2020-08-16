@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
@@ -86,7 +87,8 @@ namespace TripFlip.WebApi.Controllers
 
         [HttpDelete]
         [Route("/trips/delete-trip")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
             await _tripService.DeleteAsync(id);
 
