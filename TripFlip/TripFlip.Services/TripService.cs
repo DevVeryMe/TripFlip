@@ -20,6 +20,7 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
         {
             var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
@@ -28,16 +29,19 @@ namespace TripFlip.Services
             return tripDtos;
         }
 
+        /// <inheritdoc />
         public TripDto GetTrip(int id)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc />
         public void CreateTrip(TripDto tripDto)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc />
         public void UpdateTrip(TripDto tripDto)
         {
             throw new System.NotImplementedException();
