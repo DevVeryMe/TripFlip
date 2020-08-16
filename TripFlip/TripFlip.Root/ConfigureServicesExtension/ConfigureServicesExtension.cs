@@ -14,20 +14,10 @@ namespace TripFlip.Root.ConfigureServicesExtension
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.ConfigureMapper();
             services.AddTransient<IGreetingService, GreetingService>();
-
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile<EntityToDto>();
-                mc.AddProfile<EntityFromDto>();
-                mc.AddProfile<ViewModelToDto>();
-                mc.AddProfile<ViewModelFromDto>();
-            });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
             services.AddTransient<ITripService, TripService>();
 
-            
             services.AddDbContext<FlipTripDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
