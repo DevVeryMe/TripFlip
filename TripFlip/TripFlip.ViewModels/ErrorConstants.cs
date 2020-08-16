@@ -19,5 +19,7 @@
         public const string EndDateEarlierThanNowError = "End date cannot be earlier than now.";
 
         public const string EndDateEarlierThanStartDateError = "End date cannot be earlier than start date.";
+
+        public const string DoesNotMatchAnyTaskPriorityLevel = "Value doesn't match any task priority level,"
     }
 }
