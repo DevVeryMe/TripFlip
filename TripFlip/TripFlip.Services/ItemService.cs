@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using TripFlip.DataAccess;
+using TripFlip.Domain.Entities;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 
@@ -18,22 +21,29 @@ namespace TripFlip.Services
             _flipTripDbContext = flipTripDbContext;
         }
 
-        public Task<CreateItemDto> CreateAsync(CreateItemDto createItemDto)
+        public async Task<ItemDto> CreateAsync(CreateItemDto createItemDto)
+        {
+            var item = _mapper.Map<ItemEntity>(createItemDto);
+
+            await _flipTripDbContext.Items.AddAsync(item);
+            await _flipTripDbContext.SaveChangesAsync();
+
+            var itemToReturnDto = _mapper.Map<ItemDto>(item);
+
+            return itemToReturnDto;
+        }
+
+        public Task<IEnumerable<ItemDto>> GetAllAsync(int itemListId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<CreateItemDto>> GetAllAsync(int itemListId)
+        public Task<ItemDto> GetAsync(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<CreateItemDto> GetAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<CreateItemDto> UpdateAsync(CreateItemDto createItemDto)
+        public Task<ItemDto> UpdateAsync(CreateItemDto createItemDto)
         {
             throw new System.NotImplementedException();
         }
