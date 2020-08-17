@@ -32,9 +32,10 @@ namespace TripFlip.WebApi.Controllers
             var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
             var taskToreturnViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
-            return Ok(taskToreturnViewModel);
 
             return Ok(taskToreturnViewModel);
+        }
+
         /// <summary>
         /// Gets all Tasks from certain task list.
         /// </summary>

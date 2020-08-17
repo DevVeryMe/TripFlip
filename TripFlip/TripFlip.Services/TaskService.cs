@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
         {
+            var updatedTask = _mapper.Map<TaskEntity>(taskDto);
             var taskToUpdate = await _flipTripDbContext.Tasks.FindAsync(updatedTask.Id);
 
             if (taskToUpdate is null)
