@@ -22,7 +22,6 @@ namespace TripFlip.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
