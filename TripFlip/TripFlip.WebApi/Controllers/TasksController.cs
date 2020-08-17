@@ -45,12 +45,26 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         [HttpGet]
         [Route("/all")]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
             var tasks = await _taskService.GetAllAsync();
             var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
 
             return Ok(taskViewModels);
+        }
+
+        /// <summary>
+        /// Gets task by id.
+        /// </summary>
+        /// <param name="id">task id</param>
+        [HttpGet]
+        [Route("/{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var task = await _taskService.GetAsync(id);
+            var taskViewModel = _mapper.Map<GetTaskViewModel>(task);
+
+            return Ok(taskViewModel);
         }
 
         /// <summary>

@@ -52,7 +52,16 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> GetAsync(int id)
         {
-            return null;
+            var task = await _flipTripDbContext.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+
+            if (task is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            var taskDto = _mapper.Map<TaskDto>(task);
+
+            return taskDto;
         }
 
         /// <inheritdoc />
