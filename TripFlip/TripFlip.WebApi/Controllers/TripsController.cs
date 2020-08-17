@@ -41,7 +41,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">trip id</param>
         [HttpGet]
-        [Route("/trips/{id}")]
+        [Route("/{id}")]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
