@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using TripFlip.Services.DTO.ItemDtos;
-using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.ItemViewModels;
-using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {

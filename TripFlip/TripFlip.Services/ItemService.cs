@@ -1,10 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 
