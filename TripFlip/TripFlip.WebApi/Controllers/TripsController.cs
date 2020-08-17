@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
@@ -28,7 +29,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        [Route("/trips")]
+        [Route("all")]
         public async Task<IActionResult> GetAsync()
         {
             var trips = await _tripService.GetAllTripsAsync();
@@ -42,7 +43,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">trip id</param>
         [HttpGet]
-        [Route("/trips/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
@@ -58,8 +59,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="createTripViewModel">new trip data</param>
         /// <returns>created trip</returns>
         [HttpPost]
-        [Route("/trips/add-trip")]
-        public async Task<IActionResult> Create([FromBody] CreateTripViewModel createTripViewModel)
+        [Route("create")]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
             var tripDto = await _tripService.CreateAsync(createTripDto);
