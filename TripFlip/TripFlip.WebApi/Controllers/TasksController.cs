@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.TaskViewModels;
 

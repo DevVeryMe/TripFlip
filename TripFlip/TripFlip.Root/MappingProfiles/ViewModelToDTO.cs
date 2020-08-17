@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.ViewModels.TripViewModels;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.Root.MappingProfiles

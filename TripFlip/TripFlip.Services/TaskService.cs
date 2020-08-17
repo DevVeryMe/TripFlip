@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services

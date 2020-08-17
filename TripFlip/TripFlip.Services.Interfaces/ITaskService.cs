@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 
 namespace TripFlip.Services.Interfaces
 {

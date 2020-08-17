@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TripFlip.Services.DTO.Enums;
 
-namespace TripFlip.Services.DTO
+namespace TripFlip.Services.DTO.TaskDtos
 {
     public class TaskDto
     {
