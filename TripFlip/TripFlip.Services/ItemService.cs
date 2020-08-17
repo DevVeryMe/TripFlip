@@ -8,6 +8,7 @@ using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class ItemService : IItemService
     {
         private readonly IMapper _mapper;
@@ -19,7 +20,6 @@ namespace TripFlip.Services
             _flipTripDbContext = flipTripDbContext;
         }
 
-        /// <inheritdoc />
         public async Task<ItemDto> CreateAsync(CreateItemDto createItemDto)
         {
             var item = _mapper.Map<ItemEntity>(createItemDto);
@@ -32,25 +32,21 @@ namespace TripFlip.Services
             return itemToReturnDto;
         }
 
-        /// <inheritdoc />
         public Task<IEnumerable<ItemDto>> GetAllAsync(int itemListId)
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc />
         public Task<ItemDto> GetAsync(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc />
         public Task<ItemDto> UpdateAsync(CreateItemDto createItemDto)
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc />
         public Task DeleteAsync(int id)
         {
             throw new System.NotImplementedException();
