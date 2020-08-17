@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -50,7 +50,7 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<TaskDto> GetAsync(int id)
+        public async Task<TaskDto> GetByIdAsync(int id)
         {
             var task = await _flipTripDbContext.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
 
@@ -65,7 +65,7 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllAsync()
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
             var tasks = await _flipTripDbContext.Tasks.AsNoTracking().ToListAsync();
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
@@ -76,7 +76,7 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
         {
-            var updatedTask = _mapper.Map<TaskEntity>(taskDto);
+            return null;
             var taskToUpdate = await _flipTripDbContext.Tasks.FindAsync(updatedTask.Id);
 
             if (taskToUpdate is null)
