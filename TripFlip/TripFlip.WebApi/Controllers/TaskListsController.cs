@@ -35,5 +35,19 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(taskListViewModelToReturn);
         }
+
+        /// <summary>
+        /// Gets TaskList by id.
+        /// </summary>
+        /// <param name="id">task list id</param>
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var taskList = await _taskListService.GetByIdAsync(id);
+            var taskListViewModel = _mapper.Map<GetTaskListViewModel>(taskList);
+
+            return Ok(taskListViewModel);
+        }
     }
 }

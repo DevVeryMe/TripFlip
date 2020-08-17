@@ -9,7 +9,7 @@ namespace TripFlip.Services.Interfaces
         /// Gets task list by id.
         /// </summary>
         /// <param name="id">task list id</param>
-        Task<TaskListDto> GetAsync(int id);
+        Task<TaskListDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates new task list.

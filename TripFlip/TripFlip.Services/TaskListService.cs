@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -39,9 +40,18 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<TaskListDto> GetAsync(int id)
+        public async Task<TaskListDto> GetByIdAsync(int id)
         {
-            return null;
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            var taskListDto = _mapper.Map<TaskListDto>(taskList);
+
+            return taskListDto;
         }
 
         /// <inheritdoc />
