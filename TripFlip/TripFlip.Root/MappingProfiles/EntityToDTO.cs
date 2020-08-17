@@ -13,6 +13,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<TripEntity, TripDto>();
 
             CreateMap<ItemEntity, ItemDto>();
+
             CreateMap<TaskEntity, TaskDto>();
         }
     }
