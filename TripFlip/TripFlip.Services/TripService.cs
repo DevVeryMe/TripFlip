@@ -11,6 +11,7 @@ using TripFlip.Services.Interfaces.TripInterfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TripService : ITripService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
@@ -23,8 +24,7 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
+                public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
         {
             var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
             var tripDtos = _mapper.Map<List<TripDto>>(trips);
@@ -32,7 +32,6 @@ namespace TripFlip.Services
             return tripDtos;
         }
 
-        /// <inheritdoc />
         public async Task<TripDto> GetAsync(int id)
         {
             var trip = await _flipTripDbContext.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
@@ -47,7 +46,6 @@ namespace TripFlip.Services
             return tripDto;
         }
 
-        /// <inheritdoc />
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var trip = _mapper.Map<TripEntity>(createTripDto);
@@ -60,13 +58,11 @@ namespace TripFlip.Services
             return tripDto;
         }
 
-        /// <inheritdoc />
         public void UpdateTrip(TripDto tripDto)
         {
             throw new System.NotImplementedException();
         }
 
-        /// <inheritdoc />
         public void DeleteTrip(TripDto tripDto)
         {
             throw new System.NotImplementedException();
