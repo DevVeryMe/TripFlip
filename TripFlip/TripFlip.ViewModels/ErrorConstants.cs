@@ -1,6 +1,6 @@
 ﻿namespace TripFlip.ViewModels
 {
-    static class ErrorConstants
+    public static class ErrorConstants
     {
         public const string RequiredIdError = "Id cannot be null.";
 

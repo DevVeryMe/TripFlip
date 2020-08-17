@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
@@ -25,7 +27,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        [Route("/trips")]
+        [Route("/all")]
         public async Task<IActionResult> GetAsync()
         {
             var trips = await _tripService.GetAllTripsAsync();
@@ -39,8 +41,9 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">trip id</param>
         [HttpGet]
-        [Route("/trips/{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        [Route("/{id}")]
+        public async Task<IActionResult> GetByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
             var trip = await _tripService.GetAsync(id);
             var tripViewModel = _mapper.Map<TripViewModel>(trip);
