@@ -20,16 +20,16 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Creates new item.
         /// </summary>
-        /// <param name="itemDto">item data</param>
+        /// <param name="createItemDto">item data</param>
         /// <returns>created item</returns>
-        Task<CreateItemDto> CreateAsync(CreateItemDto itemDto);
+        Task<CreateItemDto> CreateAsync(CreateItemDto createItemDto);
 
         /// <summary>
         /// Updates existing item.
         /// </summary>
-        /// <param name="itemDto">new item data</param>
+        /// <param name="createItemDto">new item data</param>
         /// <returns>updated item</returns>
-        Task<CreateItemDto> UpdateAsync(CreateItemDto itemDto);
+        Task<CreateItemDto> UpdateAsync(CreateItemDto createItemDto);
 
         /// <summary>
         /// Deletes item.
