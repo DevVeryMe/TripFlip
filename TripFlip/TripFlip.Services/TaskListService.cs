@@ -37,6 +37,15 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task DeleteAsync(int id)
         {
+            var taskListToDelete = await _flipTripDbContext.TaskLists.FindAsync(id);
+
+            if (taskListToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
+            _flipTripDbContext.TaskLists.Remove(taskListToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -46,7 +55,7 @@ namespace TripFlip.Services
 
             if (taskList is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
             var taskListDto = _mapper.Map<TaskListDto>(taskList);
@@ -62,7 +71,7 @@ namespace TripFlip.Services
 
             if (taskLsitToUpdate is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
             taskLsitToUpdate.Title = updatedTaskList.Title;
