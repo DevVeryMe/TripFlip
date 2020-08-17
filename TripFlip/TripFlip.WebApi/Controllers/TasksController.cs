@@ -29,6 +29,7 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
+
             var taskDtoToReturn = await _taskService.CreateAsync(taskDto);
 
             var taskViewModelToReturn = _mapper.Map<GetTaskViewModel>(taskDtoToReturn);
