@@ -2,7 +2,7 @@
 using TripFlip.ViewModels.Enums;
 using TripFlip.ViewModels.Attributes;
 
-namespace TripFlip.ViewModels
+namespace TripFlip.ViewModels.TaskViewModels
 {
     public class CreateTaskViewModel
     {

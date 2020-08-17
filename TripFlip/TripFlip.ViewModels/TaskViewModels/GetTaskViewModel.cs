@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TripFlip.Services.DTO.Enums;
+using TripFlip.ViewModels.Enums;
 
-namespace TripFlip.Services.DTO
+namespace TripFlip.ViewModels.TaskViewModels
 {
-    public class TaskDto
+    public class GetTaskViewModel
     {
         public int Id { get; set; }
 
@@ -13,9 +13,7 @@ namespace TripFlip.Services.DTO
 
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
-
-        public bool IsCompleted { get; set; }
+        public bool isCompleted { get; set; }
 
         public int TaskListId { get; set; }
     }

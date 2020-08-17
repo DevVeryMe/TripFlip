@@ -12,7 +12,7 @@ namespace TripFlip.DataAccess.Configurations
             builder.HasKey(t => t.Id);
             builder.Property(t => t.Id).ValueGeneratedOnAdd();
             builder.Property(t => t.Description).IsRequired().HasMaxLength(250);
-            builder.Property(t => t.isCompleted).HasDefaultValue(false);
+            builder.Property(t => t.IsCompleted).HasDefaultValue(false);
             builder.Property(t => t.PriorityLevel).HasDefaultValue(TaskPriorityLevel.Low);
 
             builder.HasOne<TaskListEntity>(t => t.TaskList)
