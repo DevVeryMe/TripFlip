@@ -75,8 +75,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="tripViewModel">new trip data with existing trip id</param>
         /// <returns>updated trip</returns>
         [HttpPut]
-        [Route("/trips/update-trip")]
-        public async Task<IActionResult> Update([FromBody] TripViewModel tripViewModel)
+        [Route("update")]
+        public async Task<IActionResult> UpdateAsync([FromBody] TripViewModel tripViewModel)
         {
             var tripDto = _mapper.Map<TripDto>(tripViewModel);
             tripDto = await _tripService.UpdateAsync(tripDto);
