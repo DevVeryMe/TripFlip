@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 
@@ -23,14 +22,12 @@ namespace TripFlip.Services.Interfaces
         /// Creates new task.
         /// </summary>
         /// <param name="taskDto">task data</param>
-        /// <returns>Created task</returns>
         Task<TaskDto> CreateAsync(TaskDto taskDto);
 
         /// <summary>
         /// Updates existing task.
         /// </summary>
         /// <param name="taskDto">new task data</param>
-        /// <returns>Updated task</returns>
         Task<TaskDto> UpdateAsync(TaskDto taskDto);
 
         /// <summary>
