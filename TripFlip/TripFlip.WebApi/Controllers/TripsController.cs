@@ -27,7 +27,6 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        [Route("all")]
         public async Task<IActionResult> GetAsync()
         {
             var trips = await _tripService.GetAllTripsAsync();
