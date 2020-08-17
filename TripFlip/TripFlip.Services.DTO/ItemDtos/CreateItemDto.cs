@@ -2,10 +2,8 @@
 
 namespace TripFlip.Services.DTO.ItemDtos
 {
-    public class ItemDto
+    public class CreateItemDto
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Comment { get; set; }

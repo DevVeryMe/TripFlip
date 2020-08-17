@@ -9,27 +9,27 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Gets all items of certain item list.
         /// </summary>
-        Task<IEnumerable<ItemDto>> GetAllAsync(int itemListId);
+        Task<IEnumerable<CreateItemDto>> GetAllAsync(int itemListId);
 
         /// <summary>
         /// Gets item by id.
         /// </summary>
         /// <param name="id">item id</param>
-        Task<ItemDto> GetAsync(int id);
+        Task<CreateItemDto> GetAsync(int id);
 
         /// <summary>
         /// Creates new item.
         /// </summary>
         /// <param name="itemDto">item data</param>
         /// <returns>created item</returns>
-        Task<ItemDto> CreateAsync(ItemDto itemDto);
+        Task<CreateItemDto> CreateAsync(CreateItemDto itemDto);
 
         /// <summary>
         /// Updates existing item.
         /// </summary>
         /// <param name="itemDto">new item data</param>
         /// <returns>updated item</returns>
-        Task<ItemDto> UpdateAsync(ItemDto itemDto);
+        Task<CreateItemDto> UpdateAsync(CreateItemDto itemDto);
 
         /// <summary>
         /// Deletes item.

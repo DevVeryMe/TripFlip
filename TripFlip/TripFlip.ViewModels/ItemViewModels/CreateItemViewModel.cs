@@ -1,9 +1,7 @@
 ﻿namespace TripFlip.ViewModels.ItemViewModels
 {
-    public class ItemViewModel
+    public class CreateItemViewModel
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Comment { get; set; }
