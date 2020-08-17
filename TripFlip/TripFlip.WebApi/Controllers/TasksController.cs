@@ -56,7 +56,6 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskViewModel">new task data with existing task id</param>
         /// <returns>updated task</returns>
         [HttpPut]
-        [Route("update")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
