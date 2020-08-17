@@ -15,7 +15,7 @@ namespace TripFlip.Services.DTO
 
         public DateTimeOffset DateCreated { get; set; }
 
-        public bool isCompleted { get; set; }
+        public bool IsCompleted { get; set; }
 
         public int TaskListId { get; set; }
     }

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.Interfaces;
@@ -28,29 +26,26 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("/create")]
-        public async Task<IActionResult> CreateAsync(CreateTaskViewModel taskViewModel)
+        [Route("create")]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var taskDto = _mapper.Map<TaskDto>(taskViewModel);
-                await _taskService.CreateTaskAsync(taskDto);
+            var taskDto = _mapper.Map<TaskDto>(taskViewModel);
+            var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
-                return Ok(taskViewModel);
-            }
+            var taskToreturnViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
 
-            return Ok();
+            return Ok(taskToreturnViewModel);
         }
 
         /// <summary>
         /// Gets all Tasks.
         /// </summary>
         [HttpGet]
-        [Route("/all")]
-        public async Task<IActionResult> GetAsync()
+        [Route("{taskListId}/all")]
+        public async Task<IActionResult> GetAsync(int taskListId)
         {
-            var tasks = await _taskService.GetAllTasksAsync();
-            var taskViewModels = _mapper.Map<List<FullTaskViewModel>>(tasks);
+            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
 
             return Ok(taskViewModels);
         }

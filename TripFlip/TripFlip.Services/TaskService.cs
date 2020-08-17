@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -21,37 +23,43 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task CreateTaskAsync(TaskDto taskDto)
+        public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
+            taskEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.Tasks.AddAsync(taskEntity);
             await _flipTripDbContext.SaveChangesAsync();
+
+            var taskToReturn = _mapper.Map<TaskDto>(taskEntity);
+
+            return taskToReturn;
         }
 
         /// <inheritdoc />
-        public async Task DeleteTaskAsync(int id)
+        public async Task DeleteAsync(int id)
         {
         }
 
         /// <inheritdoc />
-        public async Task<TaskDto> GetTaskAsync(int id)
+        public async Task<TaskDto> GetByIdAsync(int id)
         {
             return null;
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllTasksAsync()
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
-            var tasks = await _flipTripDbContext.Tasks.AsNoTracking().ToListAsync();
+            var tasks = await _flipTripDbContext.Tasks.Where(t => t.TaskListId == id).AsNoTracking().ToListAsync();
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
 
             return taskDtos;
         }
 
         /// <inheritdoc />
-        public async Task UpdateTaskAsync(TaskDto taskDto)
+        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
         {
+            return null;
         }
     }
 }

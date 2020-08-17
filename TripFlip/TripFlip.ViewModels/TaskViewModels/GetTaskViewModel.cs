@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using TripFlip.ViewModels.Enums;
-using TripFlip.ViewModels.Attributes;
 
 namespace TripFlip.ViewModels.TaskViewModels
 {
-    public class FullTaskViewModel
+    public class GetTaskViewModel
     {
         public int Id { get; set; }
 
