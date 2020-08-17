@@ -58,7 +58,6 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="createTripViewModel">new trip data</param>
         /// <returns>created trip</returns>
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
