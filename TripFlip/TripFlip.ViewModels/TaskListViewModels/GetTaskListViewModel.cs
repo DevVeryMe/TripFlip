@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TripFlip.ViewModels.TaskListViewModels
 {
-    public class FullTaskListViewModel
+    public class GetTaskListViewModel
     {
         public int Id { get; set; }
 

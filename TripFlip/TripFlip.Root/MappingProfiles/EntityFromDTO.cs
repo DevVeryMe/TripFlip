@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.TaskDtos;
+using TripFlip.Services.DTO.TaskListDtos;
 using TripFlip.Services.DTO.TripDtos;
 
 namespace TripFlip.Root.MappingProfiles
@@ -14,6 +15,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateTripDto, TripEntity>();
 
             CreateMap<TaskDto, TaskEntity>();
+
+            CreateMap<TaskListDto, TaskListEntity>();
         }
     }
 }
