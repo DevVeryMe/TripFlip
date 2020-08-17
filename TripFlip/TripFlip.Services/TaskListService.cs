@@ -57,7 +57,20 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskListDto> UpdateAsync(TaskListDto taskListDto)
         {
-            return null;
+            var updatedTaskList = _mapper.Map<TaskListEntity>(taskListDto);
+            var taskLsitToUpdate = await _flipTripDbContext.TaskLists.FindAsync(updatedTaskList.Id);
+
+            if (taskLsitToUpdate is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            taskLsitToUpdate.Title = updatedTaskList.Title;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var taskListToReturn = _mapper.Map<TaskListDto>(taskLsitToUpdate);
+
+            return taskListToReturn;
         }
     }
 }

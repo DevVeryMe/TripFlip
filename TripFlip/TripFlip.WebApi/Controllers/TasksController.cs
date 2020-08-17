@@ -76,9 +76,10 @@ namespace TripFlip.WebApi.Controllers
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
 
             var taskDtoToReturn = await _taskService.UpdateAsync(taskDto);
-            taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDtoToReturn);
 
-            return Ok(taskViewModel);
+            var taskViewModelToReturn = _mapper.Map<UpdateTaskViewModel>(taskDtoToReturn);
+
+            return Ok(taskViewModelToReturn);
         }
 
         /// <summary>

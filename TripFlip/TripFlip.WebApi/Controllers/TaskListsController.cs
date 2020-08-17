@@ -49,5 +49,22 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(taskListViewModel);
         }
+
+        /// <summary>
+        /// Updates existing TaskList.
+        /// </summary>
+        /// <param name="taskListViewModel">new TaskList data with existing TaskList id</param>
+        /// <returns>updated TaskList</returns>
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateTaskListViewModel taskListViewModel)
+        {
+            var taskListDto = _mapper.Map<TaskListDto>(taskListViewModel);
+
+            var taskDtoToReturn = await _taskListService.UpdateAsync(taskListDto);
+
+            var taskListViewModelToReturn = _mapper.Map<UpdateTaskListViewModel>(taskDtoToReturn);
+
+            return Ok(taskListViewModelToReturn);
+        }
     }
 }
