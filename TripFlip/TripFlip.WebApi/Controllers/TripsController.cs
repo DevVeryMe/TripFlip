@@ -87,7 +87,7 @@ namespace TripFlip.WebApi.Controllers
         {
             await _tripService.DeleteAsync(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }
