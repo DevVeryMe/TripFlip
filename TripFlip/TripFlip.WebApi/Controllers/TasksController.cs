@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.Interfaces;
@@ -50,7 +48,7 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> GetAsync()
         {
             var tasks = await _taskService.GetAllAsync();
-            var taskViewModels = _mapper.Map<List<FullTaskViewModel>>(tasks);
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
 
             return Ok(taskViewModels);
         }
@@ -58,20 +56,24 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskViewModel">new task data</param>
+        /// <param name="taskViewModel">new task data with existing task id</param>
         /// <param name="id">task to update id</param>
         /// <returns>updated task</returns>
         [HttpPut]
-        [Route("{id}/update")]
-        public async Task<IActionResult> Update(int id, [FromBody] FullTaskViewModel taskViewModel)
+        [Route("{/update")]
+        public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel taskViewModel)
         {
-            var taskDto = _mapper.Map<TaskDto>(taskViewModel);
-            taskDto.Id = id;
+            if (ModelState.IsValid)
+            {
+                var taskDto = _mapper.Map<TaskDto>(taskViewModel);
 
-            taskDto = await _taskService.UpdateAsync(taskDto);
-            taskViewModel = _mapper.Map<FullTaskViewModel>(taskDto);
+                taskDto = await _taskService.UpdateAsync(taskDto);
+                taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDto);
 
-            return Ok(taskViewModel);
+                return Ok(taskViewModel);
+            }
+
+            return Ok();
         }
     }
 }

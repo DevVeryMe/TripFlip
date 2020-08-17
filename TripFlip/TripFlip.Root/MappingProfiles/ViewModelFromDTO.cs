@@ -12,7 +12,9 @@ namespace TripFlip.Root.MappingProfiles
         {
             CreateMap<TripDto, TripViewModel>();
 
-            CreateMap<TaskDto, FullTaskViewModel>();
+            CreateMap<TaskDto, GetTaskViewModel>();
+
+            CreateMap<TaskDto, UpdateTaskViewModel>();
         }
     }
 }
