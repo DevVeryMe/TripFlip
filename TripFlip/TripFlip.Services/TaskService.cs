@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -20,34 +21,40 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task CreateTaskAsync(TaskDto taskDto)
+        public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
+            taskEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.Tasks.AddAsync(taskEntity);
             await _flipTripDbContext.SaveChangesAsync();
+
+            var taskToReturn = _mapper.Map<TaskDto>(taskEntity);
+
+            return taskToReturn;
         }
 
         /// <inheritdoc />
-        public async Task DeleteTaskAsync(int id)
+        public async Task DeleteAsync(int id)
         {
         }
 
         /// <inheritdoc />
-        public async Task<TaskDto> GetTaskAsync(int id)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllTasksAsync()
+        public async Task<TaskDto> GetByIdAsync(int id)
         {
             return null;
         }
 
         /// <inheritdoc />
-        public async Task UpdateTaskAsync(TaskDto taskDto)
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
+            return null;
+        }
+
+        /// <inheritdoc />
+        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
+        {
+            return null;
         }
     }
 }

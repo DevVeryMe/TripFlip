@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.Interfaces;
-using TripFlip.ViewModels;
+using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -28,13 +28,15 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("/create")]
-        public async Task<IActionResult> CreateAsync(CreateTaskViewModel taskViewModel)
+        [Route("create")]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
-            await _taskService.CreateTaskAsync(taskDto);
+            var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
-            return Ok(taskDto);
+            var taskToreturnViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
+
+            return Ok(taskToreturnViewModel);
         }
     }
 }

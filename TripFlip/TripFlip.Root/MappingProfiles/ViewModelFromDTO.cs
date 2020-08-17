@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TripFlip.Services.DTO;
 using TripFlip.ViewModels;
+using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {
@@ -9,6 +10,8 @@ namespace TripFlip.Root.MappingProfiles
         public ViewModelFromDto()
         {
             CreateMap<TripDto, TripViewModel>();
+
+            CreateMap<TaskDto, GetTaskViewModel>();
         }
     }
 }
