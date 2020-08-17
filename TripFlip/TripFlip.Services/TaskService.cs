@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -50,7 +51,7 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<TaskDto> GetAsync(int id)
+        public async Task<TaskDto> GetByIdAsync(int id)
         {
             var task = await _flipTripDbContext.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
 
@@ -65,9 +66,9 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllAsync()
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
-            var tasks = await _flipTripDbContext.Tasks.AsNoTracking().ToListAsync();
+            var tasks = await _flipTripDbContext.Tasks.Where(t => t.TaskListId == id).AsNoTracking().ToListAsync();
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
 
             return taskDtos;
@@ -86,7 +87,7 @@ namespace TripFlip.Services
 
             taskToUpdate.Description = updatedTask.Description;
             taskToUpdate.PriorityLevel = updatedTask.PriorityLevel;
-            taskToUpdate.isCompleted = updatedTask.isCompleted;
+            taskToUpdate.IsCompleted = updatedTask.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
             var taskToReturn = _mapper.Map<TaskDto>(taskToUpdate);
