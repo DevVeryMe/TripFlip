@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using TripFlip.ViewModels.Enums;
-using TripFlip.ViewModels.Attributes;
 
 namespace TripFlip.ViewModels.TaskViewModels
 {

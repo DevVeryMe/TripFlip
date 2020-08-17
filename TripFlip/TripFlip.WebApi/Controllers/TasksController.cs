@@ -26,7 +26,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
@@ -38,14 +37,15 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Tasks.
+        /// Gets all Tasks from certain task list.
         /// </summary>
+        /// <param name="taskListId">task list id</param>
         [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetAllAsync()
+        [Route("/api/TaskLists/{taskListId}/Tasks")]
+        public async Task<IActionResult> GetAsync(int taskListId)
         {
-            var tasks = await _taskService.GetAllAsync();
-            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
+            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
 
             return Ok(taskViewModels);
         }
@@ -58,7 +58,7 @@ namespace TripFlip.WebApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var task = await _taskService.GetAsync(id);
+            var task = await _taskService.GetByIdAsync(id);
             var taskViewModel = _mapper.Map<GetTaskViewModel>(task);
 
             return Ok(taskViewModel);
@@ -68,16 +68,14 @@ namespace TripFlip.WebApi.Controllers
         /// Updates existing task.
         /// </summary>
         /// <param name="taskViewModel">new task data with existing task id</param>
-        /// <param name="id">task to update id</param>
         /// <returns>updated task</returns>
         [HttpPut]
-        [Route("update")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
 
-            taskDto = await _taskService.UpdateAsync(taskDto);
-            taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDto);
+            var taskDtoToReturn = await _taskService.UpdateAsync(taskDto);
+            taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDtoToReturn);
 
             return Ok(taskViewModel);
         }
@@ -87,7 +85,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">task to delete id</param>
         [HttpDelete]
-        [Route("delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _taskService.DeleteAsync(id);
