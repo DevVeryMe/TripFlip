@@ -86,8 +86,8 @@ namespace TripFlip.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("/trips/delete-trip")]
-        public async Task<IActionResult> Delete(
+        [Route("/delete")]
+        public async Task<IActionResult> DeleteAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
             await _tripService.DeleteAsync(id);
