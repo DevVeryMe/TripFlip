@@ -10,6 +10,8 @@ namespace TripFlip.Root.MappingProfiles
         public EntityToDto()
         {
             CreateMap<TripEntity, TripDto>();
+
+            CreateMap<TaskEntity, TaskDto>();
         }
     }
 }
