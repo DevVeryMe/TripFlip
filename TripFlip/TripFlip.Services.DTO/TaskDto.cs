@@ -13,8 +13,6 @@ namespace TripFlip.Services.DTO
 
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
-
         public bool isCompleted { get; set; }
 
         public int TaskListId { get; set; }
