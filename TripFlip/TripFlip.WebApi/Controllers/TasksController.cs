@@ -71,7 +71,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">task to delete id</param>
         [HttpDelete]
-        [Route("/delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _taskService.DeleteAsync(id);
