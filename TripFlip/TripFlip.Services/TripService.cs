@@ -51,7 +51,7 @@ namespace TripFlip.Services
             var trip = _mapper.Map<TripEntity>(createTripDto);
             trip.DateCreated = DateTimeOffset.Now;
 
-            _flipTripDbContext.Add(trip);
+            await _flipTripDbContext.AddAsync(trip);
             await _flipTripDbContext.SaveChangesAsync();
             var tripDto = _mapper.Map<TripDto>(trip);
 
