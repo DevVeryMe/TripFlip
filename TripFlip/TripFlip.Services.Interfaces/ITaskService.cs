@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 
@@ -8,15 +7,16 @@ namespace TripFlip.Services.Interfaces
     public interface ITaskService
     {
         /// <summary>
-        /// Gets all tasks.
+        /// Gets all tasks from certain task list.
         /// </summary>
-        Task<IEnumerable<TaskDto>> GetAllAsync();
+        /// <param name="id">task list id</param>
+        Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id);
 
         /// <summary>
         /// Gets task by id.
         /// </summary>
         /// <param name="id">task id</param>
-        Task<TaskDto> GetAsync(int id);
+        Task<TaskDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates new task.

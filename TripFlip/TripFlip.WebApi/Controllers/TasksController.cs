@@ -26,29 +26,27 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("/create")]
+        [Route("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var taskDto = _mapper.Map<TaskDto>(taskViewModel);
-                await _taskService.CreateAsync(taskDto);
+            var taskDto = _mapper.Map<TaskDto>(taskViewModel);
+            var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
-                return Ok(taskViewModel);
-            }
+            var taskToreturnViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
 
-            return Ok();
+            return Ok(taskToreturnViewModel);
         }
 
         /// <summary>
-        /// Gets all Tasks.
+        /// Gets all Tasks from certain task list.
         /// </summary>
+        /// <param name="taskListId">task list id</param>
         [HttpGet]
-        [Route("/all")]
-        public async Task<IActionResult> GetAsync()
+        [Route("{taskListId}/all")]
+        public async Task<IActionResult> GetAsync(int taskListId)
         {
-            var tasks = await _taskService.GetAllAsync();
-            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(tasks);
+            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
 
             return Ok(taskViewModels);
         }
@@ -57,23 +55,17 @@ namespace TripFlip.WebApi.Controllers
         /// Updates existing task.
         /// </summary>
         /// <param name="taskViewModel">new task data with existing task id</param>
-        /// <param name="id">task to update id</param>
         /// <returns>updated task</returns>
         [HttpPut]
-        [Route("{/update")]
+        [Route("update")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel taskViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var taskDto = _mapper.Map<TaskDto>(taskViewModel);
+            var taskDto = _mapper.Map<TaskDto>(taskViewModel);
 
-                taskDto = await _taskService.UpdateAsync(taskDto);
-                taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDto);
+            var taskDtoToReturn = await _taskService.UpdateAsync(taskDto);
+            taskViewModel = _mapper.Map<UpdateTaskViewModel>(taskDtoToReturn);
 
-                return Ok(taskViewModel);
-            }
-
-            return Ok();
+            return Ok(taskViewModel);
         }
 
         /// <summary>
