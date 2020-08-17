@@ -1,6 +1,4 @@
-﻿using TripFlip.Services.DTO.Enums;
-
-namespace TripFlip.Services.DTO.ItemDtos
+﻿namespace TripFlip.Services.DTO.ItemDtos
 {
     public class CreateItemDto
     {
@@ -9,8 +7,6 @@ namespace TripFlip.Services.DTO.ItemDtos
         public string Comment { get; set; }
 
         public string Quantity { get; set; }
-
-        public bool IsCompleted { get; set; }
 
         public int ItemListId { get; set; }
     }
