@@ -11,6 +11,7 @@ using TripFlip.Services.Interfaces.TripInterfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TripService : ITripService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
@@ -23,7 +24,6 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
         public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
         {
             var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
@@ -32,7 +32,6 @@ namespace TripFlip.Services
             return tripDtos;
         }
 
-        /// <inheritdoc />
         public async Task<TripDto> GetAsync(int id)
         {
             var trip = await _flipTripDbContext.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
@@ -47,20 +46,18 @@ namespace TripFlip.Services
             return tripDto;
         }
 
-        /// <inheritdoc />
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var trip = _mapper.Map<TripEntity>(createTripDto);
             trip.DateCreated = DateTimeOffset.Now;
 
-            _flipTripDbContext.Add(trip);
+            await _flipTripDbContext.AddAsync(trip);
             await _flipTripDbContext.SaveChangesAsync();
             var tripDto = _mapper.Map<TripDto>(trip);
 
             return tripDto;
         }
 
-        /// <inheritdoc />
         public async Task<TripDto> UpdateAsync(TripDto tripDto)
         {
             var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
@@ -81,7 +78,6 @@ namespace TripFlip.Services
             return newTripDto;
         }
 
-        /// <inheritdoc />
         public async Task DeleteAsync(int id)
         {
             var tripToDelete = await _flipTripDbContext.Trips.FindAsync(id);
