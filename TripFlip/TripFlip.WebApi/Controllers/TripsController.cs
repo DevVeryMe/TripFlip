@@ -29,7 +29,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        [Route("/trips")]
+        [Route("/all")]
         public async Task<IActionResult> GetAsync()
         {
             var trips = await _tripService.GetAllTripsAsync();
@@ -43,7 +43,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">trip id</param>
         [HttpGet]
-        [Route("/trips/{id}")]
+        [Route("/{id}")]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
@@ -59,8 +59,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="createTripViewModel">new trip data</param>
         /// <returns>created trip</returns>
         [HttpPost]
-        [Route("/trips/add-trip")]
-        public async Task<IActionResult> Create([FromBody] CreateTripViewModel createTripViewModel)
+        [Route("/create")]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
             var tripDto = await _tripService.CreateAsync(createTripDto);
@@ -75,8 +75,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="tripViewModel">new trip data with existing trip id</param>
         /// <returns>updated trip</returns>
         [HttpPut]
-        [Route("/trips/update-trip")]
-        public async Task<IActionResult> Update([FromBody] TripViewModel tripViewModel)
+        [Route("/update")]
+        public async Task<IActionResult> UpdateAsync([FromBody] TripViewModel tripViewModel)
         {
             var tripDto = _mapper.Map<TripDto>(tripViewModel);
             tripDto = await _tripService.UpdateAsync(tripDto);
@@ -86,8 +86,8 @@ namespace TripFlip.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("/trips/delete-trip")]
-        public async Task<IActionResult> Delete(
+        [Route("/delete")]
+        public async Task<IActionResult> DeleteAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
             await _tripService.DeleteAsync(id);
