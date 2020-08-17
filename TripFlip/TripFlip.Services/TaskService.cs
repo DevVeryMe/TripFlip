@@ -38,6 +38,15 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task DeleteAsync(int id)
         {
+            var taskToDelete = await _flipTripDbContext.Tasks.FindAsync(id);
+
+            if (taskToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            _flipTripDbContext.Tasks.Remove(taskToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
 
         /// <inheritdoc />
