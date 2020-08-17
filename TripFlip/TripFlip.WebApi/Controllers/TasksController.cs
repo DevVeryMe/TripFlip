@@ -26,7 +26,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("Create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
@@ -71,7 +70,6 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskViewModel">new task data with existing task id</param>
         /// <returns>updated task</returns>
         [HttpPut]
-        [Route("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
@@ -87,7 +85,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">task to delete id</param>
         [HttpDelete]
-        [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await _taskService.DeleteAsync(id);
