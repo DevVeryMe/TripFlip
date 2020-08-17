@@ -26,7 +26,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        [Route("create")]
+        [Route("Create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel taskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(taskViewModel);
@@ -38,10 +38,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Tasks.
+        /// Gets all Tasks from certain task list.
         /// </summary>
         [HttpGet]
-        [Route("{taskListId}/all")]
+        [Route("/TaskLists/{taskListId}/Tasks")]
         public async Task<IActionResult> GetAsync(int taskListId)
         {
             var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
