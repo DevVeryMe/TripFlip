@@ -2,7 +2,7 @@
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.DTO;
-using TripFlip.ViewModels;
+using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {
