@@ -9,7 +9,7 @@ using TripFlip.ViewModels.ItemViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/item-lists/{itemListId}/[controller]")]
+    [Route("api/items")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
@@ -30,12 +30,9 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="createItemViewModel">new item data</param>
         /// <returns>created item</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([Range(1, int.MaxValue, 
-                ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId, 
-            [FromBody] CreateItemViewModel createItemViewModel)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
-            createItemDto.ItemListId = itemListId;
 
             var itemDto = await _itemService.CreateAsync(createItemDto);
             var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
