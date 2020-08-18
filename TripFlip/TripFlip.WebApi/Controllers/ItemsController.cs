@@ -63,6 +63,7 @@ namespace TripFlip.WebApi.Controllers
         {
             var itemDtoToUpdate = _mapper.Map<ItemDto>(updateItemViewModel);
             itemDtoToUpdate = await _itemService.UpdateAsync(itemDtoToUpdate);
+            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToUpdate);
 
             return Ok(itemDtoToUpdate);
         }
