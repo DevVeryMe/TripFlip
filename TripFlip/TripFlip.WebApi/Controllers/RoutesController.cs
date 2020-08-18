@@ -27,11 +27,6 @@ namespace TripFlip.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateRouteViewModel createRouteViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var routeDto = _mapper.Map<RouteDto>(createRouteViewModel);
             
             var resultDto = await _routeService.CreateAsync(routeDto);
