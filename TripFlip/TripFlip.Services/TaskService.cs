@@ -23,6 +23,13 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
+            var taskList = _flipTripDbContext.TaskLists.Find(taskDto.TaskListId);
+
+            if (taskList == null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskToNotExistingTaskList);
+            }
+
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
             taskEntity.DateCreated = DateTimeOffset.Now;
 
@@ -32,29 +39,6 @@ namespace TripFlip.Services
             var taskToReturn = _mapper.Map<TaskDto>(taskEntity);
 
             return taskToReturn;
-        }
-
-        /// <inheritdoc />
-        public async Task DeleteAsync(int id)
-        {
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> GetByIdAsync(int id)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
-        {
-            return null;
         }
     }
 }
