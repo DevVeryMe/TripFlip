@@ -49,7 +49,6 @@ namespace TripFlip.Services
             return taskToReturn;
         }
 
-        /// <inheritdoc />
         public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
             var taskList = _flipTripDbContext.TaskLists.AsNoTracking().Single(t => t.Id == id);

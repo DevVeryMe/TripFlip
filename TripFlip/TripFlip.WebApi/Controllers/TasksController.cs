@@ -37,7 +37,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Tasks from certain task list.
+        /// Gets all Tasks from a certain task list.
         /// </summary>
         [HttpGet]
         [Route("/api/TaskLists/{taskListId}/Tasks")]
