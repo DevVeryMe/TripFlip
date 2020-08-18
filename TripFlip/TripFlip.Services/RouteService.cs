@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO;
@@ -24,6 +25,15 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
+            // check by the given TripId if trip exists
+            var tripEntityCount = await _flipTripDbContext.Trips
+                .AsNoTracking()
+                .CountAsync(tripEntity => routeDto.TripId == tripEntity.Id);
+            if (tripEntityCount == 0)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
             routeDto.DateCreated = DateTimeOffset.Now;
 
             RouteEntity routeEntity = _mapper.Map<RouteEntity>(routeDto);

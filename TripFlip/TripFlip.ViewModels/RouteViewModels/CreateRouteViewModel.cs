@@ -13,8 +13,8 @@ namespace TripFlip.ViewModels.RouteViewModels
         [StringLength(100, ErrorMessage = ErrorConstants.TitleLengthError)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredFieldIdError)]
-        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdFieldLessThanOneError)]
+        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int TripId { get; set; }
     }
 }
