@@ -11,21 +11,27 @@ using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TaskService : ITaskService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Constructor. Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
+        /// <param name="mapper">IMapper instance</param>
         public TaskService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
-            var taskList = _flipTripDbContext.TaskLists.AsNoTracking().Single(t => t.Id == taskDto.TaskListId);
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
 
             if (taskList is null)
             {
