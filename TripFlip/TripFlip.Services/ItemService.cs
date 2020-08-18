@@ -89,7 +89,7 @@ namespace TripFlip.Services
 
             if (item is null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
             var itemDtoToReturn = _mapper.Map<ItemDto>(item);
