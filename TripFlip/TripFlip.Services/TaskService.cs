@@ -25,6 +25,13 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
+            var taskList = await _flipTripDbContext.TaskLists.FindAsync(taskDto.TaskListId);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskToNotExistingTaskList);
+            }
+
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
             taskEntity.DateCreated = DateTimeOffset.Now;
 
