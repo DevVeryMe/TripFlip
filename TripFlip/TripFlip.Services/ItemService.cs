@@ -68,7 +68,7 @@ namespace TripFlip.Services
 
             if (itemToUpdate is null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
             itemToUpdate.Title = itemDto.Title;
