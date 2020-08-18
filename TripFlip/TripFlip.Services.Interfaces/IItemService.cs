@@ -19,5 +19,12 @@ namespace TripFlip.Services.Interfaces
         /// <param name="listId">id of item list</param>
         /// <returns>IEnumerable with items</returns>
         Task<IEnumerable<ItemDto>> GetAllAsync(int listId);
+
+        /// <summary>
+        /// Updates existing item.
+        /// </summary>
+        /// <param name="itemDto">item data</param>
+        /// <returns>updated item</returns>
+        Task<ItemDto> UpdateAsync(ItemDto itemDto);
     }
 }
