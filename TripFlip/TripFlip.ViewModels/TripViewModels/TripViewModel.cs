@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.Attributes;
 
-namespace TripFlip.ViewModels
+namespace TripFlip.ViewModels.TripViewModels
 {
     public class TripViewModel
     {
@@ -21,7 +21,7 @@ namespace TripFlip.ViewModels
         [ValidateLaterThanNow(ErrorMessage = ErrorConstants.StartDateEarlierThanNowError)]
         public DateTimeOffset? StartsAt { get; set; }
 
-        [ValidateLaterThanAttribute("StartsAt", ErrorMessage = ErrorConstants.EndDateEarlierThanStartDateError)]
+        [ValidateLaterThan("StartsAt", ErrorMessage = ErrorConstants.EndDateEarlierThanStartDateError)]
         [ValidateLaterThanNow(ErrorMessage = ErrorConstants.EndDateEarlierThanNowError)]
         public DateTimeOffset? EndsAt { get; set; }
     }

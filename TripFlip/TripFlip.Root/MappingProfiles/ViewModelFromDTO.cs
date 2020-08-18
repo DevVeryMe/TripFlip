@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TripDtos;
 using TripFlip.ViewModels;
+using TripFlip.ViewModels.TripViewModels;
+using TripFlip.ViewModels.TaskViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 
 namespace TripFlip.Root.MappingProfiles
@@ -11,7 +14,10 @@ namespace TripFlip.Root.MappingProfiles
         {
             CreateMap<TripDto, TripViewModel>();
 
+            CreateMap<TaskDto, GetTaskViewModel>();
+
             CreateMap<RouteDto, CreateRouteViewModel>();
+
             CreateMap<RouteDto, ResultRouteViewModel>();
         }
     }
