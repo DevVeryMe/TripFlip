@@ -45,7 +45,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="itemListId">item list id</param>
         /// <returns>collection of items</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([Range(1, int.MaxValue, 
+        public async Task<IActionResult> GetAllByItemListIdAsync([Range(1, int.MaxValue, 
             ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId)
         {
             var items = await _itemService.GetAllAsync(itemListId);
