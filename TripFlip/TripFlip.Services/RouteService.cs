@@ -46,6 +46,12 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> UpdateAsync(RouteDto routeDto)
         {
+            bool routeExists = await RouteExistsAsync(routeDto.Id);
+            if (!routeExists)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+
             bool tripExists = await TripExistsAsync(routeDto.TripId);
             if (!tripExists)
             {
@@ -80,6 +86,15 @@ namespace TripFlip.Services
                 .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);
 
             return tripEntity != null;
+        }
+
+        async Task<bool> RouteExistsAsync(int routeId)
+        {
+            var routeEntity = await _flipTripDbContext.Routes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
+
+            return routeEntity != null;
         }
     }
 }
