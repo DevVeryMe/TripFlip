@@ -14,7 +14,7 @@ namespace TripFlip.ViewModels.ItemViewModels
         [StringLength(50, ErrorMessage = ErrorConstants.QuantityLengthError)]
         public string Quantity { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.ItemWithoutItemListError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int ItemListId { get; set; }
     }
