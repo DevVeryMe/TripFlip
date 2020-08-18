@@ -65,5 +65,20 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModel);
         }
+
+        /// <summary>
+        /// Updates existing trip.
+        /// </summary>
+        /// <param name="tripViewModel">new trip data with existing trip id</param>
+        /// <returns>updated trip</returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync([FromBody] TripViewModel tripViewModel)
+        {
+            var tripDto = _mapper.Map<TripDto>(tripViewModel);
+            tripDto = await _tripService.UpdateAsync(tripDto);
+            tripViewModel = _mapper.Map<TripViewModel>(tripDto);
+
+            return Ok(tripViewModel);
+        }
     }
 }
