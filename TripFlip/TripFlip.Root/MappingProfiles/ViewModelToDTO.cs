@@ -10,6 +10,8 @@ namespace TripFlip.Root.MappingProfiles
         public ViewModelToDto()
         {
             CreateMap<CreateRouteViewModel, RouteDto>();
+            CreateMap<UpdateRouteViewModel, RouteDto>();
+            CreateMap<ResultRouteViewModel, RouteDto>();
         }
     }
 }

@@ -35,5 +35,21 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(resultViewModel);
         }
+
+        /// <summary>
+        /// Updates Route with the given <see cref="UpdateRouteViewModel"/> object
+        /// </summary>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the updated database entry</returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateRouteViewModel updateRouteViewModel)
+        {
+            var routeDto = _mapper.Map<RouteDto>(updateRouteViewModel);
+
+            var resultDto = await _routeService.UpdateAsync(routeDto);
+
+            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+
+            return Ok(resultViewModel);
+        }
     }
 }
