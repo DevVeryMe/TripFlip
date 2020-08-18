@@ -6,6 +6,7 @@ using TripFlip.Root.MappingProfiles;
 using TripFlip.Services;
 using TripFlip.Services.Interfaces;
 using TripFlip.DataAccess;
+using TripFlip.Services.Interfaces.TripInterfaces;
 
 namespace TripFlip.Root.ConfigureServicesExtension
 {
@@ -13,19 +14,10 @@ namespace TripFlip.Root.ConfigureServicesExtension
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.ConfigureMapper();
             services.AddTransient<IGreetingService, GreetingService>();
+            services.AddTransient<ITripService, TripService>();
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile<EntityToDTO>();
-                mc.AddProfile<EntityFromDTO>();
-                mc.AddProfile<ViewModelToDTO>();
-                mc.AddProfile<ViewModelFromDTO>();
-            });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            
             services.AddDbContext<FlipTripDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
