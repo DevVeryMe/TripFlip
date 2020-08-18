@@ -96,5 +96,18 @@ namespace TripFlip.Services
 
             return itemDtoToReturn;
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var itemToDelete = await _flipTripDbContext.Items.FindAsync(id);
+
+            if (itemToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
+            }
+
+            _flipTripDbContext.Remove(itemToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
+        }
     }
 }
