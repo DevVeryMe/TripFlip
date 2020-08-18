@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -23,7 +25,7 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
-            var taskList = await _flipTripDbContext.TaskLists.FindAsync(taskDto.TaskListId);
+            var taskList = _flipTripDbContext.TaskLists.AsNoTracking().Single(t => t.Id == taskDto.TaskListId);
 
             if (taskList is null)
             {
