@@ -78,7 +78,10 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> GetAsync(int routeId)
         {
-            RouteEntity routeEntity = await GetRouteByIdAsync(routeId);
+            var routeEntity = await _flipTripDbContext
+                .Routes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
 
             if (routeEntity == null)
             {
@@ -88,18 +91,6 @@ namespace TripFlip.Services
             var routeDto = _mapper.Map<RouteDto>(routeEntity);
 
             return routeDto;
-        }
-
-        /// <summary>
-        /// Helper method that makes a database query and returns Route by the given Id
-        /// </summary>
-        async Task<RouteEntity> GetRouteByIdAsync(int routeId)
-        {
-            RouteEntity routeEntity = await _flipTripDbContext.Routes
-                .AsNoTracking()
-                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
-
-            return routeEntity;
         }
 
         /// <summary>
