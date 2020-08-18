@@ -1,13 +1,15 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.ItemViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/items")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
@@ -21,10 +23,16 @@ namespace TripFlip.WebApi.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Creates new item in a certain item list.
+        /// </summary>
+        /// <param name="createItemViewModel">new item data</param>
+        /// <returns>created item</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
+
             var itemDto = await _itemService.CreateAsync(createItemDto);
             var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
 
