@@ -35,6 +35,7 @@ namespace TripFlip.Services
 
             return tripDtos;
         }
+
         public async Task<TripDto> GetAsync(int id)
         {
             var trip = await _flipTripDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
@@ -80,6 +81,7 @@ namespace TripFlip.Services
 
             return newTripDto;
         }
+
         public async Task DeleteAsync(int id)
         {
             var tripToDelete = await _flipTripDbContext.Trips.FindAsync(id);
