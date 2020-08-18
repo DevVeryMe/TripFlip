@@ -15,7 +15,11 @@ namespace TripFlip.Root.ConfigureServicesExtension
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureMapper();
+
+            services.AddTransient<ITaskService, TaskService>();
+
             services.AddTransient<ITripService, TripService>();
+
             services.AddTransient<IRouteService, RouteService>();
 
             

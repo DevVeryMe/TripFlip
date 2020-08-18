@@ -10,6 +10,8 @@ namespace TripFlip.Root.MappingProfiles
         {
             CreateMap<TripEntity, TripDto>();
 
+            CreateMap<TaskEntity, TaskDto>();
+
             CreateMap<RouteEntity, RouteDto>();
         }
     }

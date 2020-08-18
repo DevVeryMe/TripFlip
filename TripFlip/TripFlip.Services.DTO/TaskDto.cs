@@ -1,9 +1,11 @@
 ﻿using System;
-using TripFlip.Domain.Entities.Enums;
+using System.Collections.Generic;
+using System.Text;
+using TripFlip.Services.DTO.Enums;
 
-namespace TripFlip.Domain.Entities
+namespace TripFlip.Services.DTO
 {
-    public class TaskEntity
+    public class TaskDto
     {
         public int Id { get; set; }
 
@@ -16,7 +18,5 @@ namespace TripFlip.Domain.Entities
         public bool IsCompleted { get; set; }
 
         public int TaskListId { get; set; }
-
-        public TaskListEntity TaskList { get; set; }
     }
 }
