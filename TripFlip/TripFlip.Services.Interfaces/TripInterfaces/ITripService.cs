@@ -10,6 +10,11 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Gets all trips.
         /// </summary>
         Task<IEnumerable<TripDto>>GetAllTripsAsync();
+
+        /// <summary>
+        /// Gets trip by id.
+        /// </summary>
+        /// <param name="id">trip id</param>
         Task<TripDto> GetAsync(int id);
     }
 }

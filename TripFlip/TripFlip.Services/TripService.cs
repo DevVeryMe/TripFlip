@@ -42,20 +42,5 @@ namespace TripFlip.Services
 
             return tripDto;
         }
-
-        public void CreateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void DeleteTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
