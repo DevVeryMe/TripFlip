@@ -34,6 +34,7 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModels);
         }
+
         /// <summary>
         /// Gets trip by id.
         /// </summary>
