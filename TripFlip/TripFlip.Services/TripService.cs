@@ -2,11 +2,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 
@@ -37,6 +35,7 @@ namespace TripFlip.Services
 
             return tripDtos;
         }
+
         public async Task<TripDto> GetAsync(int id)
         {
             var trip = await _flipTripDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
@@ -81,6 +80,19 @@ namespace TripFlip.Services
             var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
 
             return newTripDto;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var tripToDelete = await _flipTripDbContext.Trips.FindAsync(id);
+
+            if (tripToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
+            _flipTripDbContext.Remove(tripToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
     }
 }
