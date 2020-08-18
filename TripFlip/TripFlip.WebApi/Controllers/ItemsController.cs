@@ -26,7 +26,6 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new item in a certain item list.
         /// </summary>
-        /// <param name="itemListId">item list id</param>
         /// <param name="createItemViewModel">new item data</param>
         /// <returns>created item</returns>
         [HttpPost]
