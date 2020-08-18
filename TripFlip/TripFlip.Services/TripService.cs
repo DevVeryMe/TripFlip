@@ -21,32 +21,12 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-                public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
+        public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
         {
             var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
             var tripDtos = _mapper.Map<List<TripDto>>(trips);
 
             return tripDtos;
-        }
-
-        public TripDto GetTrip(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CreateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void DeleteTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

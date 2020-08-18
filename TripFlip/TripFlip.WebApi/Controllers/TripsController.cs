@@ -32,7 +32,5 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModels);
         }
-
-        
     }
 }
