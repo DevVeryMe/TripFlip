@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO;
@@ -91,6 +92,30 @@ namespace TripFlip.Services
             var routeDto = _mapper.Map<RouteDto>(routeEntity);
 
             return routeDto;
+        }
+
+        public async Task<List<RouteDto>> GetAllByTripAsync(int tripId)
+        {
+            bool tripExists = await TripExistsAsync(tripId);
+            if (!tripExists)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
+            var routeEntityList = await _flipTripDbContext
+                .Routes
+                .AsNoTracking()
+                .Where(routeEntity => routeEntity.TripId == tripId)
+                .ToListAsync();
+
+            if (routeEntityList.Count == 0)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+
+            var routeDtoList = _mapper.Map<List<RouteDto>>(routeEntityList);
+
+            return routeDtoList;
         }
 
         /// <summary>

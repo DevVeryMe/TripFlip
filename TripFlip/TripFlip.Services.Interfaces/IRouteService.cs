@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 
 namespace TripFlip.Services.Interfaces
@@ -25,5 +26,11 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <returns>object that represents the database entry with the given Id</returns>
         Task<RouteDto> GetAsync(int routeId);
+
+        /// <summary>
+        /// Returns all Routes with the given Trip Id. Makes asynchronous database query.
+        /// </summary>
+        /// <returns>object that represents the list of database entries with the given Trip Id</returns>
+        Task<List<RouteDto>> GetAllByTripAsync(int tripId);
     }
 }
