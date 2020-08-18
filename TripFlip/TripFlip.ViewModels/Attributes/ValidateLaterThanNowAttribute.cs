@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 namespace TripFlip.ViewModels.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    class ValidateGreaterThanNowAttribute : ValidationAttribute
+    class ValidateLaterThanNowAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {
-            DateTimeOffset? dateTimeOffset = value as DateTimeOffset?;
-            var todayDateTimeOffset = new DateTimeOffset(DateTime.Now);
+            DateTimeOffset? comparingDateTime = value as DateTimeOffset?;
+            var nowDateTime = new DateTimeOffset(DateTime.Now);
             var isValid = true;
 
-            if (dateTimeOffset != null)
+            if (comparingDateTime != null)
             {
-                isValid = dateTimeOffset > todayDateTimeOffset;
+                isValid = comparingDateTime > nowDateTime;
             }
 
             return isValid;

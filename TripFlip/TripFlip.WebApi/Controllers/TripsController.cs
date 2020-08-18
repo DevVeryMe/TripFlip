@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TripFlip.Services.DTO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -24,18 +22,15 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all trips from database mapping them to TripViewModel.
+        /// Gets all trips.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            var trips = _tripService.GetAllTrips();
+            var trips = await _tripService.GetAllTripsAsync();
             var tripViewModels = _mapper.Map<List<TripViewModel>>(trips);
 
             return Ok(tripViewModels);
         }
-
-        
     }
 }
