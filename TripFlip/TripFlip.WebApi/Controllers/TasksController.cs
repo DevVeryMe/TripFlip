@@ -42,7 +42,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all Tasks from a certain task list.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAsync(int taskListId)
+        public async Task<IActionResult> GetAllByTaskListIdAsync(int taskListId)
         {
             var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
             var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
