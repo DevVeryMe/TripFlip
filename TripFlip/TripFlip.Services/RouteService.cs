@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO;
@@ -23,7 +24,9 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
-            RouteEntity routeEntity = EntityFromDto(routeDto);
+            routeDto.DateCreated = DateTimeOffset.Now;
+
+            RouteEntity routeEntity = _mapper.Map<RouteEntity>(routeDto);
 
             var entityEntry = _flipTripDbContext.Routes.Add(routeEntity);
             await _flipTripDbContext.SaveChangesAsync();
@@ -31,11 +34,6 @@ namespace TripFlip.Services
             routeDto.Id = entityEntry.Entity.Id;
 
             return routeDto;
-        }
-
-        RouteEntity EntityFromDto(RouteDto routeDto)
-        {
-            return _mapper.Map<RouteEntity>(routeDto);
         }
     }
 }

@@ -13,9 +13,6 @@ namespace TripFlip.ViewModels.RouteViewModels
         [StringLength(100, ErrorMessage = ErrorConstants.TitleLengthError)]
         public string Title { get; set; }
 
-        [DateIsLessThanNow (ErrorMessage = ErrorConstants.DateIsGreaterThanNowError)]
-        public DateTimeOffset DateCreated { get; set; }
-
         [Required(ErrorMessage = ErrorConstants.RequiredFieldIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdFieldLessThanOneError)]
         public int TripId { get; set; }
