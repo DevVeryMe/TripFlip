@@ -22,14 +22,17 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates new item.
+        /// Creates new item in a certain item list.
         /// </summary>
+        /// <param name="itemListId">item list id</param>
         /// <param name="createItemViewModel">new item data</param>
         /// <returns>created item</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
+        public async Task<IActionResult> CreateAsync(int itemListId, [FromBody] CreateItemViewModel createItemViewModel)
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
+            createItemDto.ItemListId = itemListId;
+
             var itemDto = await _itemService.CreateAsync(createItemDto);
             var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
 
