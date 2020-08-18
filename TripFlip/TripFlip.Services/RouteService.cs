@@ -26,10 +26,9 @@ namespace TripFlip.Services
         public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
             // check by the given TripId if trip exists
-            var tripEntityCount = await _flipTripDbContext.Trips
-                .AsNoTracking()
-                .CountAsync(tripEntity => routeDto.TripId == tripEntity.Id);
-            if (tripEntityCount == 0)
+            var tripEntity = await _flipTripDbContext.Trips
+                .AsNoTracking().SingleOrDefaultAsync(tripEntity => routeDto.TripId == tripEntity.Id);
+            if (tripEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
