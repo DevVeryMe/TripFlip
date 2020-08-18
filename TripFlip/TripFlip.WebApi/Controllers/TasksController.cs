@@ -8,7 +8,7 @@ using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/TaskLists/{taskListId}/[controller]")]
+    [Route("api/task-lists/{taskListId}/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
     {
