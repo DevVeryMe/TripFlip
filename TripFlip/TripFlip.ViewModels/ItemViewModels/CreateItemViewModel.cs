@@ -11,7 +11,7 @@ namespace TripFlip.ViewModels.ItemViewModels
         [StringLength(250, ErrorMessage = ErrorConstants.CommentLengthError)]
         public string Comment { get; set; }
 
-        [StringLength(250, ErrorMessage = ErrorConstants.QuantityLengthError)]
+        [StringLength(50, ErrorMessage = ErrorConstants.QuantityLengthError)]
         public string Quantity { get; set; }
     }
 }

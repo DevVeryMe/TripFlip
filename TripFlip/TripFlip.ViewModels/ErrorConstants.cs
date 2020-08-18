@@ -27,5 +27,7 @@
         public const string QuantityLengthError = "Quantity length cannot be greater than 50.";
 
         public const string ItemWithoutItemListError = "Item cannot exist without item list.";
+
+        public const string EmptyIsCompletedFieldError = "Field 'is completed' cannot be empty.";
     }
 }
