@@ -25,7 +25,7 @@ namespace TripFlip.Services
         {
             var taskList = _flipTripDbContext.TaskLists.Find(taskDto.TaskListId);
 
-            if (taskList == null)
+            if (taskList is null)
             {
                 throw new ArgumentException(ErrorConstants.AddingTaskToNotExistingTaskList);
             }
