@@ -19,6 +19,11 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Initializes database context and automapper.
+        /// </summary>
+        /// <param name="flipTripDbContext">database context</param>
+        /// <param name="mapper">mapper</param>
         public TripService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
@@ -45,7 +50,9 @@ namespace TripFlip.Services
 
             return tripDto;
         }
+
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
+        {
             var trip = _mapper.Map<TripEntity>(createTripDto);
             trip.DateCreated = DateTimeOffset.Now;
 
@@ -54,5 +61,6 @@ namespace TripFlip.Services
             var tripDto = _mapper.Map<TripDto>(trip);
 
             return tripDto;
+        }
     }
 }

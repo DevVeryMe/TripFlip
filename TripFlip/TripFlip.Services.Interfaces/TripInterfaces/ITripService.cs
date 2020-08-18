@@ -17,6 +17,12 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// </summary>
         /// <param name="id">trip id</param>
         Task<TripDto> GetAsync(int id);
-        Task<TripDto> CreateAsync(CreateTripDto tripDto);
+
+        /// <summary>
+        /// Creates new trip.
+        /// </summary>
+        /// <param name="createTripDto">new trip</param>
+        /// <returns>created trip</returns>
+        Task<TripDto> CreateAsync(CreateTripDto createTripDto);
     }
 }
