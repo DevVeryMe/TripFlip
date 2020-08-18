@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO;
@@ -25,10 +26,8 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
-            // check by the given TripId if trip exists
-            var tripEntity = await _flipTripDbContext.Trips
-                .AsNoTracking().SingleOrDefaultAsync(tripEntity => routeDto.TripId == tripEntity.Id);
-            if (tripEntity == null)
+            bool tripExists = await TripExistsAsync(routeDto.TripId);
+            if (!tripExists)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
@@ -43,6 +42,44 @@ namespace TripFlip.Services
             routeDto.Id = entityEntry.Entity.Id;
 
             return routeDto;
+        }
+
+        public async Task<RouteDto> UpdateAsync(RouteDto routeDto)
+        {
+            bool tripExists = await TripExistsAsync(routeDto.TripId);
+            if (!tripExists)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+
+            // set original creation date
+            routeDto.DateCreated = (await _flipTripDbContext
+                    .Routes
+                    .AsNoTracking()
+                    .FirstAsync(routeEntity => routeEntity.Id == routeDto.Id)
+                )
+                .DateCreated;
+
+            var routeEntity = _mapper.Map<RouteEntity>(routeDto);
+
+            var entityEntry = _flipTripDbContext.Routes.Update(routeEntity);
+            await _flipTripDbContext.SaveChangesAsync();
+
+            routeDto.DateCreated = entityEntry.Entity.DateCreated;
+
+            return routeDto;
+        }
+
+        /// <summary>
+        /// Checks if Trip exists by making a database query. Returns true if Trip with the given Id exists. Otherwise returns false.
+        /// </summary>
+        async Task<bool> TripExistsAsync(int tripId)
+        {
+            var tripEntity = await _flipTripDbContext.Trips
+                .AsNoTracking()
+                .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);
+
+            return tripEntity != null;
         }
     }
 }
