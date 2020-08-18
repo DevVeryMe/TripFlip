@@ -33,9 +33,9 @@ namespace TripFlip.Services.Interfaces
         Task<TaskDto> UpdateAsync(TaskDto taskDto);
 
         /// <summary>
-        /// Deletes task.
+        /// Deletes task by id.
         /// </summary>
         /// <param name="id">task to delete id</param>
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
     }
 }
