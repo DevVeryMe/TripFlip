@@ -35,5 +35,18 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(itemViewModel);
         }
+
+        /// <summary>
+        /// Returns all items of certain item list.
+        /// </summary>
+        /// <param name="itemListId">item list id</param>
+        /// <returns>collection of items</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync(int itemListId)
+        {
+            var items = await _itemService.GetAllAsync(itemListId);
+
+            return Ok(items);
+        }
     }
 }

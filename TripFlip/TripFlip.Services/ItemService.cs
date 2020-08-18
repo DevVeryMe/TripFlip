@@ -45,8 +45,8 @@ namespace TripFlip.Services
 
         public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
         {
-            var itemList = _flipTripDbContext.TaskLists.AsNoTracking().
-                SingleAsync(l => l.Id == listId);
+            var itemList = await _flipTripDbContext.ItemLists.AsNoTracking().
+                SingleOrDefaultAsync(l => l.Id == listId);
 
             if (itemList is null)
             {
