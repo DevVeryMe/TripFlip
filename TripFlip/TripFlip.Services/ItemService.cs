@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
@@ -40,6 +41,25 @@ namespace TripFlip.Services
             var itemToReturnDto = _mapper.Map<ItemDto>(item);
 
             return itemToReturnDto;
+        }
+
+        public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
+        {
+            var itemList = _flipTripDbContext.TaskLists.AsNoTracking().
+                SingleAsync(l => l.Id == listId);
+
+            if (itemList is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
+            }
+
+            var items = await _flipTripDbContext.Items.
+                Where(i => i.ItemListId == listId).
+                AsNoTracking().ToListAsync();
+
+            var itemDtos = _mapper.Map<List<ItemDto>>(items);
+
+            return itemDtos;
         }
     }
 }
