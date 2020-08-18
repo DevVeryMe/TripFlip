@@ -7,7 +7,7 @@ using TripFlip.ViewModels.ItemViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/ItemLists/{itemListId}/[controller]")]
+    [Route("api/item-lists/{itemListId}/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
