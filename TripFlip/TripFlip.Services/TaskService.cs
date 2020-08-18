@@ -67,22 +67,23 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
         {
-            var updatedTask = _mapper.Map<TaskEntity>(taskDto);
-            var taskToUpdate = await _flipTripDbContext.Tasks.FindAsync(updatedTask.Id);
+            var updatedTaskEntity = _mapper.Map<TaskEntity>(taskDto);
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == updatedTaskEntity.Id);
 
-            if (taskToUpdate is null)
+            if (taskToUpdateEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
-            taskToUpdate.Description = updatedTask.Description;
-            taskToUpdate.PriorityLevel = updatedTask.PriorityLevel;
-            taskToUpdate.IsCompleted = updatedTask.IsCompleted;
+            taskToUpdateEntity.Description = updatedTaskEntity.Description;
+            taskToUpdateEntity.PriorityLevel = updatedTaskEntity.PriorityLevel;
+            taskToUpdateEntity.IsCompleted = updatedTaskEntity.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var taskToReturn = _mapper.Map<TaskDto>(taskToUpdate);
+            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
 
-            return taskToReturn;
+            return updatedTaskDto;
         }
     }
 }
