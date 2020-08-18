@@ -19,5 +19,11 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <returns>object that represents the updated entry in database</returns>
         Task<RouteDto> UpdateAsync(RouteDto routeDto);
+
+        /// <summary>
+        /// Returns Route with the given Id. Makes asynchronous database query.
+        /// </summary>
+        /// <returns>object that represents the database entry with the given Id</returns>
+        Task<RouteDto> GetAsync(int routeId);
     }
 }

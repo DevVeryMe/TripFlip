@@ -76,6 +76,32 @@ namespace TripFlip.Services
             return routeDto;
         }
 
+        public async Task<RouteDto> GetAsync(int routeId)
+        {
+            RouteEntity routeEntity = await GetRouteByIdAsync(routeId);
+
+            if (routeEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+
+            var routeDto = _mapper.Map<RouteDto>(routeEntity);
+
+            return routeDto;
+        }
+
+        /// <summary>
+        /// Helper method that makes a database query and returns Route by the given Id
+        /// </summary>
+        async Task<RouteEntity> GetRouteByIdAsync(int routeId)
+        {
+            RouteEntity routeEntity = await _flipTripDbContext.Routes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
+
+            return routeEntity;
+        }
+
         /// <summary>
         /// Checks if Trip exists by making a database query. Returns true if Trip with the given Id exists. Otherwise returns false.
         /// </summary>
@@ -88,6 +114,9 @@ namespace TripFlip.Services
             return tripEntity != null;
         }
 
+        /// <summary>
+        /// Checks if Route exists by making a database query. Returns true if Route with the given Id exists. Otherwise returns false.
+        /// </summary>
         async Task<bool> RouteExistsAsync(int routeId)
         {
             var routeEntity = await _flipTripDbContext.Routes
