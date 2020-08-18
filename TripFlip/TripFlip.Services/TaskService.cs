@@ -37,29 +37,19 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteAsync(int id)
-        {
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> GetByIdAsync(int id)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
         public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
+            var taskList = await _flipTripDbContext.TaskLists.FindAsync(id);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
             var tasks = await _flipTripDbContext.Tasks.Where(t => t.TaskListId == id).AsNoTracking().ToListAsync();
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
 
             return taskDtos;
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
-        {
-            return null;
         }
     }
 }
