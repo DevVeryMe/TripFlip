@@ -24,7 +24,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new Task.
         /// </summary>
-        /// <param name="taskViewModel">task to create</param>
+        /// <param name="createTaskViewModel">task to create</param>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
