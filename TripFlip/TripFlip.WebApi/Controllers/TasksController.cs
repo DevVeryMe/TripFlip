@@ -8,7 +8,7 @@ using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/TaskLists/{taskListId}/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -26,9 +26,11 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="taskViewModel">task to create</param>
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel, int taskListId)
         {
             var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
+            taskDto.TaskListId = taskListId;
+
             var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
             var createdTaskViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
@@ -40,7 +42,6 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all Tasks from a certain task list.
         /// </summary>
         [HttpGet]
-        [Route("/api/TaskLists/{taskListId}/Tasks")]
         public async Task<IActionResult> GetAsync(int taskListId)
         {
             var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
