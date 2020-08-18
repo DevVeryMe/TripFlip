@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -31,9 +32,14 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                     {
                         logger.Error(exception);
 
+                        if (exception.Error is ArgumentException)
+                        {
+                            context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                        }
+
                         var errorDetails = new ErrorDetails
                         {
-                            StatusCode = (int) HttpStatusCode.InternalServerError,
+                            StatusCode = (int) context.Response.StatusCode,
                             Message = exception.Error.Message
                         };
 
