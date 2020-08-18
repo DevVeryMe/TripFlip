@@ -13,5 +13,11 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <returns><see cref="RouteDto"/> object that represents the new entry that was added to database</returns>
         Task<RouteDto> CreateAsync(RouteDto routeDto);
+
+        /// <summary>
+        /// Updates the Route with the given <see cref="RouteDto"/> object. Applies changes to database asynchronously.
+        /// </summary>
+        /// <returns>object that represents the updated entry in database</returns>
+        Task<RouteDto> UpdateAsync(RouteDto routeDto);
     }
 }

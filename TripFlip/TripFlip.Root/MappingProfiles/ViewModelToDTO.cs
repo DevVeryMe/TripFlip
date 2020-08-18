@@ -19,6 +19,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateTripViewModel, CreateTripDto>();
 
             CreateMap<CreateRouteViewModel, RouteDto>();
+            CreateMap<UpdateRouteViewModel, RouteDto>();
+            CreateMap<ResultRouteViewModel, RouteDto>();
         }
     }
 }
