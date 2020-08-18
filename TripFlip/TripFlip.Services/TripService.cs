@@ -62,7 +62,9 @@ namespace TripFlip.Services
 
             return tripDto;
         }
+
         public async Task<TripDto> UpdateAsync(TripDto tripDto)
+        {
             var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
 
             if (tripToUpdate is null)
@@ -79,5 +81,6 @@ namespace TripFlip.Services
             var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
 
             return newTripDto;
+        }
     }
 }
