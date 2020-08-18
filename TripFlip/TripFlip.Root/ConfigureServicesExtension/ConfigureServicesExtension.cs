@@ -15,9 +15,10 @@ namespace TripFlip.Root.ConfigureServicesExtension
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigureMapper();
-            services.AddTransient<IGreetingService, GreetingService>();
             services.AddTransient<ITripService, TripService>();
+            services.AddTransient<IRouteService, RouteService>();
 
+            
             services.AddDbContext<FlipTripDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
