@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Services.DTO;
@@ -29,10 +30,9 @@ namespace TripFlip.Services
 
             return tripDtos;
         }
-
         public async Task<TripDto> GetAsync(int id)
         {
-            var trip = await _flipTripDbContext.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+            var trip = await _flipTripDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
 
             if (trip is null)
             {
@@ -42,21 +42,6 @@ namespace TripFlip.Services
             var tripDto = _mapper.Map<TripDto>(trip);
 
             return tripDto;
-        }
-
-        public void CreateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void DeleteTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
