@@ -23,7 +23,7 @@ namespace TripFlip.Services
         /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
-            var taskList = _flipTripDbContext.TaskLists.Find(taskDto.TaskListId);
+            var taskList = await _flipTripDbContext.TaskLists.FindAsync(taskDto.TaskListId);
 
             if (taskList == null)
             {
