@@ -10,7 +10,7 @@ namespace TripFlip.ViewModels.TaskViewModels
         [StringLength(500, ErrorMessage = ErrorConstants.DescriptionLengthError)]
         public string Description { get; set; }
 
-        [ValidateOptionalEnumField(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
+        [EnumDataType(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
         public TaskPriorityLevel PriorityLevel { get; set; }
 
         [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
