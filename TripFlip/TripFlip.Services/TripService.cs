@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -18,6 +19,11 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Initializes database context and automapper.
+        /// </summary>
+        /// <param name="flipTripDbContext">database context</param>
+        /// <param name="mapper">mapper</param>
         public TripService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
@@ -31,10 +37,9 @@ namespace TripFlip.Services
 
             return tripDtos;
         }
-
         public async Task<TripDto> GetAsync(int id)
         {
-            var trip = await _flipTripDbContext.Trips.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+            var trip = await _flipTripDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
 
             if (trip is null)
             {
@@ -57,9 +62,7 @@ namespace TripFlip.Services
 
             return tripDto;
         }
-
         public async Task<TripDto> UpdateAsync(TripDto tripDto)
-        {
             var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
 
             if (tripToUpdate is null)
@@ -76,11 +79,5 @@ namespace TripFlip.Services
             var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
 
             return newTripDto;
-        }
-
-        public void DeleteTrip(TripDto tripDto)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
