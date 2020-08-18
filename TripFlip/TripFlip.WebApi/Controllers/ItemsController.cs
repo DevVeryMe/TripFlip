@@ -21,6 +21,11 @@ namespace TripFlip.WebApi.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Creates new item.
+        /// </summary>
+        /// <param name="createItemViewModel">new item data</param>
+        /// <returns>created item</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
