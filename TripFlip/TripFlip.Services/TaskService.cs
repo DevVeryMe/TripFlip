@@ -6,7 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
+using TripFlip.Domain.Entities.Enums;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
@@ -63,6 +64,26 @@ namespace TripFlip.Services
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
 
             return taskDtos;
+        }
+
+        public async Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto)
+        {
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(taskDto.Id);
+
+            if (taskToUpdateEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            taskToUpdateEntity.Description = taskDto.Description;
+            taskToUpdateEntity.PriorityLevel = _mapper.Map<TaskPriorityLevel>(taskDto.PriorityLevel);
+
+            taskToUpdateEntity.IsCompleted = taskDto.IsCompleted;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+
+            return updatedTaskDto;
         }
     }
 }
