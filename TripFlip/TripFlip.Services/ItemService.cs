@@ -84,15 +84,15 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> GetByIdAsync(int id)
         {
-            var item = await _flipTripDbContext.Items.AsNoTracking().
+            var itemEntity = await _flipTripDbContext.Items.AsNoTracking().
                 SingleOrDefaultAsync(i => i.Id == id);
 
-            if (item is null)
+            if (itemEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
-            var itemDtoToReturn = _mapper.Map<ItemDto>(item);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntity);
 
             return itemDtoToReturn;
         }
