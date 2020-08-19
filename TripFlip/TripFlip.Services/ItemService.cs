@@ -33,66 +33,66 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
-            var item = _mapper.Map<ItemEntity>(createItemDto);
+            var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
-            await _flipTripDbContext.Items.AddAsync(item);
+            await _flipTripDbContext.Items.AddAsync(itemEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var itemToReturnDto = _mapper.Map<ItemDto>(item);
+            var itemToReturnDto = _mapper.Map<ItemDto>(itemEntity);
 
             return itemToReturnDto;
         }
 
         public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
         {
-            var itemList = await _flipTripDbContext.ItemLists.AsNoTracking().
+            var itemEntityList = await _flipTripDbContext.ItemLists.AsNoTracking().
                 SingleOrDefaultAsync(l => l.Id == listId);
 
-            if (itemList is null)
+            if (itemEntityList is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var items = await _flipTripDbContext.Items.
+            var itemEntities = await _flipTripDbContext.Items.
                 Where(i => i.ItemListId == listId).
                 AsNoTracking().ToListAsync();
 
-            var itemDtos = _mapper.Map<List<ItemDto>>(items);
+            var itemDtos = _mapper.Map<List<ItemDto>>(itemEntities);
 
             return itemDtos;
         }
 
         public async Task<ItemDto> UpdateAsync(ItemDto itemDto)
         {
-            var itemToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
+            var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 
-            if (itemToUpdate is null)
+            if (itemEntityToUpdate is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
-            itemToUpdate.Title = itemDto.Title;
-            itemToUpdate.Comment = itemDto.Comment;
-            itemToUpdate.Quantity = itemDto.Quantity;
-            itemToUpdate.IsCompleted = itemDto.IsCompleted;
+            itemEntityToUpdate.Title = itemDto.Title;
+            itemEntityToUpdate.Comment = itemDto.Comment;
+            itemEntityToUpdate.Quantity = itemDto.Quantity;
+            itemEntityToUpdate.IsCompleted = itemDto.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var newTripDto = _mapper.Map<ItemDto>(itemToUpdate);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
 
-            return newTripDto;
+            return itemDtoToReturn;
         }
 
         public async Task<ItemDto> GetByIdAsync(int id)
         {
-            var item = await _flipTripDbContext.Items.AsNoTracking().
+            var itemEntity = await _flipTripDbContext.Items.AsNoTracking().
                 SingleOrDefaultAsync(i => i.Id == id);
 
-            if (item is null)
+            if (itemEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
-            var itemDtoToReturn = _mapper.Map<ItemDto>(item);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntity);
 
             return itemDtoToReturn;
         }
