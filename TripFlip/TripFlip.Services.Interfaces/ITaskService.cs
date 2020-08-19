@@ -9,21 +9,21 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Gets all tasks from certain task list.
         /// </summary>
-        /// <param name="taskListId">task list id</param>
+        /// <param name="taskListId">Task list id</param>
         Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int taskListId);
 
         /// <summary>
         /// Creates new task.
         /// </summary>
-        /// <param name="taskDto">task data</param>
-        /// <returns>created task</returns>
+        /// <param name="taskDto">Task data</param>
+        /// <returns>Created task</returns>
         Task<TaskDto> CreateAsync(TaskDto taskDto);
 
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskDto">new task data</param>
-        /// <returns>updated task DTO</returns>
+        /// <param name="taskDto">New task data</param>
+        /// <returns>Updated task DTO</returns>
         Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto);
     }
 }

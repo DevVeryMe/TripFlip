@@ -24,7 +24,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new Task.
         /// </summary>
-        /// <param name="createTaskViewModel">task to create</param>
+        /// <param name="createTaskViewModel">Task to create</param>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
@@ -40,7 +40,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Gets all Tasks from a certain task list.
         /// </summary>
-        /// <param name="taskListId">task list id</param>
+        /// <param name="taskListId">Task list id</param>
         [HttpGet]
         public async Task<IActionResult> GetAllByTaskListIdAsync([FromQuery] int taskListId)
         {
@@ -53,8 +53,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskViewModel">new task data with existing task id</param>
-        /// <returns>updated task view model</returns>
+        /// <param name="taskViewModel">New task data with existing task id</param>
+        /// <returns>Updated task view model</returns>
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
