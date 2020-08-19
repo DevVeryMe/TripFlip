@@ -21,8 +21,8 @@ namespace TripFlip.Services
         /// <summary>
         /// Constructor. Initializes _flipTripDbContext and _mapper fields.
         /// </summary>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
-        /// <param name="mapper">IMapper instance</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
         public TaskService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
