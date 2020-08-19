@@ -22,7 +22,7 @@ namespace TripFlip.ViewModels.Attributes
 
             if (comparingDateTimeProperty == null)
             {
-                throw new ArgumentException("Property with this name not found");
+                throw new ArgumentException("Property with this name not found.");
             }
 
             if (comparingDateTimeProperty.GetValue(validationContext.ObjectInstance) is 

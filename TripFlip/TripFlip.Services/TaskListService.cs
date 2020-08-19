@@ -9,44 +9,52 @@ using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TaskListService : ITaskListService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Constructor. Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
+        /// <param name="mapper">IMapper instance</param>
         public TaskListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
         public async Task<TaskListDto> CreateAsync(TaskListDto taskListDto)
         {
+            var route = await _flipTripDbContext.Routes.AsNoTracking()
+                .SingleOrDefaultAsync(r => r.Id == taskListDto.RouteId);
+
+            if (route is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+            }
+
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.TaskLists.AddAsync(taskListEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var taskToReturn = _mapper.Map<TaskListDto>(taskListEntity);
+            var createdTaskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
-            return taskToReturn;
+            return createdTaskListDto;
         }
 
-        /// <inheritdoc />
-        public async Task DeleteAsync(int id)
-        {
-        }
-
-        /// <inheritdoc />
         public async Task<TaskListDto> GetByIdAsync(int id)
         {
-            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskList is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
             var taskListDto = _mapper.Map<TaskListDto>(taskList);
@@ -54,23 +62,23 @@ namespace TripFlip.Services
             return taskListDto;
         }
 
-        /// <inheritdoc />
         public async Task<TaskListDto> UpdateAsync(TaskListDto taskListDto)
         {
-            var updatedTaskList = _mapper.Map<TaskListEntity>(taskListDto);
-            var taskLsitToUpdate = await _flipTripDbContext.TaskLists.FindAsync(updatedTaskList.Id);
+            var updatedTaskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
+            var taskLsitToUpdateEntity = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == updatedTaskListEntity.Id);
 
-            if (taskLsitToUpdate is null)
+            if (taskLsitToUpdateEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
-            taskLsitToUpdate.Title = updatedTaskList.Title;
+            taskLsitToUpdateEntity.Title = updatedTaskListEntity.Title;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var taskListToReturn = _mapper.Map<TaskListDto>(taskLsitToUpdate);
+            var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
 
-            return taskListToReturn;
+            return updatedTaskListDto;
         }
     }
 }
