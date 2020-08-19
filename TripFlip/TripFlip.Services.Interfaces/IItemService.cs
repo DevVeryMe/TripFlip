@@ -9,8 +9,8 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Creates new item.
         /// </summary>
-        /// <param name="createItemDto">new Item DTO</param>
-        /// <returns>created item DTO</returns>
+        /// <param name="createItemDto">New Item DTO</param>
+        /// <returns>Created item DTO</returns>
         Task<ItemDto> CreateAsync(CreateItemDto createItemDto);
     }
 }
