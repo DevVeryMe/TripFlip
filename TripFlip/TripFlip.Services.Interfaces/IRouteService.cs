@@ -32,5 +32,10 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <returns>Object that represents the <see cref="IEnumerable{RouteDto}"/> collection of database entries with the given Trip Id.</returns>
         Task<IEnumerable<RouteDto>> GetAllByTripIdAsync(int tripId);
+
+        /// <summary>
+        /// Deletes Route with the given Id.
+        /// </summary>
+        Task DeleteAsync(int id);
     }
 }
