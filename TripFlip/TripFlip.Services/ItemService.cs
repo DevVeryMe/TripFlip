@@ -81,27 +81,24 @@ namespace TripFlip.Services
             return itemDtoToReturn;
         }
 
+        public async Task<ItemDto> GetByIdAsync(int id)
+        {
+            var itemEntity = await _flipTripDbContext.Items.AsNoTracking().
+                SingleOrDefaultAsync(i => i.Id == id);
+
+            ValidateItemEntityExists(itemEntity);
+
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntity);
+
+            return itemDtoToReturn;
+        }
+
         private void ValidateItemEntityExists(ItemEntity itemEntity)
         {
             if (itemEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
-        }
-
-        public async Task<ItemDto> GetByIdAsync(int id)
-        {
-            var itemEntity = await _flipTripDbContext.Items.AsNoTracking().
-                SingleOrDefaultAsync(i => i.Id == id);
-
-            if (itemEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.ItemNotFound);
-            }
-
-            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntity);
-
-            return itemDtoToReturn;
         }
     }
 }
