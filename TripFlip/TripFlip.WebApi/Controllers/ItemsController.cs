@@ -27,8 +27,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new item in a certain item list.
         /// </summary>
-        /// <param name="createItemViewModel">new item data</param>
-        /// <returns>created item</returns>
+        /// <param name="createItemViewModel">New item view model</param>
+        /// <returns>Created item view model</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
@@ -43,8 +43,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all items of certain item list.
         /// </summary>
-        /// <param name="itemListId">item list id</param>
-        /// <returns>collection of items</returns>
+        /// <param name="itemListId">Item list id</param>
+        /// <returns>Collection of item view models</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllByItemListIdAsync([FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId)
