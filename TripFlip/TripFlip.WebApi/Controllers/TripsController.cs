@@ -80,5 +80,19 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(tripViewModel);
         }
+
+        /// <summary>
+        /// Deletes trip.
+        /// </summary>
+        /// <param name="id">trip id</param>
+        /// <returns>204 status code</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        {
+            await _tripService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
