@@ -94,9 +94,9 @@ namespace TripFlip.Services
             return routeDto;
         }
 
-        public async Task<List<RouteDto>> GetAllByTripAsync(int tripId)
+        public async Task<IEnumerable<RouteDto>> GetAllByTripIdAsync(int tripId)
         {
-            bool tripExists = await TripExistsAsync(tripId);
+            bool tripExists = await ValidateTripExistsAsync(tripId);
             if (!tripExists)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);

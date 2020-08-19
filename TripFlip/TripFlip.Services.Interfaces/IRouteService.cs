@@ -28,9 +28,9 @@ namespace TripFlip.Services.Interfaces
         Task<RouteDto> GetByIdAsync(int routeId);
 
         /// <summary>
-        /// Returns all Routes with the given Trip Id. Makes asynchronous database query.
+        /// Returns all Routes with the given Trip Id.
         /// </summary>
-        /// <returns>Object that represents the list of database entries with the given Trip Id.</returns>
-        Task<List<RouteDto>> GetAllByTripAsync(int tripId);
+        /// <returns>Object that represents the <see cref="IEnumerable{RouteDto}"/> collection of database entries with the given Trip Id.</returns>
+        Task<IEnumerable<RouteDto>> GetAllByTripIdAsync(int tripId);
     }
 }
