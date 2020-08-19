@@ -54,7 +54,7 @@ namespace TripFlip.WebApi.Controllers
         /// Updates existing task.
         /// </summary>
         /// <param name="taskViewModel">new task data with existing task id</param>
-        /// <returns>updated task</returns>
+        /// <returns>updated task view model</returns>
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
