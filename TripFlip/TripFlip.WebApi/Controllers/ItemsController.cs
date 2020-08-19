@@ -43,8 +43,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all items of certain item list.
         /// </summary>
-        /// <param name="itemListId">item list id</param>
-        /// <returns>collection of items</returns>
+        /// <param name="itemListId">Item list id</param>
+        /// <returns>Collection of item view models</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllByItemListIdAsync([FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId)
