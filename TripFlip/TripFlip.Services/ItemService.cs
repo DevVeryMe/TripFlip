@@ -62,7 +62,7 @@ namespace TripFlip.Services
             return itemDtos;
         }
 
-        public async Task<ItemDto> UpdateAsync(ItemDto itemDto)
+        public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
         {
             var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 

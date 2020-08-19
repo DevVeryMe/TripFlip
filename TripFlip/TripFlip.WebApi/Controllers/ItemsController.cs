@@ -63,9 +63,9 @@ namespace TripFlip.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
         {
-            var itemDtoToUpdate = _mapper.Map<ItemDto>(updateItemViewModel);
-            itemDtoToUpdate = await _itemService.UpdateAsync(itemDtoToUpdate);
-            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToUpdate);
+            var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
+            var itemDtoToReturn = await _itemService.UpdateAsync(itemDtoToUpdate);
+            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
 
             return Ok(itemViewModelToReturn);
         }
