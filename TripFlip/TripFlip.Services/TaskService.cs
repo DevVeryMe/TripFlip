@@ -85,5 +85,19 @@ namespace TripFlip.Services
 
             return updatedTaskDto;
         }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var taskToDelete = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            _flipTripDbContext.Tasks.Remove(taskToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
+        }
     }
 }
