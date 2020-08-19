@@ -54,6 +54,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets task by id.
         /// </summary>
         /// <param name="id">task id</param>
+        /// <returns>task view model</returns>
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
