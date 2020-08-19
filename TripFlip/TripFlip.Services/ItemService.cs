@@ -66,10 +66,7 @@ namespace TripFlip.Services
         {
             var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 
-            if (itemEntityToUpdate is null)
-            {
-                throw new ArgumentException(ErrorConstants.ItemNotFound);
-            }
+            ValidateItemEntityExists(itemEntityToUpdate);
 
             itemEntityToUpdate.Title = itemDto.Title;
             itemEntityToUpdate.Comment = itemDto.Comment;
@@ -80,6 +77,14 @@ namespace TripFlip.Services
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
 
             return itemDtoToReturn;
+        }
+
+        private void ValidateItemEntityExists(ItemEntity itemEntity)
+        {
+            if (itemEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
+            }
         }
     }
 }
