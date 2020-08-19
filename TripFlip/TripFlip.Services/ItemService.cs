@@ -45,19 +45,19 @@ namespace TripFlip.Services
 
         public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
         {
-            var itemList = await _flipTripDbContext.ItemLists.AsNoTracking().
+            var itemEntityList = await _flipTripDbContext.ItemLists.AsNoTracking().
                 SingleOrDefaultAsync(l => l.Id == listId);
 
-            if (itemList is null)
+            if (itemEntityList is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var items = await _flipTripDbContext.Items.
+            var itemEntities = await _flipTripDbContext.Items.
                 Where(i => i.ItemListId == listId).
                 AsNoTracking().ToListAsync();
 
-            var itemDtos = _mapper.Map<List<ItemDto>>(items);
+            var itemDtos = _mapper.Map<List<ItemDto>>(itemEntities);
 
             return itemDtos;
         }
