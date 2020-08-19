@@ -30,7 +30,7 @@ namespace TripFlip.Services
 
             if (itemListEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
             var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
