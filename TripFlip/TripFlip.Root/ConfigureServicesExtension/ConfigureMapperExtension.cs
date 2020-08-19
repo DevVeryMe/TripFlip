@@ -14,7 +14,6 @@ namespace TripFlip.Root.ConfigureServicesExtension
                 mc.AddProfile<EntityFromDto>();
                 mc.AddProfile<ViewModelToDto>();
                 mc.AddProfile<ViewModelFromDto>();
-                mc.AddProfile<EnumToEnum>();
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
