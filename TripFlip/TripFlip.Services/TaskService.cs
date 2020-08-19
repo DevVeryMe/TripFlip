@@ -68,8 +68,7 @@ namespace TripFlip.Services
         public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
         {
             var updatedTaskEntity = _mapper.Map<TaskEntity>(taskDto);
-            var taskToUpdateEntity = await _flipTripDbContext.Tasks.AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == updatedTaskEntity.Id);
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(updatedTaskEntity.Id);
 
             if (taskToUpdateEntity is null)
             {
