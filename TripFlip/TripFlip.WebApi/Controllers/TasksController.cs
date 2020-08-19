@@ -56,7 +56,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">task id</param>
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetByIdAsync([FromQuery] int id)
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
         {
             var taskDto = await _taskService.GetByIdAsync(id);
             var getTaskViewModel = _mapper.Map<GetTaskViewModel>(taskDto);
