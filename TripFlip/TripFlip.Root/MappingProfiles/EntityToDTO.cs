@@ -2,6 +2,7 @@
 using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TripDtos;
+using TripFlip.Services.DTO.RouteDtos;
 
 namespace TripFlip.Root.MappingProfiles
 {
@@ -13,7 +14,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TaskEntity, TaskDto>();
 
-            CreateMap<RouteEntity, RouteDto>();
+            CreateMap<RouteEntity, ResultRouteDto>();
         }
     }
 }

@@ -1,10 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TripFlip.Services.DTO.RouteDtos
 {
-    class ResultRouteDto
+    public class ResultRouteDto
     {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public DateTimeOffset DateCreated { get; set; }
+
+        public int TripId { get; set; }
     }
 }
