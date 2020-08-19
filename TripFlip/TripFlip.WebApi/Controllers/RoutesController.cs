@@ -21,6 +21,20 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Returns a Route with the given Id
+        /// </summary>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var resultDto = await _routeService.GetByIdAsync(id);
+
+            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+
+            return Ok(resultViewModel);
+        }
+
+        /// <summary>
         /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object
         /// </summary>
         /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database</returns>

@@ -11,7 +11,7 @@ using TripFlip.Domain.Entities;
 namespace TripFlip.Services
 {
     /// <summary>
-    /// Class that performs CRUD operations related to <see cref="RouteEntity"/>
+    /// Class that performs CRUD operations related to <see cref="RouteEntity"/>.
     /// </summary>
     public class RouteService : IRouteService
     {
@@ -26,7 +26,7 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> CreateAsync(RouteDto routeDto)
         {
-            bool tripExists = await TripExistsAsync(routeDto.TripId);
+            bool tripExists = await ValidateTripExistsAsync(routeDto.TripId);
             if (!tripExists)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
@@ -46,13 +46,13 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> UpdateAsync(RouteDto routeDto)
         {
-            bool routeExists = await RouteExistsAsync(routeDto.Id);
+            bool routeExists = await ValidateRouteExistsAsync(routeDto.Id);
             if (!routeExists)
             {
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
 
-            bool tripExists = await TripExistsAsync(routeDto.TripId);
+            bool tripExists = await ValidateTripExistsAsync(routeDto.TripId);
             if (!tripExists)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
@@ -76,10 +76,28 @@ namespace TripFlip.Services
             return routeDto;
         }
 
+        public async Task<RouteDto> GetByIdAsync(int routeId)
+        {
+            var routeEntity = await _flipTripDbContext
+                .Routes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
+
+            if (routeEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+
+            var routeDto = _mapper.Map<RouteDto>(routeEntity);
+
+            return routeDto;
+        }
+
         /// <summary>
-        /// Checks if Trip exists by making a database query. Returns true if Trip with the given Id exists. Otherwise returns false.
+        /// Checks if Trip exists by making a database query.
         /// </summary>
-        async Task<bool> TripExistsAsync(int tripId)
+        /// <returns>Returns true if Trip with the given Id exists. Otherwise returns false.</returns>
+        async Task<bool> ValidateTripExistsAsync(int tripId)
         {
             var tripEntity = await _flipTripDbContext.Trips
                 .AsNoTracking()
@@ -88,7 +106,11 @@ namespace TripFlip.Services
             return tripEntity != null;
         }
 
-        async Task<bool> RouteExistsAsync(int routeId)
+        /// <summary>
+        /// Checks if Route exists by making a database query.
+        /// </summary>
+        /// <returns>Returns true if Route with the given Id exists. Otherwise returns false.</returns>
+        async Task<bool> ValidateRouteExistsAsync(int routeId)
         {
             var routeEntity = await _flipTripDbContext.Routes
                 .AsNoTracking()
