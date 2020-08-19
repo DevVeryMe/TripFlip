@@ -27,8 +27,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new item in a certain item list.
         /// </summary>
-        /// <param name="createItemViewModel">new item data</param>
-        /// <returns>created item</returns>
+        /// <param name="createItemViewModel">New item view model</param>
+        /// <returns>Created item view model</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
@@ -43,8 +43,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all items of certain item list.
         /// </summary>
-        /// <param name="itemListId">item list id</param>
-        /// <returns>collection of items</returns>
+        /// <param name="itemListId">Item list id</param>
+        /// <returns>Collection of item view models</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllByItemListIdAsync([FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId)
@@ -58,14 +58,14 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing item.
         /// </summary>
-        /// <param name="updateItemViewModel">new item data</param>
-        /// <returns>updated item</returns>
+        /// <param name="updateItemViewModel">Item view model to update</param>
+        /// <returns>Updated item view model</returns>
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
         {
-            var itemDtoToUpdate = _mapper.Map<ItemDto>(updateItemViewModel);
-            itemDtoToUpdate = await _itemService.UpdateAsync(itemDtoToUpdate);
-            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToUpdate);
+            var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
+            var itemDtoToReturn = await _itemService.UpdateAsync(itemDtoToUpdate);
+            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
 
             return Ok(itemViewModelToReturn);
         }

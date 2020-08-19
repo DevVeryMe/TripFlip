@@ -22,7 +22,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<CreateItemViewModel, CreateItemDto>();
 
-            CreateMap<UpdateItemViewModel, ItemDto>();
+            CreateMap<UpdateItemViewModel, UpdateItemDto>();
         }
     }
 }
