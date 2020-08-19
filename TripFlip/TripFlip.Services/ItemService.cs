@@ -17,6 +17,11 @@ namespace TripFlip.Services
         private readonly IMapper _mapper;
         private readonly FlipTripDbContext _flipTripDbContext;
 
+        /// <summary>
+        /// Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
         public ItemService(IMapper mapper, FlipTripDbContext flipTripDbContext)
         {
             _mapper = mapper;
