@@ -77,9 +77,9 @@ namespace TripFlip.Services
             itemToUpdate.IsCompleted = itemDto.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var newTripDto = _mapper.Map<ItemDto>(itemToUpdate);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
-            return newTripDto;
+            return itemDtoToReturn;
         }
     }
 }
