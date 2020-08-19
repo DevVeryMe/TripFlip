@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -45,6 +47,24 @@ namespace TripFlip.Services
             var createdTaskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
             return createdTaskListDto;
+        }
+
+        public async Task<IEnumerable<TaskListDto>> GetAllByRouteIdAsync(int id)
+        {
+            var route = await _flipTripDbContext.Routes.AsNoTracking()
+                .SingleOrDefaultAsync(r => r.Id == id);
+
+            if (route is null)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+
+            var taskListEntities = await _flipTripDbContext.TaskLists
+                .Where(t => t.RouteId == id).AsNoTracking().ToListAsync();
+
+            var taskListDtos = _mapper.Map<List<TaskListDto>>(taskListEntities);
+
+            return taskListDtos;
         }
 
         public async Task<TaskListDto> GetByIdAsync(int id)
