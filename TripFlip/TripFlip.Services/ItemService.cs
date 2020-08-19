@@ -99,14 +99,14 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var itemToDelete = await _flipTripDbContext.Items.FindAsync(id);
+            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
 
-            if (itemToDelete is null)
+            if (itemEntityToDelete is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
 
-            _flipTripDbContext.Remove(itemToDelete);
+            _flipTripDbContext.Remove(itemEntityToDelete);
             await _flipTripDbContext.SaveChangesAsync();
         }
     }
