@@ -93,25 +93,22 @@ namespace TripFlip.Services
             return itemDtoToReturn;
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
+
+            ValidateItemEntityExists(itemEntityToDelete);
+
+            _flipTripDbContext.Remove(itemEntityToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
+        }
+
         private void ValidateItemEntityExists(ItemEntity itemEntity)
         {
             if (itemEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
-
-            if (itemEntityToDelete is null)
-            {
-                throw new ArgumentException(ErrorConstants.ItemNotFound);
-            }
-
-            _flipTripDbContext.Remove(itemEntityToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
         }
     }
 }
