@@ -37,7 +37,8 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Deletes item by id.
         /// </summary>
-        /// <param name="id">item id</param>
+        /// <param name="id">Item id</param>
+        /// <returns>No return</returns>
         Task DeleteAsync(int id);
     }
 }
