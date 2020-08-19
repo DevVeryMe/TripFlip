@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
@@ -80,19 +80,20 @@ namespace TripFlip.Services
             return taskDto;
         }
 
-        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
+        public async Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto)
         {
-            var updatedTaskEntity = _mapper.Map<TaskEntity>(taskDto);
-            var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(updatedTaskEntity.Id);
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(taskDto.Id);
 
             if (taskToUpdateEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
-            taskToUpdateEntity.Description = updatedTaskEntity.Description;
-            taskToUpdateEntity.PriorityLevel = updatedTaskEntity.PriorityLevel;
-            taskToUpdateEntity.IsCompleted = updatedTaskEntity.IsCompleted;
+            taskToUpdateEntity.Description = taskDto.Description;
+            taskToUpdateEntity.PriorityLevel = Enum.
+                Parse<Domain.Entities.Enums.TaskPriorityLevel>(taskDto.PriorityLevel.ToString());
+
+            taskToUpdateEntity.IsCompleted = taskDto.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
             var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
