@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.TaskViewModels;
 
@@ -58,7 +58,7 @@ namespace TripFlip.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
-            var taskDto = _mapper.Map<TaskDto>(updateTaskViewModel);
+            var taskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
 
             var updatedTaskDto = await _taskService.UpdateAsync(taskDto);
             var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);

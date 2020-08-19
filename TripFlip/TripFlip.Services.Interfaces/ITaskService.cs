@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.TaskDtos;
 
 namespace TripFlip.Services.Interfaces
 {
@@ -24,6 +24,6 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="taskDto">new task data</param>
         /// <returns>updated task DTO</returns>
-        Task<TaskDto> UpdateAsync(TaskDto taskDto);
+        Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto);
     }
 }
