@@ -33,12 +33,12 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
-            var item = _mapper.Map<ItemEntity>(createItemDto);
+            var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
-            await _flipTripDbContext.Items.AddAsync(item);
+            await _flipTripDbContext.Items.AddAsync(itemEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var itemToReturnDto = _mapper.Map<ItemDto>(item);
+            var itemToReturnDto = _mapper.Map<ItemDto>(itemEntity);
 
             return itemToReturnDto;
         }
