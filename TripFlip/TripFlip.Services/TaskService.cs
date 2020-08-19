@@ -11,20 +11,33 @@ using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TaskService : ITaskService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Constructor. Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
+        /// <param name="mapper">IMapper instance</param>
         public TaskService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskToNotExistingTaskList);
+            }
+
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
             taskEntity.DateCreated = DateTimeOffset.Now;
 
@@ -36,10 +49,62 @@ namespace TripFlip.Services
             return taskToReturn;
         }
 
-        /// <inheritdoc />
-        public async Task DeleteAsync(int id)
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
         {
-            var taskToDelete = await _flipTripDbContext.Tasks.FindAsync(id);
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
+            var tasks = await _flipTripDbContext.Tasks.Where(t => t.TaskListId == id).AsNoTracking().ToListAsync();
+            var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
+
+            return taskDtos;
+        }
+
+        public async Task<TaskDto> GetByIdAsync(int id)
+        {
+            var taskEntity = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
+
+            return taskDto;
+        }
+
+        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
+        {
+            var updatedTaskEntity = _mapper.Map<TaskEntity>(taskDto);
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == updatedTaskEntity.Id);
+
+            if (taskToUpdateEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            taskToUpdateEntity.Description = updatedTaskEntity.Description;
+            taskToUpdateEntity.PriorityLevel = updatedTaskEntity.PriorityLevel;
+            taskToUpdateEntity.IsCompleted = updatedTaskEntity.IsCompleted;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+
+            return updatedTaskDto;
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var taskToDelete = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskToDelete is null)
             {
@@ -48,51 +113,6 @@ namespace TripFlip.Services
 
             _flipTripDbContext.Tasks.Remove(taskToDelete);
             await _flipTripDbContext.SaveChangesAsync();
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> GetByIdAsync(int id)
-        {
-            var task = await _flipTripDbContext.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-
-            if (task is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
-            }
-
-            var taskDto = _mapper.Map<TaskDto>(task);
-
-            return taskDto;
-        }
-
-        /// <inheritdoc />
-        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int id)
-        {
-            var tasks = await _flipTripDbContext.Tasks.Where(t => t.TaskListId == id).AsNoTracking().ToListAsync();
-            var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
-
-            return taskDtos;
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskDto> UpdateAsync(TaskDto taskDto)
-        {
-            var updatedTask = _mapper.Map<TaskEntity>(taskDto);
-            var taskToUpdate = await _flipTripDbContext.Tasks.FindAsync(updatedTask.Id);
-
-            if (taskToUpdate is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
-            }
-
-            taskToUpdate.Description = updatedTask.Description;
-            taskToUpdate.PriorityLevel = updatedTask.PriorityLevel;
-            taskToUpdate.IsCompleted = updatedTask.IsCompleted;
-
-            await _flipTripDbContext.SaveChangesAsync();
-            var taskToReturn = _mapper.Map<TaskDto>(taskToUpdate);
-
-            return taskToReturn;
         }
     }
 }

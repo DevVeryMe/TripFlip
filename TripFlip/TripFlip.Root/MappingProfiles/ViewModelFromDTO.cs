@@ -7,6 +7,8 @@ using TripFlip.ViewModels.ItemViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.TaskViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
+using TripFlip.ViewModels.RouteViewModels;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.Root.MappingProfiles
 {
@@ -17,12 +19,14 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<TripDto, TripViewModel>();
 
             CreateMap<TaskDto, GetTaskViewModel>();
-
             CreateMap<TaskDto, UpdateTaskViewModel>();
 
             CreateMap<TaskListDto, GetTaskListViewModel>();
 
             CreateMap<ItemDto, ItemViewModel>();
+
+            CreateMap<RouteDto, CreateRouteViewModel>();
+            CreateMap<RouteDto, ResultRouteViewModel>();
         }
     }
 }

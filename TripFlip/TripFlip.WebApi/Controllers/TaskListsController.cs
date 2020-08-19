@@ -23,17 +23,17 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new TaskList.
         /// </summary>
-        /// <param name="taskListViewModel">TaskList to create</param>
+        /// <param name="createTaskListViewModel">TaskList to create</param>
         /// <returns>created TaskList view model</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskListViewModel taskListViewModel)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTaskListViewModel createTaskListViewModel)
         {
-            var taskListDto = _mapper.Map<TaskListDto>(taskListViewModel);
-            var taskDtoToReturn = await _taskListService.CreateAsync(taskListDto);
+            var taskListDto = _mapper.Map<TaskListDto>(createTaskListViewModel);
+            var createdTaskDto = await _taskListService.CreateAsync(taskListDto);
 
-            var taskListViewModelToReturn = _mapper.Map<GetTaskListViewModel>(taskDtoToReturn);
+            var createdTaskListViewModel = _mapper.Map<GetTaskListViewModel>(createdTaskDto);
 
-            return Ok(taskListViewModelToReturn);
+            return Ok(createdTaskListViewModel);
         }
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">task list id</param>
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        public async Task<IActionResult> GetByIdAsync([FromQuery] int id)
         {
-            var taskList = await _taskListService.GetByIdAsync(id);
-            var taskListViewModel = _mapper.Map<GetTaskListViewModel>(taskList);
+            var taskListDto = await _taskListService.GetByIdAsync(id);
+            var taskListViewModel = _mapper.Map<GetTaskListViewModel>(taskListDto);
 
             return Ok(taskListViewModel);
         }

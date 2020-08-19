@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TripFlip.ViewModels.Enums;
+﻿using TripFlip.ViewModels.Enums;
 
 namespace TripFlip.ViewModels.TaskViewModels
 {
@@ -13,7 +10,7 @@ namespace TripFlip.ViewModels.TaskViewModels
 
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public bool isCompleted { get; set; }
+        public bool IsCompleted { get; set; }
 
         public int TaskListId { get; set; }
     }
