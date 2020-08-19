@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.Interfaces;
@@ -26,16 +24,29 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new Task.
         /// </summary>
-        /// <param name="taskViewModel">task to create</param>
+        /// <param name="createTaskViewModel">task to create</param>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
+
             var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
             var createdTaskViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
 
             return Ok(createdTaskViewModel);
+        }
+
+        /// <summary>
+        /// Gets all Tasks from a certain task list.
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAllByTaskListIdAsync([FromQuery] int taskListId)
+        {
+            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
+            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
+
+            return Ok(taskViewModels);
         }
     }
 }

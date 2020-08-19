@@ -48,5 +48,21 @@ namespace TripFlip.Services
 
             return taskToReturn;
         }
+
+        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int taskListId)
+        {
+            var taskList = await _flipTripDbContext.TaskLists.Include(t => t.Tasks).AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == taskListId);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
+            var tasks = taskList.Tasks.ToList();
+            var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
+
+            return taskDtos;
+        }
     }
 }
