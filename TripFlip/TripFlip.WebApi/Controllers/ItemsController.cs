@@ -73,7 +73,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Gets item by id.
         /// </summary>
-        /// <param name="id">item id</param>
+        /// <param name="id">Item id</param>
+        /// <returns>Item view model</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItemByIdAsync([Range(1, int.MaxValue,
             ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
