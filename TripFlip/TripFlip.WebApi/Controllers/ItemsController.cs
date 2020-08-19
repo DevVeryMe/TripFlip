@@ -58,8 +58,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing item.
         /// </summary>
-        /// <param name="updateItemViewModel">new item data</param>
-        /// <returns>updated item</returns>
+        /// <param name="updateItemViewModel">Item view model to update</param>
+        /// <returns>Updated item view model</returns>
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
         {
