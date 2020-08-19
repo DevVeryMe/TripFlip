@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -8,46 +9,42 @@ using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class TaskListService : ITaskListService
     {
         private readonly FlipTripDbContext _flipTripDbContext;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Constructor. Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
+        /// <param name="mapper">IMapper instance</param>
         public TaskListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        /// <inheritdoc />
         public async Task<TaskListDto> CreateAsync(TaskListDto taskListDto)
         {
+            var route = await _flipTripDbContext.Routes.AsNoTracking()
+                .SingleOrDefaultAsync(r => r.Id == taskListDto.RouteId);
+
+            if (route is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+            }
+
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.TaskLists.AddAsync(taskListEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var taskToReturn = _mapper.Map<TaskListDto>(taskListEntity);
+            var createdTaskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
-            return taskToReturn;
-        }
-
-        /// <inheritdoc />
-        public async Task DeleteAsync(int id)
-        {
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskListDto> GetAsync(int id)
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public async Task<TaskListDto> UpdateAsync(TaskListDto taskListDto)
-        {
-            return null;
+            return createdTaskListDto;
         }
     }
 }
