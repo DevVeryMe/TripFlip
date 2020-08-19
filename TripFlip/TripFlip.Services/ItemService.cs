@@ -17,6 +17,11 @@ namespace TripFlip.Services
         private readonly IMapper _mapper;
         private readonly FlipTripDbContext _flipTripDbContext;
 
+        /// <summary>
+        /// Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
         public ItemService(IMapper mapper, FlipTripDbContext flipTripDbContext)
         {
             _mapper = mapper;
@@ -45,19 +50,16 @@ namespace TripFlip.Services
 
         public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
         {
-            var itemEntityList = await _flipTripDbContext.ItemLists.AsNoTracking().
+            var itemListEntity = await _flipTripDbContext.ItemLists.
+                Include(l => l.Items).AsNoTracking().
                 SingleOrDefaultAsync(l => l.Id == listId);
 
-            if (itemEntityList is null)
+            if (itemListEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var itemEntities = await _flipTripDbContext.Items.
-                Where(i => i.ItemListId == listId).
-                AsNoTracking().ToListAsync();
-
-            var itemDtos = _mapper.Map<List<ItemDto>>(itemEntities);
+            var itemDtos = _mapper.Map<List<ItemDto>>(itemListEntity.Items);
 
             return itemDtos;
         }
@@ -66,10 +68,7 @@ namespace TripFlip.Services
         {
             var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 
-            if (itemEntityToUpdate is null)
-            {
-                throw new ArgumentException(ErrorConstants.ItemNotFound);
-            }
+            ValidateItemEntityExists(itemEntityToUpdate);
 
             itemEntityToUpdate.Title = itemDto.Title;
             itemEntityToUpdate.Comment = itemDto.Comment;
@@ -80,6 +79,14 @@ namespace TripFlip.Services
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
 
             return itemDtoToReturn;
+        }
+
+        private void ValidateItemEntityExists(ItemEntity itemEntity)
+        {
+            if (itemEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
+            }
         }
 
         public async Task<ItemDto> GetByIdAsync(int id)
