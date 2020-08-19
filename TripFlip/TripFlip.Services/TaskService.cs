@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Domain.Entities.Enums;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 
@@ -90,8 +91,7 @@ namespace TripFlip.Services
             }
 
             taskToUpdateEntity.Description = taskDto.Description;
-            taskToUpdateEntity.PriorityLevel = Enum.
-                Parse<Domain.Entities.Enums.TaskPriorityLevel>(taskDto.PriorityLevel.ToString());
+            taskToUpdateEntity.PriorityLevel = _mapper.Map<TaskPriorityLevel>(taskDto.PriorityLevel);
 
             taskToUpdateEntity.IsCompleted = taskDto.IsCompleted;
 
