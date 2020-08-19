@@ -36,9 +36,9 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all Routes with the given Trip Id
+        /// Returns all Routes with the given Trip Id.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="List{ResultRouteViewModel}"/> object that represents the list of database entries with the given Trip Id</returns>
+        /// <returns>If operation is successful, returns <see cref="List{ResultRouteViewModel}"/> object that represents the list of database entries with the given Trip Id.</returns>
         [HttpGet("trip/{id}")]
         public async Task<IActionResult> GetAllByTripIdAsync(int id)
         {
