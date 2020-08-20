@@ -34,7 +34,7 @@ namespace TripFlip.Services.Interfaces
         /// Updates the ItemList with the given <see cref="UpdateItemListDto"/> object. Applies changes to database asynchronously.
         /// </summary>
         /// <param name="updateItemListDto">Object that represents changes to be made to ItemList.</param>
-        /// <returns><see cref="ResultItemListDto"/> bject that represents the updated entry in database.</returns>
+        /// <returns><see cref="ResultItemListDto"/> object that represents the updated entry in database.</returns>
         Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto);
     }
 }
