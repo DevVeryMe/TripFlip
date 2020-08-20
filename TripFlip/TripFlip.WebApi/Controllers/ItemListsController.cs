@@ -39,7 +39,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <returns>If operation is successful, returns <see cref="List{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
-        public async Task<IActionResult> GetAllByTripIdAsync(int id)
+        public async Task<IActionResult> GetAllByRouteIdAsync(int id)
         {
             var resultItemListDtos = await _itemListService.GetAllByRouteIdAsync(id);
 
