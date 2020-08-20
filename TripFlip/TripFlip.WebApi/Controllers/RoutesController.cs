@@ -81,5 +81,17 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(resultViewModel);
         }
+
+        /// <summary>
+        /// Deletes Route with the given Id.
+        /// </summary>
+        /// <returns>If operation is successful, returns NoContent (HTTP code 204) result.</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            await _routeService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }

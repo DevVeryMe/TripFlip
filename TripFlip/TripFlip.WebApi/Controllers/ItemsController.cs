@@ -26,8 +26,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new item in a certain item list.
         /// </summary>
-        /// <param name="createItemViewModel">new item data</param>
-        /// <returns>created item</returns>
+        /// <param name="createItemViewModel">New item view model.</param>
+        /// <returns>Created item view model.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
