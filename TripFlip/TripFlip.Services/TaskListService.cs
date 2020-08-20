@@ -28,7 +28,7 @@ namespace TripFlip.Services
 
         public async Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto)
         {
-            await ValidateRouteExists(taskListDto.RouteId);
+            await ValidateRouteExistsAsync(taskListDto.RouteId);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
@@ -47,7 +47,7 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="routeId">Route id.</param>
         /// <returns>Nothing.</returns>
-        private async Task ValidateRouteExists(int routeId)
+        private async Task ValidateRouteExistsAsync(int routeId)
         {
             var route = await _flipTripDbContext.Routes.AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
