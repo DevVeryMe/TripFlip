@@ -67,5 +67,22 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(resultItemListViewModel);
         }
+
+        /// <summary>
+        /// Updates ItemList with the given <see cref="UpdateItemListViewModel"/> object.
+        /// </summary>
+        /// <param name="updateItemListViewModel">ViewModel that represents changes in ItemList to be made.</param>
+        /// <returns>If operation is successful, returns <see cref="ResultItemListDto"/> object that represents the updated database entry.</returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateItemListViewModel updateItemListViewModel)
+        {
+            var updateItemListDto = _mapper.Map<UpdateItemListDto>(updateItemListViewModel);
+
+            var resultItemListDto = await _itemListService.UpdateAsync(updateItemListDto);
+
+            var resultItemListViewModel = _mapper.Map<ResultItemListViewModel>(resultItemListDto);
+
+            return Ok(resultItemListViewModel);
+        }
     }
 }

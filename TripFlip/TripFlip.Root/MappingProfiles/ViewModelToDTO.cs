@@ -30,6 +30,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<UpdateTaskListViewModel, UpdateTaskListDto>();
 
             CreateMap<CreateItemListViewModel, CreateItemListDto>();
+            CreateMap<UpdateItemListViewModel, UpdateItemListDto>();
 
             CreateMap<CreateItemViewModel, CreateItemDto>();
 

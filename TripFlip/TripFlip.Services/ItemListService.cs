@@ -55,18 +55,6 @@ namespace TripFlip.Services
             return resultRouteDtoList;
         }
 
-        /// <summary>
-        /// Checks if the given <see cref="ItemListEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
-        /// </summary>
-        /// <param name="itemListEntity">Object that should be checked.</param>
-        void ValidateItemListEntityIsNotNull(ItemListEntity itemListEntity)
-        {
-            if (itemListEntity == null)
-            {
-                throw new ArgumentException(ErrorConstants.ItemListNotFound);
-            }
-        }
-
         public async Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto)
         {
             await ValidateRouteExistsAsync(createItemListDto.RouteId);
@@ -83,6 +71,23 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
+        public async Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto)
+        {
+            var itemListEntity = await _flipTripDbContext
+                .ItemLists
+                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
+
+            ValidateItemListEntityIsNotNull(itemListEntity);
+
+            itemListEntity.Title = updateItemListDto.Title;
+
+            await _flipTripDbContext.SaveChangesAsync();
+
+            var resultItemListDto = _mapper.Map<ResultItemListDto>(itemListEntity);
+
+            return resultItemListDto;
+        }
+
         /// <summary>
         /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>
@@ -92,6 +97,18 @@ namespace TripFlip.Services
             if (routeEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the given <see cref="ItemListEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// </summary>
+        /// <param name="itemListEntity">Object that should be checked.</param>
+        void ValidateItemListEntityIsNotNull(ItemListEntity itemListEntity)
+        {
+            if (itemListEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
         }
 
