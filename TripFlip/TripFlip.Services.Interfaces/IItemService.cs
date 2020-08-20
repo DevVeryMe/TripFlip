@@ -16,8 +16,8 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Returns all items for certain item list.
         /// </summary>
-        /// <param name="listId">Id of item list</param>
-        /// <returns>IEnumerable with item DTOs</returns>
+        /// <param name="listId">Id of item list.</param>
+        /// <returns>IEnumerable with item DTOs.</returns>
         Task<IEnumerable<ItemDto>> GetAllAsync(int listId);
     }
 }
