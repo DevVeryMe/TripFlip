@@ -88,8 +88,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Deletes item by id.
         /// </summary>
-        /// <param name="id">Item id</param>
-        /// <returns>No content</returns>
+        /// <param name="id">Item id.</param>
+        /// <returns>No content.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
