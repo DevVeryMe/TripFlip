@@ -5,6 +5,7 @@ using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.ViewModels.ItemViewModels;
+using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.ViewModels.TaskViewModels;
 using TripFlip.Services.DTO.TaskListDtos;
 using TripFlip.ViewModels.TaskListViewModels;
@@ -21,7 +22,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateTripViewModel, CreateTripDto>();
 
             CreateMap<CreateTaskViewModel, TaskDto>();
-            CreateMap<UpdateTaskViewModel, TaskDto>();
+            CreateMap<UpdateTaskViewModel, UpdateTaskDto>();
 
             CreateMap<CreateTaskListViewModel, TaskListDto>();
 
@@ -30,6 +31,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateRouteViewModel, RouteDto>();
             CreateMap<UpdateRouteViewModel, RouteDto>();
             CreateMap<ResultRouteViewModel, RouteDto>();
+            CreateMap<CreateRouteViewModel, CreateRouteDto>();
+            CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
         }
     }
 }

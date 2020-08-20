@@ -5,6 +5,7 @@ using TripFlip.Services.DTO.TaskListDtos;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.RouteDtos;
 
 namespace TripFlip.Root.MappingProfiles
 {
@@ -21,6 +22,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<TaskListEntity, TaskListDto>();
 
             CreateMap<RouteEntity, RouteDto>();
+            CreateMap<RouteEntity, ResultRouteDto>();
         }
     }
 }
