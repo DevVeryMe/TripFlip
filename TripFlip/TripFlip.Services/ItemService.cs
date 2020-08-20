@@ -66,9 +66,8 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
         {
-            var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
-
-            ValidateItemEntityExists(itemEntityToUpdate);
+            var itemDtoToUpdate = await GetByIdAsync(itemDto.Id);
+            var itemEntityToUpdate = _mapper.Map<ItemEntity>(itemDtoToUpdate);
 
             itemEntityToUpdate.Title = itemDto.Title;
             itemEntityToUpdate.Comment = itemDto.Comment;
@@ -95,9 +94,8 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
-
-            ValidateItemEntityExists(itemEntityToDelete);
+            var itemDtoToDelete = await GetByIdAsync(id);
+            var itemEntityToDelete = _mapper.Map<ItemEntity>(itemDtoToDelete);
 
             _flipTripDbContext.Remove(itemEntityToDelete);
             await _flipTripDbContext.SaveChangesAsync();
