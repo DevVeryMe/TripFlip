@@ -29,15 +29,15 @@ namespace TripFlip.Services
 
             if (itemListEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var item = _mapper.Map<ItemEntity>(createItemDto);
+            var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
-            await _flipTripDbContext.Items.AddAsync(item);
+            await _flipTripDbContext.Items.AddAsync(itemEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var itemToReturnDto = _mapper.Map<ItemDto>(item);
+            var itemToReturnDto = _mapper.Map<ItemDto>(itemEntity);
 
             return itemToReturnDto;
         }
