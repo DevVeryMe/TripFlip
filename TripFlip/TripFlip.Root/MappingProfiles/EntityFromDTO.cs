@@ -21,6 +21,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<TaskDto, TaskEntity>();
 
             CreateMap<CreateTaskListDto, TaskListEntity>();
+            CreateMap<TaskListDto, TaskListEntity>();
 
             CreateMap<CreateRouteDto, RouteEntity>();
         }
