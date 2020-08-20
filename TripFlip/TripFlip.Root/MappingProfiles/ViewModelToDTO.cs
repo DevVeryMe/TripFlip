@@ -4,10 +4,11 @@ using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
-using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.ViewModels.ItemViewModels;
+using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.ViewModels.TaskViewModels;
-using TripFlip.ViewModels;
+using TripFlip.Services.DTO.TaskListDtos;
+using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 
 namespace TripFlip.Root.MappingProfiles
@@ -21,16 +22,15 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateTripViewModel, CreateTripDto>();
 
             CreateMap<CreateTaskViewModel, TaskDto>();
-
             CreateMap<UpdateTaskViewModel, UpdateTaskDto>();
 
-            CreateMap<CreateRouteViewModel, CreateRouteDto>();
-
-            CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
+            CreateMap<CreateTaskListViewModel, CreateTaskListDto>();
 
             CreateMap<CreateItemViewModel, CreateItemDto>();
 
             CreateMap<UpdateItemViewModel, UpdateItemDto>();
+            CreateMap<CreateRouteViewModel, CreateRouteDto>();
+            CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
         }
     }
 }
