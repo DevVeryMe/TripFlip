@@ -68,6 +68,18 @@ namespace TripFlip.Services
             return resultRouteDto;
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var routeEntityToDelete = await _flipTripDbContext
+                .Routes
+                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == id);
+
+            ValidateRouteEntityIsNotNull(routeEntityToDelete);
+
+            _flipTripDbContext.Routes.Remove(routeEntityToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
+        }
+
         public async Task<ResultRouteDto> GetByIdAsync(int routeId)
         {
             var routeEntity = await _flipTripDbContext
