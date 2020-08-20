@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.DTO.TaskListDtos;

@@ -84,11 +84,13 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes TaskList by id.
+        /// Deletes task list by id.
         /// </summary>
-        /// <param name="id">TaskList to delete id</param>
+        /// <param name="id">Task list to delete id.</param>
+        /// <returns>No content.</returns>
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             await _taskListService.DeleteAsync(id);
 
