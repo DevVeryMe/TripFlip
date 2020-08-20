@@ -21,5 +21,13 @@
         public const string EndDateEarlierThanStartDateError = "End date cannot be earlier than start date.";
 
         public const string NotMatchAnyTaskPriorityLevelError = "Value doesn't match any task priority level";
+
+        public const string CommentLengthError = "Comment length cannot be greater than 250.";
+
+        public const string QuantityLengthError = "Quantity length cannot be greater than 50.";
+
+        public const string ItemWithoutItemListError = "Item cannot exist without item list.";
+
+        public const string EmptyIsCompletedFieldError = "Field 'is completed' cannot be empty.";
     }
 }
