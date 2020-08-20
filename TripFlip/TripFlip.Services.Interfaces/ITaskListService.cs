@@ -25,5 +25,11 @@ namespace TripFlip.Services.Interfaces
         /// <param name="taskListDto">New task list data.</param>
         /// <returns>Updated task list DTO.</returns>
         Task<TaskListDto> UpdateAsync(UpdateTaskListDto taskListDto);
+
+        /// <summary>
+        /// Deletes task list by id.
+        /// </summary>
+        /// <param name="id">Task list to delete id.</param>
+        Task DeleteAsync(int id);
     }
 }

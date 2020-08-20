@@ -2,7 +2,6 @@
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.DTO.TaskDtos;
-using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.ViewModels.ItemViewModels;
 using TripFlip.Services.DTO.RouteDtos;

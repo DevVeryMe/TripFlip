@@ -63,7 +63,7 @@ namespace TripFlip.Services
 
             if (taskLsitToUpdateEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
             taskLsitToUpdateEntity.Title = taskListDto.Title;
@@ -72,6 +72,20 @@ namespace TripFlip.Services
             var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
 
             return updatedTaskListDto;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var taskListToDelete = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskListToDelete is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
+            _flipTripDbContext.TaskLists.Remove(taskListToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
 
         /// <summary>

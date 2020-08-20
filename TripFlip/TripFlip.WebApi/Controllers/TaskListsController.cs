@@ -66,5 +66,19 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(updatedTaskListViewModel);
         }
+
+        /// <summary>
+        /// Deletes task list by id.
+        /// </summary>
+        /// <param name="id">Task list to delete id.</param>
+        /// <returns>No content.</returns>
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _taskListService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
