@@ -20,6 +20,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<ITripService, TripService>();
 
+            services.AddTransient<ITaskListService, TaskListService>();
+
             services.AddTransient<IItemService, ItemService>();
 
             services.AddTransient<IRouteService, RouteService>();
