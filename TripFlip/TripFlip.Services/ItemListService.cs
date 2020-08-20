@@ -55,8 +55,6 @@ namespace TripFlip.Services
             return resultRouteDtoList;
         }
 
-        
-
         public async Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto)
         {
             await ValidateRouteExistsAsync(createItemListDto.RouteId);
@@ -75,21 +73,13 @@ namespace TripFlip.Services
 
         public async Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto)
         {
-            var routeEntity = await _flipTripDbContext
-                .Routes
-                .Include(routeEntity => routeEntity.ItemLists)
-                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == updateItemListDto.RouteId);
-
-            ValidateRouteEntityIsNotNull(routeEntity);
-
-            var itemListEntity = routeEntity
+            var itemListEntity = await _flipTripDbContext
                 .ItemLists
-                .FirstOrDefault(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
+                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
 
             ValidateItemListEntityIsNotNull(itemListEntity);
 
             itemListEntity.Title = updateItemListDto.Title;
-            itemListEntity.RouteId = updateItemListDto.RouteId;
 
             await _flipTripDbContext.SaveChangesAsync();
 
