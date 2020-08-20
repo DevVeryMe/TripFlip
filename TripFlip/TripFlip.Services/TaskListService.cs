@@ -56,6 +56,24 @@ namespace TripFlip.Services
             return taskListDto;
         }
 
+        public async Task<TaskListDto> UpdateAsync(UpdateTaskListDto taskListDto)
+        {
+            var taskLsitToUpdateEntity = await _flipTripDbContext.TaskLists
+                .FindAsync(taskListDto.Id);
+
+            if (taskLsitToUpdateEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            taskLsitToUpdateEntity.Title = taskListDto.Title;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
+
+            return updatedTaskListDto;
+        }
+
         /// <summary>
         /// Validates whether route with specified id exists or not.
         /// Throws an exception if route with specified id doesn't exist.
