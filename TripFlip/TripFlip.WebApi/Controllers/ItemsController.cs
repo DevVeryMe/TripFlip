@@ -54,5 +54,20 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(itemViewModels);
         }
+
+        /// <summary>
+        /// Updates existing item.
+        /// </summary>
+        /// <param name="updateItemViewModel">Item view model to update.</param>
+        /// <returns>Updated item view model.</returns>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
+        {
+            var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
+            var itemDtoToReturn = await _itemService.UpdateAsync(itemDtoToUpdate);
+            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
+
+            return Ok(itemViewModelToReturn);
+        }
     }
 }
