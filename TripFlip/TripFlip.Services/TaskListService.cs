@@ -28,7 +28,7 @@ namespace TripFlip.Services
 
         public async Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto)
         {
-            await ValidateRouteExists(taskListDto.RouteId);
+            await ValidateRouteExistsAsync(taskListDto.RouteId);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
@@ -62,7 +62,7 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="routeId">Route id.</param>
         /// <returns>Nothing.</returns>
-        private async Task ValidateRouteExists(int routeId)
+        private async Task ValidateRouteExistsAsync(int routeId)
         {
             var route = await _flipTripDbContext.Routes.AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
@@ -70,23 +70,6 @@ namespace TripFlip.Services
             if (route is null)
             {
                 throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
-            }
-        }
-
-        /// <summary>
-        /// Validates wether route with specified id exists or not.
-        /// Throws an exception if route with specified id doesn't exist.
-        /// </summary>
-        /// <param name="routeId">Route id.</param>
-        /// <returns>Nothing.</returns>
-        private async Task ValidateTaskListExists(int taskListId)
-        {
-            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == taskListId);
-
-            if (taskList is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
         }
     }
