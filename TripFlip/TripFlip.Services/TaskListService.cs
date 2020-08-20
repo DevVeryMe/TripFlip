@@ -42,7 +42,7 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Validates wether route with specified id exists or not.
+        /// Validates whether route with specified id exists or not.
         /// Throws an exception if route with specified id doesn't exist.
         /// </summary>
         /// <param name="routeId">Route id.</param>
