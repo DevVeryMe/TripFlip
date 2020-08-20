@@ -6,6 +6,13 @@ namespace TripFlip.Services.Interfaces
     public interface ITaskListService
     {
         /// <summary>
+        /// Gets task list by id.
+        /// </summary>
+        /// <param name="id">Task list id.</param>
+        /// <returns>Task list DTO with specified id.</returns>
+        Task<TaskListDto> GetByIdAsync(int id);
+
+        /// <summary>
         /// Creates new task list.
         /// </summary>
         /// <param name="taskDto">Task list data.</param>

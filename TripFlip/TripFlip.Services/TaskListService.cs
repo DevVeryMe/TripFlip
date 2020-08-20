@@ -41,6 +41,21 @@ namespace TripFlip.Services
             return createdTaskListDto;
         }
 
+        public async Task<TaskListDto> GetByIdAsync(int id)
+        {
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
+
+            var taskListDto = _mapper.Map<TaskListDto>(taskList);
+
+            return taskListDto;
+        }
+
         /// <summary>
         /// Validates whether route with specified id exists or not.
         /// Throws an exception if route with specified id doesn't exist.
