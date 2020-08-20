@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.DTO.ItemListDtos;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns an ItemList with the given Id.
         /// </summary>
+        /// <param name="id">Id of ItemList.</param>
         /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents ItemList database entry.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
@@ -37,6 +39,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all ItemLists with the given Route Id.
         /// </summary>
+        /// <param name="id">Id of Route.</param>
         /// <returns>If operation is successful, returns <see cref="List{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(int id)
@@ -46,6 +49,23 @@ namespace TripFlip.WebApi.Controllers
             var resultItemListViewModelList = _mapper.Map< List<ResultItemListViewModel> >(resultItemListDtos);
 
             return Ok(resultItemListViewModelList);
+        }
+
+        /// <summary>
+        /// Creates a new ItemList with the given <see cref="CreateItemListViewModel"/> object.
+        /// </summary>
+        /// <param name="createItemListViewModel">ViewModel that represents new ItemList to be created.</param>
+        /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents the new entry that was added to database.</returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(CreateItemListViewModel createItemListViewModel)
+        {
+            var createItemListDto = _mapper.Map<CreateItemListDto>(createItemListViewModel);
+
+            var resultItemListDto = await _itemListService.CreateAsync(createItemListDto);
+
+            var resultItemListViewModel = _mapper.Map<ResultItemListViewModel>(resultItemListDto);
+
+            return Ok(resultItemListViewModel);
         }
     }
 }

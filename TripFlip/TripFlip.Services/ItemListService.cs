@@ -67,12 +67,45 @@ namespace TripFlip.Services
             }
         }
 
+        public async Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto)
+        {
+            await ValidateRouteExistsAsync(createItemListDto.RouteId);
+
+            var itemListEntity = _mapper.Map<ItemListEntity>(createItemListDto);
+
+            itemListEntity.DateCreated = DateTimeOffset.Now;
+
+            var entityEntry = _flipTripDbContext.ItemLists.Add(itemListEntity);
+            await _flipTripDbContext.SaveChangesAsync();
+
+            var resultItemListDto = _mapper.Map<ResultItemListDto>(entityEntry.Entity);
+
+            return resultItemListDto;
+        }
+
         /// <summary>
         /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>
         /// <param name="routeEntity">Object that should be checked.</param>
         void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
         {
+            if (routeEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+        }
+
+        /// <summary>
+        /// Checks if Route exists by making a database query.
+        /// </summary>
+        /// <param name="routeId">Route's Id to check.</param>
+        async Task ValidateRouteExistsAsync(int routeId)
+        {
+            var routeEntity = await _flipTripDbContext
+                .Routes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
+
             if (routeEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
