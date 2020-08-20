@@ -8,27 +8,29 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Gets task list by id.
         /// </summary>
-        /// <param name="id">task list id</param>
+        /// <param name="id">Task list id.</param>
+        /// <returns>Task list DTO with specified id.</returns>
         Task<TaskListDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates new task list.
         /// </summary>
-        /// <param name="taskDto">task list data</param>
-        /// <returns>created task list</returns>
-        Task<TaskListDto> CreateAsync(TaskListDto taskListDto);
+        /// <param name="taskDto">Task list data.</param>
+        /// <returns>Created task list DTO.</returns>
+        Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto);
 
         /// <summary>
         /// Updates existing task list.
         /// </summary>
-        /// <param name="taskListDto">new task list data</param>
-        /// <returns>updated task list</returns>
-        Task<TaskListDto> UpdateAsync(TaskListDto taskListDto);
+        /// <param name="taskListDto">New task list data.</param>
+        /// <returns>Updated task list DTO.</returns>
+        Task<TaskListDto> UpdateAsync(UpdateTaskListDto taskListDto);
 
         /// <summary>
-        /// Deletes task list.
+        /// Deletes task list by id.
         /// </summary>
-        /// <param name="id">task list to delete id</param>
+        /// <param name="id">Task list to delete id.</param>
+        /// <returns>Nothing.</returns>
         Task DeleteAsync(int id);
     }
 }
