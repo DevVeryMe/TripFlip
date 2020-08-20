@@ -95,8 +95,9 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var itemDtoToDelete = await GetByIdAsync(id);
-            var itemEntityToDelete = _mapper.Map<ItemEntity>(itemDtoToDelete);
+            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
+            
+            ValidateItemEntityExists(itemEntityToDelete);
 
             _flipTripDbContext.Remove(itemEntityToDelete);
             await _flipTripDbContext.SaveChangesAsync();
