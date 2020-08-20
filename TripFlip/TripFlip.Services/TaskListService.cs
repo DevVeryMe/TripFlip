@@ -76,15 +76,10 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var taskListToDelete = await _flipTripDbContext.TaskLists.AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == id);
+            var taskListToDeleteDto = await GetByIdAsync(id);
+            var taskListToDeleteEntity = _mapper.Map<TaskListEntity>(taskListToDeleteDto);
 
-            if (taskListToDelete is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
-            }
-
-            _flipTripDbContext.TaskLists.Remove(taskListToDelete);
+            _flipTripDbContext.TaskLists.Remove(taskListToDeleteEntity);
             await _flipTripDbContext.SaveChangesAsync();
         }
 
