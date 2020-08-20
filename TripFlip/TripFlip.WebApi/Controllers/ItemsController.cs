@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -37,6 +38,21 @@ namespace TripFlip.WebApi.Controllers
             var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
 
             return Ok(itemViewModel);
+        }
+
+        /// <summary>
+        /// Returns all items of certain item list.
+        /// </summary>
+        /// <param name="id">Item list id.</param>
+        /// <returns>Collection of item view models.</returns>
+        [HttpGet("list/{id}")]
+        public async Task<IActionResult> GetAllByItemListIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        {
+            var items = await _itemService.GetAllAsync(id);
+            var itemViewModels = _mapper.Map<List<ItemViewModel>>(items);
+
+            return Ok(itemViewModels);
         }
     }
 }
