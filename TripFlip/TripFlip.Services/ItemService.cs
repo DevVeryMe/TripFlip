@@ -66,17 +66,17 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
         {
-            var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
+            var itemToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 
-            ValidateItemEntityExists(itemEntityToUpdate);
+            ValidateItemEntityExists(itemToUpdate);
 
-            itemEntityToUpdate.Title = itemDto.Title;
-            itemEntityToUpdate.Comment = itemDto.Comment;
-            itemEntityToUpdate.Quantity = itemDto.Quantity;
-            itemEntityToUpdate.IsCompleted = itemDto.IsCompleted;
+            itemToUpdate.Title = itemDto.Title;
+            itemToUpdate.Comment = itemDto.Comment;
+            itemToUpdate.Quantity = itemDto.Quantity;
+            itemToUpdate.IsCompleted = itemDto.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
             return itemDtoToReturn;
         }
@@ -91,6 +91,16 @@ namespace TripFlip.Services
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntity);
 
             return itemDtoToReturn;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
+            
+            ValidateItemEntityExists(itemEntityToDelete);
+
+            _flipTripDbContext.Remove(itemEntityToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
         }
 
         private void ValidateItemEntityExists(ItemEntity itemEntity)
