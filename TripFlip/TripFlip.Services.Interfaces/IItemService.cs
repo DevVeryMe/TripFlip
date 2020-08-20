@@ -16,15 +16,15 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Returns all items for certain item list.
         /// </summary>
-        /// <param name="listId">Id of item list</param>
-        /// <returns>IEnumerable with item DTOs</returns>
+        /// <param name="listId">Id of item list.</param>
+        /// <returns>IEnumerable with item DTOs.</returns>
         Task<IEnumerable<ItemDto>> GetAllAsync(int listId);
 
         /// <summary>
         /// Updates existing item.
         /// </summary>
-        /// <param name="itemDto">Item DTO</param>
-        /// <returns>Updated item DTO</returns>
+        /// <param name="itemDto">Item DTO.</param>
+        /// <returns>Updated item DTO.</returns>
         Task<ItemDto> UpdateAsync(UpdateItemDto itemDto);
 
         /// <summary>

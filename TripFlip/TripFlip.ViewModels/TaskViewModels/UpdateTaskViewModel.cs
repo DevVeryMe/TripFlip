@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using TripFlip.ViewModels.Attributes;
 using TripFlip.ViewModels.Enums;
 
 namespace TripFlip.ViewModels.TaskViewModels
@@ -15,9 +14,9 @@ namespace TripFlip.ViewModels.TaskViewModels
         [StringLength(500, ErrorMessage = ErrorConstants.DescriptionLengthError)]
         public string Description { get; set; }
 
-        [ValidateOptionalEnumField(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
+        [EnumDataType(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public bool isCompleted { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }
