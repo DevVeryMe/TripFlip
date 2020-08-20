@@ -21,8 +21,8 @@ namespace TripFlip.Services
         /// <summary>
         /// Constructor. Initializes _flipTripDbContext and _mapper fields.
         /// </summary>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
-        /// <param name="mapper">IMapper instance</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
         public TaskService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
@@ -64,6 +64,21 @@ namespace TripFlip.Services
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
 
             return taskDtos;
+        }
+
+        public async Task<TaskDto> GetByIdAsync(int id)
+        {
+            var taskEntity = await _flipTripDbContext.Tasks.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
+
+            if (taskEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
+
+            return taskDto;
         }
 
         public async Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto)

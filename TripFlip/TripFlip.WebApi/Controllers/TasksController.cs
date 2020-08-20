@@ -24,7 +24,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Creates new Task.
         /// </summary>
-        /// <param name="createTaskViewModel">Task to create</param>
+        /// <param name="createTaskViewModel">Task to create.</param>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
@@ -40,7 +40,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Gets all Tasks from a certain task list.
         /// </summary>
-        /// <param name="taskListId">Task list id</param>
+        /// <param name="taskListId">Task list id.</param>
         [HttpGet]
         public async Task<IActionResult> GetAllByTaskListIdAsync([FromQuery] int taskListId)
         {
@@ -51,10 +51,25 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Gets task by id.
+        /// </summary>
+        /// <param name="id">Task id.</param>
+        /// <returns>Task view model.</returns>
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        {
+            var taskDto = await _taskService.GetByIdAsync(id);
+            var getTaskViewModel = _mapper.Map<GetTaskViewModel>(taskDto);
+
+            return Ok(getTaskViewModel);
+        }
+
+        /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskViewModel">New task data with existing task id</param>
-        /// <returns>Updated task view model</returns>
+        /// <param name="taskViewModel">New task data with existing task id.</param>
+        /// <returns>Updated task view model.</returns>
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
@@ -69,7 +84,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Deletes task by id.
         /// </summary>
-        /// <param name="id">Task to delete id</param>
+        /// <param name="id">Task to delete id.</param>
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
