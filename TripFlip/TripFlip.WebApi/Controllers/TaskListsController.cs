@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TaskListDtos;
 using TripFlip.Services.Interfaces;
@@ -34,6 +35,21 @@ namespace TripFlip.WebApi.Controllers
             var createdTaskListViewModel = _mapper.Map<GetTaskListViewModel>(createdTaskListDto);
 
             return Ok(createdTaskListViewModel);
+        }
+
+        /// <summary>
+        /// Gets all task lists from a certain route.
+        /// </summary>
+        /// <param name="routeId">Route id.</param>
+        /// <returns>Task list view models of route specified by id.</returns>
+        [HttpGet]
+        [Route("routes/{routeId}")]
+        public async Task<IActionResult> GetAllByRouteIdAsync(int routeId)
+        {
+            var taskListDtos = await _taskListService.GetAllByRouteIdAsync(routeId);
+            var taskListViewModels = _mapper.Map<List<GetTaskListViewModel>>(taskListDtos);
+
+            return Ok(taskListViewModels);
         }
 
         /// <summary>

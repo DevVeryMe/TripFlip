@@ -1,10 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TripFlip.Services.DTO.TaskListDtos;
 
 namespace TripFlip.Services.Interfaces
 {
     public interface ITaskListService
     {
+        /// <summary>
+        /// Gets all task lists from certain route.
+        /// </summary>
+        /// <param name="routeId">Route id.</param>
+        /// <returns>Task list DTOs of route specified by id.</returns>
+        Task<IEnumerable<TaskListDto>> GetAllByRouteIdAsync(int routeId);
+
         /// <summary>
         /// Gets task list by id.
         /// </summary>
