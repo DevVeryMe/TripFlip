@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
@@ -16,6 +17,11 @@ namespace TripFlip.Services
         private readonly IMapper _mapper;
         private readonly FlipTripDbContext _flipTripDbContext;
 
+        /// <summary>
+        /// Initializes _flipTripDbContext and _mapper fields.
+        /// </summary>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
         public ItemService(IMapper mapper, FlipTripDbContext flipTripDbContext)
         {
             _mapper = mapper;
@@ -29,17 +35,33 @@ namespace TripFlip.Services
 
             if (itemListEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var item = _mapper.Map<ItemEntity>(createItemDto);
+            var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
-            await _flipTripDbContext.Items.AddAsync(item);
+            await _flipTripDbContext.Items.AddAsync(itemEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            var itemToReturnDto = _mapper.Map<ItemDto>(item);
+            var itemToReturnDto = _mapper.Map<ItemDto>(itemEntity);
 
             return itemToReturnDto;
+        }
+
+        public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
+        {
+            var itemListEntity = await _flipTripDbContext.ItemLists.
+                Include(l => l.Items).AsNoTracking().
+                SingleOrDefaultAsync(l => l.Id == listId);
+
+            if (itemListEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemListNotFound);
+            }
+
+            var itemDtos = _mapper.Map<List<ItemDto>>(itemListEntity.Items);
+
+            return itemDtos;
         }
     }
 }

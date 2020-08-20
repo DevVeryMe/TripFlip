@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.Services.DTO.TaskListDtos
+namespace TripFlip.Services.DTO.ItemListDtos
 {
-    public class TaskListDto
+    public class ResultItemListDto
     {
         public int Id { get; set; }
 

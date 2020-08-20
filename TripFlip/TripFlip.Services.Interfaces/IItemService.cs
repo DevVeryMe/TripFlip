@@ -9,8 +9,15 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Creates new item.
         /// </summary>
-        /// <param name="createItemDto">item data</param>
-        /// <returns>created item</returns>
+        /// <param name="createItemDto">New Item DTO.</param>
+        /// <returns>Created item DTO.</returns>
         Task<ItemDto> CreateAsync(CreateItemDto createItemDto);
+
+        /// <summary>
+        /// Returns all items for certain item list.
+        /// </summary>
+        /// <param name="listId">Id of item list.</param>
+        /// <returns>IEnumerable with item DTOs.</returns>
+        Task<IEnumerable<ItemDto>> GetAllAsync(int listId);
     }
 }
