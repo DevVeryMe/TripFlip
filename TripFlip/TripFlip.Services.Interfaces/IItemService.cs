@@ -30,8 +30,8 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Gets item by id.
         /// </summary>
-        /// <param name="id">Item id</param>
-        /// <returns>Item DTO</returns>
+        /// <param name="id">Item id.</param>
+        /// <returns>Item DTO.</returns>
         Task<ItemDto> GetByIdAsync(int id);
     }
 }
