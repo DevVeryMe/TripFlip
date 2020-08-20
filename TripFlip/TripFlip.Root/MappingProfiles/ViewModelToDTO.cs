@@ -28,9 +28,6 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<CreateItemViewModel, CreateItemDto>();
 
-            CreateMap<CreateRouteViewModel, RouteDto>();
-            CreateMap<UpdateRouteViewModel, RouteDto>();
-            CreateMap<ResultRouteViewModel, RouteDto>();
             CreateMap<CreateRouteViewModel, CreateRouteDto>();
             CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
         }
