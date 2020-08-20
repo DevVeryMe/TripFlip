@@ -18,23 +18,17 @@ namespace TripFlip.Services
         /// <summary>
         /// Constructor. Initializes _flipTripDbContext and _mapper fields.
         /// </summary>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
-        /// <param name="mapper">IMapper instance</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
         public TaskListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        public async Task<TaskListDto> CreateAsync(TaskListDto taskListDto)
+        public async Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto)
         {
-            var route = await _flipTripDbContext.Routes.AsNoTracking()
-                .SingleOrDefaultAsync(r => r.Id == taskListDto.RouteId);
-
-            if (route is null)
-            {
-                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
-            }
+            await ValidateRouteExistsAsync(taskListDto.RouteId);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
@@ -62,23 +56,39 @@ namespace TripFlip.Services
             return taskListDto;
         }
 
-        public async Task<TaskListDto> UpdateAsync(TaskListDto taskListDto)
+        public async Task<TaskListDto> UpdateAsync(UpdateTaskListDto taskListDto)
         {
-            var updatedTaskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             var taskLsitToUpdateEntity = await _flipTripDbContext.TaskLists
-                .FindAsync(updatedTaskListEntity.Id);
+                .FindAsync(taskListDto.Id);
 
             if (taskLsitToUpdateEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
-            taskLsitToUpdateEntity.Title = updatedTaskListEntity.Title;
+            taskLsitToUpdateEntity.Title = taskListDto.Title;
 
             await _flipTripDbContext.SaveChangesAsync();
             var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
 
             return updatedTaskListDto;
+        }
+
+        /// <summary>
+        /// Validates wether route with specified id exists or not.
+        /// Throws an exception if route with specified id doesn't exist.
+        /// </summary>
+        /// <param name="routeId">Route id.</param>
+        /// <returns>Nothing.</returns>
+        private async Task ValidateRouteExistsAsync(int routeId)
+        {
+            var route = await _flipTripDbContext.Routes.AsNoTracking()
+                .SingleOrDefaultAsync(r => r.Id == routeId);
+
+            if (route is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+            }
         }
     }
 }
