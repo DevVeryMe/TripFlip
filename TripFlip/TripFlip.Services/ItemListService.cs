@@ -88,6 +88,18 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var itemListEntityToDelete = await _flipTripDbContext
+                .ItemLists
+                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
+
+            ValidateItemListEntityIsNotNull(itemListEntityToDelete);
+
+            _flipTripDbContext.ItemLists.Remove(itemListEntityToDelete);
+            await _flipTripDbContext.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>

@@ -84,5 +84,18 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(resultItemListViewModel);
         }
+
+        /// <summary>
+        /// Deletes ItemList with the given Id.
+        /// </summary>
+        /// <param name="id">Id of ItemList to be deleted.</param>
+        /// <returns>If operation is successful, returns NoContent (HTTP code 204) result.</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            await _itemListService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }

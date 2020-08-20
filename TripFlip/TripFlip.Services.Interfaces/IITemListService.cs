@@ -36,5 +36,11 @@ namespace TripFlip.Services.Interfaces
         /// <param name="updateItemListDto">Object that represents changes to be made to ItemList.</param>
         /// <returns><see cref="ResultItemListDto"/> object that represents the updated entry in database.</returns>
         Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto);
+
+        /// <summary>
+        /// Deletes ItemList with the given Id.
+        /// </summary>
+        /// <param name="id">Id of ItemList to be deleted.</param>
+        Task DeleteAsync(int id);
     }
 }
