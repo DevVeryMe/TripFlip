@@ -63,5 +63,30 @@ namespace TripFlip.Services
 
             return itemDtos;
         }
+
+        public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
+        {
+            var itemEntityToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
+
+            ValidateItemEntityExists(itemEntityToUpdate);
+
+            itemEntityToUpdate.Title = itemDto.Title;
+            itemEntityToUpdate.Comment = itemDto.Comment;
+            itemEntityToUpdate.Quantity = itemDto.Quantity;
+            itemEntityToUpdate.IsCompleted = itemDto.IsCompleted;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
+
+            return itemDtoToReturn;
+        }
+
+        private void ValidateItemEntityExists(ItemEntity itemEntity)
+        {
+            if (itemEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.ItemNotFound);
+            }
+        }
     }
 }
