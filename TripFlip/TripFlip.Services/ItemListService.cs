@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.DataAccess;
@@ -37,6 +39,23 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
+        public async Task<IEnumerable<ResultItemListDto>> GetAllByRouteIdAsync(int routeId)
+        {
+            var routeEntity = await _flipTripDbContext
+                .Routes
+                .AsNoTracking()
+                .Where(routeEntity => routeEntity.Id == routeId)
+                .Include(routeEntity => routeEntity.ItemLists)
+                .FirstOrDefaultAsync();
+
+            ValidateRouteEntityIsNotNull(routeEntity);
+
+            var resultRouteDtoList = _mapper.Map< List<ResultItemListDto> >
+                (routeEntity.ItemLists.ToList());
+
+            return resultRouteDtoList;
+        }
+
         /// <summary>
         /// Checks if the given <see cref="ItemListEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>
@@ -46,6 +65,18 @@ namespace TripFlip.Services
             if (itemListEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// </summary>
+        /// <param name="routeEntity">Object that should be checked.</param>
+        void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
+        {
+            if (routeEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
         }
     }
