@@ -21,17 +21,17 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates new TaskList.
+        /// Creates new task list.
         /// </summary>
-        /// <param name="createTaskListViewModel">TaskList to create</param>
-        /// <returns>created TaskList view model</returns>
+        /// <param name="createTaskListViewModel">Task list to create.</param>
+        /// <returns>Created task list view model.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskListViewModel createTaskListViewModel)
         {
-            var taskListDto = _mapper.Map<TaskListDto>(createTaskListViewModel);
-            var createdTaskDto = await _taskListService.CreateAsync(taskListDto);
+            var taskListDto = _mapper.Map<CreateTaskListDto>(createTaskListViewModel);
+            var createdTaskListDto = await _taskListService.CreateAsync(taskListDto);
 
-            var createdTaskListViewModel = _mapper.Map<GetTaskListViewModel>(createdTaskDto);
+            var createdTaskListViewModel = _mapper.Map<GetTaskListViewModel>(createdTaskListDto);
 
             return Ok(createdTaskListViewModel);
         }
