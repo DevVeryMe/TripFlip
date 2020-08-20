@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.Services.DTO.TaskListDtos
+namespace TripFlip.Services.DTO.RouteDtos
 {
-    public class TaskListDto
+    public class ResultRouteDto
     {
         public int Id { get; set; }
 
@@ -10,6 +10,6 @@ namespace TripFlip.Services.DTO.TaskListDtos
 
         public DateTimeOffset DateCreated { get; set; }
 
-        public int RouteId { get; set; }
+        public int TripId { get; set; }
     }
 }

@@ -18,23 +18,17 @@ namespace TripFlip.Services
         /// <summary>
         /// Constructor. Initializes _flipTripDbContext and _mapper fields.
         /// </summary>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance</param>
-        /// <param name="mapper">IMapper instance</param>
+        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
         public TaskListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
             _flipTripDbContext = flipTripDbContext;
             _mapper = mapper;
         }
 
-        public async Task<TaskListDto> CreateAsync(TaskListDto taskListDto)
+        public async Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto)
         {
-            var route = await _flipTripDbContext.Routes.AsNoTracking()
-                .SingleOrDefaultAsync(r => r.Id == taskListDto.RouteId);
-
-            if (route is null)
-            {
-                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
-            }
+            await ValidateRouteExists(taskListDto.RouteId);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
             taskListEntity.DateCreated = DateTimeOffset.Now;
@@ -60,6 +54,40 @@ namespace TripFlip.Services
             var taskListDto = _mapper.Map<TaskListDto>(taskList);
 
             return taskListDto;
+        }
+
+        /// <summary>
+        /// Validates wether route with specified id exists or not.
+        /// Throws an exception if route with specified id doesn't exist.
+        /// </summary>
+        /// <param name="routeId">Route id.</param>
+        /// <returns>Nothing.</returns>
+        private async Task ValidateRouteExists(int routeId)
+        {
+            var route = await _flipTripDbContext.Routes.AsNoTracking()
+                .SingleOrDefaultAsync(r => r.Id == routeId);
+
+            if (route is null)
+            {
+                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+            }
+        }
+
+        /// <summary>
+        /// Validates wether route with specified id exists or not.
+        /// Throws an exception if route with specified id doesn't exist.
+        /// </summary>
+        /// <param name="routeId">Route id.</param>
+        /// <returns>Nothing.</returns>
+        private async Task ValidateTaskListExists(int taskListId)
+        {
+            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == taskListId);
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
         }
     }
 }

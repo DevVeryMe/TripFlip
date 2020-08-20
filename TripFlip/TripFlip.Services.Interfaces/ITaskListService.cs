@@ -14,8 +14,8 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Creates new task list.
         /// </summary>
-        /// <param name="taskDto">task list data</param>
-        /// <returns>created task list</returns>
-        Task<TaskListDto> CreateAsync(TaskListDto taskListDto);
+        /// <param name="taskDto">Task list data.</param>
+        /// <returns>Created task list DTO.</returns>
+        Task<TaskListDto> CreateAsync(CreateTaskListDto taskListDto);
     }
 }

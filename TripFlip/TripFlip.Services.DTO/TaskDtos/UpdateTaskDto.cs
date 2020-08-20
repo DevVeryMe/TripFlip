@@ -1,9 +1,8 @@
-﻿using System;
-using TripFlip.Services.DTO.Enums;
+﻿using TripFlip.Services.DTO.Enums;
 
 namespace TripFlip.Services.DTO.TaskDtos
 {
-    public class TaskDto
+    public class UpdateTaskDto
     {
         public int Id { get; set; }
 
@@ -11,10 +10,6 @@ namespace TripFlip.Services.DTO.TaskDtos
 
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        public DateTimeOffset DateCreated { get; set; }
-
         public bool IsCompleted { get; set; }
-
-        public int TaskListId { get; set; }
     }
 }
