@@ -84,5 +84,19 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(itemViewModelToReturn);
         }
+
+        /// <summary>
+        /// Deletes item by id.
+        /// </summary>
+        /// <param name="id">Item id.</param>
+        /// <returns>No content.</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        {
+            await _itemService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }

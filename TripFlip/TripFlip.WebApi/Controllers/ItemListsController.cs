@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using TripFlip.ViewModels.ItemListViewModels;
@@ -31,6 +32,20 @@ namespace TripFlip.WebApi.Controllers
             var resultRouteViewModel = _mapper.Map<ResultItemListViewModel>(resultRouteDto);
 
             return Ok(resultRouteViewModel);
+        }
+
+        /// <summary>
+        /// Returns all ItemLists with the given Route Id.
+        /// </summary>
+        /// <returns>If operation is successful, returns <see cref="List{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
+        [HttpGet("route/{id}")]
+        public async Task<IActionResult> GetAllByRouteIdAsync(int id)
+        {
+            var resultItemListDtos = await _itemListService.GetAllByRouteIdAsync(id);
+
+            var resultItemListViewModelList = _mapper.Map< List<ResultItemListViewModel> >(resultItemListDtos);
+
+            return Ok(resultItemListViewModelList);
         }
     }
 }

@@ -33,5 +33,11 @@ namespace TripFlip.Services.Interfaces
         /// <param name="id">Item id.</param>
         /// <returns>Item DTO.</returns>
         Task<ItemDto> GetByIdAsync(int id);
+
+        /// <summary>
+        /// Deletes item by id.
+        /// </summary>
+        /// <param name="id">Item id.</param>
+        Task DeleteAsync(int id);
     }
 }
