@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.Services.Interfaces;
-using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 
@@ -16,8 +16,8 @@ namespace TripFlip.Services
     /// </summary>
     public class RouteService : IRouteService
     {
-        IMapper _mapper;
-        FlipTripDbContext _flipTripDbContext;
+        private readonly IMapper _mapper;
+        private readonly FlipTripDbContext _flipTripDbContext;
 
         public RouteService(FlipTripDbContext flipTripDbContext, IMapper mapper)
         {
@@ -25,44 +25,47 @@ namespace TripFlip.Services
             _flipTripDbContext = flipTripDbContext;
         }
 
-        public async Task<RouteDto> CreateAsync(RouteDto routeDto)
+        public async Task<ResultRouteDto> CreateAsync(CreateRouteDto createRouteDto)
         {
-            await ValidateTripExistsAsync(routeDto.TripId);
+            await ValidateTripExistsAsync(createRouteDto.TripId);
 
-            routeDto.DateCreated = DateTimeOffset.Now;
+            var routeEntity = _mapper.Map<RouteEntity>(createRouteDto);
 
-            RouteEntity routeEntity = _mapper.Map<RouteEntity>(routeDto);
+            routeEntity.DateCreated = DateTimeOffset.Now;
 
             var entityEntry = _flipTripDbContext.Routes.Add(routeEntity);
             await _flipTripDbContext.SaveChangesAsync();
 
-            routeDto.Id = entityEntry.Entity.Id;
+            var resultDto = _mapper.Map<ResultRouteDto>(entityEntry.Entity);
 
-            return routeDto;
+            return resultDto;
         }
 
-        public async Task<RouteDto> UpdateAsync(RouteDto routeDto)
+        public async Task<ResultRouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
         {
-            await ValidateRouteExistsAsync(routeDto.Id);
+            var tripEntity = await _flipTripDbContext
+                .Trips
+                .Where(tripEntity => tripEntity.Id == updateRouteDto.TripId)
+                .Include(tripEntity => tripEntity.Routes)
+                .FirstOrDefaultAsync();
 
-            await ValidateTripExistsAsync(routeDto.TripId);
+            ValidateTripEntityIsNotNull(tripEntity);
 
-            // set original creation date
-            routeDto.DateCreated = (await _flipTripDbContext
-                    .Routes
-                    .AsNoTracking()
-                    .FirstAsync(routeEntity => routeEntity.Id == routeDto.Id)
-                )
-                .DateCreated;
+            var routeEntity = tripEntity
+                .Routes
+                .Where(routeEntity => routeEntity.Id == updateRouteDto.Id)
+                .FirstOrDefault();
 
-            var routeEntity = _mapper.Map<RouteEntity>(routeDto);
+            ValidateRouteEntityIsNotNull(routeEntity);
 
-            var entityEntry = _flipTripDbContext.Routes.Update(routeEntity);
+            routeEntity.Title = updateRouteDto.Title;
+            routeEntity.TripId = updateRouteDto.TripId;
+
             await _flipTripDbContext.SaveChangesAsync();
 
-            routeDto.DateCreated = entityEntry.Entity.DateCreated;
+            var resultRouteDto = _mapper.Map<ResultRouteDto>(routeEntity);
 
-            return routeDto;
+            return resultRouteDto;
         }
 
         public async Task DeleteAsync(int id)
@@ -75,47 +78,42 @@ namespace TripFlip.Services
             await _flipTripDbContext.SaveChangesAsync();
         }
 
-        public async Task<RouteDto> GetByIdAsync(int routeId)
+        public async Task<ResultRouteDto> GetByIdAsync(int routeId)
         {
             var routeEntity = await _flipTripDbContext
                 .Routes
                 .AsNoTracking()
                 .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
 
-            if (routeEntity == null)
-            {
-                throw new ArgumentException(ErrorConstants.RouteNotFound);
-            }
+            ValidateRouteEntityIsNotNull(routeEntity);
 
-            var routeDto = _mapper.Map<RouteDto>(routeEntity);
+            var resultRouteDto = _mapper.Map<ResultRouteDto>(routeEntity);
 
-            return routeDto;
+            return resultRouteDto;
         }
 
-        public async Task<IEnumerable<RouteDto>> GetAllByTripIdAsync(int tripId)
+        public async Task<IEnumerable<ResultRouteDto>> GetAllByTripIdAsync(int tripId)
         {
-            await ValidateTripExistsAsync(tripId);
-
-            var routeEntityList = await _flipTripDbContext
-                .Routes
+            var tripEntity = await _flipTripDbContext
+                .Trips
                 .AsNoTracking()
-                .Where(routeEntity => routeEntity.TripId == tripId)
-                .ToListAsync();
+                .Where(tripEntity => tripEntity.Id == tripId)
+                .Include(tripEntity => tripEntity.Routes)
+                .FirstOrDefaultAsync();
 
-            var routeDtoList = _mapper.Map<List<RouteDto>>(routeEntityList);
+            ValidateTripEntityIsNotNull(tripEntity);
 
-            return routeDtoList;
+            var resultRouteDtoList = _mapper.Map<List<ResultRouteDto>>(tripEntity.Routes.ToList());
+
+            return resultRouteDtoList;
         }
 
         /// <summary>
-        /// Checks if Trip exists by making a database query.
+        /// Checks if the given <see cref="TripEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>
-        async Task ValidateTripExistsAsync(int tripId)
+        /// <param name="tripEntity">Object that should be checked.</param>
+        void ValidateTripEntityIsNotNull(TripEntity tripEntity)
         {
-            var tripEntity = await _flipTripDbContext.Trips
-                .AsNoTracking()
-                .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);
-
             if (tripEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
@@ -123,17 +121,30 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if Route exists by making a database query.
+        /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
         /// </summary>
-        async Task ValidateRouteExistsAsync(int routeId)
+        /// <param name="routeEntity">Object that should be checked.</param>
+        void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
         {
-            var routeEntity = await _flipTripDbContext.Routes
-                .AsNoTracking()
-                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
-
             if (routeEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
+        }
+
+        /// <summary>
+        /// Checks if Trip exists by making a database query.
+        /// </summary>
+        async Task ValidateTripExistsAsync(int tripId)
+        {
+            var tripEntity = await _flipTripDbContext
+                .Trips
+                .AsNoTracking()
+                .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);
+
+            if (tripEntity == null)
+            {
+                throw new ArgumentException(ErrorConstants.TripNotFound);
             }
         }
     }

@@ -3,7 +3,13 @@
     class ErrorConstants
     {
         public static readonly string TripNotFound = "Trip is not found.";
+
+        public static readonly string TaskNotFound = "Task is not found.";
+
+        public static readonly string TaskListNotFound = "Task list is not found.";
+
         public static readonly string RouteNotFound = "Route not found.";
-        public static readonly string AddingTaskToNotExistingTaskList = "Trying to add Task to not existing TaskList.";
+
+        public static readonly string AddingTaskToNotExistingTaskList = "Trying to add task to not existing task list.";
     }
 }

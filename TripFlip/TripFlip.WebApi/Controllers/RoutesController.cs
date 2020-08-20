@@ -5,6 +5,7 @@ using AutoMapper;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.RouteDtos;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -12,8 +13,8 @@ namespace TripFlip.WebApi.Controllers
     [ApiController]
     public class RoutesController : ControllerBase
     {
-        IMapper _mapper;
-        IRouteService _routeService;
+        private readonly IMapper _mapper;
+        private readonly IRouteService _routeService;
 
         public RoutesController(IMapper mapper, IRouteService routeService)
         {
@@ -22,17 +23,17 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns a Route with the given Id
+        /// Returns a Route with the given Id.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry</returns>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var resultDto = await _routeService.GetByIdAsync(id);
+            var resultRouteDto = await _routeService.GetByIdAsync(id);
 
-            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+            var resultRouteViewModel = _mapper.Map<ResultRouteViewModel>(resultRouteDto);
 
-            return Ok(resultViewModel);
+            return Ok(resultRouteViewModel);
         }
 
         /// <summary>
@@ -50,33 +51,33 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object
+        /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database</returns>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateRouteViewModel createRouteViewModel)
         {
-            var routeDto = _mapper.Map<RouteDto>(createRouteViewModel);
+            var createRouteDto = _mapper.Map<CreateRouteDto>(createRouteViewModel);
             
-            var resultDto = await _routeService.CreateAsync(routeDto);
+            var resultRouteDto = await _routeService.CreateAsync(createRouteDto);
 
-            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+            var resultRouteViewModel = _mapper.Map<ResultRouteViewModel>(resultRouteDto);
 
-            return Ok(resultViewModel);
+            return Ok(resultRouteViewModel);
         }
 
         /// <summary>
-        /// Updates Route with the given <see cref="UpdateRouteViewModel"/> object
+        /// Updates Route with the given <see cref="UpdateRouteViewModel"/> object.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the updated database entry</returns>
+        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the updated database entry.</returns>
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(UpdateRouteViewModel updateRouteViewModel)
         {
-            var routeDto = _mapper.Map<RouteDto>(updateRouteViewModel);
+            var updateRouteDto = _mapper.Map<UpdateRouteDto>(updateRouteViewModel);
 
-            var resultDto = await _routeService.UpdateAsync(routeDto);
+            var resultRouteDto = await _routeService.UpdateAsync(updateRouteDto);
 
-            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultDto);
+            var resultViewModel = _mapper.Map<ResultRouteViewModel>(resultRouteDto);
 
             return Ok(resultViewModel);
         }
