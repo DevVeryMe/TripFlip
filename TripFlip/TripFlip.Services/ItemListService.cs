@@ -46,7 +46,7 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .Where(routeEntity => routeEntity.Id == routeId)
                 .Include(routeEntity => routeEntity.ItemLists)
-                .FirstOrDefaultAsync();
+                .SingleOrDefaultAsync();
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
