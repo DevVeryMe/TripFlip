@@ -29,5 +29,12 @@ namespace TripFlip.Services.Interfaces
         /// <param name="createItemListDto">New ItemList object to be added to database.</param>
         /// <returns><see cref="ResultItemListDto"/> object that represents the new entry that was added to database.</returns>
         Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto);
+
+        /// <summary>
+        /// Updates the ItemList with the given <see cref="UpdateItemListDto"/> object. Applies changes to database asynchronously.
+        /// </summary>
+        /// <param name="updateItemListDto">Object that represents changes to be made to ItemList.</param>
+        /// <returns><see cref="ResultItemListDto"/> bject that represents the updated entry in database.</returns>
+        Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto);
     }
 }
