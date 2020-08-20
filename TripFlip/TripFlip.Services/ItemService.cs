@@ -66,16 +66,17 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
         {
-            var itemDtoToUpdate = await GetByIdAsync(itemDto.Id);
-            var itemEntityToUpdate = _mapper.Map<ItemEntity>(itemDtoToUpdate);
+            var itemToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
 
-            itemEntityToUpdate.Title = itemDto.Title;
-            itemEntityToUpdate.Comment = itemDto.Comment;
-            itemEntityToUpdate.Quantity = itemDto.Quantity;
-            itemEntityToUpdate.IsCompleted = itemDto.IsCompleted;
+            ValidateItemEntityExists(itemToUpdate);
+
+            itemToUpdate.Title = itemDto.Title;
+            itemToUpdate.Comment = itemDto.Comment;
+            itemToUpdate.Quantity = itemDto.Quantity;
+            itemToUpdate.IsCompleted = itemDto.IsCompleted;
 
             await _flipTripDbContext.SaveChangesAsync();
-            var itemDtoToReturn = _mapper.Map<ItemDto>(itemEntityToUpdate);
+            var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
             return itemDtoToReturn;
         }
