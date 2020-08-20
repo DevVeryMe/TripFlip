@@ -1,8 +1,8 @@
-﻿using TripFlip.ViewModels.Enums;
+﻿using TripFlip.Services.DTO.Enums;
 
-namespace TripFlip.ViewModels.TaskViewModels
+namespace TripFlip.Services.DTO.TaskDtos
 {
-    public class GetTaskViewModel
+    public class UpdateTaskDto
     {
         public int Id { get; set; }
 
@@ -11,7 +11,5 @@ namespace TripFlip.ViewModels.TaskViewModels
         public TaskPriorityLevel PriorityLevel { get; set; }
 
         public bool IsCompleted { get; set; }
-
-        public int TaskListId { get; set; }
     }
 }

@@ -21,19 +21,21 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// <summary>
         /// Creates new trip.
         /// </summary>
-        /// <param name="tripDto">trip data</param>
-        Task<TripDto> CreateAsync(CreateTripDto tripDto);
+        /// <param name="createTripDto">new trip</param>
+        /// <returns>created trip</returns>
+        Task<TripDto> CreateAsync(CreateTripDto createTripDto);
 
         /// <summary>
         /// Updates existing trip.
         /// </summary>
         /// <param name="tripDto">new trip data</param>
+        /// <returns>updated trip</returns>
         Task<TripDto> UpdateAsync(TripDto tripDto);
 
         /// <summary>
-        /// Deletes trip.
+        /// Deletes existing trip.
         /// </summary>
-        /// <param name="tripDto">trip to delete</param>
+        /// <param name="id">trip id</param>
         Task DeleteAsync(int id);
     }
 }
