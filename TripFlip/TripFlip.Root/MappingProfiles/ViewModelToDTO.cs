@@ -17,14 +17,17 @@ namespace TripFlip.Root.MappingProfiles
         public ViewModelToDto()
         {
             CreateMap<TripViewModel, TripDto>();
+
             CreateMap<CreateTripViewModel, CreateTripDto>();
 
             CreateMap<CreateTaskViewModel, TaskDto>();
+
             CreateMap<UpdateTaskViewModel, UpdateTaskDto>();
 
             CreateMap<CreateRouteViewModel, CreateRouteDto>();
 
             CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
+
             CreateMap<CreateItemViewModel, CreateItemDto>();
         }
     }
