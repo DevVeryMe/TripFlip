@@ -69,5 +69,20 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(itemViewModelToReturn);
         }
+
+        /// <summary>
+        /// Gets item by id.
+        /// </summary>
+        /// <param name="id">Item id.</param>
+        /// <returns>Item view model.</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetItemByIdAsync([Range(1, int.MaxValue,
+            ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        {
+            var itemDtoToReturn = await _itemService.GetByIdAsync(id);
+            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
+
+            return Ok(itemViewModelToReturn);
+        }
     }
 }

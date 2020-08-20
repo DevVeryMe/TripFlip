@@ -26,5 +26,12 @@ namespace TripFlip.Services.Interfaces
         /// <param name="itemDto">Item DTO.</param>
         /// <returns>Updated item DTO.</returns>
         Task<ItemDto> UpdateAsync(UpdateItemDto itemDto);
+
+        /// <summary>
+        /// Gets item by id.
+        /// </summary>
+        /// <param name="id">Item id.</param>
+        /// <returns>Item DTO.</returns>
+        Task<ItemDto> GetByIdAsync(int id);
     }
 }
