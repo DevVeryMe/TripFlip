@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.ItemViewModels;
 
@@ -44,13 +46,18 @@ namespace TripFlip.WebApi.Controllers
         /// Returns all items of certain item list.
         /// </summary>
         /// <param name="id">Item list id.</param>
-        /// <returns>Collection of item view models.</returns>
+        /// <param name="pageNumber">Number of selected page.</param>
+        /// <param name="pageSize">Size of pages.</param>
+        /// <returns>Paged list of item view models.</returns>
         [HttpGet("list/{id}")]
         public async Task<IActionResult> GetAllByItemListIdAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageNumberLessOneError)] int pageNumber,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageSizeLessOneError)] int pageSize)
         {
-            var items = await _itemService.GetAllAsync(id);
-            var itemViewModels = _mapper.Map<List<ItemViewModel>>(items);
+            var items = await _itemService.GetAllAsync(id, pageNumber, pageSize);
+
+            var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
 
             return Ok(itemViewModels);
         }
