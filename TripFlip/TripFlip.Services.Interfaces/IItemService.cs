@@ -19,7 +19,7 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="listId">Id of item list.</param>
         /// <param name="pageNumber">Number of selected page.</param>
-        /// <param name="pageSize">Size of selected page.</param>
+        /// <param name="pageSize">Size of pages.</param>
         /// <returns>Paged list with item DTOs.</returns>
         Task<PagedList<ItemDto>> GetAllAsync(int listId, int pageNumber, int pageSize);
 

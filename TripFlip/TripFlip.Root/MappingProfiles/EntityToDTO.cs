@@ -28,6 +28,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<ItemListEntity, ResultItemListDto>();
             
             CreateMap<PagedList<ItemEntity>, PagedList<ItemDto>>();
+
+            CreateMap<PagedList<ItemListEntity>, PagedList<ResultItemListDto>>();
         }
     }
 }

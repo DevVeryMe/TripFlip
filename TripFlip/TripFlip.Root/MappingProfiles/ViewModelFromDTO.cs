@@ -35,6 +35,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<ResultItemListDto, ResultItemListViewModel>();
 
             CreateMap<PagedList<ItemDto>, PagedList<ItemViewModel>>();
+
+            CreateMap<PagedList<ResultItemListDto>, PagedList<ResultItemListViewModel>>();
         }
     }
 }

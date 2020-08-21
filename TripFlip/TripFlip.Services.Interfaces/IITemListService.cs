@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.ItemListDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
@@ -20,8 +21,10 @@ namespace TripFlip.Services.Interfaces
         /// Returns all ItemLists with the given Route Id.
         /// </summary>
         /// <param name="routeId">Id of Route.</param>
-        /// <returns>Object that represents the <see cref="IEnumerable{ResultRouteDto}"/> collection of database entries with the given Route Id.</returns>
-        Task<IEnumerable<ResultItemListDto>> GetAllByRouteIdAsync(int routeId);
+        /// <param name="pageNumber">Number of selected page.</param>
+        /// <param name="pageSize">Size of pages.</param>
+        /// <returns>Object that represents the <see cref="PagedList{ResultItemListDto}"/> collection of database entries with the given Route Id.</returns>
+        Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, int pageNumber, int pageSize);
 
         /// <summary>
         /// Creates new ItemList with the given <see cref="CreateItemListDto"/> object. Applies changes to database asynchronously.
