@@ -5,7 +5,7 @@ using System.Linq;
 namespace TripFlip.Services.Interfaces.Helpers
 {
     /// <summary>
-    /// List with meta information about pages number, page size, current page.
+    /// List with meta information about number of pages, page size, current page number.
     /// </summary>
     /// <typeparam name="T">Any entity to store.</typeparam>
     public class PagedList<T>

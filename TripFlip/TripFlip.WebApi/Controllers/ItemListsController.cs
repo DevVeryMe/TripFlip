@@ -49,8 +49,8 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageNumberLessOneError)] int pageNumber,
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageSizeLessOneError)] int pageSize)
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageNumberLessOneError)] int pageNumber = 1,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageSizeLessOneError)] int pageSize = 10)
         {
             var pagedListOfItemListDtos = 
                 await _itemListService.GetAllByRouteIdAsync(id, pageNumber, pageSize);
