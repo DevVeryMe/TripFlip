@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.ViewModels.Enums;
 using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
@@ -71,11 +73,31 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskViewModel">New task data with existing task id.</param>
         /// <returns>Updated task view model.</returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
             var taskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
 
             var updatedTaskDto = await _taskService.UpdateAsync(taskDto);
+            var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
+
+            return Ok(updatedTaskViewModel);
+        }
+
+        /// <summary>
+        /// Updates existing task priority level.
+        /// </summary>
+        /// <param name="id">Task id.</param>
+        /// <param name="priorityLevel">New task priority level.</param>
+        /// <returns>Updated task view model.</returns>
+        [HttpPut]
+        [Route("change-priority")]
+        public async Task<IActionResult> UpdatePriorityAsync(
+            [FromBody] UpdateTaskPriorityViewModel updateTaskPriorityViewModel
+            )
+        {
+            var updateTaskPriorityDto = _mapper.Map<UpdateTaskPriorityDto>(updateTaskPriorityViewModel);
+
+            var updatedTaskDto = await _taskService.UpdatePriorityByIdAsync(updateTaskPriorityDto);
             var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
 
             return Ok(updatedTaskViewModel);

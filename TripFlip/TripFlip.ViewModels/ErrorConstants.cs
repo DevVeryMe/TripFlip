@@ -29,5 +29,7 @@
         public const string ItemWithoutItemListError = "Item cannot exist without item list.";
 
         public const string EmptyIsCompletedFieldError = "Field 'is completed' cannot be empty.";
+
+        public const string RequiredTaskPriorityError = "Field 'priority level' cannot be empty.";
     }
 }
