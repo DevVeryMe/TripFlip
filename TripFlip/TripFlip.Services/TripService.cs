@@ -36,11 +36,11 @@ namespace TripFlip.Services
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
 
-            var trips = _flipTripDbContext
+            var tripsQuery = _flipTripDbContext
                 .Trips
                 .AsNoTracking();
 
-            var tripEntitiesPagedList = trips.ToPagedList(pageNumber, pageSize);
+            var tripEntitiesPagedList = tripsQuery.ToPagedList(pageNumber, pageSize);
             var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(tripEntitiesPagedList);
 
             return tripDtosPagedList;

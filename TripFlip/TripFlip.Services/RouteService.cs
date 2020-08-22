@@ -108,15 +108,15 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
-            var resultRouteEntities = _flipTripDbContext
+            var resultRouteEntitiesQuery = _flipTripDbContext
                 .Routes
                 .AsNoTracking()
                 .Where(r => r.TripId == tripId);
 
             int pageNumber = paginationDto.PageNumber ?? 1;
-            int pageSize = paginationDto.PageSize ?? await resultRouteEntities.CountAsync();
+            int pageSize = paginationDto.PageSize ?? await resultRouteEntitiesQuery.CountAsync();
 
-            var resultRouteEntitiesPagedList = resultRouteEntities.ToPagedList(pageNumber, pageSize);
+            var resultRouteEntitiesPagedList = resultRouteEntitiesQuery.ToPagedList(pageNumber, pageSize);
             var resultRouteDtosPagedList = _mapper
                 .Map<PagedList<ResultRouteDto>>(resultRouteEntitiesPagedList);
 
