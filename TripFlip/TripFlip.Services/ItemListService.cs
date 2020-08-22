@@ -55,7 +55,7 @@ namespace TripFlip.Services
             }
 
             var itemListEntities = _flipTripDbContext.ItemLists
-                .Where(l => l.RouteId == routeId);
+                .Where(l => l.RouteId == routeId).AsNoTracking();
 
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? itemListEntities.Count();
