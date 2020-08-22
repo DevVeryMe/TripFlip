@@ -88,7 +88,7 @@ namespace TripFlip.Services
             return updatedTaskDto;
         }
 
-        public async Task<TaskDto> UpdatePriorityByIdAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
+        public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
         {
             var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(updateTaskPriorityDto.Id);
 

@@ -39,7 +39,7 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="updateTaskPriorityDto">New task data with priority level.</param>
         /// <returns>Updated task DTO.</returns>
-        Task<TaskDto> UpdatePriorityByIdAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
+        Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
 
         /// <summary>
         /// Deletes task by id.

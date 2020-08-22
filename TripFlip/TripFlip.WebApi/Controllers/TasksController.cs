@@ -97,7 +97,7 @@ namespace TripFlip.WebApi.Controllers
         {
             var updateTaskPriorityDto = _mapper.Map<UpdateTaskPriorityDto>(updateTaskPriorityViewModel);
 
-            var updatedTaskDto = await _taskService.UpdatePriorityByIdAsync(updateTaskPriorityDto);
+            var updatedTaskDto = await _taskService.UpdatePriorityAsync(updateTaskPriorityDto);
             var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
 
             return Ok(updatedTaskViewModel);
