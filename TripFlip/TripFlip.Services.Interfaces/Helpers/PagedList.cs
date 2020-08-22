@@ -43,20 +43,5 @@ namespace TripFlip.Services.Interfaces.Helpers
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         }
-
-        /// <summary>
-        /// Converts IQueryable implementation with items to PagedList.
-        /// </summary>
-        /// <param name="source">Implementation of IQueryable</param>
-        /// <param name="pageNumber">Number of selected page.</param>
-        /// <param name="pageSize">Size of pages.</param>
-        /// <returns>Paged list.</returns>
-        public static PagedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
-        {
-            var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            return new PagedList<T>(items, count, pageNumber, pageSize);
-        }
-	}
+    }
 }
