@@ -54,13 +54,13 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
 
-            var itemListEntities = _flipTripDbContext.ItemLists
+            var itemListEntitiesQuery = _flipTripDbContext.ItemLists
                 .Where(l => l.RouteId == routeId).AsNoTracking();
 
             var pageNumber = paginationDto.PageNumber ?? 1;
-            var pageSize = paginationDto.PageSize ?? itemListEntities.Count();
+            var pageSize = paginationDto.PageSize ?? itemListEntitiesQuery.Count();
 
-            var pagedListOfItemListEntities = itemListEntities.ToPagedList(pageNumber, pageSize);
+            var pagedListOfItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
 
             return pagedListOfItemListDtos;
