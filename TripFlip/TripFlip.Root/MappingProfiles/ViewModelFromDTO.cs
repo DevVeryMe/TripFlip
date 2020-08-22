@@ -21,6 +21,7 @@ namespace TripFlip.Root.MappingProfiles
         public ViewModelFromDto()
         {
             CreateMap<TripDto, TripViewModel>();
+            CreateMap<PagedList<TripDto>, PagedList<TripViewModel>>();
 
             CreateMap<TaskDto, GetTaskViewModel>();
             CreateMap<TaskDto, UpdateTaskViewModel>();

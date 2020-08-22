@@ -7,6 +7,8 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.HelpersExtensions;
 
 namespace TripFlip.Services
 {
@@ -34,6 +36,18 @@ namespace TripFlip.Services
             var tripDtos = _mapper.Map<List<TripDto>>(trips);
 
             return tripDtos;
+        }
+
+        public async Task<PagedList<TripDto>> GetPageOfTripsAsync(BasicPaginationFilter paginationFilter)
+        {
+            var trips = _flipTripDbContext
+                .Trips
+                .AsNoTracking()
+                .ToPagedList(paginationFilter.PageNumber, paginationFilter.PageSize);
+
+            var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(trips);
+
+            return tripDtosPagedList;
         }
 
         public async Task<TripDto> GetAsync(int id)
