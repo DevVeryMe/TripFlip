@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskListDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
@@ -10,8 +12,9 @@ namespace TripFlip.Services.Interfaces
         /// Gets all task lists from certain route.
         /// </summary>
         /// <param name="routeId">Route id.</param>
-        /// <returns>Task list DTOs of route specified by id.</returns>
-        Task<IEnumerable<TaskListDto>> GetAllByRouteIdAsync(int routeId);
+        /// <param name="paginationDto">Pagination settings.</param>
+        /// <returns>Paged list of TaskList DTOs specified by Route Id.</returns>
+        Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId, PaginationDto paginationDto);
 
         /// <summary>
         /// Gets task list by id.
