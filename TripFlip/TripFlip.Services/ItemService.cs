@@ -9,6 +9,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.HelpersExtensions;
 
 namespace TripFlip.Services
 {
@@ -62,7 +63,7 @@ namespace TripFlip.Services
             var itemEntities = _flipTripDbContext.Items
                 .Where(i => i.ItemListId == listId);
 
-            var pagedListOfItemEntities = PagedList<ItemEntity>.ToPagedList(itemEntities, pageNumber, pageSize);
+            var pagedListOfItemEntities = itemEntities.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemDtos = _mapper.Map<PagedList<ItemDto>>(pagedListOfItemEntities);
 
             return pagedListOfItemDtos;

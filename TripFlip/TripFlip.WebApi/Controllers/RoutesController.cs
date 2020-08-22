@@ -6,6 +6,7 @@ using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.RouteDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -39,13 +40,28 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all Routes with the given Trip Id.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="List{ResultRouteViewModel}"/> object that represents the list of database entries with the given Trip Id.</returns>
+        /// <returns>If operation is successful, 
+        /// returns <see cref="List{ResultRouteViewModel}"/>
+        /// or <see cref="PagedList{ResultRouteViewModel}"/> 
+        /// object that represents the list of database entries with the given Trip Id.</returns>
         [HttpGet("trip/{id}")]
-        public async Task<IActionResult> GetAllByTripIdAsync(int id)
+        public async Task<IActionResult> GetAllByTripIdAsync(int id, [FromQuery] BasicPaginationFilter paginationFilter)
         {
-            var routeDtoList = await _routeService.GetAllByTripIdAsync(id);
+            object routeViewModelList;
 
-            var routeViewModelList = _mapper.Map< List<ResultRouteViewModel> >(routeDtoList);
+            if (Request.QueryString.HasValue)
+            {
+                var pagedListOfRouteDtos =
+                await _routeService.GetPageByTripIdAsync(id, paginationFilter);
+
+                routeViewModelList = _mapper.Map<PagedList<ResultRouteViewModel>>(pagedListOfRouteDtos);
+            }
+            else
+            {
+                var routeDtoList = await _routeService.GetAllByTripIdAsync(id);
+
+                routeViewModelList = _mapper.Map<List<ResultRouteViewModel>>(routeDtoList);
+            }
 
             return Ok(routeViewModelList);
         }

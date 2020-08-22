@@ -8,6 +8,8 @@ using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.HelpersExtensions;
 
 namespace TripFlip.Services
 {
@@ -108,6 +110,26 @@ namespace TripFlip.Services
             var resultRouteDtoList = _mapper.Map<List<ResultRouteDto>>(tripEntity.Routes.ToList());
 
             return resultRouteDtoList;
+        }
+
+        public async Task<PagedList<ResultRouteDto>> GetPageByTripIdAsync(int tripId, BasicPaginationFilter paginationFilter)
+        {
+            var tripEntity = await _flipTripDbContext
+                .Trips
+                .AsNoTracking()
+                .Where(tripEntity => tripEntity.Id == tripId)
+                .Include(tripEntity => tripEntity.Routes)
+                .FirstOrDefaultAsync();
+
+            ValidateTripEntityIsNotNull(tripEntity);
+
+            var resultRouteEntitiesPagedList = tripEntity
+                .Routes
+                .ToPagedList(paginationFilter.PageNumber, paginationFilter.PageSize);
+
+            var resultRouteDtoPagedList = _mapper.Map<PagedList<ResultRouteDto>>(resultRouteEntitiesPagedList);
+
+            return resultRouteDtoPagedList;
         }
 
         /// <summary>
