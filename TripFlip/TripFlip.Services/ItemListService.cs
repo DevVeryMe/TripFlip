@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO.ItemListDtos;
@@ -43,7 +44,7 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, 
-            int pageNumber, int pageSize)
+            PaginationDto paginationDto)
         {
             var routeExists = await _flipTripDbContext.Routes
                 .AnyAsync(r => r.Id == routeId);
@@ -55,6 +56,9 @@ namespace TripFlip.Services
 
             var itemListEntities = _flipTripDbContext.ItemLists
                 .Where(l => l.RouteId == routeId);
+
+            var pageNumber = paginationDto.PageNumber ?? 1;
+            var pageSize = paginationDto.PageSize ?? itemListEntities.Count();
 
             var pagedListOfItemListEntities = itemListEntities.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);

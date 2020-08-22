@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
@@ -18,10 +19,9 @@ namespace TripFlip.Services.Interfaces
         /// Returns all items for certain item list.
         /// </summary>
         /// <param name="listId">Id of item list.</param>
-        /// <param name="pageNumber">Number of selected page.</param>
-        /// <param name="pageSize">Size of pages.</param>
+        /// <param name="paginationDto">Pagination settings.</param>
         /// <returns>Paged list with item DTOs.</returns>
-        Task<PagedList<ItemDto>> GetAllAsync(int listId, int pageNumber, int pageSize);
+        Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto);
 
         /// <summary>
         /// Updates existing item.

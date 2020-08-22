@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -46,16 +47,16 @@ namespace TripFlip.WebApi.Controllers
         /// Returns all items of certain item list.
         /// </summary>
         /// <param name="id">Item list id.</param>
-        /// <param name="pageNumber">Number of selected page.</param>
-        /// <param name="pageSize">Size of pages.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>Paged list of item view models.</returns>
         [HttpGet("list/{id}")]
         public async Task<IActionResult> GetAllByItemListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageNumberLessOneError)] int pageNumber = 1,
-            [Range(1, 50, ErrorMessage = ErrorConstants.PageSizeLessOneError)] int pageSize = 10)
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
-            var items = await _itemService.GetAllAsync(id, pageNumber, pageSize);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var items = await _itemService.GetAllAsync(id, paginationDto);
 
             var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
 
