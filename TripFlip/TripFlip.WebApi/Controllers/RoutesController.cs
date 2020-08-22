@@ -7,6 +7,7 @@ using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -45,9 +46,11 @@ namespace TripFlip.WebApi.Controllers
         /// or <see cref="PagedList{ResultRouteViewModel}"/> 
         /// object that represents the list of database entries with the given Trip Id.</returns>
         [HttpGet("trip/{id}")]
-        public async Task<IActionResult> GetAllByTripIdAsync(int id, [FromQuery] BasicPaginationFilter paginationFilter)
+        public async Task<IActionResult> GetAllByTripIdAsync(int id, [FromQuery] PaginationViewModel paginationViewModel)
         {
-            var routeDtosList = await _routeService.GetAllByTripIdAsync(id, paginationFilter);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var routeDtosList = await _routeService.GetAllByTripIdAsync(id, paginationDto);
 
             var routeViewModelsList = _mapper.Map<PagedList<ResultRouteViewModel>>(routeDtosList);
 

@@ -9,6 +9,7 @@ using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.Services
 {
@@ -30,10 +31,10 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedList<TripDto>> GetAllTripsAsync(BasicPaginationFilter paginationFilter)
+        public async Task<PagedList<TripDto>> GetAllTripsAsync(PaginationDto paginationDto)
         {
-            int pageNumber = paginationFilter.PageNumber ?? 1;
-            int pageSize = paginationFilter.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
+            int pageNumber = paginationDto.PageNumber ?? 1;
+            int pageSize = paginationDto.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
 
             var trips = _flipTripDbContext
                 .Trips

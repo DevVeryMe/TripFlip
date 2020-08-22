@@ -8,6 +8,7 @@ using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -29,9 +30,11 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery] BasicPaginationFilter paginationFilter)
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationViewModel paginationViewModel)
         {
-            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationFilter);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationDto);
 
             var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
 

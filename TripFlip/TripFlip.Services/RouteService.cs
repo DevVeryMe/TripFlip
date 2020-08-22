@@ -10,6 +10,7 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.Services
 {
@@ -96,7 +97,7 @@ namespace TripFlip.Services
             return resultRouteDto;
         }
 
-        public async Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId, BasicPaginationFilter paginationFilter)
+        public async Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId, PaginationDto paginationDto)
         {
             var tripExists = await _flipTripDbContext
                 .Trips
@@ -112,8 +113,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .Where(r => r.TripId == tripId);
 
-            int pageNumber = paginationFilter.PageNumber ?? 1;
-            int pageSize = paginationFilter.PageSize ?? await resultRouteEntities.CountAsync();
+            int pageNumber = paginationDto.PageNumber ?? 1;
+            int pageSize = paginationDto.PageSize ?? await resultRouteEntities.CountAsync();
 
             var resultRouteEntitiesPagedList = resultRouteEntities.ToPagedList(pageNumber, pageSize);
             var resultRouteDtosPagedList = _mapper
