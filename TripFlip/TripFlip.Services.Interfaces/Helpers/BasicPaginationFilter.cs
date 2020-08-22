@@ -6,20 +6,20 @@
 
 		private static readonly int _minPageSize = 5;
 
-		private int _pageSize;
-
 		private int _pageNumber;
+
+		private int _pageSize;
 
 		public int PageNumber 
 		{ 
 			get
-            {
+			{
 				return _pageNumber;
-            }
+			}
 			set
-            {
+			{
 				_pageNumber = (value > 0) ? value : 1;
-            }
+			}
 		}
 
 		public int PageSize
@@ -31,17 +31,17 @@
 			set
 			{
 				if (value < _minPageSize)
-                {
+				{
 					_pageSize = _minPageSize;
-                }
+				}
 				else if (value > _maxPageSize)
-                {
+				{
 					_pageSize = _maxPageSize;
-                }
-                else
-                {
+				}
+				else
+				{
 					_pageSize = value;
-                }
+				}
 			}
 		}
 	}
