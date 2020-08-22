@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
