@@ -58,7 +58,7 @@ namespace TripFlip.Services
                 .Where(l => l.RouteId == routeId).AsNoTracking();
 
             var pageNumber = paginationDto.PageNumber ?? 1;
-            var pageSize = paginationDto.PageSize ?? itemListEntitiesQuery.Count();
+            var pageSize = paginationDto.PageSize ?? await itemListEntitiesQuery.CountAsync();
 
             var pagedListOfItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
