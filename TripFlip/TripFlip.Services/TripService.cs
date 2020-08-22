@@ -8,7 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.Services.Interfaces.Helpers;
-using TripFlip.Services.Interfaces.HelpersExtensions;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {

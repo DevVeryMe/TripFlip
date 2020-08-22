@@ -9,7 +9,7 @@ using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Interfaces.Helpers;
-using TripFlip.Services.Interfaces.HelpersExtensions;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -125,6 +125,7 @@ namespace TripFlip.Services
 
             var resultRouteEntitiesPagedList = tripEntity
                 .Routes
+                .AsQueryable()
                 .ToPagedList(paginationFilter.PageNumber, paginationFilter.PageSize);
 
             var resultRouteDtoPagedList = _mapper.Map<PagedList<ResultRouteDto>>(resultRouteEntitiesPagedList);

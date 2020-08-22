@@ -10,7 +10,7 @@ using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO.ItemListDtos;
 using TripFlip.Services.Interfaces.Helpers;
-using TripFlip.Services.Interfaces.HelpersExtensions;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -53,10 +53,10 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
 
-            var itemLists = _flipTripDbContext.ItemLists
+            var itemListEntities = _flipTripDbContext.ItemLists
                 .Where(l => l.RouteId == routeId);
 
-            var pagedListOfItemListEntities = itemLists.ToPagedList(pageNumber, pageSize);
+            var pagedListOfItemListEntities = itemListEntities.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
 
             return pagedListOfItemListDtos;
