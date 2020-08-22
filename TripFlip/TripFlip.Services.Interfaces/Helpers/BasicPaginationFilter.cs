@@ -6,9 +6,9 @@
 
 		private static readonly int _minPageSize = 5;
 
-		private int _pageNumber;
+		private int _pageNumber = 1;
 
-		private int _pageSize;
+		private int _pageSize = 10;
 
 		public int PageNumber 
 		{ 
