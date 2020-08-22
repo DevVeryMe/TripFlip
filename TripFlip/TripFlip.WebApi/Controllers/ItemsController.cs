@@ -46,6 +46,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Item list id.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Paged list of item view models.</returns>
         [HttpGet("list/{id}")]
         public async Task<IActionResult> GetAllByItemListIdAsync(

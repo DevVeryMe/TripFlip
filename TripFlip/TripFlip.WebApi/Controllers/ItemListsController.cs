@@ -44,6 +44,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id of Route.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
