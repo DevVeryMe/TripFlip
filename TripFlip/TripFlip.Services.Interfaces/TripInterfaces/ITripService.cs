@@ -9,15 +9,10 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
     public interface ITripService
     {
         /// <summary>
-        /// Gets all trips.
-        /// </summary>
-        Task<IEnumerable<TripDto>>GetAllTripsAsync();
-
-        /// <summary>
         /// Returns page of Trips.
         /// </summary>
         /// <returns>Object that represents the <see cref="PagedList{TripDto}"/> collection of database entities.</returns>
-        Task<PagedList<TripDto>> GetPageOfTripsAsync(BasicPaginationFilter paginationFilter);
+        Task<PagedList<TripDto>>GetAllTripsAsync(BasicPaginationFilter paginationFilter);
 
         /// <summary>
         /// Gets trip by id.

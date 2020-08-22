@@ -47,23 +47,11 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet("trip/{id}")]
         public async Task<IActionResult> GetAllByTripIdAsync(int id, [FromQuery] BasicPaginationFilter paginationFilter)
         {
-            object routeViewModelList;
+            var routeDtosList = await _routeService.GetAllByTripIdAsync(id, paginationFilter);
 
-            if (Request.QueryString.HasValue)
-            {
-                var pagedListOfRouteDtos =
-                await _routeService.GetPageByTripIdAsync(id, paginationFilter);
+            var routeViewModelsList = _mapper.Map<PagedList<ResultRouteViewModel>>(routeDtosList);
 
-                routeViewModelList = _mapper.Map<PagedList<ResultRouteViewModel>>(pagedListOfRouteDtos);
-            }
-            else
-            {
-                var routeDtoList = await _routeService.GetAllByTripIdAsync(id);
-
-                routeViewModelList = _mapper.Map<List<ResultRouteViewModel>>(routeDtoList);
-            }
-
-            return Ok(routeViewModelList);
+            return Ok(routeViewModelsList);
         }
 
         /// <summary>

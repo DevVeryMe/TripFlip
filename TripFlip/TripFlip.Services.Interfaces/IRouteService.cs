@@ -30,16 +30,10 @@ namespace TripFlip.Services.Interfaces
         Task<ResultRouteDto> GetByIdAsync(int routeId);
 
         /// <summary>
-        /// Returns all Routes with the given Trip Id.
-        /// </summary>
-        /// <returns>Object that represents the <see cref="IEnumerable{ResultRouteDto}"/> collection of database entries with the given Trip Id.</returns>
-        Task<IEnumerable<ResultRouteDto>> GetAllByTripIdAsync(int tripId);
-
-        /// <summary>
         /// Returns page of Routes with the given Trip Id.
         /// </summary>
-        /// <returns>Object that represents the <see cref="PagedList{ResultRouteDto}"/> collection of database entries with the given Trip Id.</returns>
-        Task<PagedList<ResultRouteDto>> GetPageByTripIdAsync(int tripId, BasicPaginationFilter paginationFilter);
+        /// <returns><returns>Object that represents the <see cref="PagedList{ResultRouteDto}"/> collection of database entries with the given Trip Id.</returns>
+        Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId, BasicPaginationFilter paginationFilter);
 
         /// <summary>
         /// Deletes Route with the given Id.

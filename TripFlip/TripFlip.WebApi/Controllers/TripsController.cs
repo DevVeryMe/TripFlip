@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TripDtos;
@@ -32,23 +31,11 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync([FromQuery] BasicPaginationFilter paginationFilter)
         {
-            object tripViewModels;
+            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationFilter);
 
-            if (Request.QueryString.HasValue)
-            {
-                var pagedListOfTripDtos =
-                    await _tripService.GetPageOfTripsAsync(paginationFilter);
+            var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
 
-                tripViewModels = _mapper.Map<PagedList<TripViewModel>>(pagedListOfTripDtos);
-            }
-            else
-            {
-                var tripDtoList = await _tripService.GetAllTripsAsync();
-
-                tripViewModels = _mapper.Map<List<TripViewModel>>(tripDtoList);
-            }
-
-            return Ok(tripViewModels);
+            return Ok(tripViewModelsList);
         }
 
         /// <summary>

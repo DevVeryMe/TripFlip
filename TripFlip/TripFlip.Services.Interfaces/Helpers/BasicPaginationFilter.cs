@@ -6,11 +6,11 @@
 
 		private static readonly int _minPageSize = 5;
 
-		private int _pageNumber = 1;
+		private int? _pageNumber;
 
-		private int _pageSize = 10;
+		private int? _pageSize;
 
-		public int PageNumber 
+		public int? PageNumber 
 		{ 
 			get
 			{
@@ -22,7 +22,7 @@
 			}
 		}
 
-		public int PageSize
+		public int? PageSize
 		{
 			get
 			{
