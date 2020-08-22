@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using TripFlip.Services.DTO;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO.ItemListDtos;
@@ -43,17 +44,17 @@ namespace TripFlip.WebApi.Controllers
         /// Returns all ItemLists with the given Route Id.
         /// </summary>
         /// <param name="id">Id of Route.</param>
-        /// <param name="pageNumber">Number of selected page.</param>
-        /// <param name="pageSize">Size of pages.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.PageNumberLessOneError)] int pageNumber = 1,
-            [Range(1, 50, ErrorMessage = ErrorConstants.PageSizeLessOneError)] int pageSize = 10)
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id, 
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
             var pagedListOfItemListDtos = 
-                await _itemListService.GetAllByRouteIdAsync(id, pageNumber, pageSize);
+                await _itemListService.GetAllByRouteIdAsync(id, paginationDto);
 
             var pagedListOfItemListViewModels = _mapper.Map< PagedList<ResultItemListViewModel> >(pagedListOfItemListDtos);
 

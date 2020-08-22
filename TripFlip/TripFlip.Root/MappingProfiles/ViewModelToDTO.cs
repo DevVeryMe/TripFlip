@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.DTO.TaskDtos;
@@ -9,6 +10,7 @@ using TripFlip.ViewModels.ItemViewModels;
 using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.ViewModels.TaskViewModels;
 using TripFlip.Services.DTO.TaskListDtos;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 
@@ -39,6 +41,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<CreateRouteViewModel, CreateRouteDto>();
 
             CreateMap<UpdateRouteViewModel, UpdateRouteDto>();
+
+            CreateMap<PaginationViewModel, PaginationDto>();
         }
     }
 }
