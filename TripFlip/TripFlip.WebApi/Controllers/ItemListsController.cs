@@ -48,12 +48,13 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id, 
-            [FromQuery] PaginationViewModel paginationViewModel)
+            [FromQuery] PaginationViewModel paginationViewModel,
+            [FromQuery] string searchString)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
             var pagedListOfItemListDtos = 
-                await _itemListService.GetAllByRouteIdAsync(id, paginationDto);
+                await _itemListService.GetAllByRouteIdAsync(id, paginationDto, searchString);
 
             var pagedListOfItemListViewModels = _mapper.Map< PagedList<ResultItemListViewModel> >(pagedListOfItemListDtos);
 

@@ -20,8 +20,9 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="listId">Id of item list.</param>
         /// <param name="paginationDto">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Paged list with item DTOs.</returns>
-        Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto);
+        Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto, string searchString);
 
         /// <summary>
         /// Updates existing item.
