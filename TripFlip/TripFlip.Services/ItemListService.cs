@@ -57,12 +57,12 @@ namespace TripFlip.Services
             var itemListEntitiesQuery = _flipTripDbContext.ItemLists
                 .Where(l => l.RouteId == routeId)
                 .AsNoTracking();
-
+            
             if(!string.IsNullOrEmpty(searchString))
-			{
+            {
                 itemListEntitiesQuery = itemListEntitiesQuery
                     .Where(i => i.Title.Contains(searchString));
-			}
+            }
 
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await itemListEntitiesQuery.CountAsync();

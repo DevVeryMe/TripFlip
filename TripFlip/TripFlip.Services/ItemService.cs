@@ -64,9 +64,9 @@ namespace TripFlip.Services
             var itemEntitiesQuery = _flipTripDbContext.Items
                 .Where(i => i.ItemListId == listId)
                 .AsNoTracking();
-
+            
             if (!string.IsNullOrEmpty(searchString))
-			{
+            {
                 itemEntitiesQuery = itemEntitiesQuery
                     .Where(i => i.Title.Contains(searchString) || i.Comment.Contains(searchString));
             }
