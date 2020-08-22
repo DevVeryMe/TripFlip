@@ -32,15 +32,17 @@ namespace TripFlip.Services
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(BasicPaginationFilter paginationFilter)
         {
-            var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
-
             int pageNumber = paginationFilter.PageNumber ?? 1;
-            int pageSize = paginationFilter.PageSize ?? trips.Count;
+            int pageSize = paginationFilter.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
 
-            var tripEntitiesList = trips.AsQueryable().ToPagedList(pageNumber, pageSize);
-            var tripDtosList = _mapper.Map<PagedList<TripDto>>(tripEntitiesList);
+            var trips = _flipTripDbContext
+                .Trips
+                .AsNoTracking();
 
-            return tripDtosList;
+            var tripEntitiesPagedList = trips.ToPagedList(pageNumber, pageSize);
+            var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(tripEntitiesPagedList);
+
+            return tripDtosPagedList;
         }
 
         public async Task<TripDto> GetAsync(int id)
