@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO.Enums;
 using TripFlip.Services.DTO.TaskDtos;
 
 namespace TripFlip.Services.Interfaces
@@ -32,6 +33,13 @@ namespace TripFlip.Services.Interfaces
         /// <param name="taskDto">New task data.</param>
         /// <returns>Updated task DTO.</returns>
         Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto);
+
+        /// <summary>
+        /// Updates existing task priority level.
+        /// </summary>
+        /// <param name="updateTaskPriorityDto">New task data with priority level.</param>
+        /// <returns>Updated task DTO.</returns>
+        Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
 
         /// <summary>
         /// Deletes task by id.
