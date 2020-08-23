@@ -48,7 +48,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>If operation is successful, 
         /// returns <see cref="PagedList{ResultRouteViewModel}"/> 
         /// object that represents the paged list of database entries with the given Trip Id.</returns>
-        [HttpGet("trip")]
+        [HttpGet]
         public async Task<IActionResult> GetAllByTripIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId,
