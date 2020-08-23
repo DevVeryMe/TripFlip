@@ -30,11 +30,16 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationViewModel paginationViewModel)
+        public async Task<IActionResult> GetAllAsync(
+            [FromQuery] string titleSearchString,
+            [FromQuery] string descriptionSearchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationDto);
+            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationDto,
+                titleSearchString,
+                descriptionSearchString);
 
             var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
 
