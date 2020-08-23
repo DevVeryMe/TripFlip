@@ -41,7 +41,9 @@ namespace TripFlip.Services.Interfaces.Helpers
             TotalCount = count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            TotalPages = pageSize == 0 ? 
+                pageNumber :
+                (int)Math.Ceiling(count / (double)pageSize);
         }
     }
 }

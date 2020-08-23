@@ -71,7 +71,6 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .Where(taskEntity => taskEntity.TaskListId == taskListId);
 
-            // to extension
             if (!string.IsNullOrEmpty(searchPattern))
             {
                 taskEntitiesQuery =
