@@ -102,9 +102,9 @@ namespace TripFlip.Services
             var tripExists = await _flipTripDbContext
                 .Trips
                 .AnyAsync(tripEntity => tripEntity.Id == tripId);
-
+            
             if (!tripExists)
-			{
+            {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
