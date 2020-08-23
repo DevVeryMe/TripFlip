@@ -79,6 +79,24 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Updates existing item completeness.
+        /// </summary>
+        /// <returns>Updated item view model.</returns>
+        [HttpPut]
+        [Route("change-completeness")]
+        public async Task<IActionResult> UpdateCompletenessAsync(
+            [FromBody] UpdateItemCompletenessViewModel updateItemCompletenessViewModel
+        )
+        {
+            var updateTaskPriorityDto = _mapper.Map<UpdateItemCompletenessDto>(updateItemCompletenessViewModel);
+
+            var updatedTaskDto = await _itemService.UpdateCompletenessAsync(updateTaskPriorityDto);
+            var updatedTaskViewModel = _mapper.Map<ItemViewModel>(updatedTaskDto);
+
+            return Ok(updatedTaskViewModel);
+        }
+
+        /// <summary>
         /// Gets item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
