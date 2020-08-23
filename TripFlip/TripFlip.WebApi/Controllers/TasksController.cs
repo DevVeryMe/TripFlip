@@ -46,17 +46,20 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all Tasks from a certain task list.
         /// </summary>
         /// <param name="taskListId">Task list id.</param>
+        /// <param name="searchString">String to find tasks.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>>Paged list of Task view models.</returns>
         [HttpGet]
         [Route("list/{taskListId}")]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
+            string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId, paginationDto);
+            var taskDtos = await _taskService.
+                GetAllByTaskListIdAsync(taskListId, searchString, paginationDto);
 
             var taskViewModels = _mapper.Map< PagedList<GetTaskViewModel> >(taskDtos);
 

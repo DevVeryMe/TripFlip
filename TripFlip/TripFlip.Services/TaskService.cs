@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Domain.Entities.Enums;
 using TripFlip.Services.DTO.Enums;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskDtos;
@@ -51,7 +50,7 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(
-            int taskListId,
+            int taskListId, string searchString,
             PaginationDto paginationDto)
         {
             var taskListExists = await _flipTripDbContext
@@ -67,6 +66,14 @@ namespace TripFlip.Services
                 .Tasks
                 .AsNoTracking()
                 .Where(taskEntity => taskEntity.TaskListId == taskListId);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                taskEntitiesQuery =
+                    taskEntitiesQuery
+                        .Where(taskEntity => taskEntity.Description
+                        .Contains(searchString));
+            }
 
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await taskEntitiesQuery.CountAsync();

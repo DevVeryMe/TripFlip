@@ -29,7 +29,7 @@ namespace TripFlip.Services.Interfaces.Helpers
         /// Initializes total count, page size, page number and total number of pages, adds items to list.
         /// </summary>
         /// <param name="items">IEnumerable implementation with items.</param>
-        /// <param name="count">Total count of items.</param>
+        /// <param name="totalCount">Total count of items.</param>
         /// <param name="pageNumber">Number of selected page.</param>
         /// <param name="pageSize">Size of pages.</param>
         public PagedList(IEnumerable<T> items, int totalCount, int pageNumber, int pageSize)
@@ -38,7 +38,9 @@ namespace TripFlip.Services.Interfaces.Helpers
             TotalCount = totalCount;
             PageSize = pageSize;
             CurrentPage = pageNumber;
-            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+            TotalPages = pageSize == 0 ? 
+                pageNumber :
+                (int)Math.Ceiling(totalCount / (double)pageSize);
         }
 	}
 }
