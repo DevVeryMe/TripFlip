@@ -32,6 +32,14 @@ namespace TripFlip.Services.Interfaces
         Task<ItemDto> UpdateAsync(UpdateItemDto itemDto);
 
         /// <summary>
+        /// Updates existing item completeness.
+        /// </summary>
+        /// <param name="updateItemCompletenessDto">New item data with field that
+        /// determines is item completed.</param>
+        /// <returns>Updated item DTO.</returns>
+        Task<ItemDto> UpdateCompletenessAsync(UpdateItemCompletenessDto updateItemCompletenessDto);
+
+        /// <summary>
         /// Gets item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
