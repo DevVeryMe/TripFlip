@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Domain.Entities.Enums;
+using TripFlip.Services.DTO.Enums;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 
@@ -34,10 +34,7 @@ namespace TripFlip.Services
             var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
 
-            if (taskList is null)
-            {
-                throw new ArgumentException(ErrorConstants.AddingTaskToNotExistingTaskList);
-            }
+            ValidateTaskListEntityNotNull(taskList);
 
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
 
@@ -54,10 +51,7 @@ namespace TripFlip.Services
             var taskList = await _flipTripDbContext.TaskLists.Include(t => t.Tasks).AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == taskListId);
 
-            if (taskList is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
-            }
+            ValidateTaskListEntityNotNull(taskList);
 
             var tasks = taskList.Tasks.ToList();
             var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
@@ -70,10 +64,7 @@ namespace TripFlip.Services
             var taskEntity = await _flipTripDbContext.Tasks.AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (taskEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
-            }
+            ValidateTaskEntityNotNull(taskEntity);
 
             var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
@@ -84,15 +75,26 @@ namespace TripFlip.Services
         {
             var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(taskDto.Id);
 
-            if (taskToUpdateEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
-            }
+            ValidateTaskEntityNotNull(taskToUpdateEntity);
 
             taskToUpdateEntity.Description = taskDto.Description;
-            taskToUpdateEntity.PriorityLevel = _mapper.Map<TaskPriorityLevel>(taskDto.PriorityLevel);
-
+            taskToUpdateEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(taskDto.PriorityLevel);
             taskToUpdateEntity.IsCompleted = taskDto.IsCompleted;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+
+            return updatedTaskDto;
+        }
+
+        public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
+        {
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks.FindAsync(updateTaskPriorityDto.Id);
+
+            ValidateTaskEntityNotNull(taskToUpdateEntity);
+
+            taskToUpdateEntity.PriorityLevel = _mapper
+                .Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskPriorityDto.PriorityLevel);
 
             await _flipTripDbContext.SaveChangesAsync();
             var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
@@ -112,6 +114,22 @@ namespace TripFlip.Services
 
             _flipTripDbContext.Tasks.Remove(taskToDelete);
             await _flipTripDbContext.SaveChangesAsync();
+        }
+
+        private void ValidateTaskEntityNotNull(TaskEntity task)
+        {
+            if (task is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskNotFound);
+            }
+        }
+
+        private void ValidateTaskListEntityNotNull(TaskListEntity taskList)
+        {
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
         }
     }
 }

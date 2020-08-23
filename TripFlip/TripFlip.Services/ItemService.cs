@@ -51,7 +51,7 @@ namespace TripFlip.Services
             return itemToReturnDto;
         }
 
-        public async Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto)
+        public async Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto, string searchString)
         {
             var itemListExists = await _flipTripDbContext.ItemLists
                 .AnyAsync(l => l.Id == listId);
@@ -62,7 +62,14 @@ namespace TripFlip.Services
             }
 
             var itemEntitiesQuery = _flipTripDbContext.Items
-                .Where(i => i.ItemListId == listId).AsNoTracking();
+                .Where(i => i.ItemListId == listId)
+                .AsNoTracking();
+            
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                itemEntitiesQuery = itemEntitiesQuery
+                    .Where(i => i.Title.Contains(searchString) || i.Comment.Contains(searchString));
+            }
 
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await itemEntitiesQuery.CountAsync();
