@@ -72,8 +72,6 @@ namespace TripFlip.Services
 
             var itemListEntity = _mapper.Map<ItemListEntity>(createItemListDto);
 
-            itemListEntity.DateCreated = DateTimeOffset.Now;
-
             var entityEntry = _flipTripDbContext.ItemLists.Add(itemListEntity);
             await _flipTripDbContext.SaveChangesAsync();
 

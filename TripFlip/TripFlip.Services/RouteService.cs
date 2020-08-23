@@ -31,8 +31,6 @@ namespace TripFlip.Services
 
             var routeEntity = _mapper.Map<RouteEntity>(createRouteDto);
 
-            routeEntity.DateCreated = DateTimeOffset.Now;
-
             var entityEntry = _flipTripDbContext.Routes.Add(routeEntity);
             await _flipTripDbContext.SaveChangesAsync();
 

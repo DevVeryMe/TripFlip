@@ -9,8 +9,9 @@ namespace TripFlip.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<RouteEntity> builder)
         {
             builder.HasKey(r => r.Id);
-            builder.Property(p => p.Id).ValueGeneratedOnAdd();
-            builder.Property(p => p.Title).IsRequired().HasMaxLength(100);
+            builder.Property(r => r.Id).ValueGeneratedOnAdd();
+            builder.Property(r => r.Title).IsRequired().HasMaxLength(100);
+            builder.Property(r => r.DateCreated).HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder.HasOne<TripEntity>(r => r.Trip).
                 WithMany(t => t.Routes).
