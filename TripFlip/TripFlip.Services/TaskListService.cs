@@ -36,7 +36,6 @@ namespace TripFlip.Services
             await ValidateRouteExistsAsync(taskListDto.RouteId);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
-            taskListEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.TaskLists.AddAsync(taskListEntity);
             await _flipTripDbContext.SaveChangesAsync();

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TripFlip.DataAccess;
 using TripFlip.Root.ExceptionHandlingExtensions;
 using TripFlip.Root.ConfigureServicesExtension;
 
@@ -25,7 +27,8 @@ namespace TripFlip.WebApi
             services.ConfigureServices(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            FlipTripDbContext flipTripDbContext)
         {
             app.ConfigureExceptionHandler(env);
 
@@ -44,6 +47,8 @@ namespace TripFlip.WebApi
             app.UseSwaggerUI(
                 options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
             );
+
+            flipTripDbContext.Database.Migrate();
         }
     }
 }
