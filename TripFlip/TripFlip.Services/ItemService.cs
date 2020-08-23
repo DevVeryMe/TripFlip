@@ -105,7 +105,7 @@ namespace TripFlip.Services
             ValidateItemEntityIsNotNull(itemToUpdate);
 
             itemToUpdate.IsCompleted = updateItemCompletenessDto.IsCompleted;
-
+            
             await _flipTripDbContext.SaveChangesAsync();
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
