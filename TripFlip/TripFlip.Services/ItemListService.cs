@@ -44,7 +44,7 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, 
-            PaginationDto paginationDto)
+            PaginationDto paginationDto, string searchString)
         {
             var routeExists = await _flipTripDbContext.Routes
                 .AnyAsync(r => r.Id == routeId);
@@ -54,13 +54,20 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
 
-            var itemListEntities = _flipTripDbContext.ItemLists
-                .Where(l => l.RouteId == routeId);
+            var itemListEntitiesQuery = _flipTripDbContext.ItemLists
+                .Where(l => l.RouteId == routeId)
+                .AsNoTracking();
+            
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                itemListEntitiesQuery = itemListEntitiesQuery
+                    .Where(i => i.Title.Contains(searchString));
+            }
 
             var pageNumber = paginationDto.PageNumber ?? 1;
-            var pageSize = paginationDto.PageSize ?? itemListEntities.Count();
+            var pageSize = paginationDto.PageSize ?? await itemListEntitiesQuery.CountAsync();
 
-            var pagedListOfItemListEntities = itemListEntities.ToPagedList(pageNumber, pageSize);
+            var pagedListOfItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
             var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
 
             return pagedListOfItemListDtos;

@@ -1,12 +1,15 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.Services
 {
@@ -28,12 +31,19 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TripDto>> GetAllTripsAsync()
+        public async Task<PagedList<TripDto>> GetAllTripsAsync(PaginationDto paginationDto)
         {
-            var trips = await _flipTripDbContext.Trips.AsNoTracking().ToListAsync();
-            var tripDtos = _mapper.Map<List<TripDto>>(trips);
+            int pageNumber = paginationDto.PageNumber ?? 1;
+            int pageSize = paginationDto.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
 
-            return tripDtos;
+            var tripsQuery = _flipTripDbContext
+                .Trips
+                .AsNoTracking();
+
+            var tripEntitiesPagedList = tripsQuery.ToPagedList(pageNumber, pageSize);
+            var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(tripEntitiesPagedList);
+
+            return tripDtosPagedList;
         }
 
         public async Task<TripDto> GetAsync(int id)

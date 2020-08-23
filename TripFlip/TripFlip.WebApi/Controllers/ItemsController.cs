@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
@@ -48,15 +46,17 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Item list id.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Paged list of item view models.</returns>
         [HttpGet("list/{id}")]
         public async Task<IActionResult> GetAllByItemListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
-            [FromQuery] PaginationViewModel paginationViewModel)
+            [FromQuery] PaginationViewModel paginationViewModel,
+            [FromQuery] string searchString)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var items = await _itemService.GetAllAsync(id, paginationDto);
+            var items = await _itemService.GetAllAsync(id, paginationDto, searchString);
 
             var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
 

@@ -1,17 +1,18 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.DTO.TripDtos;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.DTO;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/trips")]
     [ApiController]
     public class TripsController : ControllerBase
     {
@@ -29,12 +30,15 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationViewModel paginationViewModel)
         {
-            var trips = await _tripService.GetAllTripsAsync();
-            var tripViewModels = _mapper.Map<List<TripViewModel>>(trips);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            return Ok(tripViewModels);
+            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationDto);
+
+            var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
+
+            return Ok(tripViewModelsList);
         }
 
         /// <summary>
