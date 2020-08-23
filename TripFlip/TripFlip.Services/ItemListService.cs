@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.DTO.ItemListDtos;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -39,20 +43,27 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
-        public async Task<IEnumerable<ResultItemListDto>> GetAllByRouteIdAsync(int routeId)
+        public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, 
+            PaginationDto paginationDto)
         {
-            var routeEntity = await _flipTripDbContext
-                .Routes
-                .AsNoTracking()
-                .Include(routeEntity => routeEntity.ItemLists)
-                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
+            var routeExists = await _flipTripDbContext.Routes
+                .AnyAsync(r => r.Id == routeId);
 
-            ValidateRouteEntityIsNotNull(routeEntity);
+            if (!routeExists)
+            {
+                throw new ArgumentException(ErrorConstants.RouteNotFound);
+            }
 
-            var resultRouteDtoList = _mapper.Map< List<ResultItemListDto> >
-                (routeEntity.ItemLists.ToList());
+            var itemListEntitiesQuery = _flipTripDbContext.ItemLists
+                .Where(l => l.RouteId == routeId).AsNoTracking();
 
-            return resultRouteDtoList;
+            var pageNumber = paginationDto.PageNumber ?? 1;
+            var pageSize = paginationDto.PageSize ?? await itemListEntitiesQuery.CountAsync();
+
+            var pagedListOfItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
+
+            return pagedListOfItemListDtos;
         }
 
         public async Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto)

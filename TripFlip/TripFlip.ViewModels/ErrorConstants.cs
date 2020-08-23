@@ -31,5 +31,9 @@
         public const string EmptyIsCompletedFieldError = "Field 'is completed' cannot be empty.";
 
         public const string RequiredTaskPriorityError = "Field 'priority level' cannot be empty.";
+
+        public const string PageNumberLessOneError = "Page number cannot be less than 1.";
+
+        public const string InvalidPageSizeError = "Page size cannot be less than 1 or greater than 50.";
     }
 }

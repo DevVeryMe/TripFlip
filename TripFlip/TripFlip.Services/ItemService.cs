@@ -1,13 +1,16 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -48,20 +51,26 @@ namespace TripFlip.Services
             return itemToReturnDto;
         }
 
-        public async Task<IEnumerable<ItemDto>> GetAllAsync(int listId)
+        public async Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto)
         {
-            var itemListEntity = await _flipTripDbContext.ItemLists.
-                Include(l => l.Items).AsNoTracking().
-                SingleOrDefaultAsync(l => l.Id == listId);
+            var itemListExists = await _flipTripDbContext.ItemLists
+                .AnyAsync(l => l.Id == listId);
 
-            if (itemListEntity is null)
+            if (!itemListExists)
             {
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var itemDtos = _mapper.Map<List<ItemDto>>(itemListEntity.Items);
+            var itemEntitiesQuery = _flipTripDbContext.Items
+                .Where(i => i.ItemListId == listId).AsNoTracking();
 
-            return itemDtos;
+            var pageNumber = paginationDto.PageNumber ?? 1;
+            var pageSize = paginationDto.PageSize ?? await itemEntitiesQuery.CountAsync();
+
+            var pagedListOfItemEntities = itemEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var pagedListOfItemDtos = _mapper.Map<PagedList<ItemDto>>(pagedListOfItemEntities);
+
+            return pagedListOfItemDtos;
         }
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
@@ -96,7 +105,7 @@ namespace TripFlip.Services
         public async Task DeleteAsync(int id)
         {
             var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
-            
+
             ValidateItemEntityExists(itemEntityToDelete);
 
             _flipTripDbContext.Remove(itemEntityToDelete);

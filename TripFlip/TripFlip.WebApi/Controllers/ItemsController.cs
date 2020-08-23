@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.ItemViewModels;
 
@@ -44,13 +45,18 @@ namespace TripFlip.WebApi.Controllers
         /// Returns all items of certain item list.
         /// </summary>
         /// <param name="id">Item list id.</param>
-        /// <returns>Collection of item view models.</returns>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>Paged list of item view models.</returns>
         [HttpGet("list/{id}")]
         public async Task<IActionResult> GetAllByItemListIdAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id,
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
-            var items = await _itemService.GetAllAsync(id);
-            var itemViewModels = _mapper.Map<List<ItemViewModel>>(items);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var items = await _itemService.GetAllAsync(id, paginationDto);
+
+            var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
 
             return Ok(itemViewModels);
         }
