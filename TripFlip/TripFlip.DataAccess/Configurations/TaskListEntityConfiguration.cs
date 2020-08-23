@@ -11,6 +11,7 @@ namespace TripFlip.DataAccess.Configurations
             builder.HasKey(t => t.Id);
             builder.Property(t => t.Id).ValueGeneratedOnAdd();
             builder.Property(t => t.Title).IsRequired().HasMaxLength(100);
+            builder.Property(t => t.DateCreated).HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder.HasOne<RouteEntity>(i => i.Route)
                 .WithMany(r => r.TaskLists)
