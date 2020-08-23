@@ -6,9 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Domain.Entities.Enums;
 using TripFlip.Services.DTO.Enums;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -46,15 +50,30 @@ namespace TripFlip.Services
             return taskToReturn;
         }
 
-        public async Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int taskListId)
+        public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(
+            int taskListId,
+            PaginationDto paginationDto)
         {
-            var taskList = await _flipTripDbContext.TaskLists.Include(t => t.Tasks).AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == taskListId);
+            var taskListExists = await _flipTripDbContext
+                .TaskLists
+                .AnyAsync(taskListEntity => taskListEntity.Id == taskListId);
 
-            ValidateTaskListEntityNotNull(taskList);
+            if (!taskListExists)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+            }
 
-            var tasks = taskList.Tasks.ToList();
-            var taskDtos = _mapper.Map<List<TaskDto>>(tasks);
+            var taskEntitiesQuery = _flipTripDbContext
+                .Tasks
+                .AsNoTracking()
+                .Where(taskEntity => taskEntity.TaskListId == taskListId);
+
+            var pageNumber = paginationDto.PageNumber ?? 1;
+            var pageSize = paginationDto.PageSize ?? await taskEntitiesQuery.CountAsync();
+
+            var tasksPagedList = taskEntitiesQuery.ToPagedList(pageNumber, pageSize);
+
+            var taskDtos = _mapper.Map< PagedList<TaskDto> >(tasksPagedList);
 
             return taskDtos;
         }

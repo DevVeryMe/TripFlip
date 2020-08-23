@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.Enums;
 using TripFlip.Services.DTO.TaskDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
@@ -11,7 +13,9 @@ namespace TripFlip.Services.Interfaces
         /// Gets all tasks from certain task list.
         /// </summary>
         /// <param name="taskListId">Task list id.</param>
-        Task<IEnumerable<TaskDto>> GetAllByTaskListIdAsync(int taskListId);
+        /// <param name="paginationDto">Pagination settings.</param>
+        /// <returns>Paged list with Task DTOs.</returns>
+        Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId, PaginationDto paginationDto);
 
         /// <summary>
         /// Gets task by id.

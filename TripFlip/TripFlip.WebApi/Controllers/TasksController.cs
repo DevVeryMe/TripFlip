@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.Enums;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
@@ -43,11 +46,19 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all Tasks from a certain task list.
         /// </summary>
         /// <param name="taskListId">Task list id.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>>Paged list of Task view models.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllByTaskListIdAsync([FromQuery] int taskListId)
+        [Route("list/{taskListId}")]
+        public async Task<IActionResult> GetAllByTaskListIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
-            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId);
-            var taskViewModels = _mapper.Map<List<GetTaskViewModel>>(taskDtos);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var taskDtos = await _taskService.GetAllByTaskListIdAsync(taskListId, paginationDto);
+
+            var taskViewModels = _mapper.Map< PagedList<GetTaskViewModel> >(taskDtos);
 
             return Ok(taskViewModels);
         }
