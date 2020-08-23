@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.ViewModels.Enums;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TaskViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tasks")]
     [ApiController]
     public class TasksController : ControllerBase
     {
@@ -47,7 +48,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskListId">Task list id.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>>Paged list of Task view models.</returns>
-        [HttpGet("taskList/{taskListId}")]
+        [HttpGet]
+        [Route("list/{taskListId}")]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
             [FromQuery] PaginationViewModel paginationViewModel)
@@ -82,11 +84,31 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="taskViewModel">New task data with existing task id.</param>
         /// <returns>Updated task view model.</returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateTaskViewModel updateTaskViewModel)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
             var taskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
 
             var updatedTaskDto = await _taskService.UpdateAsync(taskDto);
+            var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
+
+            return Ok(updatedTaskViewModel);
+        }
+
+        /// <summary>
+        /// Updates existing task priority level.
+        /// </summary>
+        /// <param name="id">Task id.</param>
+        /// <param name="priorityLevel">New task priority level.</param>
+        /// <returns>Updated task view model.</returns>
+        [HttpPut]
+        [Route("change-priority")]
+        public async Task<IActionResult> UpdatePriorityAsync(
+            [FromBody] UpdateTaskPriorityViewModel updateTaskPriorityViewModel
+            )
+        {
+            var updateTaskPriorityDto = _mapper.Map<UpdateTaskPriorityDto>(updateTaskPriorityViewModel);
+
+            var updatedTaskDto = await _taskService.UpdatePriorityAsync(updateTaskPriorityDto);
             var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
 
             return Ok(updatedTaskViewModel);

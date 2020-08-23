@@ -23,8 +23,9 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="routeId">Id of Route.</param>
         /// <param name="paginationDto">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Object that represents the <see cref="PagedList{ResultItemListDto}"/> collection of database entries with the given Route Id.</returns>
-        Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, PaginationDto paginationDto);
+        Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, PaginationDto paginationDto, string searchString);
 
         /// <summary>
         /// Creates new ItemList with the given <see cref="CreateItemListDto"/> object. Applies changes to database asynchronously.
