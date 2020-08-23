@@ -16,7 +16,7 @@ namespace TripFlip.Services.Interfaces
         /// <param name="paginationDto">Pagination settings.</param>
         /// <returns>Paged list of TaskList DTOs specified by Route Id.</returns>
         Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId, 
-            string stringPattern, PaginationDto paginationDto);
+            string searchPattern, PaginationDto paginationDto);
 
         /// <summary>
         /// Gets task list by id.
