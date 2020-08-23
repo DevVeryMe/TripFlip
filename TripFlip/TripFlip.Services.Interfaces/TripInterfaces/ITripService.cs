@@ -2,15 +2,18 @@
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TripDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces.TripInterfaces
 {
     public interface ITripService
     {
         /// <summary>
-        /// Gets all trips.
+        /// Returns page of Trips.
         /// </summary>
-        Task<IEnumerable<TripDto>>GetAllTripsAsync();
+        /// <param name="paginationDto">Object that represents the <see cref="PaginationDto"/>pagination parameters.</param>
+        /// <returns>Object that represents the <see cref="PagedList{TripDto}"/> collection of database entries.</returns>
+        Task<PagedList<TripDto>>GetAllTripsAsync(PaginationDto paginationDto);
 
         /// <summary>
         /// Gets trip by id.

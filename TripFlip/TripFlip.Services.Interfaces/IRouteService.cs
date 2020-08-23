@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.RouteDtos;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
@@ -29,10 +30,12 @@ namespace TripFlip.Services.Interfaces
         Task<ResultRouteDto> GetByIdAsync(int routeId);
 
         /// <summary>
-        /// Returns all Routes with the given Trip Id.
+        /// Returns page of Routes with the given Trip Id.
         /// </summary>
-        /// <returns>Object that represents the <see cref="IEnumerable{ResultRouteDto}"/> collection of database entries with the given Trip Id.</returns>
-        Task<IEnumerable<ResultRouteDto>> GetAllByTripIdAsync(int tripId);
+        /// <param name="tripId">Trip Id.</param>
+        /// <param name="paginationDto">Object that represents the <see cref="PaginationDto"/>pagination parameters.</param>
+        /// <returns><returns>Object that represents the <see cref="PagedList{ResultRouteDto}"/> collection of database entries with the given Trip Id.</returns>
+        Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId, PaginationDto paginationDto);
 
         /// <summary>
         /// Deletes Route with the given Id.
