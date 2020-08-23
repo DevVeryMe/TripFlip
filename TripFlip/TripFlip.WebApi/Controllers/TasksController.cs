@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces;
-using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels.Enums;
+using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TaskViewModels;
 
@@ -49,7 +49,8 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="searchPattern">String to find tasks.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>>Paged list of Task view models.</returns>
-        [HttpGet("taskList/{taskListId}")]
+        [HttpGet]
+        [Route("list/{taskListId}")]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
             string searchPattern,
