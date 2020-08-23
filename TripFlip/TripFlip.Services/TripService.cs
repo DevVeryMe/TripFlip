@@ -31,7 +31,9 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedList<TripDto>> GetAllTripsAsync(PaginationDto paginationDto)
+        public async Task<PagedList<TripDto>> GetAllTripsAsync(
+            PaginationDto paginationDto,
+            string searchString)
         {
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
@@ -39,6 +41,13 @@ namespace TripFlip.Services
             var tripsQuery = _flipTripDbContext
                 .Trips
                 .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tripsQuery = tripsQuery
+                    .Where(tripEntity => tripEntity.Title.Contains(searchString) || 
+                        tripEntity.Description.Contains(searchString));
+            }
 
             var tripEntitiesPagedList = tripsQuery.ToPagedList(pageNumber, pageSize);
             var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(tripEntitiesPagedList);

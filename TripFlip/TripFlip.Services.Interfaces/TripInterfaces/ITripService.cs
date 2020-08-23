@@ -11,9 +11,11 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// <summary>
         /// Returns page of Trips.
         /// </summary>
-        /// <param name="paginationDto">Object that represents the <see cref="PaginationDto"/>pagination parameters.</param>
-        /// <returns>Object that represents the <see cref="PagedList{TripDto}"/> collection of database entries.</returns>
-        Task<PagedList<TripDto>>GetAllTripsAsync(PaginationDto paginationDto);
+        /// <param name="paginationDto">Object that represents the pagination parameters.</param>
+        /// <param name="searchString">String to filter trips by Title and Description.</param>
+        /// <returns><see cref="PagedList{TripDto}"/> object that represents the paged collection of database entries.</returns>
+        Task<PagedList<TripDto>>GetAllTripsAsync(PaginationDto paginationDto,
+            string searchString);
 
         /// <summary>
         /// Gets trip by id.
