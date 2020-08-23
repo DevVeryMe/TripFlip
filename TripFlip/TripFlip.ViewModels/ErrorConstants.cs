@@ -29,5 +29,9 @@
         public const string ItemWithoutItemListError = "Item cannot exist without item list.";
 
         public const string EmptyIsCompletedFieldError = "Field 'is completed' cannot be empty.";
+
+        public const string PageNumberLessOneError = "Page number cannot be less than 1.";
+
+        public const string InvalidPageSizeError = "Page size cannot be less than 1 or greater than 50.";
     }
 }

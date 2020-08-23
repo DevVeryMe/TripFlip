@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using TripFlip.ViewModels.ItemListViewModels;
-using TripFlip.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemListDtos;
+using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
+using TripFlip.ViewModels.ItemListViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -40,15 +43,21 @@ namespace TripFlip.WebApi.Controllers
         /// Returns all ItemLists with the given Route Id.
         /// </summary>
         /// <param name="id">Id of Route.</param>
-        /// <returns>If operation is successful, returns <see cref="List{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
-        public async Task<IActionResult> GetAllByRouteIdAsync(int id)
+        public async Task<IActionResult> GetAllByRouteIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id, 
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
-            var resultItemListDtos = await _itemListService.GetAllByRouteIdAsync(id);
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var resultItemListViewModelList = _mapper.Map< List<ResultItemListViewModel> >(resultItemListDtos);
+            var pagedListOfItemListDtos = 
+                await _itemListService.GetAllByRouteIdAsync(id, paginationDto);
 
-            return Ok(resultItemListViewModelList);
+            var pagedListOfItemListViewModels = _mapper.Map< PagedList<ResultItemListViewModel> >(pagedListOfItemListDtos);
+
+            return Ok(pagedListOfItemListViewModels);
         }
 
         /// <summary>
