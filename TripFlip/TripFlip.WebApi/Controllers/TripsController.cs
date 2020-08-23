@@ -12,7 +12,7 @@ using TripFlip.Services.DTO;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/trips")]
     [ApiController]
     public class TripsController : ControllerBase
     {
