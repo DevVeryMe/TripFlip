@@ -37,7 +37,6 @@ namespace TripFlip.Services
             ValidateTaskListEntityNotNull(taskList);
 
             var taskEntity = _mapper.Map<TaskEntity>(taskDto);
-            taskEntity.DateCreated = DateTimeOffset.Now;
 
             await _flipTripDbContext.Tasks.AddAsync(taskEntity);
             await _flipTripDbContext.SaveChangesAsync();

@@ -14,6 +14,7 @@ namespace TripFlip.DataAccess.Configurations
             builder.Property(t => t.Description).IsRequired().HasMaxLength(250);
             builder.Property(t => t.IsCompleted).HasDefaultValue(false);
             builder.Property(t => t.PriorityLevel).HasDefaultValue(TaskPriorityLevel.Low);
+            builder.Property(t => t.DateCreated).HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder.HasOne<TaskListEntity>(t => t.TaskList)
                 .WithMany(t => t.Tasks)
