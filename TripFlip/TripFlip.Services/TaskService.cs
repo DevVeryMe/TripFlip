@@ -54,7 +54,7 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(
-            int taskListId,
+            int taskListId, string searchPattern,
             PaginationDto paginationDto)
         {
             var taskListExists = await _flipTripDbContext
@@ -70,6 +70,15 @@ namespace TripFlip.Services
                 .Tasks
                 .AsNoTracking()
                 .Where(taskEntity => taskEntity.TaskListId == taskListId);
+
+            // to extension
+            if (!string.IsNullOrEmpty(searchPattern))
+            {
+                taskEntitiesQuery =
+                    taskEntitiesQuery
+                        .Where(taskEntity => taskEntity.Description
+                        .Contains(searchPattern));
+            }
 
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await taskEntitiesQuery.CountAsync();
