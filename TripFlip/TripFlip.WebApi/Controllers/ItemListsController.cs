@@ -44,16 +44,18 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id of Route.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <param name="searchString">Search string to filter data.</param>
         /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet("route/{id}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id, 
-            [FromQuery] PaginationViewModel paginationViewModel)
+            [FromQuery] PaginationViewModel paginationViewModel,
+            [FromQuery] string searchString)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
             var pagedListOfItemListDtos = 
-                await _itemListService.GetAllByRouteIdAsync(id, paginationDto);
+                await _itemListService.GetAllByRouteIdAsync(id, paginationDto, searchString);
 
             var pagedListOfItemListViewModels = _mapper.Map< PagedList<ResultItemListViewModel> >(pagedListOfItemListDtos);
 
