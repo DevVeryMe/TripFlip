@@ -9,7 +9,7 @@ using TripFlip.Services.DTO.RouteDtos;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/routes")]
     [ApiController]
     public class RoutesController : ControllerBase
     {
