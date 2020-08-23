@@ -118,6 +118,26 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Updates existing task's completeness.
+        /// </summary>
+        /// <param name="updateTaskCompletenessViewModel"> Object with task id and bool field
+        /// that determines is task completed.</param>
+        /// <returns>Updated task view model.</returns>
+        [HttpPut]
+        [Route("change-completeness")]
+        public async Task<IActionResult> UpdateCompletenessAsync(
+            [FromBody] UpdateTaskCompletenessViewModel updateTaskCompletenessViewModel)
+        {
+            var updateTaskCompletenessDto = 
+                _mapper.Map<UpdateTaskCompletenessDto>(updateTaskCompletenessViewModel);
+
+            var updatedTaskDto = await _taskService.UpdateCompletenessAsync(updateTaskCompletenessDto);
+            var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
+
+            return Ok(updatedTaskViewModel);
+        }
+
+        /// <summary>
         /// Deletes task by id.
         /// </summary>
         /// <param name="id">Task to delete id.</param>

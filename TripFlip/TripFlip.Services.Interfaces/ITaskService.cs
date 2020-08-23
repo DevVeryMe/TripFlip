@@ -48,6 +48,13 @@ namespace TripFlip.Services.Interfaces
         Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
 
         /// <summary>
+        /// Updates existing task's completeness.
+        /// </summary>
+        /// <param name="updateTaskCompletenessDto">New task data with completeness bool field.</param>
+        /// <returns>Updated task DTO.</returns>
+        Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto);
+
+        /// <summary>
         /// Deletes task by id.
         /// </summary>
         /// <param name="id">Task to delete id.</param>

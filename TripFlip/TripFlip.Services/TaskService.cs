@@ -128,6 +128,21 @@ namespace TripFlip.Services
             return updatedTaskDto;
         }
 
+        public async Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto)
+        {
+            var taskToUpdateEntity = await _flipTripDbContext.Tasks
+                .FindAsync(updateTaskCompletenessDto.Id);
+
+            ValidateTaskEntityNotNull(taskToUpdateEntity);
+
+            taskToUpdateEntity.IsCompleted = updateTaskCompletenessDto.IsCompleted;
+
+            await _flipTripDbContext.SaveChangesAsync();
+            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+
+            return updatedTaskDto;
+        }
+
         public async Task DeleteByIdAsync(int id)
         {
             var taskToDelete = await _flipTripDbContext.Tasks.AsNoTracking()
