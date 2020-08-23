@@ -11,7 +11,7 @@ using TripFlip.ViewModels.ItemListViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/item-lists")]
     [ApiController]
     public class ItemListsController : ControllerBase
     {

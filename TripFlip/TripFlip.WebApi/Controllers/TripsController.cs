@@ -11,7 +11,7 @@ using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/trips")]
     [ApiController]
     public class TripsController : ControllerBase
     {
