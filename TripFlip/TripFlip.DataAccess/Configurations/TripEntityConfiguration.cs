@@ -17,6 +17,7 @@ namespace TripFlip.DataAccess.Configurations
             builder.Property(trip => trip.Description).HasMaxLength(500);
             builder.Property(trip => trip.StartsAt).IsRequired(false);
             builder.Property(trip => trip.EndsAt).IsRequired(false);
+            builder.Property(trip => trip.DateCreated).HasDefaultValueSql("SYSDATETIMEOFFSET()");
         }
     }
 }

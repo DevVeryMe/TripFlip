@@ -10,6 +10,7 @@ namespace TripFlip.DataAccess.Configurations
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder.Property(p => p.DateCreated).HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder.HasOne<RouteEntity>(p => p.Route).
                 WithMany(r => r.RoutePoints).

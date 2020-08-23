@@ -13,7 +13,10 @@ namespace TripFlip.Services.Interfaces.Helpers.Extensions
         /// <returns>Paged list.</returns>
         public static PagedList<T> ToPagedList<T>(this IQueryable<T> source, int pageNumber, int pageSize)
         {
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var items = pageSize == 0 ? 
+                source.ToList() : 
+                source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                
             var count = source.Count();
 
             return new PagedList<T>(items, count, pageNumber, pageSize);
