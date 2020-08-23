@@ -41,16 +41,21 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Returns all Routes with the given Trip Id.
         /// </summary>
+        /// <param name="id">Trip Id.</param>
+        /// <param name="searchString">String to filter routes by Title.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>If operation is successful, 
-        /// returns <see cref="List{ResultRouteViewModel}"/>
-        /// or <see cref="PagedList{ResultRouteViewModel}"/> 
-        /// object that represents the list of database entries with the given Trip Id.</returns>
+        /// returns <see cref="PagedList{ResultRouteViewModel}"/> 
+        /// object that represents the paged list of database entries with the given Trip Id.</returns>
         [HttpGet("trip/{id}")]
-        public async Task<IActionResult> GetAllByTripIdAsync(int id, [FromQuery] PaginationViewModel paginationViewModel)
+        public async Task<IActionResult> GetAllByTripIdAsync(
+            int id,
+            [FromQuery] string searchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var routeDtosList = await _routeService.GetAllByTripIdAsync(id, paginationDto);
+            var routeDtosList = await _routeService.GetAllByTripIdAsync(id, paginationDto, searchString);
 
             var routeViewModelsList = _mapper.Map<PagedList<ResultRouteViewModel>>(routeDtosList);
 
