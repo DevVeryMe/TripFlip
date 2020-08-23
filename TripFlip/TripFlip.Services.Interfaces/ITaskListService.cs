@@ -12,11 +12,11 @@ namespace TripFlip.Services.Interfaces
         /// Gets all task lists from certain route.
         /// </summary>
         /// <param name="routeId">Route id.</param>
-        /// <param name="searchPattern">String to search in task lists.</param>
+        /// <param name="searchString">String to search in task lists.</param>
         /// <param name="paginationDto">Pagination settings.</param>
         /// <returns>Paged list of TaskList DTOs specified by Route Id.</returns>
         Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId, 
-            string searchPattern, PaginationDto paginationDto);
+            string searchString, PaginationDto paginationDto);
 
         /// <summary>
         /// Gets task list by id.
