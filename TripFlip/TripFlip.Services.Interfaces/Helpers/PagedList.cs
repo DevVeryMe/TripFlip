@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TripFlip.Services.Interfaces.Helpers
 {
@@ -24,9 +23,7 @@ namespace TripFlip.Services.Interfaces.Helpers
 
         public bool HasNext => CurrentPage < TotalPages;
 
-        public PagedList()
-        {
-        }
+        public PagedList() { }
 
         /// <summary>
         /// Initializes total count, page size, page number and total number of pages, adds items to list.
@@ -35,13 +32,13 @@ namespace TripFlip.Services.Interfaces.Helpers
         /// <param name="count">Total count of items.</param>
         /// <param name="pageNumber">Number of selected page.</param>
         /// <param name="pageSize">Size of pages.</param>
-        public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
+        public PagedList(IEnumerable<T> items, int totalCount, int pageNumber, int pageSize)
         {
             Items = items;
-            TotalCount = count;
+            TotalCount = totalCount;
             PageSize = pageSize;
             CurrentPage = pageNumber;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
         }
-    }
+	}
 }
