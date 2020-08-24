@@ -20,12 +20,12 @@ namespace TripFlip.Services
     public class RouteService : IRouteService
     {
         private readonly IMapper _mapper;
-        private readonly FlipTripDbContext _flipTripDbContext;
+        private readonly TripFlipDbContext _tripFlipDbContext;
 
-        public RouteService(FlipTripDbContext flipTripDbContext, IMapper mapper)
+        public RouteService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
             _mapper = mapper;
-            _flipTripDbContext = flipTripDbContext;
+            _tripFlipDbContext = tripFlipDbContext;
         }
 
         public async Task<ResultRouteDto> CreateAsync(CreateRouteDto createRouteDto)
@@ -34,8 +34,8 @@ namespace TripFlip.Services
 
             var routeEntity = _mapper.Map<RouteEntity>(createRouteDto);
 
-            var entityEntry = _flipTripDbContext.Routes.Add(routeEntity);
-            await _flipTripDbContext.SaveChangesAsync();
+            var entityEntry = _tripFlipDbContext.Routes.Add(routeEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var resultDto = _mapper.Map<ResultRouteDto>(entityEntry.Entity);
 
@@ -44,7 +44,7 @@ namespace TripFlip.Services
 
         public async Task<ResultRouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
         {
-            var tripEntity = await _flipTripDbContext
+            var tripEntity = await _tripFlipDbContext
                 .Trips
                 .Where(tripEntity => tripEntity.Id == updateRouteDto.TripId)
                 .Include(tripEntity => tripEntity.Routes)
@@ -62,7 +62,7 @@ namespace TripFlip.Services
             routeEntity.Title = updateRouteDto.Title;
             routeEntity.TripId = updateRouteDto.TripId;
 
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var resultRouteDto = _mapper.Map<ResultRouteDto>(routeEntity);
 
@@ -71,19 +71,19 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var routeEntityToDelete = await _flipTripDbContext
+            var routeEntityToDelete = await _tripFlipDbContext
                 .Routes
                 .SingleOrDefaultAsync(routeEntity => routeEntity.Id == id);
 
             ValidateRouteEntityIsNotNull(routeEntityToDelete);
 
-            _flipTripDbContext.Routes.Remove(routeEntityToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
+            _tripFlipDbContext.Routes.Remove(routeEntityToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         public async Task<ResultRouteDto> GetByIdAsync(int routeId)
         {
-            var routeEntity = await _flipTripDbContext
+            var routeEntity = await _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
                 .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
@@ -101,7 +101,7 @@ namespace TripFlip.Services
         {
             await ValidateTripExistsAsync(tripId);
 
-            var routeEntitiesQuery = _flipTripDbContext
+            var routeEntitiesQuery = _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
                 .Where(r => r.TripId == tripId);
@@ -151,7 +151,7 @@ namespace TripFlip.Services
         /// </summary>
         async Task ValidateTripExistsAsync(int tripId)
         {
-            var tripEntity = await _flipTripDbContext
+            var tripEntity = await _tripFlipDbContext
                 .Trips
                 .AsNoTracking()
                 .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);

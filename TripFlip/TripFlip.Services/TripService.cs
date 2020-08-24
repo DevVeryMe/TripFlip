@@ -16,18 +16,18 @@ namespace TripFlip.Services
     /// <inheritdoc />
     public class TripService : ITripService
     {
-        private readonly FlipTripDbContext _flipTripDbContext;
+        private readonly TripFlipDbContext _tripFlipDbContext;
 
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
-        /// <param name="flipTripDbContext">database context</param>
+        /// <param name="tripFlipDbContext">database context</param>
         /// <param name="mapper">mapper</param>
-        public TripService(FlipTripDbContext flipTripDbContext, IMapper mapper)
+        public TripService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
-            _flipTripDbContext = flipTripDbContext;
+            _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
         }
 
@@ -36,9 +36,9 @@ namespace TripFlip.Services
             string searchString)
         {
             int pageNumber = paginationDto.PageNumber ?? 1;
-            int pageSize = paginationDto.PageSize ?? await _flipTripDbContext.Trips.CountAsync();
+            int pageSize = paginationDto.PageSize ?? await _tripFlipDbContext.Trips.CountAsync();
 
-            var tripsQuery = _flipTripDbContext
+            var tripsQuery = _tripFlipDbContext
                 .Trips
                 .AsNoTracking();
 
@@ -57,7 +57,7 @@ namespace TripFlip.Services
 
         public async Task<TripDto> GetAsync(int id)
         {
-            var trip = await _flipTripDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
+            var trip = await _tripFlipDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
 
             if (trip is null)
             {
@@ -73,8 +73,8 @@ namespace TripFlip.Services
         {
             var trip = _mapper.Map<TripEntity>(createTripDto);
 
-            await _flipTripDbContext.AddAsync(trip);
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.AddAsync(trip);
+            await _tripFlipDbContext.SaveChangesAsync();
             var tripDto = _mapper.Map<TripDto>(trip);
 
             return tripDto;
@@ -82,7 +82,7 @@ namespace TripFlip.Services
 
         public async Task<TripDto> UpdateAsync(TripDto tripDto)
         {
-            var tripToUpdate = await _flipTripDbContext.Trips.FindAsync(tripDto.Id);
+            var tripToUpdate = await _tripFlipDbContext.Trips.FindAsync(tripDto.Id);
 
             if (tripToUpdate is null)
             {
@@ -94,7 +94,7 @@ namespace TripFlip.Services
             tripToUpdate.StartsAt = tripDto.StartsAt;
             tripToUpdate.EndsAt = tripDto.EndsAt;
 
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
             var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
 
             return newTripDto;
@@ -102,15 +102,15 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var tripToDelete = await _flipTripDbContext.Trips.FindAsync(id);
+            var tripToDelete = await _tripFlipDbContext.Trips.FindAsync(id);
 
             if (tripToDelete is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
-            _flipTripDbContext.Remove(tripToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
+            _tripFlipDbContext.Remove(tripToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
     }
 }

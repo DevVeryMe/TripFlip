@@ -8,8 +8,8 @@ using TripFlip.DataAccess;
 
 namespace TripFlip.DataAccess.Migrations
 {
-    [DbContext(typeof(FlipTripDbContext))]
-    partial class FlipTripDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TripFlipDbContext))]
+    partial class TripFlipDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -37,7 +37,7 @@ namespace TripFlip.WebApi
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
-            FlipTripDbContext flipTripDbContext)
+            TripFlipDbContext tripFlipDbContext)
         {
             app.ConfigureExceptionHandler(env);
 
@@ -57,7 +57,7 @@ namespace TripFlip.WebApi
                 options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
             );
 
-            flipTripDbContext.Database.Migrate();
+            tripFlipDbContext.Database.Migrate();
         }
     }
 }
