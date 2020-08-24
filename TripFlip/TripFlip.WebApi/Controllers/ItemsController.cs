@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -30,7 +31,19 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="createItemViewModel">New item view model.</param>
         /// <returns>Created item view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /items
+        ///     {
+        ///         "title": "New item.",
+        ///         "comment": "Is a very important item.",
+        ///         "quantity": "5 kg",
+        ///         "itemListId": 1
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemViewModel createItemViewModel)
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
@@ -49,6 +62,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Paged list of item view models.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<ItemViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByItemListIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId,
@@ -69,7 +83,20 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="updateItemViewModel">Item view model to update.</param>
         /// <returns>Updated item view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /items
+        ///     {
+        ///         "title": "Updated item.",
+        ///         "comment": "Is a very important item.",
+        ///         "quantity": "5 kg",
+        ///         "itemListId": 1,
+        ///         "isCompleted": true
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
         {
             var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
@@ -83,8 +110,18 @@ namespace TripFlip.WebApi.Controllers
         /// Updates existing item completeness.
         /// </summary>
         /// <returns>Updated item view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /items/change-completeness
+        ///     {
+        ///         "id": 1,
+        ///         "isCompleted": true
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("change-completeness")]
+        [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCompletenessAsync(
             [FromBody] UpdateItemCompletenessViewModel updateItemCompletenessViewModel
         )
@@ -103,6 +140,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">Item id.</param>
         /// <returns>Item view model.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetItemByIdAsync([Range(1, int.MaxValue,
             ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {

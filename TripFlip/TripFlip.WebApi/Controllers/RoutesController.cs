@@ -9,6 +9,7 @@ using TripFlip.Services.DTO.RouteDtos;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -30,6 +31,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var resultRouteDto = await _routeService.GetByIdAsync(id);
@@ -49,6 +51,7 @@ namespace TripFlip.WebApi.Controllers
         /// returns <see cref="PagedList{ResultRouteViewModel}"/> 
         /// object that represents the paged list of database entries with the given Trip Id.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<ResultRouteViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTripIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId,
@@ -68,7 +71,17 @@ namespace TripFlip.WebApi.Controllers
         /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object.
         /// </summary>
         /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /routes
+        ///     {
+        ///         "title": "New route.",
+        ///         "tripId": 1
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync(CreateRouteViewModel createRouteViewModel)
         {
             var createRouteDto = _mapper.Map<CreateRouteDto>(createRouteViewModel);
@@ -84,7 +97,18 @@ namespace TripFlip.WebApi.Controllers
         /// Updates Route with the given <see cref="UpdateRouteViewModel"/> object.
         /// </summary>
         /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the updated database entry.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /routes
+        ///     {
+        ///         "id": 1,
+        ///         "title": "Updated route.",
+        ///         "tripId": 1
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync(UpdateRouteViewModel updateRouteViewModel)
         {
             var updateRouteDto = _mapper.Map<UpdateRouteDto>(updateRouteViewModel);

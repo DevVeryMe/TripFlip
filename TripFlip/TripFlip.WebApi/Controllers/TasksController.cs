@@ -10,6 +10,7 @@ using TripFlip.ViewModels.Enums;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TaskViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -30,7 +31,18 @@ namespace TripFlip.WebApi.Controllers
         /// Creates new Task.
         /// </summary>
         /// <param name="createTaskViewModel">Task to create.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /tasks
+        ///     {
+        ///         "description": "Some task description.",
+        ///         "priorityLevel": 1,                         /*1 - Low, 2 - Normal, 3 - High, 4 - Urgent*/
+        ///         "taskListId": 1
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
@@ -50,6 +62,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>>Paged list of Task view models.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<GetTaskViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
@@ -73,6 +86,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Task view model.</returns>
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
         {
             var taskDto = await _taskService.GetByIdAsync(id);
@@ -84,9 +98,21 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskViewModel">New task data with existing task id.</param>
+        /// <param name="updateTaskViewModel">New task data with existing task id.</param>
         /// <returns>Updated task view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /tasks
+        ///     {
+        ///         "id": 1,
+        ///         "description": "Some task description.",
+        ///         "priorityLevel": 1,                         /*1 - Low, 2 - Normal, 3 - High, 4 - Urgent*/
+        ///         "taskListId": 1
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
             var taskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
@@ -100,11 +126,20 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates existing task priority level.
         /// </summary>
-        /// <param name="id">Task id.</param>
-        /// <param name="priorityLevel">New task priority level.</param>
+        /// <param name="updateTaskPriorityViewModel">New task priority level.</param>
         /// <returns>Updated task view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /tasks/change-priority
+        ///     {
+        ///         "id": 1,
+        ///         "priorityLevel": 1      /*1 - Low, 2 - Normal, 3 - High, 4 - Urgent*/
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("change-priority")]
+        [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdatePriorityAsync(
             [FromBody] UpdateTaskPriorityViewModel updateTaskPriorityViewModel
             )
@@ -123,8 +158,18 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="updateTaskCompletenessViewModel"> Object with task id and bool field
         /// that determines is task completed.</param>
         /// <returns>Updated task view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /tasks/change-completeness
+        ///     {
+        ///         "id": 1,
+        ///         "isCompleted": true
+        ///     }
+        /// </remarks>
         [HttpPut]
         [Route("change-completeness")]
+        [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCompletenessAsync(
             [FromBody] UpdateTaskCompletenessViewModel updateTaskCompletenessViewModel)
         {

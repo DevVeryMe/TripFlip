@@ -9,6 +9,7 @@ using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.DTO;
+using Microsoft.AspNetCore.Http;
 
 namespace TripFlip.WebApi.Controllers
 {
@@ -30,6 +31,7 @@ namespace TripFlip.WebApi.Controllers
         /// Gets all trips.
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<TripViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync(
             [FromQuery] string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
@@ -49,6 +51,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">trip id</param>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
         {
@@ -63,7 +66,19 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="createTripViewModel">new trip data</param>
         /// <returns>created trip</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /trips
+        ///     {
+        ///         "title": "New trip.",
+        ///         "description": "Some trip description.",
+        ///         "startsAt": "2020-08-24T10:41:42.604+04:00",     /*yyy-MM-ddThh:mm:ss.ms(offset)*/
+        ///         "endsAt": "2020-08-24T10:41:42.604+04:00"        /*yyy-MM-ddThh:mm:ss.ms(offset)*/
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
@@ -78,7 +93,20 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="tripViewModel">new trip data with existing trip id</param>
         /// <returns>updated trip</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /trips
+        ///     {
+        ///         "id": 1,
+        ///         "title": "Updated trip.",
+        ///         "description": "Some trip description.",
+        ///         "startsAt": "2020-08-24T10:41:42.604+04:00",     /*yyy-MM-ddThh:mm:ss.ms(offset)*/
+        ///         "endsAt": "2020-08-24T10:41:42.604+04:00"        /*yyy-MM-ddThh:mm:ss.ms(offset)*/
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] TripViewModel tripViewModel)
         {
             var tripDto = _mapper.Map<TripDto>(tripViewModel);

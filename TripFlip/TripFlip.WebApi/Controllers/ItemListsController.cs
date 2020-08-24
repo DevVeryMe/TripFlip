@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">Id of ItemList.</param>
         /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents ItemList database entry.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var resultRouteDto = await _itemListService.GetByIdAsync(id);
@@ -47,6 +49,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="searchString">Search string to filter data.</param>
         /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<ResultItemListViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId, 
@@ -68,7 +71,17 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="createItemListViewModel">ViewModel that represents new ItemList to be created.</param>
         /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents the new entry that was added to database.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /item-lists
+        ///     {
+        ///         "title": "New item list.",
+        ///         "routeId": 1
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync(CreateItemListViewModel createItemListViewModel)
         {
             var createItemListDto = _mapper.Map<CreateItemListDto>(createItemListViewModel);
@@ -84,8 +97,18 @@ namespace TripFlip.WebApi.Controllers
         /// Updates ItemList with the given <see cref="UpdateItemListViewModel"/> object.
         /// </summary>
         /// <param name="updateItemListViewModel">ViewModel that represents changes in ItemList to be made.</param>
-        /// <returns>If operation is successful, returns <see cref="ResultItemListDto"/> object that represents the updated database entry.</returns>
+        /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents the updated database entry.</returns>
+        /// /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /item-lists
+        ///     {
+        ///         "id": 1,
+        ///         "title": "Updated title."
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync(UpdateItemListViewModel updateItemListViewModel)
         {
             var updateItemListDto = _mapper.Map<UpdateItemListDto>(updateItemListViewModel);
