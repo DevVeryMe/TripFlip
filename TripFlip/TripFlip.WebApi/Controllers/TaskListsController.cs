@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +31,17 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="createTaskListViewModel">Task list to create.</param>
         /// <returns>Created task list view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /task-lists
+        ///     {
+        ///         "title": "New task list.",
+        ///         "routeId": 1
+        ///     }
+        /// </remarks>
         [HttpPost]
+        [ProducesResponseType(typeof(GetTaskListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskListViewModel createTaskListViewModel)
         {
             var taskListDto = _mapper.Map<CreateTaskListDto>(createTaskListViewModel);
@@ -49,6 +60,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>Paged list of Task list view models specified by Route id.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(PagedList<GetTaskListViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId,
@@ -71,6 +83,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Task list view model with specified id.</returns>
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(typeof(GetTaskListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var taskListDto = await _taskListService.GetByIdAsync(id);
@@ -84,7 +97,17 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="updateTaskListViewModel">New task list data with existing task list id.</param>
         /// <returns>Updated task list view model.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /task-lists
+        ///     {
+        ///         "id": 1,
+        ///         "title": "Updated task list."
+        ///     }
+        /// </remarks>
         [HttpPut]
+        [ProducesResponseType(typeof(UpdateTaskListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update([FromBody] UpdateTaskListViewModel updateTaskListViewModel)
         {
             var taskListDto = _mapper.Map<UpdateTaskListDto>(updateTaskListViewModel);
