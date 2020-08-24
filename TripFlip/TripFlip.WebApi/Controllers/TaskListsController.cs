@@ -49,10 +49,10 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <returns>Paged list of Task list view models specified by Route id.</returns>
         [HttpGet]
-        [Route("routes/{routeId}")]
         public async Task<IActionResult> GetAllByRouteIdAsync(
+            [FromQuery]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId,
-            string searchString,
+            [FromQuery] string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
