@@ -27,10 +27,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates new item in a certain item list.
+        /// Creates a new Item.
         /// </summary>
-        /// <param name="createItemViewModel">New item view model.</param>
-        /// <returns>Created item view model.</returns>
+        /// <param name="createItemViewModel">Data of Item to create.</param>
+        /// <returns>Item view model of created database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -55,12 +55,13 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all items of certain item list.
+        /// Gets all Items of certain Item list.
         /// </summary>
         /// <param name="itemListId">Item list id.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
         /// <param name="searchString">Search string to filter data.</param>
-        /// <returns>Paged list of item view models.</returns>
+        /// <returns>Paged list of Item view models that
+        /// represents database entries with the given Item list id.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<ItemViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByItemListIdAsync(
@@ -79,10 +80,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing item.
+        /// Updates existing Item.
         /// </summary>
-        /// <param name="updateItemViewModel">Item view model to update.</param>
-        /// <returns>Updated item view model.</returns>
+        /// <param name="updateItemViewModel">New Item data with existing Item id.</param>
+        /// <returns>Item view model that
+        /// represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -107,9 +109,12 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing item completeness.
+        /// Updates existing Item's completeness.
         /// </summary>
-        /// <returns>Updated item view model.</returns>
+        /// <param name="updateItemCompletenessViewModel">Item data with existing
+        /// Item id and state of completeness.</param>
+        /// <returns>Item view model that
+        /// represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -135,10 +140,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets item by id.
+        /// Gets Item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
-        /// <returns>Item view model.</returns>
+        /// <returns>Item view model that
+        /// represents Item database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
@@ -152,10 +158,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes item by id.
+        /// Deletes Item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
-        /// <returns>No content.</returns>
+        /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
