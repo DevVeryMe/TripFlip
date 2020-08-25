@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.DTO.ItemListDtos;
