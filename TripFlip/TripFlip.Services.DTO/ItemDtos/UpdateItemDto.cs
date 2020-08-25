@@ -1,4 +1,4 @@
-﻿namespace TripFlip.Services.DTO.ItemDtos
+﻿namespace TripFlip.Services.Dto.ItemDtos
 {
     public class UpdateItemDto
     {

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripFlip.Services", "TripFl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripFlip.Services.Interfaces", "TripFlip.Services.Interfaces\TripFlip.Services.Interfaces.csproj", "{30D0C58C-75E4-4E92-AC1F-22C77BBC5FFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripFlip.Services.DTO", "TripFlip.Services.DTO\TripFlip.Services.DTO.csproj", "{BD0509B5-CCD8-4AFD-8F81-48B6B0D897DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripFlip.Services.Dto", "TripFlip.Services.DTO\TripFlip.Services.Dto.csproj", "{BD0509B5-CCD8-4AFD-8F81-48B6B0D897DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripFlip.ViewModels", "TripFlip.ViewModels\TripFlip.ViewModels.csproj", "{7D751E73-CEF6-4281-AC83-467BB25482F9}"
 EndProject

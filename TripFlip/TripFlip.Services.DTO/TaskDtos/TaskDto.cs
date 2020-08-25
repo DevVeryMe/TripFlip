@@ -1,7 +1,7 @@
 ﻿using System;
-using TripFlip.Services.DTO.Enums;
+using TripFlip.Services.Dto.Enums;
 
-namespace TripFlip.Services.DTO.TaskDtos
+namespace TripFlip.Services.Dto.TaskDtos
 {
     public class TaskDto
     {

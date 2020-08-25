@@ -1,5 +1,5 @@
 ﻿
-namespace TripFlip.Services.DTO.TaskListDtos
+namespace TripFlip.Services.Dto.TaskListDtos
 {
     public class UpdateTaskListDto
     {
