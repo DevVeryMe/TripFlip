@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using TripFlip.Services.DTO;
-using TripFlip.Services.DTO.TripDtos;
-using TripFlip.ViewModels.TripViewModels;
-using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.DTO.ItemDtos;
 using TripFlip.Services.DTO.ItemListDtos;
+using TripFlip.Services.DTO.RouteDtos;
+using TripFlip.Services.DTO.TaskDtos;
+using TripFlip.Services.DTO.TaskListDtos;
+using TripFlip.Services.DTO.TripDtos;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.ViewModels.ItemViewModels;
-using TripFlip.Services.DTO.RouteDtos;
-using TripFlip.ViewModels.TaskViewModels;
-using TripFlip.Services.DTO.TaskListDtos;
-using TripFlip.ViewModels;
-using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.RouteViewModels;
+using TripFlip.ViewModels.TaskListViewModels;
+using TripFlip.ViewModels.TaskViewModels;
+using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.Root.MappingProfiles
 {

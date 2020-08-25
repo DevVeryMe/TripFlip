@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TripFlip.Services.DTO;
-using TripFlip.Services.DTO.Enums;
 using TripFlip.Services.DTO.TaskDtos;
 using TripFlip.Services.Interfaces.Helpers;
 

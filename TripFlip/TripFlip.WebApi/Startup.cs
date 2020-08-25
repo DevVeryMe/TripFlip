@@ -1,14 +1,14 @@
-using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
+using System.Reflection;
 using TripFlip.DataAccess;
-using TripFlip.Root.ExceptionHandlingExtensions;
 using TripFlip.Root.ConfigureServicesExtension;
+using TripFlip.Root.ExceptionHandlingExtensions;
 
 namespace TripFlip.WebApi
 {

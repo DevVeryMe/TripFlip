@@ -1,11 +1,11 @@
-﻿using System;
-using System.Net;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using System;
+using System.Net;
 using TripFlip.Root.ExceptionHandlingExtensions.Models;
 
 namespace TripFlip.Root.ExceptionHandlingExtensions

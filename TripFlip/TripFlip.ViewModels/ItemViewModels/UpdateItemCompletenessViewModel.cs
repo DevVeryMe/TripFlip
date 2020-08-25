@@ -4,7 +4,7 @@ namespace TripFlip.ViewModels.ItemViewModels
 {
     public class UpdateItemCompletenessViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdFieldError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 

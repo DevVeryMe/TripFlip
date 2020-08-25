@@ -1,16 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using TripFlip.Services.Interfaces;
-using TripFlip.Services.DTO.RouteDtos;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.DTO;
+using TripFlip.Services.DTO.RouteDtos;
+using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.DTO;
 
 namespace TripFlip.Services
 {
