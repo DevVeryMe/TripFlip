@@ -11,37 +11,41 @@ namespace TripFlip.Services.Interfaces
     public interface IRouteService
     {
         /// <summary>
-        /// Creates new Route with the given <see cref="CreateRouteDto"/> object. Applies changes to database asynchronously.
+        /// Creates a new Route.
         /// </summary>
-        /// <returns><see cref="ResultRouteDto"/> object that represents the new entry that was added to database.</returns>
+        /// <param name="createRouteDto">Data to create a new Route.</param>
+        /// <returns>Route dto that represents the new entry that was added to database.</returns>
         Task<ResultRouteDto> CreateAsync(CreateRouteDto createRouteDto);
 
         /// <summary>
-        /// Updates the Route with the given <see cref="UpdateRouteDto"/> object. Applies changes to database asynchronously.
+        /// Updates the Route.
         /// </summary>
-        /// <returns><see cref="ResultRouteDto"/> bject that represents the updated entry in database.</returns>
+        /// <param name="updateRouteDto">New Route data with existing Route id.</param>
+        /// <returns>Route dto that represents the updated database entry.</returns>
         Task<ResultRouteDto> UpdateAsync(UpdateRouteDto updateRouteDto);
 
         /// <summary>
-        /// Returns Route with the given Id.
+        /// Gets Route with the given id.
         /// </summary>
-        /// <returns>Object that represents the database entry with the given Id.</returns>
+        /// <param name="id">Route id.</param>
+        /// <returns>Route dto that represents the database entry with the given id.</returns>
         Task<ResultRouteDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Returns page of Routes with the given Trip Id.
+        /// Gets all Routes with the given Trip id.
         /// </summary>
-        /// <param name="tripId">Trip Id.</param>
-        /// <param name="paginationDto">Object that represents the pagination parameters.</param>
-        /// <param name="searchString">String to filter routes by Title.</param>
-        /// <returns><see cref="PagedList{ResultRouteDto}"/> object that represents the paged collection of database entries with the given Trip Id.</returns>
+        /// <param name="tripId">Trip id.</param>
+        /// <param name="paginationDto">Pagination parameters.</param>
+        /// <param name="searchString">String to filter Routes.</param>
+        /// <returns>Paged list of Route dtos that represent the database entries.</returns>
         Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
             string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Deletes Route with the given Id.
+        /// Deletes Route.
         /// </summary>
+        /// <param name="id">Route id.</param>
         Task DeleteByIdAsync(int id);
     }
 }

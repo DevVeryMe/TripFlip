@@ -5,58 +5,61 @@ using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
+    /// <summary>
+    /// Interface that describes supported CRUD operations with Task entity.
+    /// </summary>
     public interface ITaskService
     {
         /// <summary>
-        /// Gets all tasks from certain task list.
+        /// Gets all Tasks with given Task list id.
         /// </summary>
         /// <param name="taskListId">Task list id.</param>
-        /// <param name="searchString">String to find in descriptions.</param>
+        /// <param name="searchString">String to filter Tasks.</param>
         /// <param name="paginationDto">Pagination settings.</param>
-        /// <returns>Paged list with Task DTOs.</returns>
+        /// <returns>Paged list of Task dtos that represent the database entries.</returns>
         Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId, 
             string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Gets task by id.
+        /// Gets Task by id.
         /// </summary>
         /// <param name="id">Task id.</param>
-        /// <returns>Task DTO.</returns>
+        /// <returns>Task dto that represents the database entry.</returns>
         Task<TaskDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Creates new task.
+        /// Creates a new Task.
         /// </summary>
-        /// <param name="taskDto">Task data.</param>
-        /// <returns>Created task.</returns>
+        /// <param name="taskDto">Data to create a new Task.</param>
+        /// <returns>Task dto that represents the new entry that was added to database.</returns>
         Task<TaskDto> CreateAsync(TaskDto taskDto);
 
         /// <summary>
-        /// Updates existing task.
+        /// Updates Task.
         /// </summary>
-        /// <param name="updateTaskDto">New task data.</param>
-        /// <returns>Updated task DTO.</returns>
+        /// <param name="updateTaskDto">New Task data with existing Task id.</param>
+        /// <returns>Task dto that represents the updated database entry.</returns>
         Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto);
 
         /// <summary>
-        /// Updates existing task priority level.
+        /// Updates existing Task's priority level.
         /// </summary>
-        /// <param name="updateTaskPriorityDto">New task data with priority level.</param>
-        /// <returns>Updated task DTO.</returns>
+        /// <param name="updateTaskPriorityDto">New Task data with id and priority level.</param>
+        /// <returns>Task dto that represents the updated database entry.</returns>
         Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
 
         /// <summary>
-        /// Updates existing task's completeness.
+        /// Updates existing Task's completeness.
         /// </summary>
-        /// <param name="updateTaskCompletenessDto">New task data with completeness bool field.</param>
-        /// <returns>Updated task DTO.</returns>
+        /// <param name="updateTaskCompletenessDto">New Task data with id and completeness field.</param>
+        /// <returns>Task dto that represents the updated database entry.</returns>
         Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto);
 
         /// <summary>
-        /// Deletes task by id.
+        /// Deletes Task by id.
         /// </summary>
-        /// <param name="id">Task to delete id.</param>
+        /// <param name="id">Task id.</param>
         Task DeleteByIdAsync(int id);
     }
 }

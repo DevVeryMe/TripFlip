@@ -13,14 +13,17 @@ using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
-    /// <summary>
-    /// Class that performs CRUD operations related to <see cref="RouteEntity"/>.
-    /// </summary>
+    /// <inheritdoc />
     public class RouteService : IRouteService
     {
         private readonly IMapper _mapper;
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        /// <summary>
+        /// Initializes database context and automapper.
+        /// </summary>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         public RouteService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
             _mapper = mapper;
@@ -122,7 +125,8 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="TripEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// Checks if the given <see cref="TripEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
         /// </summary>
         /// <param name="tripEntity">Object that should be checked.</param>
         void ValidateTripEntityIsNotNull(TripEntity tripEntity)
@@ -134,7 +138,8 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// Checks if the given <see cref="RouteEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
         /// </summary>
         /// <param name="routeEntity">Object that should be checked.</param>
         void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)

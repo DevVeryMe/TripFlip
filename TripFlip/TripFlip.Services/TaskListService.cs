@@ -20,10 +20,10 @@ namespace TripFlip.Services
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// Constructor. Initializes _tripFlipDbContext and _mapper fields.
+        /// Initializes database context and automapper.
         /// </summary>
-        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="mapper">IMapper instance.</param>
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         public TaskListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
             _tripFlipDbContext = tripFlipDbContext;
@@ -132,7 +132,6 @@ namespace TripFlip.Services
         /// Throws an exception if route with specified id doesn't exist.
         /// </summary>
         /// <param name="routeId">Route id.</param>
-        /// <returns>Nothing.</returns>
         private async Task ValidateRouteExistsAsync(int routeId)
         {
             var route = await _tripFlipDbContext.Routes.AsNoTracking()

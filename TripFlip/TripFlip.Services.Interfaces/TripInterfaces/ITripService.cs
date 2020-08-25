@@ -5,42 +5,46 @@ using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces.TripInterfaces
 {
+    /// <summary>
+    /// Interface that describes supported CRUD operations with Trip entity.
+    /// </summary>
     public interface ITripService
     {
         /// <summary>
-        /// Returns page of Trips.
+        /// Gets all Trips.
         /// </summary>
-        /// <param name="paginationDto">Object that represents the pagination parameters.</param>
-        /// <param name="searchString">String to filter trips by Title and Description.</param>
-        /// <returns><see cref="PagedList{TripDto}"/> object that represents the paged collection of database entries.</returns>
+        /// <param name="paginationDto">Pagination parameters.</param>
+        /// <param name="searchString">String to filter Trips.</param>
+        /// <returns>Paged list of Trip dtos that represent the database entries.</returns>
         Task<PagedList<TripDto>>GetAllTripsAsync(
             string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Gets trip by id.
+        /// Gets Trip by id.
         /// </summary>
-        /// <param name="id">trip id</param>
+        /// <param name="id">Trip id.</param>
+        /// <returns>Trip dto that represents the database entry with the given id.</returns>
         Task<TripDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Creates new trip.
+        /// Creates new Trip.
         /// </summary>
-        /// <param name="createTripDto">new trip</param>
-        /// <returns>created trip</returns>
+        /// <param name="createTripDto">Data to create a Trip.</param>
+        /// <returns>Trip dto that represents the new entry that was added to database.</returns>
         Task<TripDto> CreateAsync(CreateTripDto createTripDto);
 
         /// <summary>
-        /// Updates existing trip.
+        /// Updates existing Trip.
         /// </summary>
-        /// <param name="tripDto">new trip data</param>
-        /// <returns>updated trip</returns>
+        /// <param name="tripDto">New Trip data with existing Trip id.</param>
+        /// <returns>Trip dto that represents the updated database entry.</returns>
         Task<TripDto> UpdateAsync(TripDto tripDto);
 
         /// <summary>
-        /// Deletes existing trip.
+        /// Deletes Trip.
         /// </summary>
-        /// <param name="id">trip id</param>
+        /// <param name="id">Trip id.</param>
         Task DeleteByIdAsync(int id);
     }
 }
