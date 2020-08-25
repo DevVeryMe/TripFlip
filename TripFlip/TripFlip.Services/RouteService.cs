@@ -57,8 +57,7 @@ namespace TripFlip.Services
 
             var routeEntity = tripEntity
                 .Routes
-                .Where(routeEntity => routeEntity.Id == updateRouteDto.Id)
-                .FirstOrDefault();
+                .FirstOrDefault(routeEntity => routeEntity.Id == updateRouteDto.Id);
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
@@ -118,7 +117,9 @@ namespace TripFlip.Services
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await routeEntitiesQuery.CountAsync();
 
-            var resultRouteEntitiesPagedList = routeEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var resultRouteEntitiesPagedList = routeEntitiesQuery
+                .ToPagedList(pageNumber, pageSize);
+
             var resultRouteDtosPagedList = _mapper
                 .Map<PagedList<ResultRouteDto>>(resultRouteEntitiesPagedList);
 

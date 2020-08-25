@@ -33,7 +33,8 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> CreateAsync(TaskDto taskDto)
         {
-            var taskList = await _tripFlipDbContext.TaskLists.AsNoTracking()
+            var taskList = await _tripFlipDbContext.TaskLists
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
 
             ValidateTaskListEntityNotNull(taskList);
@@ -86,7 +87,8 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> GetByIdAsync(int id)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks.AsNoTracking()
+            var taskEntity = await _tripFlipDbContext.Tasks
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             ValidateTaskEntityNotNull(taskEntity);
@@ -98,7 +100,8 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks.FindAsync(updateTaskDto.Id);
+            var taskToUpdateEntity = await _tripFlipDbContext.Tasks
+                .FindAsync(updateTaskDto.Id);
 
             ValidateTaskEntityNotNull(taskToUpdateEntity);
 
@@ -114,7 +117,8 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks.FindAsync(updateTaskPriorityDto.Id);
+            var taskToUpdateEntity = await _tripFlipDbContext.Tasks
+                .FindAsync(updateTaskPriorityDto.Id);
 
             ValidateTaskEntityNotNull(taskToUpdateEntity);
 
@@ -144,7 +148,8 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            var taskToDelete = await _tripFlipDbContext.Tasks.AsNoTracking()
+            var taskToDelete = await _tripFlipDbContext.Tasks
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskToDelete is null)

@@ -34,7 +34,8 @@ namespace TripFlip.Services
         public async Task<ItemDto> CreateAsync(CreateItemDto createItemDto)
         {
             var itemListEntity = await _tripFlipDbContext.ItemLists
-                .AsNoTracking().SingleOrDefaultAsync(itemList => createItemDto.ItemListId == itemList.Id);
+                .AsNoTracking()
+                .SingleOrDefaultAsync(itemList => createItemDto.ItemListId == itemList.Id);
 
             if (itemListEntity == null)
             {
@@ -84,7 +85,8 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto updateItemDto)
         {
-            var itemToUpdate = await _tripFlipDbContext.Items.FindAsync(updateItemDto.Id);
+            var itemToUpdate = await _tripFlipDbContext.Items
+                .FindAsync(updateItemDto.Id);
 
             ValidateItemEntityIsNotNull(itemToUpdate);
 
@@ -116,8 +118,8 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> GetByIdAsync(int id)
         {
-            var itemEntity = await _tripFlipDbContext.Items.AsNoTracking().
-                SingleOrDefaultAsync(i => i.Id == id);
+            var itemEntity = await _tripFlipDbContext.Items.AsNoTracking()
+                .SingleOrDefaultAsync(i => i.Id == id);
 
             ValidateItemEntityIsNotNull(itemEntity);
 
