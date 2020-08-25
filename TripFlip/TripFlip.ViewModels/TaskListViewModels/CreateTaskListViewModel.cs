@@ -9,7 +9,7 @@ namespace TripFlip.ViewModels.TaskListViewModels
         [StringLength(100, ErrorMessage = ErrorConstants.TitleLengthError)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int RouteId { get; set; }
     }

@@ -4,7 +4,7 @@ namespace TripFlip.ViewModels.ItemListViewModels
 {
     public class UpdateItemListViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 

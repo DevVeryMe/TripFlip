@@ -4,7 +4,7 @@ namespace TripFlip.ViewModels.ItemViewModels
 {
     public class ItemViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 
@@ -21,7 +21,7 @@ namespace TripFlip.ViewModels.ItemViewModels
         [Required(ErrorMessage = ErrorConstants.EmptyIsCompletedFieldError)]
         public bool IsCompleted { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int ItemListId { get; set; }
     }

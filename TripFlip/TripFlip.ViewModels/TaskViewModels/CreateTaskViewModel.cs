@@ -12,7 +12,7 @@ namespace TripFlip.ViewModels.TaskViewModels
         [EnumDataType(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
         public TaskPriorityLevel PriorityLevel { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int TaskListId { get; set; }
     }
