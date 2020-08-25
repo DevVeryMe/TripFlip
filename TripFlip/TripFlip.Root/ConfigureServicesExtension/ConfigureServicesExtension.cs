@@ -29,7 +29,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
                         configuration, 
-                        Constants.defaultConnectionStringName
+                        Constants.DefaultConnectionStringName
                     )
                 )
             );
