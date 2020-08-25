@@ -46,11 +46,11 @@ namespace TripFlip.WebApi.Controllers
         [ProducesResponseType(typeof(TaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
-            var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
+            var createTaskDto = _mapper.Map<CreateTaskDto>(createTaskViewModel);
 
-            var taskToReturnDto = await _taskService.CreateAsync(taskDto);
+            var createdTaskDto = await _taskService.CreateAsync(createTaskDto);
 
-            var createdTaskViewModel = _mapper.Map<TaskViewModel>(taskToReturnDto);
+            var createdTaskViewModel = _mapper.Map<TaskViewModel>(createdTaskDto);
 
             return Ok(createdTaskViewModel);
         }

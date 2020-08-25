@@ -31,15 +31,15 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskDto> CreateAsync(TaskDto taskDto)
+        public async Task<TaskDto> CreateAsync(CreateTaskDto createTaskDto)
         {
             var taskList = await _tripFlipDbContext.TaskLists
                 .AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
+                .SingleOrDefaultAsync(t => t.Id == createTaskDto.TaskListId);
 
             ValidateTaskListEntityNotNull(taskList);
 
-            var taskEntity = _mapper.Map<TaskEntity>(taskDto);
+            var taskEntity = _mapper.Map<TaskEntity>(createTaskDto);
 
             await _tripFlipDbContext.Tasks.AddAsync(taskEntity);
             await _tripFlipDbContext.SaveChangesAsync();

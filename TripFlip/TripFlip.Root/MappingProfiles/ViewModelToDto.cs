@@ -24,7 +24,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<CreateTripViewModel, CreateTripDto>();
 
-            CreateMap<CreateTaskViewModel, TaskDto>();
+            CreateMap<CreateTaskViewModel, CreateTaskDto>();
 
             CreateMap<UpdateTaskViewModel, UpdateTaskDto>();
 
