@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TripFlip.Services.DTO.ItemListDtos
+namespace TripFlip.Services.Dto.ItemListDtos
 {
     public class ResultItemListDto
     {

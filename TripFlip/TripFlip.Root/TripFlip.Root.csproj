@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TripFlip.DataAccess\TripFlip.DataAccess.csproj" />
     <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
-    <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.DTO.csproj" />
+    <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.Dto.csproj" />
     <ProjectReference Include="..\TripFlip.Services.Interfaces\TripFlip.Services.Interfaces.csproj" />
     <ProjectReference Include="..\TripFlip.Services\TripFlip.Services.csproj" />
     <ProjectReference Include="..\TripFlip.ViewModels\TripFlip.ViewModels.csproj" />

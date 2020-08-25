@@ -1,4 +1,4 @@
-﻿namespace TripFlip.Services.DTO.TaskDtos
+﻿namespace TripFlip.Services.Dto.TaskDtos
 {
     public class UpdateTaskCompletenessDto
     {

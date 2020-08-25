@@ -1,4 +1,4 @@
-﻿namespace TripFlip.Services.DTO.RouteDtos
+﻿namespace TripFlip.Services.Dto.RouteDtos
 {
     public class UpdateRouteDto
     {

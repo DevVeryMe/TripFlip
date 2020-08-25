@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using TripFlip.Services.DTO.ItemDtos;
-using TripFlip.Services.DTO.ItemListDtos;
-using TripFlip.Services.DTO.RouteDtos;
-using TripFlip.Services.DTO.TaskDtos;
-using TripFlip.Services.DTO.TaskListDtos;
-using TripFlip.Services.DTO.TripDtos;
+using AutoMapper;
+using TripFlip.Services.Dto.ItemDtos;
+using TripFlip.Services.Dto.ItemListDtos;
+using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Dto.TaskDtos;
+using TripFlip.Services.Dto.TaskListDtos;
+using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.ViewModels.ItemViewModels;

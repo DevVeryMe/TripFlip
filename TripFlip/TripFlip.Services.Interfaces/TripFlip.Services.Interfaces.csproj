@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TripFlip.Domain.Entities\TripFlip.Domain.Entities.csproj" />
-    <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.DTO.csproj" />
+    <ProjectReference Include="..\TripFlip.Services.DTO\TripFlip.Services.Dto.csproj" />
   </ItemGroup>
 
 </Project>

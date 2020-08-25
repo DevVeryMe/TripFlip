@@ -1,4 +1,4 @@
-﻿namespace TripFlip.Services.DTO
+﻿namespace TripFlip.Services.Dto
 {
     public class PaginationDto
     {

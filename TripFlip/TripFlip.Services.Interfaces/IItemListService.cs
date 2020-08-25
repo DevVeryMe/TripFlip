@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using TripFlip.Services.DTO;
-using TripFlip.Services.DTO.ItemListDtos;
+using System.Threading.Tasks;
+using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
