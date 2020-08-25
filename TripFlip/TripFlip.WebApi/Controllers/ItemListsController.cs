@@ -130,7 +130,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Deletes Item list.
         /// </summary>
-        /// <param name="id">Id of Item list to be deleted.</param>
+        /// <param name="id">Id of Item list.</param>
         /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
