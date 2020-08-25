@@ -13,14 +13,15 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// <param name="paginationDto">Object that represents the pagination parameters.</param>
         /// <param name="searchString">String to filter trips by Title and Description.</param>
         /// <returns><see cref="PagedList{TripDto}"/> object that represents the paged collection of database entries.</returns>
-        Task<PagedList<TripDto>>GetAllTripsAsync(PaginationDto paginationDto,
-            string searchString);
+        Task<PagedList<TripDto>>GetAllTripsAsync(
+            string searchString,
+            PaginationDto paginationDto);
 
         /// <summary>
         /// Gets trip by id.
         /// </summary>
         /// <param name="id">trip id</param>
-        Task<TripDto> GetAsync(int id);
+        Task<TripDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates new trip.
@@ -40,6 +41,6 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Deletes existing trip.
         /// </summary>
         /// <param name="id">trip id</param>
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
     }
 }

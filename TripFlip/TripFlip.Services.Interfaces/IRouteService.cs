@@ -26,7 +26,7 @@ namespace TripFlip.Services.Interfaces
         /// Returns Route with the given Id.
         /// </summary>
         /// <returns>Object that represents the database entry with the given Id.</returns>
-        Task<ResultRouteDto> GetByIdAsync(int routeId);
+        Task<ResultRouteDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Returns page of Routes with the given Trip Id.
@@ -36,12 +36,12 @@ namespace TripFlip.Services.Interfaces
         /// <param name="searchString">String to filter routes by Title.</param>
         /// <returns><see cref="PagedList{ResultRouteDto}"/> object that represents the paged collection of database entries with the given Trip Id.</returns>
         Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
-            PaginationDto paginationDto,
-            string searchString);
+            string searchString,
+            PaginationDto paginationDto);
 
         /// <summary>
         /// Deletes Route with the given Id.
         /// </summary>
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
     }
 }

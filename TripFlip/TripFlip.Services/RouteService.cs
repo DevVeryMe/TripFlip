@@ -68,7 +68,7 @@ namespace TripFlip.Services
             return resultRouteDto;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var routeEntityToDelete = await _tripFlipDbContext
                 .Routes
@@ -80,12 +80,12 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task<ResultRouteDto> GetByIdAsync(int routeId)
+        public async Task<ResultRouteDto> GetByIdAsync(int id)
         {
             var routeEntity = await _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
-                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == routeId);
+                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == id);
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
@@ -95,8 +95,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
-            PaginationDto paginationDto,
-            string searchString)
+            string searchString,
+            PaginationDto paginationDto)
         {
             await ValidateTripExistsAsync(tripId);
 

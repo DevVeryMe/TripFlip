@@ -62,8 +62,8 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<GetTaskViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
-            [FromQuery]
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int taskListId,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromQuery] int taskListId,
             [FromQuery] string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
         {
@@ -82,10 +82,11 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Task id.</param>
         /// <returns>Task view model.</returns>
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        public async Task<IActionResult> GetByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
             var taskDto = await _taskService.GetByIdAsync(id);
             var getTaskViewModel = _mapper.Map<GetTaskViewModel>(taskDto);
@@ -135,12 +136,10 @@ namespace TripFlip.WebApi.Controllers
         ///         "priorityLevel": 1      /*1 - Low, 2 - Normal, 3 - High, 4 - Urgent*/
         ///     }
         /// </remarks>
-        [HttpPut]
-        [Route("change-priority")]
+        [HttpPut("change-priority")]
         [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdatePriorityAsync(
-            [FromBody] UpdateTaskPriorityViewModel updateTaskPriorityViewModel
-            )
+            [FromBody] UpdateTaskPriorityViewModel updateTaskPriorityViewModel)
         {
             var updateTaskPriorityDto = _mapper.Map<UpdateTaskPriorityDto>(updateTaskPriorityViewModel);
 
@@ -165,8 +164,7 @@ namespace TripFlip.WebApi.Controllers
         ///         "isCompleted": true
         ///     }
         /// </remarks>
-        [HttpPut]
-        [Route("change-completeness")]
+        [HttpPut("change-completeness")]
         [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCompletenessAsync(
             [FromBody] UpdateTaskCompletenessViewModel updateTaskCompletenessViewModel)
@@ -184,8 +182,10 @@ namespace TripFlip.WebApi.Controllers
         /// Deletes task by id.
         /// </summary>
         /// <param name="id">Task to delete id.</param>
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
             await _taskService.DeleteByIdAsync(id);
 

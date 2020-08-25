@@ -32,8 +32,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(
-            PaginationDto paginationDto,
-            string searchString)
+            string searchString,
+            PaginationDto paginationDto)
         {
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await _tripFlipDbContext.Trips.CountAsync();
@@ -55,7 +55,7 @@ namespace TripFlip.Services
             return tripDtosPagedList;
         }
 
-        public async Task<TripDto> GetAsync(int id)
+        public async Task<TripDto> GetByIdAsync(int id)
         {
             var trip = await _tripFlipDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
 
@@ -100,7 +100,7 @@ namespace TripFlip.Services
             return newTripDto;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var tripToDelete = await _tripFlipDbContext.Trips.FindAsync(id);
 
