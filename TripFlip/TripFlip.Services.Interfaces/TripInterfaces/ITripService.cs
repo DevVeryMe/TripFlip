@@ -14,7 +14,8 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// <param name="searchString">String to filter trips by Title and Description.</param>
         /// <returns><see cref="PagedList{TripDto}"/> object that represents the paged collection of database entries.</returns>
         Task<PagedList<TripDto>>GetAllTripsAsync(
-            string searchString, PaginationDto paginationDto);
+            string searchString,
+            PaginationDto paginationDto);
 
         /// <summary>
         /// Gets trip by id.

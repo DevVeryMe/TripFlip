@@ -48,7 +48,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId,
-            string searchString, PaginationDto paginationDto)
+            string searchString,
+            PaginationDto paginationDto)
         {
             var taskListExists = await _tripFlipDbContext
                 .TaskLists

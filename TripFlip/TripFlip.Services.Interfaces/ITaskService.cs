@@ -15,7 +15,8 @@ namespace TripFlip.Services.Interfaces
         /// <param name="paginationDto">Pagination settings.</param>
         /// <returns>Paged list with Task DTOs.</returns>
         Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId, 
-            string searchString, PaginationDto paginationDto);
+            string searchString,
+            PaginationDto paginationDto);
 
         /// <summary>
         /// Gets task by id.
@@ -34,7 +35,7 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskDto">New task data.</param>
+        /// <param name="updateTaskDto">New task data.</param>
         /// <returns>Updated task DTO.</returns>
         Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto);
 

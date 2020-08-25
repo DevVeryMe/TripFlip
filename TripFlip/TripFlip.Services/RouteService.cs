@@ -95,7 +95,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
-            string searchString, PaginationDto paginationDto)
+            string searchString,
+            PaginationDto paginationDto)
         {
             await ValidateTripExistsAsync(tripId);
 
