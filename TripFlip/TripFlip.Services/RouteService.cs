@@ -40,9 +40,9 @@ namespace TripFlip.Services
             var entityEntry = _tripFlipDbContext.Routes.Add(routeEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultDto = _mapper.Map<RouteDto>(entityEntry.Entity);
+            var routeDto = _mapper.Map<RouteDto>(entityEntry.Entity);
 
-            return resultDto;
+            return routeDto;
         }
 
         public async Task<RouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
@@ -66,20 +66,20 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultRouteDto = _mapper.Map<RouteDto>(routeEntity);
+            var routeDto = _mapper.Map<RouteDto>(routeEntity);
 
-            return resultRouteDto;
+            return routeDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var routeEntityToDelete = await _tripFlipDbContext
+            var routeEntity = await _tripFlipDbContext
                 .Routes
-                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == id);
+                .SingleOrDefaultAsync(entity => entity.Id == id);
 
-            ValidateRouteEntityIsNotNull(routeEntityToDelete);
+            ValidateRouteEntityIsNotNull(routeEntity);
 
-            _tripFlipDbContext.Routes.Remove(routeEntityToDelete);
+            _tripFlipDbContext.Routes.Remove(routeEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
@@ -92,9 +92,9 @@ namespace TripFlip.Services
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
-            var resultRouteDto = _mapper.Map<RouteDto>(routeEntity);
+            var routeDto = _mapper.Map<RouteDto>(routeEntity);
 
-            return resultRouteDto;
+            return routeDto;
         }
 
         public async Task<PagedList<RouteDto>> GetAllByTripIdAsync(int tripId,
@@ -117,13 +117,13 @@ namespace TripFlip.Services
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await routeEntitiesQuery.CountAsync();
 
-            var resultRouteEntitiesPagedList = routeEntitiesQuery
+            var pagedRouteEntities = routeEntitiesQuery
                 .ToPagedList(pageNumber, pageSize);
 
-            var resultRouteDtosPagedList = _mapper
-                .Map<PagedList<RouteDto>>(resultRouteEntitiesPagedList);
+            var pagedRouteDtos = _mapper
+                .Map<PagedList<RouteDto>>(pagedRouteEntities);
 
-            return resultRouteDtosPagedList;
+            return pagedRouteDtos;
         }
 
         /// <summary>
