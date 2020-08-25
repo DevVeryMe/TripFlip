@@ -15,21 +15,21 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="createRouteDto">Data to create a new Route.</param>
         /// <returns>Route DTO that represents the new entry that was added to database.</returns>
-        Task<ResultRouteDto> CreateAsync(CreateRouteDto createRouteDto);
+        Task<RouteDto> CreateAsync(CreateRouteDto createRouteDto);
 
         /// <summary>
         /// Updates the Route.
         /// </summary>
         /// <param name="updateRouteDto">New Route data with existing Route id.</param>
         /// <returns>Route DTO that represents the updated database entry.</returns>
-        Task<ResultRouteDto> UpdateAsync(UpdateRouteDto updateRouteDto);
+        Task<RouteDto> UpdateAsync(UpdateRouteDto updateRouteDto);
 
         /// <summary>
         /// Gets Route with the given id.
         /// </summary>
         /// <param name="id">Route id.</param>
         /// <returns>Route DTO that represents the database entry with the given id.</returns>
-        Task<ResultRouteDto> GetByIdAsync(int id);
+        Task<RouteDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Gets all Routes with the given Trip id.
@@ -38,7 +38,7 @@ namespace TripFlip.Services.Interfaces
         /// <param name="paginationDto">Pagination parameters.</param>
         /// <param name="searchString">String to filter Routes.</param>
         /// <returns>Paged list of Route DTOs that represent the database entries.</returns>
-        Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
+        Task<PagedList<RouteDto>> GetAllByTripIdAsync(int tripId,
             string searchString,
             PaginationDto paginationDto);
 

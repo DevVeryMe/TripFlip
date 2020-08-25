@@ -2,7 +2,7 @@
 
 namespace TripFlip.Services.Dto.RouteDtos
 {
-    public class ResultRouteDto
+    public class RouteDto
     {
         public int Id { get; set; }
 

@@ -31,7 +31,7 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<ResultRouteDto> CreateAsync(CreateRouteDto createRouteDto)
+        public async Task<RouteDto> CreateAsync(CreateRouteDto createRouteDto)
         {
             await ValidateTripExistsAsync(createRouteDto.TripId);
 
@@ -40,12 +40,12 @@ namespace TripFlip.Services
             var entityEntry = _tripFlipDbContext.Routes.Add(routeEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultDto = _mapper.Map<ResultRouteDto>(entityEntry.Entity);
+            var resultDto = _mapper.Map<RouteDto>(entityEntry.Entity);
 
             return resultDto;
         }
 
-        public async Task<ResultRouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
+        public async Task<RouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
         {
             var tripEntity = await _tripFlipDbContext
                 .Trips
@@ -66,7 +66,7 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultRouteDto = _mapper.Map<ResultRouteDto>(routeEntity);
+            var resultRouteDto = _mapper.Map<RouteDto>(routeEntity);
 
             return resultRouteDto;
         }
@@ -83,7 +83,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task<ResultRouteDto> GetByIdAsync(int id)
+        public async Task<RouteDto> GetByIdAsync(int id)
         {
             var routeEntity = await _tripFlipDbContext
                 .Routes
@@ -92,12 +92,12 @@ namespace TripFlip.Services
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
-            var resultRouteDto = _mapper.Map<ResultRouteDto>(routeEntity);
+            var resultRouteDto = _mapper.Map<RouteDto>(routeEntity);
 
             return resultRouteDto;
         }
 
-        public async Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
+        public async Task<PagedList<RouteDto>> GetAllByTripIdAsync(int tripId,
             string searchString,
             PaginationDto paginationDto)
         {
@@ -121,7 +121,7 @@ namespace TripFlip.Services
                 .ToPagedList(pageNumber, pageSize);
 
             var resultRouteDtosPagedList = _mapper
-                .Map<PagedList<ResultRouteDto>>(resultRouteEntitiesPagedList);
+                .Map<PagedList<RouteDto>>(resultRouteEntitiesPagedList);
 
             return resultRouteDtosPagedList;
         }

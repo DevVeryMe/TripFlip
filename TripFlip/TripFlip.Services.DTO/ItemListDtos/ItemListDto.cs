@@ -2,7 +2,7 @@
 
 namespace TripFlip.Services.Dto.ItemListDtos
 {
-    public class ResultItemListDto
+    public class ItemListDto
     {
         public int Id { get; set; }
 
