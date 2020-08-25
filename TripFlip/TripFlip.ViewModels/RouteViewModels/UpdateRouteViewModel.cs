@@ -8,15 +8,15 @@ namespace TripFlip.ViewModels.RouteViewModels
     /// </summary>
     public class UpdateRouteViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdFieldError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleError)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleFieldError)]
         [StringLength(100, ErrorMessage = ErrorConstants.TitleLengthError)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdFieldError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int TripId { get; set; }
     }

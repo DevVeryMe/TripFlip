@@ -6,11 +6,11 @@ namespace TripFlip.ViewModels.TripViewModels
 {
     public class CreateTripViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleError)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyTitleFieldError)]
         [StringLength(100, ErrorMessage = ErrorConstants.TitleLengthError)]
         public string Title { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyDescriptionError)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyDescriptionFieldError)]
         [StringLength(500, ErrorMessage = ErrorConstants.DescriptionLengthError)]
         public string Description { get; set; }
 
