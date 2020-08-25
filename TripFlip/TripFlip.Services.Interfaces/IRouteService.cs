@@ -36,7 +36,8 @@ namespace TripFlip.Services.Interfaces
         /// <param name="searchString">String to filter routes by Title.</param>
         /// <returns><see cref="PagedList{ResultRouteDto}"/> object that represents the paged collection of database entries with the given Trip Id.</returns>
         Task<PagedList<ResultRouteDto>> GetAllByTripIdAsync(int tripId,
-            string searchString, PaginationDto paginationDto);
+            string searchString,
+            PaginationDto paginationDto);
 
         /// <summary>
         /// Deletes Route with the given Id.

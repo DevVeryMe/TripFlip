@@ -32,7 +32,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(
-            string searchString, PaginationDto paginationDto)
+            string searchString,
+            PaginationDto paginationDto)
         {
             int pageNumber = paginationDto.PageNumber ?? 1;
             int pageSize = paginationDto.PageSize ?? await _tripFlipDbContext.Trips.CountAsync();

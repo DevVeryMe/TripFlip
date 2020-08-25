@@ -66,8 +66,8 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> GetAllByItemListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromQuery] int itemListId,
-            [FromQuery] PaginationViewModel paginationViewModel,
-            [FromQuery] string searchString)
+            [FromQuery] string searchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 

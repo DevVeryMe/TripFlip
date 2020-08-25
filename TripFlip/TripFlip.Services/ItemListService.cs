@@ -42,7 +42,8 @@ namespace TripFlip.Services
         }
 
         public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId,
-            string searchString, PaginationDto paginationDto)
+            string searchString,
+            PaginationDto paginationDto)
         {
             var routeExists = await _tripFlipDbContext.Routes
                 .AnyAsync(r => r.Id == routeId);
