@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using TripFlip.Domain.Entities;
 
 namespace TripFlip.DataAccess.Extensions

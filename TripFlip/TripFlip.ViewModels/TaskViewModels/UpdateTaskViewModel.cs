@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.Enums;
 
 namespace TripFlip.ViewModels.TaskViewModels

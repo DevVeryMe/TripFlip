@@ -1,15 +1,14 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.TripDtos;
+using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.TripInterfaces;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
-using TripFlip.Services.Interfaces.Helpers;
-using TripFlip.Services.DTO;
-using Microsoft.AspNetCore.Http;
 
 namespace TripFlip.WebApi.Controllers
 {
