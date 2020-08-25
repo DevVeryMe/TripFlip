@@ -17,17 +17,17 @@ namespace TripFlip.Services
     /// <inheritdoc />
     public class TaskListService : ITaskListService
     {
-        private readonly FlipTripDbContext _flipTripDbContext;
+        private readonly TripFlipDbContext _tripFlipDbContext;
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// Constructor. Initializes _flipTripDbContext and _mapper fields.
+        /// Constructor. Initializes _tripFlipDbContext and _mapper fields.
         /// </summary>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="mapper">IMapper instance.</param>
-        public TaskListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
+        public TaskListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
-            _flipTripDbContext = flipTripDbContext;
+            _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
         }
 
@@ -37,8 +37,8 @@ namespace TripFlip.Services
 
             var taskListEntity = _mapper.Map<TaskListEntity>(taskListDto);
 
-            await _flipTripDbContext.TaskLists.AddAsync(taskListEntity);
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.TaskLists.AddAsync(taskListEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var createdTaskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
@@ -49,7 +49,7 @@ namespace TripFlip.Services
             int routeId, string searchString,
             PaginationDto paginationDto)
         {
-            var routeExists = await _flipTripDbContext
+            var routeExists = await _tripFlipDbContext
                 .Routes
                 .AnyAsync(routeEntity => routeEntity.Id == routeId);
 
@@ -58,7 +58,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
-            var taskListEntitiesQuery = _flipTripDbContext
+            var taskListEntitiesQuery = _tripFlipDbContext
                 .TaskLists
                 .AsNoTracking()
                 .Where(taskListEntity => taskListEntity.RouteId == routeId);
@@ -83,7 +83,7 @@ namespace TripFlip.Services
 
         public async Task<TaskListDto> GetByIdAsync(int id)
         {
-            var taskList = await _flipTripDbContext.TaskLists.AsNoTracking()
+            var taskList = await _tripFlipDbContext.TaskLists.AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskList is null)
@@ -98,7 +98,7 @@ namespace TripFlip.Services
 
         public async Task<TaskListDto> UpdateAsync(UpdateTaskListDto taskListDto)
         {
-            var taskLsitToUpdateEntity = await _flipTripDbContext.TaskLists
+            var taskLsitToUpdateEntity = await _tripFlipDbContext.TaskLists
                 .FindAsync(taskListDto.Id);
 
             if (taskLsitToUpdateEntity is null)
@@ -108,7 +108,7 @@ namespace TripFlip.Services
 
             taskLsitToUpdateEntity.Title = taskListDto.Title;
 
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
             var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
 
             return updatedTaskListDto;
@@ -116,7 +116,7 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var taskListToDelete = await _flipTripDbContext.TaskLists.AsNoTracking()
+            var taskListToDelete = await _tripFlipDbContext.TaskLists.AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskListToDelete is null)
@@ -124,8 +124,8 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
-            _flipTripDbContext.TaskLists.Remove(taskListToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
+            _tripFlipDbContext.TaskLists.Remove(taskListToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace TripFlip.Services
         /// <returns>Nothing.</returns>
         private async Task ValidateRouteExistsAsync(int routeId)
         {
-            var route = await _flipTripDbContext.Routes.AsNoTracking()
+            var route = await _tripFlipDbContext.Routes.AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
 
             if (route is null)

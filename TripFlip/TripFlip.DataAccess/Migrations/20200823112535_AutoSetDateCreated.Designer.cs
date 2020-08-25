@@ -9,7 +9,7 @@ using TripFlip.DataAccess;
 
 namespace TripFlip.DataAccess.Migrations
 {
-    [DbContext(typeof(FlipTripDbContext))]
+    [DbContext(typeof(TripFlipDbContext))]
     [Migration("20200823112535_AutoSetDateCreated")]
     partial class AutoSetDateCreated
     {

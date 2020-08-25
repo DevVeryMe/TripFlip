@@ -18,22 +18,22 @@ namespace TripFlip.Services
     public class ItemService : IItemService
     {
         private readonly IMapper _mapper;
-        private readonly FlipTripDbContext _flipTripDbContext;
+        private readonly TripFlipDbContext _tripFlipDbContext;
 
         /// <summary>
-        /// Initializes _flipTripDbContext and _mapper fields.
+        /// Initializes _tripFlipDbContext and _mapper fields.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
-        /// <param name="flipTripDbContext">FlipTripDbContext instance.</param>
-        public ItemService(IMapper mapper, FlipTripDbContext flipTripDbContext)
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
+        public ItemService(IMapper mapper, TripFlipDbContext tripFlipDbContext)
         {
             _mapper = mapper;
-            _flipTripDbContext = flipTripDbContext;
+            _tripFlipDbContext = tripFlipDbContext;
         }
 
         public async Task<ItemDto> CreateAsync(CreateItemDto createItemDto)
         {
-            var itemListEntity = await _flipTripDbContext.ItemLists
+            var itemListEntity = await _tripFlipDbContext.ItemLists
                 .AsNoTracking().SingleOrDefaultAsync(itemList => createItemDto.ItemListId == itemList.Id);
 
             if (itemListEntity == null)
@@ -43,8 +43,8 @@ namespace TripFlip.Services
 
             var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
-            await _flipTripDbContext.Items.AddAsync(itemEntity);
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.Items.AddAsync(itemEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var itemToReturnDto = _mapper.Map<ItemDto>(itemEntity);
 
@@ -53,7 +53,7 @@ namespace TripFlip.Services
 
         public async Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto, string searchString)
         {
-            var itemListExists = await _flipTripDbContext.ItemLists
+            var itemListExists = await _tripFlipDbContext.ItemLists
                 .AnyAsync(l => l.Id == listId);
 
             if (!itemListExists)
@@ -61,7 +61,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.ItemListNotFound);
             }
 
-            var itemEntitiesQuery = _flipTripDbContext.Items
+            var itemEntitiesQuery = _tripFlipDbContext.Items
                 .Where(i => i.ItemListId == listId)
                 .AsNoTracking();
             
@@ -82,7 +82,7 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
         {
-            var itemToUpdate = await _flipTripDbContext.Items.FindAsync(itemDto.Id);
+            var itemToUpdate = await _tripFlipDbContext.Items.FindAsync(itemDto.Id);
 
             ValidateItemEntityIsNotNull(itemToUpdate);
 
@@ -91,7 +91,7 @@ namespace TripFlip.Services
             itemToUpdate.Quantity = itemDto.Quantity;
             itemToUpdate.IsCompleted = itemDto.IsCompleted;
 
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
             return itemDtoToReturn;
@@ -99,14 +99,14 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateCompletenessAsync(UpdateItemCompletenessDto updateItemCompletenessDto)
         {
-            var itemToUpdate = await _flipTripDbContext.Items
+            var itemToUpdate = await _tripFlipDbContext.Items
                 .FindAsync(updateItemCompletenessDto.Id);
 
             ValidateItemEntityIsNotNull(itemToUpdate);
 
             itemToUpdate.IsCompleted = updateItemCompletenessDto.IsCompleted;
             
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
 
             return itemDtoToReturn;
@@ -114,7 +114,7 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> GetByIdAsync(int id)
         {
-            var itemEntity = await _flipTripDbContext.Items.AsNoTracking().
+            var itemEntity = await _tripFlipDbContext.Items.AsNoTracking().
                 SingleOrDefaultAsync(i => i.Id == id);
 
             ValidateItemEntityIsNotNull(itemEntity);
@@ -126,12 +126,12 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var itemEntityToDelete = await _flipTripDbContext.Items.FindAsync(id);
+            var itemEntityToDelete = await _tripFlipDbContext.Items.FindAsync(id);
 
             ValidateItemEntityIsNotNull(itemEntityToDelete);
 
-            _flipTripDbContext.Remove(itemEntityToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
+            _tripFlipDbContext.Remove(itemEntityToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         private void ValidateItemEntityIsNotNull(ItemEntity itemEntity)

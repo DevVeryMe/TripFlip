@@ -21,17 +21,17 @@ namespace TripFlip.Services
     public class ItemListService : IITemListService
     {
         private readonly IMapper _mapper;
-        private readonly FlipTripDbContext _flipTripDbContext;
+        private readonly TripFlipDbContext _tripFlipDbContext;
 
-        public ItemListService(FlipTripDbContext flipTripDbContext, IMapper mapper)
+        public ItemListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
             _mapper = mapper;
-            _flipTripDbContext = flipTripDbContext;
+            _tripFlipDbContext = tripFlipDbContext;
         }
 
         public async Task<ResultItemListDto> GetByIdAsync(int itemListId)
         {
-            var itemListEntity = await _flipTripDbContext
+            var itemListEntity = await _tripFlipDbContext
                 .ItemLists
                 .AsNoTracking()
                 .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == itemListId);
@@ -46,7 +46,7 @@ namespace TripFlip.Services
         public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, 
             PaginationDto paginationDto, string searchString)
         {
-            var routeExists = await _flipTripDbContext.Routes
+            var routeExists = await _tripFlipDbContext.Routes
                 .AnyAsync(r => r.Id == routeId);
 
             if (!routeExists)
@@ -54,7 +54,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
 
-            var itemListEntitiesQuery = _flipTripDbContext.ItemLists
+            var itemListEntitiesQuery = _tripFlipDbContext.ItemLists
                 .Where(l => l.RouteId == routeId)
                 .AsNoTracking();
             
@@ -79,8 +79,8 @@ namespace TripFlip.Services
 
             var itemListEntity = _mapper.Map<ItemListEntity>(createItemListDto);
 
-            var entityEntry = _flipTripDbContext.ItemLists.Add(itemListEntity);
-            await _flipTripDbContext.SaveChangesAsync();
+            var entityEntry = _tripFlipDbContext.ItemLists.Add(itemListEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var resultItemListDto = _mapper.Map<ResultItemListDto>(entityEntry.Entity);
 
@@ -89,7 +89,7 @@ namespace TripFlip.Services
 
         public async Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto)
         {
-            var itemListEntity = await _flipTripDbContext
+            var itemListEntity = await _tripFlipDbContext
                 .ItemLists
                 .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
 
@@ -97,7 +97,7 @@ namespace TripFlip.Services
 
             itemListEntity.Title = updateItemListDto.Title;
 
-            await _flipTripDbContext.SaveChangesAsync();
+            await _tripFlipDbContext.SaveChangesAsync();
 
             var resultItemListDto = _mapper.Map<ResultItemListDto>(itemListEntity);
 
@@ -106,14 +106,14 @@ namespace TripFlip.Services
 
         public async Task DeleteAsync(int id)
         {
-            var itemListEntityToDelete = await _flipTripDbContext
+            var itemListEntityToDelete = await _tripFlipDbContext
                 .ItemLists
                 .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
 
             ValidateItemListEntityIsNotNull(itemListEntityToDelete);
 
-            _flipTripDbContext.ItemLists.Remove(itemListEntityToDelete);
-            await _flipTripDbContext.SaveChangesAsync();
+            _tripFlipDbContext.ItemLists.Remove(itemListEntityToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace TripFlip.Services
         /// <param name="routeId">Route's Id to check.</param>
         async Task ValidateRouteExistsAsync(int routeId)
         {
-            var routeEntity = await _flipTripDbContext
+            var routeEntity = await _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
                 .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);

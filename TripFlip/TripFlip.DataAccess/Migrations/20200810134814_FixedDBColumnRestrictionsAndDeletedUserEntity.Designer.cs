@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TripFlip.DataAccess.Migrations
 {
-    [DbContext(typeof(FlipTripDbContext))]
+    [DbContext(typeof(TripFlipDbContext))]
     [Migration("20200810134814_FixedDBColumnRestrictionsAndDeletedUserEntity")]
     partial class FixedDBColumnRestrictionsAndDeletedUserEntity
     {

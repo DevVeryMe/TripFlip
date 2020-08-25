@@ -5,7 +5,7 @@ using TripFlip.Domain.Entities;
 
 namespace TripFlip.DataAccess
 {
-    public class FlipTripDbContext : DbContext
+    public class TripFlipDbContext : DbContext
     {
         public DbSet<ItemEntity> Items { get; set; }
 
@@ -23,7 +23,7 @@ namespace TripFlip.DataAccess
 
         public DbSet<TripFileEntity> TripFiles { get; set; }
 
-        public FlipTripDbContext(DbContextOptions options) : base(options) { }
+        public TripFlipDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
