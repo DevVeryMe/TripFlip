@@ -1,7 +1,7 @@
 ﻿
 namespace TripFlip.ViewModels.TaskListViewModels
 {
-    public class GetTaskListViewModel
+    public class TaskListViewModel
     {
         public int Id { get; set; }
 

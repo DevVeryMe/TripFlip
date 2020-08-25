@@ -43,14 +43,14 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
             var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
 
             var taskToReturnDto = await _taskService.CreateAsync(taskDto);
 
-            var createdTaskViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
+            var createdTaskViewModel = _mapper.Map<TaskViewModel>(taskToReturnDto);
 
             return Ok(createdTaskViewModel);
         }
@@ -64,7 +64,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Paged list of Task view models that
         /// represent database entries specified by Task list id.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(PagedList<GetTaskViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedList<TaskViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromQuery] int taskListId,
@@ -76,7 +76,7 @@ namespace TripFlip.WebApi.Controllers
             var taskDtos = await _taskService.
                 GetAllByTaskListIdAsync(taskListId, searchString, paginationDto);
 
-            var taskViewModels = _mapper.Map< PagedList<GetTaskViewModel> >(taskDtos);
+            var taskViewModels = _mapper.Map< PagedList<TaskViewModel> >(taskDtos);
 
             return Ok(taskViewModels);
         }
@@ -88,13 +88,13 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Task view model with specified id that
         /// represents database entry.</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
             var taskDto = await _taskService.GetByIdAsync(id);
-            var getTaskViewModel = _mapper.Map<GetTaskViewModel>(taskDto);
+            var getTaskViewModel = _mapper.Map<TaskViewModel>(taskDto);
 
             return Ok(getTaskViewModel);
         }

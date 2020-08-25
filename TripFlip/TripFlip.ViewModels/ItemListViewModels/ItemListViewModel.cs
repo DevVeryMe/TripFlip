@@ -2,7 +2,7 @@
 
 namespace TripFlip.ViewModels.ItemListViewModels
 {
-    public class ResultItemListViewModel
+    public class ItemListViewModel
     {
         public int Id { get; set; }
 

@@ -2,10 +2,7 @@
 
 namespace TripFlip.ViewModels.RouteViewModels
 {
-    /// <summary>
-    /// ViewModel that represents the result of a successfully completed action. This ViewModel is meant to be returned back to user as an action result
-    /// </summary>
-    public class ResultRouteViewModel
+    public class RouteViewModel
     {
         public int Id { get; set; }
 

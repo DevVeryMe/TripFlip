@@ -2,7 +2,7 @@
 
 namespace TripFlip.ViewModels.TaskViewModels
 {
-    public class GetTaskViewModel
+    public class TaskViewModel
     {
         public int Id { get; set; }
 
