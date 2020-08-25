@@ -2,15 +2,15 @@
 {
     public static class ErrorConstants
     {
-        public const string EmptyIdError = "Id cannot be empty.";
+        public const string EmptyIdFieldError = "Field 'id' cannot be empty.";
 
         public const string IdLessThanOneError = "Id cannot be less than 1.";
 
-        public const string EmptyTitleError = "Title cannot be empty.";
+        public const string EmptyTitleFieldError = "Field 'title' cannot be empty.";
 
         public const string TitleLengthError = "Title length cannot be greater than 100.";
 
-        public const string EmptyDescriptionError = "Description cannot be empty.";
+        public const string EmptyDescriptionFieldError = "Field 'description' cannot be empty.";
 
         public const string DescriptionLengthError = "Description length cannot be greater than 500.";
 

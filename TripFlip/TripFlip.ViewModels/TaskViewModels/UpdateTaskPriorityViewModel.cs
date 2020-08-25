@@ -5,7 +5,7 @@ namespace TripFlip.ViewModels.TaskViewModels
 {
     public class UpdateTaskPriorityViewModel
     {
-        [Required(ErrorMessage = ErrorConstants.EmptyIdError)]
+        [Required(ErrorMessage = ErrorConstants.EmptyIdFieldError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
         public int Id { get; set; }
 
