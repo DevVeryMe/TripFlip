@@ -62,8 +62,8 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<GetTaskListViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByRouteIdAsync(
-            [FromQuery]
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromQuery] int routeId,
             [FromQuery] string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
         {
@@ -81,10 +81,11 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Task list id.</param>
         /// <returns>Task list view model with specified id.</returns>
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(GetTaskListViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        public async Task<IActionResult> GetByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
             var taskListDto = await _taskListService.GetByIdAsync(id);
             var taskListViewModel = _mapper.Map<GetTaskListViewModel>(taskListDto);
@@ -108,7 +109,7 @@ namespace TripFlip.WebApi.Controllers
         /// </remarks>
         [HttpPut]
         [ProducesResponseType(typeof(UpdateTaskListViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Update([FromBody] UpdateTaskListViewModel updateTaskListViewModel)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateTaskListViewModel updateTaskListViewModel)
         {
             var taskListDto = _mapper.Map<UpdateTaskListDto>(updateTaskListViewModel);
 
@@ -123,11 +124,12 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="id">Task list to delete id.</param>
         /// <returns>No content.</returns>
-        [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
-            await _taskListService.DeleteAsync(id);
+            await _taskListService.DeleteByIdAsync(id);
 
             return NoContent();
         }

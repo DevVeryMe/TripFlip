@@ -9,14 +9,14 @@ namespace TripFlip.Services.Interfaces
     /// <summary>
     /// Interface that describes supported CRUD operations with ItemList entity.
     /// </summary>
-    public interface IITemListService
+    public interface IItemListService
     {
         /// <summary>
         /// Returns ItemList with the given Id.
         /// </summary>
-        /// <param name="itemListId">Id of ItemList.</param>
+        /// <param name="id">Id of ItemList.</param>
         /// <returns>Object that represents the database entry with the given Id.</returns>
-        Task<ResultItemListDto> GetByIdAsync(int itemListId);
+        Task<ResultItemListDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Returns all ItemLists with the given Route Id.
@@ -25,7 +25,8 @@ namespace TripFlip.Services.Interfaces
         /// <param name="paginationDto">Pagination settings.</param>
         /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Object that represents the <see cref="PagedList{ResultItemListDto}"/> collection of database entries with the given Route Id.</returns>
-        Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, PaginationDto paginationDto, string searchString);
+        Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId,
+            string searchString, PaginationDto paginationDto);
 
         /// <summary>
         /// Creates new ItemList with the given <see cref="CreateItemListDto"/> object. Applies changes to database asynchronously.
@@ -45,6 +46,6 @@ namespace TripFlip.Services.Interfaces
         /// Deletes ItemList with the given Id.
         /// </summary>
         /// <param name="id">Id of ItemList to be deleted.</param>
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
     }
 }

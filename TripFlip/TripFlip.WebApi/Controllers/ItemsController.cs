@@ -64,14 +64,14 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<ItemViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByItemListIdAsync(
-            [FromQuery]
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int itemListId,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromQuery] int itemListId,
             [FromQuery] PaginationViewModel paginationViewModel,
             [FromQuery] string searchString)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var items = await _itemService.GetAllAsync(itemListId, paginationDto, searchString);
+            var items = await _itemService.GetAllByItemListIdAsync(itemListId, searchString, paginationDto);
 
             var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
 
@@ -97,7 +97,7 @@ namespace TripFlip.WebApi.Controllers
         /// </remarks>
         [HttpPut]
         [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync(UpdateItemViewModel updateItemViewModel)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemViewModel updateItemViewModel)
         {
             var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
             var itemDtoToReturn = await _itemService.UpdateAsync(itemDtoToUpdate);
@@ -141,8 +141,9 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Item view model.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetItemByIdAsync([Range(1, int.MaxValue,
-            ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        public async Task<IActionResult> GetByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
             var itemDtoToReturn = await _itemService.GetByIdAsync(id);
             var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
@@ -156,10 +157,11 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">Item id.</param>
         /// <returns>No content.</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        public async Task<IActionResult> DeleteByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
-            await _itemService.DeleteAsync(id);
+            await _itemService.DeleteByIdAsync(id);
 
             return NoContent();
         }

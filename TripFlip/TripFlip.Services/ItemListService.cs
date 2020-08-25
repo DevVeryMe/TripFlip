@@ -18,7 +18,7 @@ namespace TripFlip.Services
     /// <summary>
     /// Class that performs CRUD operations related to <see cref="ItemListEntity"/>.
     /// </summary>
-    public class ItemListService : IITemListService
+    public class ItemListService : IItemListService
     {
         private readonly IMapper _mapper;
         private readonly TripFlipDbContext _tripFlipDbContext;
@@ -29,12 +29,12 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<ResultItemListDto> GetByIdAsync(int itemListId)
+        public async Task<ResultItemListDto> GetByIdAsync(int id)
         {
             var itemListEntity = await _tripFlipDbContext
                 .ItemLists
                 .AsNoTracking()
-                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == itemListId);
+                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
 
             ValidateItemListEntityIsNotNull(itemListEntity);
 
@@ -43,8 +43,8 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
-        public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId, 
-            PaginationDto paginationDto, string searchString)
+        public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId,
+            string searchString, PaginationDto paginationDto)
         {
             var routeExists = await _tripFlipDbContext.Routes
                 .AnyAsync(r => r.Id == routeId);
@@ -104,7 +104,7 @@ namespace TripFlip.Services
             return resultItemListDto;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var itemListEntityToDelete = await _tripFlipDbContext
                 .ItemLists

@@ -18,18 +18,19 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Returns all items for certain item list.
         /// </summary>
-        /// <param name="listId">Id of item list.</param>
+        /// <param name="itemListId">Id of item list.</param>
         /// <param name="paginationDto">Pagination settings.</param>
         /// <param name="searchString">Search string to filter data.</param>
         /// <returns>Paged list with item DTOs.</returns>
-        Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto, string searchString);
+        Task<PagedList<ItemDto>> GetAllByItemListIdAsync(int itemListId,
+            string searchString, PaginationDto paginationDto);
 
         /// <summary>
         /// Updates existing item.
         /// </summary>
         /// <param name="itemDto">Item DTO.</param>
         /// <returns>Updated item DTO.</returns>
-        Task<ItemDto> UpdateAsync(UpdateItemDto itemDto);
+        Task<ItemDto> UpdateAsync(UpdateItemDto updateItemDto);
 
         /// <summary>
         /// Updates existing item completeness.
@@ -50,6 +51,6 @@ namespace TripFlip.Services.Interfaces
         /// Deletes item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
-        Task DeleteAsync(int id);
+        Task DeleteByIdAsync(int id);
     }
 }

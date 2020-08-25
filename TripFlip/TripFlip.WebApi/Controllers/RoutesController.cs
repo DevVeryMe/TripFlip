@@ -32,7 +32,9 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        public async Task<IActionResult> GetByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
             var resultRouteDto = await _routeService.GetByIdAsync(id);
 
@@ -53,14 +55,14 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<ResultRouteViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTripIdAsync(
-            [FromQuery]
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId,
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromQuery] int tripId,
             [FromQuery] string searchString,
             [FromQuery] PaginationViewModel paginationViewModel)
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var routeDtosList = await _routeService.GetAllByTripIdAsync(tripId, paginationDto, searchString);
+            var routeDtosList = await _routeService.GetAllByTripIdAsync(tripId, searchString, paginationDto);
 
             var routeViewModelsList = _mapper.Map<PagedList<ResultRouteViewModel>>(routeDtosList);
 
@@ -82,7 +84,7 @@ namespace TripFlip.WebApi.Controllers
         /// </remarks>
         [HttpPost]
         [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateAsync(CreateRouteViewModel createRouteViewModel)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateRouteViewModel createRouteViewModel)
         {
             var createRouteDto = _mapper.Map<CreateRouteDto>(createRouteViewModel);
             
@@ -109,7 +111,7 @@ namespace TripFlip.WebApi.Controllers
         /// </remarks>
         [HttpPut]
         [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync(UpdateRouteViewModel updateRouteViewModel)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateRouteViewModel updateRouteViewModel)
         {
             var updateRouteDto = _mapper.Map<UpdateRouteDto>(updateRouteViewModel);
 
@@ -125,9 +127,11 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <returns>If operation is successful, returns NoContent (HTTP code 204) result.</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
-            await _routeService.DeleteAsync(id);
+            await _routeService.DeleteByIdAsync(id);
 
             return NoContent();
         }

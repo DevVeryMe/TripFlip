@@ -15,11 +15,12 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
         /// <summary>
         /// Configures logging and handling exceptions.
         /// </summary>
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app, IWebHostEnvironment environment)
+        public static void ConfigureExceptionHandler(this IApplicationBuilder applicationBuilder,
+            IWebHostEnvironment environment)
         {
             var logger = LogManager.GetCurrentClassLogger();
 
-            app.UseExceptionHandler(options =>
+            applicationBuilder.UseExceptionHandler(options =>
             {
                 options.Run(async context =>
                 {

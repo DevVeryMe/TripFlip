@@ -49,9 +49,8 @@ namespace TripFlip.Services
             return taskToReturn;
         }
 
-        public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(
-            int taskListId, string searchString,
-            PaginationDto paginationDto)
+        public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId,
+            string searchString, PaginationDto paginationDto)
         {
             var taskListExists = await _tripFlipDbContext
                 .TaskLists
@@ -97,15 +96,15 @@ namespace TripFlip.Services
             return taskDto;
         }
 
-        public async Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto)
+        public async Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks.FindAsync(taskDto.Id);
+            var taskToUpdateEntity = await _tripFlipDbContext.Tasks.FindAsync(updateTaskDto.Id);
 
             ValidateTaskEntityNotNull(taskToUpdateEntity);
 
-            taskToUpdateEntity.Description = taskDto.Description;
-            taskToUpdateEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(taskDto.PriorityLevel);
-            taskToUpdateEntity.IsCompleted = taskDto.IsCompleted;
+            taskToUpdateEntity.Description = updateTaskDto.Description;
+            taskToUpdateEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskDto.PriorityLevel);
+            taskToUpdateEntity.IsCompleted = updateTaskDto.IsCompleted;
 
             await _tripFlipDbContext.SaveChangesAsync();
             var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);

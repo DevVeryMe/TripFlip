@@ -36,9 +36,9 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Updates existing task.
         /// </summary>
-        /// <param name="taskDto">New task data.</param>
+        /// <param name="UpdateTaskDto">New task data.</param>
         /// <returns>Updated task DTO.</returns>
-        Task<TaskDto> UpdateAsync(UpdateTaskDto taskDto);
+        Task<TaskDto> UpdateAsync(UpdateTaskDto UpdateTaskDto);
 
         /// <summary>
         /// Updates existing task priority level.

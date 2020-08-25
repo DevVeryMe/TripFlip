@@ -38,8 +38,8 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var tripViewDtosList = await _tripService.GetAllTripsAsync(paginationDto,
-                searchString);
+            var tripViewDtosList = await _tripService.GetAllTripsAsync(searchString,
+                paginationDto);
 
             var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
 
@@ -53,9 +53,10 @@ namespace TripFlip.WebApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
-            var trip = await _tripService.GetAsync(id);
+            var trip = await _tripService.GetByIdAsync(id);
             var tripViewModel = _mapper.Map<TripViewModel>(trip);
 
             return Ok(tripViewModel);
@@ -122,10 +123,11 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">trip id</param>
         /// <returns>204 status code</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(
-            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int id)
+        public async Task<IActionResult> DeleteByIdAsync(
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
+            [FromRoute] int id)
         {
-            await _tripService.DeleteAsync(id);
+            await _tripService.DeleteByIdAsync(id);
 
             return NoContent();
         }

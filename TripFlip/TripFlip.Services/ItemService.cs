@@ -51,10 +51,11 @@ namespace TripFlip.Services
             return itemToReturnDto;
         }
 
-        public async Task<PagedList<ItemDto>> GetAllAsync(int listId, PaginationDto paginationDto, string searchString)
+        public async Task<PagedList<ItemDto>> GetAllByItemListIdAsync(int itemListId,
+            string searchString, PaginationDto paginationDto)
         {
             var itemListExists = await _tripFlipDbContext.ItemLists
-                .AnyAsync(l => l.Id == listId);
+                .AnyAsync(l => l.Id == itemListId);
 
             if (!itemListExists)
             {
@@ -62,7 +63,7 @@ namespace TripFlip.Services
             }
 
             var itemEntitiesQuery = _tripFlipDbContext.Items
-                .Where(i => i.ItemListId == listId)
+                .Where(i => i.ItemListId == itemListId)
                 .AsNoTracking();
             
             if (!string.IsNullOrEmpty(searchString))
@@ -80,16 +81,16 @@ namespace TripFlip.Services
             return pagedListOfItemDtos;
         }
 
-        public async Task<ItemDto> UpdateAsync(UpdateItemDto itemDto)
+        public async Task<ItemDto> UpdateAsync(UpdateItemDto updateItemDto)
         {
-            var itemToUpdate = await _tripFlipDbContext.Items.FindAsync(itemDto.Id);
+            var itemToUpdate = await _tripFlipDbContext.Items.FindAsync(updateItemDto.Id);
 
             ValidateItemEntityIsNotNull(itemToUpdate);
 
-            itemToUpdate.Title = itemDto.Title;
-            itemToUpdate.Comment = itemDto.Comment;
-            itemToUpdate.Quantity = itemDto.Quantity;
-            itemToUpdate.IsCompleted = itemDto.IsCompleted;
+            itemToUpdate.Title = updateItemDto.Title;
+            itemToUpdate.Comment = updateItemDto.Comment;
+            itemToUpdate.Quantity = updateItemDto.Quantity;
+            itemToUpdate.IsCompleted = updateItemDto.IsCompleted;
 
             await _tripFlipDbContext.SaveChangesAsync();
             var itemDtoToReturn = _mapper.Map<ItemDto>(itemToUpdate);
@@ -124,7 +125,7 @@ namespace TripFlip.Services
             return itemDtoToReturn;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var itemEntityToDelete = await _tripFlipDbContext.Items.FindAsync(id);
 

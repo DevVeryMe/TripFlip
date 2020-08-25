@@ -36,24 +36,24 @@ namespace TripFlip.WebApi
             services.ConfigureServices(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment environment, 
             TripFlipDbContext tripFlipDbContext)
         {
-            app.ConfigureExceptionHandler(env);
+            applicationBuilder.ConfigureExceptionHandler(environment);
 
-            app.UseRouting();
+            applicationBuilder.UseRouting();
 
-            app.UseAuthorization();
+            applicationBuilder.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
             string swaggerEndpointUrl = Configuration.GetSection("OpenApiInfo")["url"];
             string swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
-            app.UseSwagger();
-            app.UseSwaggerUI(
+            applicationBuilder.UseSwagger();
+            applicationBuilder.UseSwaggerUI(
                 options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
             );
 
