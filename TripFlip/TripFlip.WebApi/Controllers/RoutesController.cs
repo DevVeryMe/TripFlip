@@ -38,11 +38,11 @@ namespace TripFlip.WebApi.Controllers
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
-            var resultRouteDto = await _routeService.GetByIdAsync(id);
+            var routeDto = await _routeService.GetByIdAsync(id);
 
-            var resultRouteViewModel = _mapper.Map<RouteViewModel>(resultRouteDto);
+            var routeViewModel = _mapper.Map<RouteViewModel>(routeDto);
 
-            return Ok(resultRouteViewModel);
+            return Ok(routeViewModel);
         }
 
         /// <summary>
@@ -63,11 +63,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var routeDtosList = await _routeService.GetAllByTripIdAsync(tripId, searchString, paginationDto);
+            var pagedRouteDtos = await _routeService.GetAllByTripIdAsync(tripId, searchString, paginationDto);
 
-            var routeViewModelsList = _mapper.Map<PagedList<RouteViewModel>>(routeDtosList);
+            var pagedrouteViewModels = _mapper.Map<PagedList<RouteViewModel>>(pagedRouteDtos);
 
-            return Ok(routeViewModelsList);
+            return Ok(pagedrouteViewModels);
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var createRouteDto = _mapper.Map<CreateRouteDto>(createRouteViewModel);
             
-            var resultRouteDto = await _routeService.CreateAsync(createRouteDto);
+            var createdRouteDto = await _routeService.CreateAsync(createRouteDto);
 
-            var resultRouteViewModel = _mapper.Map<RouteViewModel>(resultRouteDto);
+            var createdRouteViewModel = _mapper.Map<RouteViewModel>(createdRouteDto);
 
-            return Ok(resultRouteViewModel);
+            return Ok(createdRouteViewModel);
         }
 
         /// <summary>
@@ -120,11 +120,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var updateRouteDto = _mapper.Map<UpdateRouteDto>(updateRouteViewModel);
 
-            var resultRouteDto = await _routeService.UpdateAsync(updateRouteDto);
+            var updatedRouteDto = await _routeService.UpdateAsync(updateRouteDto);
 
-            var resultViewModel = _mapper.Map<RouteViewModel>(resultRouteDto);
+            var updatedRouteViewModel = _mapper.Map<RouteViewModel>(updatedRouteDto);
 
-            return Ok(resultViewModel);
+            return Ok(updatedRouteViewModel);
         }
 
         /// <summary>

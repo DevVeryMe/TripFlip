@@ -41,12 +41,12 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var tripViewDtosList = await _tripService.GetAllTripsAsync(searchString,
+            var pagedTripDtos = await _tripService.GetAllTripsAsync(searchString,
                 paginationDto);
 
-            var tripViewModelsList = _mapper.Map<PagedList<TripViewModel>>(tripViewDtosList);
+            var pagedTripViewModels = _mapper.Map<PagedList<TripViewModel>>(pagedTripDtos);
 
-            return Ok(tripViewModelsList);
+            return Ok(pagedTripViewModels);
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace TripFlip.WebApi.Controllers
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
-            var trip = await _tripService.GetByIdAsync(id);
-            var tripViewModel = _mapper.Map<TripViewModel>(trip);
+            var tripDto = await _tripService.GetByIdAsync(id);
+            var tripViewModel = _mapper.Map<TripViewModel>(tripDto);
 
             return Ok(tripViewModel);
         }
@@ -89,10 +89,10 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] CreateTripViewModel createTripViewModel)
         {
             var createTripDto = _mapper.Map<CreateTripDto>(createTripViewModel);
-            var tripDto = await _tripService.CreateAsync(createTripDto);
-            var tripViewModel = _mapper.Map<TripViewModel>(tripDto);
+            var createdTripDto = await _tripService.CreateAsync(createTripDto);
+            var createdTripViewModel = _mapper.Map<TripViewModel>(createdTripDto);
 
-            return Ok(tripViewModel);
+            return Ok(createdTripViewModel);
         }
 
         /// <summary>

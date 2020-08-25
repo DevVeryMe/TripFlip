@@ -38,11 +38,11 @@ namespace TripFlip.WebApi.Controllers
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
-            var resultRouteDto = await _itemListService.GetByIdAsync(id);
+            var routeDto = await _itemListService.GetByIdAsync(id);
 
-            var resultRouteViewModel = _mapper.Map<ItemListViewModel>(resultRouteDto);
+            var routeViewModel = _mapper.Map<ItemListViewModel>(routeDto);
 
-            return Ok(resultRouteViewModel);
+            return Ok(routeViewModel);
         }
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var pagedListOfItemListDtos = 
+            var pagedItemListDtos = 
                 await _itemListService.GetAllByRouteIdAsync(routeId, searchString, paginationDto);
 
-            var pagedListOfItemListViewModels = _mapper.Map< PagedList<ItemListViewModel> >(pagedListOfItemListDtos);
+            var pagedItemListViewModels = _mapper.Map< PagedList<ItemListViewModel> >(pagedItemListDtos);
 
-            return Ok(pagedListOfItemListViewModels);
+            return Ok(pagedItemListViewModels);
         }
 
         /// <summary>
@@ -92,11 +92,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var createItemListDto = _mapper.Map<CreateItemListDto>(createItemListViewModel);
 
-            var resultItemListDto = await _itemListService.CreateAsync(createItemListDto);
+            var createdItemListDto = await _itemListService.CreateAsync(createItemListDto);
 
-            var resultItemListViewModel = _mapper.Map<ItemListViewModel>(resultItemListDto);
+            var createdItemListViewModel = _mapper.Map<ItemListViewModel>(createdItemListDto);
 
-            return Ok(resultItemListViewModel);
+            return Ok(createdItemListViewModel);
         }
 
         /// <summary>
@@ -121,11 +121,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var updateItemListDto = _mapper.Map<UpdateItemListDto>(updateItemListViewModel);
 
-            var resultItemListDto = await _itemListService.UpdateAsync(updateItemListDto);
+            var updatedItemListDto = await _itemListService.UpdateAsync(updateItemListDto);
 
-            var resultItemListViewModel = _mapper.Map<ItemListViewModel>(resultItemListDto);
+            var updatedItemListViewModel = _mapper.Map<ItemListViewModel>(updatedItemListDto);
 
-            return Ok(resultItemListViewModel);
+            return Ok(updatedItemListViewModel);
         }
 
         /// <summary>
