@@ -128,8 +128,7 @@ namespace TripFlip.WebApi.Controllers
         [Route("change-completeness")]
         [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCompletenessAsync(
-            [FromBody] UpdateItemCompletenessViewModel updateItemCompletenessViewModel
-        )
+            [FromBody] UpdateItemCompletenessViewModel updateItemCompletenessViewModel)
         {
             var updateTaskPriorityDto = _mapper.Map<UpdateItemCompletenessDto>(updateItemCompletenessViewModel);
 

@@ -17,6 +17,7 @@ namespace TripFlip.WebApi.Controllers
     public class TaskListsController : ControllerBase
     {
         private readonly ITaskListService _taskListService;
+
         private readonly IMapper _mapper;
 
         public TaskListsController(ITaskListService taskListService, IMapper mapper)
