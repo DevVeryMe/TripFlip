@@ -37,9 +37,9 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Updates existing Trip.
         /// </summary>
-        /// <param name="tripDto">New Trip data with existing Trip id.</param>
+        /// <param name="updateTripDto">New Trip data with existing Trip id.</param>
         /// <returns>Trip DTO that represents the updated database entry.</returns>
-        Task<TripDto> UpdateAsync(TripDto tripDto);
+        Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto);
 
         /// <summary>
         /// Deletes Trip.

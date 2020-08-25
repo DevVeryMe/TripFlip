@@ -120,21 +120,6 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="RouteEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="routeEntity">Object that should be checked.</param>
-        void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
-        {
-
-            if (routeEntity == null)
-            {
-                throw new ArgumentException(ErrorConstants.RouteNotFound);
-            }
-
-        }
-
-        /// <summary>
         /// Checks if the given <see cref="ItemListEntity"/> is not null. If null,
         /// then throws an <see cref="ArgumentException"/> with a corresponding message.
         /// </summary>

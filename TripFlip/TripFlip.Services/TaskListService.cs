@@ -87,10 +87,7 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (taskListEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
-            }
+            ValidateTaskListEntityNotNull(taskListEntity);
 
             var taskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
@@ -102,10 +99,7 @@ namespace TripFlip.Services
             var taskListEntity = await _tripFlipDbContext.TaskLists
                 .FindAsync(updateTaskListDto.Id);
 
-            if (taskListEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
-            }
+            ValidateTaskListEntityNotNull(taskListEntity);
 
             taskListEntity.Title = updateTaskListDto.Title;
 
@@ -121,10 +115,7 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (taskListEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
-            }
+            ValidateTaskListEntityNotNull(taskListEntity);
 
             _tripFlipDbContext.TaskLists.Remove(taskListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
@@ -144,6 +135,16 @@ namespace TripFlip.Services
             if (routeEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+            }
+
+        }
+
+        private void ValidateTaskListEntityNotNull(TaskListEntity taskList)
+        {
+
+            if (taskList is null)
+            {
+                throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
 
         }

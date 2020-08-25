@@ -61,10 +61,7 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (tripEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
-            }
+            ValidateTripEntityNotNull(tripEntity);
 
             var tripDto = _mapper.Map<TripDto>(tripEntity);
 
@@ -82,37 +79,39 @@ namespace TripFlip.Services
             return tripDto;
         }
 
-        public async Task<TripDto> UpdateAsync(TripDto tripDto)
+        public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
-            var tripEntity = await _tripFlipDbContext.Trips.FindAsync(tripDto.Id);
+            var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
-            if (tripEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
-            }
+            ValidateTripEntityNotNull(tripEntity);
 
-            tripEntity.Description = tripDto.Description;
-            tripEntity.Title = tripDto.Title;
-            tripEntity.StartsAt = tripDto.StartsAt;
-            tripEntity.EndsAt = tripDto.EndsAt;
+            tripEntity.Description = updateTripDto.Description;
+            tripEntity.Title = updateTripDto.Title;
+            tripEntity.StartsAt = updateTripDto.StartsAt;
+            tripEntity.EndsAt = updateTripDto.EndsAt;
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var newTripDto = _mapper.Map<TripDto>(tripEntity);
+            var tripDto = _mapper.Map<TripDto>(tripEntity);
 
-            return newTripDto;
+            return tripDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(id);
 
+            ValidateTripEntityNotNull(tripEntity);
+
+            _tripFlipDbContext.Remove(tripEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        void ValidateTripEntityNotNull(TripEntity tripEntity)
+        {
             if (tripEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
-
-            _tripFlipDbContext.Remove(tripEntity);
-            await _tripFlipDbContext.SaveChangesAsync();
         }
     }
 }
