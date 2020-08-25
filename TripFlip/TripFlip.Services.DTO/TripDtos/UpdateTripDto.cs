@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.ViewModels.TripViewModels
+namespace TripFlip.Services.Dto.TripDtos
 {
-    public class TripViewModel
+    public class UpdateTripDto
     {
         public int Id { get; set; }
 
