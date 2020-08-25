@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using TripFlip.Services.DTO;
 using TripFlip.Services.DTO.ItemListDtos;
 using TripFlip.Services.Interfaces.Helpers;
