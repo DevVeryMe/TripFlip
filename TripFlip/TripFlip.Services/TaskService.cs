@@ -17,6 +17,7 @@ namespace TripFlip.Services
     public class TaskService : ITaskService
     {
         private readonly TripFlipDbContext _tripFlipDbContext;
+
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -157,18 +158,22 @@ namespace TripFlip.Services
 
         private void ValidateTaskEntityNotNull(TaskEntity task)
         {
+
             if (task is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
+
         }
 
         private void ValidateTaskListEntityNotNull(TaskListEntity taskList)
         {
+
             if (taskList is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }
+
         }
     }
 }

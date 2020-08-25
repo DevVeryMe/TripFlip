@@ -17,6 +17,7 @@ namespace TripFlip.Services
     public class RouteService : IRouteService
     {
         private readonly IMapper _mapper;
+
         private readonly TripFlipDbContext _tripFlipDbContext;
 
         /// <summary>
@@ -131,10 +132,12 @@ namespace TripFlip.Services
         /// <param name="tripEntity">Object that should be checked.</param>
         void ValidateTripEntityIsNotNull(TripEntity tripEntity)
         {
+
             if (tripEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
+
         }
 
         /// <summary>
@@ -144,10 +147,12 @@ namespace TripFlip.Services
         /// <param name="routeEntity">Object that should be checked.</param>
         void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
         {
+
             if (routeEntity == null)
             {
                 throw new ArgumentException(ErrorConstants.RouteNotFound);
             }
+
         }
 
         /// <summary>
@@ -164,6 +169,7 @@ namespace TripFlip.Services
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
+
         }
     }
 }

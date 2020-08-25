@@ -15,6 +15,7 @@ namespace TripFlip.Root.MappingProfiles
         public EntityToDto()
         {
             CreateMap<TripEntity, TripDto>();
+
             CreateMap<PagedList<TripEntity>, PagedList<TripDto>>();
 
             CreateMap<ItemEntity, ItemDto>();
@@ -24,6 +25,7 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<TaskListEntity, TaskListDto>();
 
             CreateMap<RouteEntity, ResultRouteDto>();
+
             CreateMap<PagedList<RouteEntity>, PagedList<ResultRouteDto>>();
 
             CreateMap<ItemListEntity, ResultItemListDto>();

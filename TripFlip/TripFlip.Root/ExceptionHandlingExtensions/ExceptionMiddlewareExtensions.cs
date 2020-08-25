@@ -51,6 +51,7 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
 
                         await context.Response.WriteAsync(errorDetails.ToString());
                     }
+
                 });
             });
         }

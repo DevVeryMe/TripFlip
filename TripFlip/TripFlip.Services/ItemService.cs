@@ -17,6 +17,7 @@ namespace TripFlip.Services
     public class ItemService : IItemService
     {
         private readonly IMapper _mapper;
+
         private readonly TripFlipDbContext _tripFlipDbContext;
 
         /// <summary>
@@ -137,10 +138,12 @@ namespace TripFlip.Services
 
         private void ValidateItemEntityIsNotNull(ItemEntity itemEntity)
         {
+
             if (itemEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.ItemNotFound);
             }
+
         }
     }
 }
