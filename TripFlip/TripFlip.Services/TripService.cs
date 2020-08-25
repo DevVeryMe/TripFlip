@@ -9,7 +9,7 @@ using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {

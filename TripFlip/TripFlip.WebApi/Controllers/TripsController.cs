@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces.Helpers;
-using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 
