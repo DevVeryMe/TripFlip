@@ -16,7 +16,7 @@ namespace TripFlip.Services.Interfaces
         /// <param name="routeId">Route id.</param>
         /// <param name="searchString">String to search in Task lists.</param>
         /// <param name="paginationDto">Pagination settings.</param>
-        /// <returns>Paged list of Task list dtos that represent the database entries.</returns>
+        /// <returns>Paged list of Task list DTOs that represent the database entries.</returns>
         Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId, 
             string searchString,
             PaginationDto paginationDto);
@@ -25,21 +25,21 @@ namespace TripFlip.Services.Interfaces
         /// Gets Task list by id.
         /// </summary>
         /// <param name="id">Task list id.</param>
-        /// <returns>Task list dto that represents the database entry with the given id.</returns>
+        /// <returns>Task list DTO that represents the database entry with the given id.</returns>
         Task<TaskListDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates a new Task list.
         /// </summary>
         /// <param name="createTaskListDto">Data to create a new Task list.</param>
-        /// <returns>Task list dto that represents the new entry that was added to database.</returns>
+        /// <returns>Task list DTO that represents the new entry that was added to database.</returns>
         Task<TaskListDto> CreateAsync(CreateTaskListDto createTaskListDto);
 
         /// <summary>
         /// Updates Task list.
         /// </summary>
         /// <param name="updateTaskListDto">New Task list data with existing Task list id.</param>
-        /// <returns>Task list dto that represents the updated database entry.</returns>
+        /// <returns>Task list DTO that represents the updated database entry.</returns>
         Task<TaskListDto> UpdateAsync(UpdateTaskListDto updateTaskListDto);
 
         /// <summary>

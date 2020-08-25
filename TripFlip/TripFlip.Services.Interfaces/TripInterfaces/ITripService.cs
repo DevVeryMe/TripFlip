@@ -15,7 +15,7 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// </summary>
         /// <param name="paginationDto">Pagination parameters.</param>
         /// <param name="searchString">String to filter Trips.</param>
-        /// <returns>Paged list of Trip dtos that represent the database entries.</returns>
+        /// <returns>Paged list of Trip DTOs that represent the database entries.</returns>
         Task<PagedList<TripDto>>GetAllTripsAsync(
             string searchString,
             PaginationDto paginationDto);
@@ -24,21 +24,21 @@ namespace TripFlip.Services.Interfaces.TripInterfaces
         /// Gets Trip by id.
         /// </summary>
         /// <param name="id">Trip id.</param>
-        /// <returns>Trip dto that represents the database entry with the given id.</returns>
+        /// <returns>Trip DTO that represents the database entry with the given id.</returns>
         Task<TripDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates new Trip.
         /// </summary>
         /// <param name="createTripDto">Data to create a Trip.</param>
-        /// <returns>Trip dto that represents the new entry that was added to database.</returns>
+        /// <returns>Trip DTO that represents the new entry that was added to database.</returns>
         Task<TripDto> CreateAsync(CreateTripDto createTripDto);
 
         /// <summary>
         /// Updates existing Trip.
         /// </summary>
         /// <param name="tripDto">New Trip data with existing Trip id.</param>
-        /// <returns>Trip dto that represents the updated database entry.</returns>
+        /// <returns>Trip DTO that represents the updated database entry.</returns>
         Task<TripDto> UpdateAsync(TripDto tripDto);
 
         /// <summary>

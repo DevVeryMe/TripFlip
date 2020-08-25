@@ -16,7 +16,7 @@ namespace TripFlip.Services.Interfaces
         /// <param name="taskListId">Task list id.</param>
         /// <param name="searchString">String to filter Tasks.</param>
         /// <param name="paginationDto">Pagination settings.</param>
-        /// <returns>Paged list of Task dtos that represent the database entries.</returns>
+        /// <returns>Paged list of Task DTOs that represent the database entries.</returns>
         Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId, 
             string searchString,
             PaginationDto paginationDto);
@@ -25,35 +25,35 @@ namespace TripFlip.Services.Interfaces
         /// Gets Task by id.
         /// </summary>
         /// <param name="id">Task id.</param>
-        /// <returns>Task dto that represents the database entry.</returns>
+        /// <returns>Task DTO that represents the database entry.</returns>
         Task<TaskDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Creates a new Task.
         /// </summary>
         /// <param name="taskDto">Data to create a new Task.</param>
-        /// <returns>Task dto that represents the new entry that was added to database.</returns>
+        /// <returns>Task DTO that represents the new entry that was added to database.</returns>
         Task<TaskDto> CreateAsync(TaskDto taskDto);
 
         /// <summary>
         /// Updates Task.
         /// </summary>
         /// <param name="updateTaskDto">New Task data with existing Task id.</param>
-        /// <returns>Task dto that represents the updated database entry.</returns>
+        /// <returns>Task DTO that represents the updated database entry.</returns>
         Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto);
 
         /// <summary>
         /// Updates existing Task's priority level.
         /// </summary>
         /// <param name="updateTaskPriorityDto">New Task data with id and priority level.</param>
-        /// <returns>Task dto that represents the updated database entry.</returns>
+        /// <returns>Task DTO that represents the updated database entry.</returns>
         Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto);
 
         /// <summary>
         /// Updates existing Task's completeness.
         /// </summary>
         /// <param name="updateTaskCompletenessDto">New Task data with id and completeness field.</param>
-        /// <returns>Task dto that represents the updated database entry.</returns>
+        /// <returns>Task DTO that represents the updated database entry.</returns>
         Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto);
 
         /// <summary>
