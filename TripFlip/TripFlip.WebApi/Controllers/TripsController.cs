@@ -98,7 +98,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Updates Trip.
         /// </summary>
-        /// <param name="tripViewModel">New Trip data with existing Trip id.</param>
+        /// <param name="updateTripViewModel">New Trip data with existing Trip id.</param>
         /// <returns>Trip view model that
         /// represents the updated database entry.</returns>
         /// <remarks>
@@ -114,14 +114,16 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync([FromBody] TripViewModel tripViewModel)
+        [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateTripViewModel updateTripViewModel)
         {
-            var tripDto = _mapper.Map<TripDto>(tripViewModel);
-            tripDto = await _tripService.UpdateAsync(tripDto);
-            tripViewModel = _mapper.Map<TripViewModel>(tripDto);
+            var updateTripDto = _mapper.Map<UpdateTripDto>(updateTripViewModel);
 
-            return Ok(tripViewModel);
+            var updatedTripDto = await _tripService.UpdateAsync(updateTripDto);
+
+            var updatedTripViewModel = _mapper.Map<TripViewModel>(updatedTripDto);
+
+            return Ok(updatedTripViewModel);
         }
 
         /// <summary>

@@ -61,10 +61,7 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (trip is null)
-            {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
-            }
+            ValidateTripEntityNotNull(trip);
 
             var tripDto = _mapper.Map<TripDto>(trip);
 
@@ -82,19 +79,16 @@ namespace TripFlip.Services
             return tripDto;
         }
 
-        public async Task<TripDto> UpdateAsync(TripDto tripDto)
+        public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
-            var tripToUpdate = await _tripFlipDbContext.Trips.FindAsync(tripDto.Id);
+            var tripToUpdate = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
-            if (tripToUpdate is null)
-            {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
-            }
+            ValidateTripEntityNotNull(tripToUpdate);
 
-            tripToUpdate.Description = tripDto.Description;
-            tripToUpdate.Title = tripDto.Title;
-            tripToUpdate.StartsAt = tripDto.StartsAt;
-            tripToUpdate.EndsAt = tripDto.EndsAt;
+            tripToUpdate.Description = updateTripDto.Description;
+            tripToUpdate.Title = updateTripDto.Title;
+            tripToUpdate.StartsAt = updateTripDto.StartsAt;
+            tripToUpdate.EndsAt = updateTripDto.EndsAt;
 
             await _tripFlipDbContext.SaveChangesAsync();
             var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
@@ -106,13 +100,20 @@ namespace TripFlip.Services
         {
             var tripToDelete = await _tripFlipDbContext.Trips.FindAsync(id);
 
-            if (tripToDelete is null)
+            ValidateTripEntityNotNull(tripToDelete);
+
+            _tripFlipDbContext.Remove(tripToDelete);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        private void ValidateTripEntityNotNull(TripEntity trip)
+        {
+
+            if (trip is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
 
-            _tripFlipDbContext.Remove(tripToDelete);
-            await _tripFlipDbContext.SaveChangesAsync();
         }
     }
 }
