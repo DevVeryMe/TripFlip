@@ -26,9 +26,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates new Task.
+        /// Creates Task.
         /// </summary>
-        /// <param name="createTaskViewModel">Task to create.</param>
+        /// <param name="createTaskViewModel">Data to create Task.</param>
+        /// <returns>Task view model that
+        /// represents the new entry that was added to database.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -53,12 +55,13 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Tasks from a certain task list.
+        /// Gets all Tasks with the given Task list id.
         /// </summary>
         /// <param name="taskListId">Task list id.</param>
-        /// <param name="searchString">String to find tasks.</param>
+        /// <param name="searchString">String to filter Tasks.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <returns>>Paged list of Task view models.</returns>
+        /// <returns>Paged list of Task view models that
+        /// represent database entries specified by Task list id.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<GetTaskViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
@@ -78,10 +81,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets task by id.
+        /// Gets Task by id.
         /// </summary>
         /// <param name="id">Task id.</param>
-        /// <returns>Task view model.</returns>
+        /// <returns>Task view model with specified id that
+        /// represents database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
@@ -95,10 +99,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing task.
+        /// Updates existing Task.
         /// </summary>
-        /// <param name="updateTaskViewModel">New task data with existing task id.</param>
-        /// <returns>Updated task view model.</returns>
+        /// <param name="updateTaskViewModel">New Task data with existing Task id.</param>
+        /// <returns>Task view model
+        /// that represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -123,10 +128,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing task priority level.
+        /// Updates existing Task's priority level.
         /// </summary>
-        /// <param name="updateTaskPriorityViewModel">New task priority level.</param>
-        /// <returns>Updated task view model.</returns>
+        /// <param name="updateTaskPriorityViewModel">New Task's priority level.</param>
+        /// <returns>Task view model
+        /// that represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -150,11 +156,12 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing task's completeness.
+        /// Updates existing Task's completeness.
         /// </summary>
-        /// <param name="updateTaskCompletenessViewModel"> Object with task id and bool field
-        /// that determines is task completed.</param>
-        /// <returns>Updated task view model.</returns>
+        /// <param name="updateTaskCompletenessViewModel">Data with Task id and field
+        /// that determines whether task is completed.</param>
+        /// <returns>Task view model
+        /// that represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -179,9 +186,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes task by id.
+        /// Deletes Task.
         /// </summary>
         /// <param name="id">Task to delete id.</param>
+        /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]

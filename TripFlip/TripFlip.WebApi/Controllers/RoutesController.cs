@@ -26,9 +26,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns a Route with the given Id.
+        /// Gets a Route with the given id.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents Route database entry.</returns>
+        /// <param name="id">Route id.</param>
+        /// <returns>Route view model that
+        /// represents Route database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResultRouteViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
@@ -43,14 +45,13 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all Routes with the given Trip Id.
+        /// Gets all Routes with the given Trip id.
         /// </summary>
-        /// <param name="tripId">Trip Id.</param>
-        /// <param name="searchString">String to filter routes by Title.</param>
+        /// <param name="tripId">Trip id.</param>
+        /// <param name="searchString">String to filter routes.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <returns>If operation is successful, 
-        /// returns <see cref="PagedList{ResultRouteViewModel}"/> 
-        /// object that represents the paged list of database entries with the given Trip Id.</returns>
+        /// <returns>Paged list of Route view models that
+        /// represent database entries with the given Trip id.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<ResultRouteViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTripIdAsync(
@@ -69,9 +70,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates a new Route with the given <see cref="CreateRouteViewModel"/> object.
+        /// Creates a new Route.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the new entry that was added to database.</returns>
+        /// <param name="createRouteViewModel">Data to create Route.</param>
+        /// <returns>Route view model that
+        /// represents the new entry that was added to database.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -95,9 +98,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates Route with the given <see cref="UpdateRouteViewModel"/> object.
+        /// Updates Route.
         /// </summary>
-        /// <returns>If operation is successful, returns <see cref="ResultRouteViewModel"/> object that represents the updated database entry.</returns>
+        /// <param name="updateRouteViewModel">New Route data with existing Route id.</param>
+        /// <returns>Route view model
+        /// that represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -122,9 +127,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes Route with the given Id.
+        /// Deletes Route.
         /// </summary>
-        /// <returns>If operation is successful, returns NoContent (HTTP code 204) result.</returns>
+        /// <param name="id">Route id.</param>
+        /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]

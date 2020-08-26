@@ -20,7 +20,7 @@ namespace TripFlip.Services
         private readonly TripFlipDbContext _tripFlipDbContext;
 
         /// <summary>
-        /// Initializes _tripFlipDbContext and _mapper fields.
+        /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>

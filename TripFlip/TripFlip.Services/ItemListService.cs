@@ -13,14 +13,17 @@ using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
-    /// <summary>
-    /// Class that performs CRUD operations related to <see cref="ItemListEntity"/>.
-    /// </summary>
+    /// <inheritdoc />
     public class ItemListService : IItemListService
     {
         private readonly IMapper _mapper;
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        /// <summary>
+        /// Initializes database context and automapper.
+        /// </summary>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         public ItemListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
         {
             _mapper = mapper;
@@ -116,7 +119,8 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="RouteEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// Checks if the given <see cref="RouteEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
         /// </summary>
         /// <param name="routeEntity">Object that should be checked.</param>
         void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
@@ -128,7 +132,8 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="ItemListEntity"/> is not null. If null, then throws an <see cref="ArgumentException"/> with corresponding message.
+        /// Checks if the given <see cref="ItemListEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
         /// </summary>
         /// <param name="itemListEntity">Object that should be checked.</param>
         void ValidateItemListEntityIsNotNull(ItemListEntity itemListEntity)
@@ -142,7 +147,7 @@ namespace TripFlip.Services
         /// <summary>
         /// Checks if Route exists by making a database query.
         /// </summary>
-        /// <param name="routeId">Route's Id to check.</param>
+        /// <param name="routeId">Route's id to check.</param>
         async Task ValidateRouteExistsAsync(int routeId)
         {
             var routeEntity = await _tripFlipDbContext

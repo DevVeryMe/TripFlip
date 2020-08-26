@@ -5,44 +5,47 @@ using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
+    /// <summary>
+    /// Describes supported operations with Task list entity.
+    /// </summary>
     public interface ITaskListService
     {
         /// <summary>
-        /// Gets all task lists from certain route.
+        /// Gets all Task lists with given Route id.
         /// </summary>
         /// <param name="routeId">Route id.</param>
-        /// <param name="searchString">String to search in task lists.</param>
+        /// <param name="searchString">String to search in Task lists.</param>
         /// <param name="paginationDto">Pagination settings.</param>
-        /// <returns>Paged list of TaskList DTOs specified by Route Id.</returns>
+        /// <returns>Paged list of Task list DTOs that represent the database entries.</returns>
         Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId, 
             string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Gets task list by id.
+        /// Gets Task list by id.
         /// </summary>
         /// <param name="id">Task list id.</param>
-        /// <returns>Task list DTO with specified id.</returns>
+        /// <returns>Task list DTO that represents the database entry with the given id.</returns>
         Task<TaskListDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Creates new task list.
+        /// Creates a new Task list.
         /// </summary>
-        /// <param name="createTaskListDto">Task list data.</param>
-        /// <returns>Created task list DTO.</returns>
+        /// <param name="createTaskListDto">Data to create a new Task list.</param>
+        /// <returns>Task list DTO that represents the new entry that was added to database.</returns>
         Task<TaskListDto> CreateAsync(CreateTaskListDto createTaskListDto);
 
         /// <summary>
-        /// Updates existing task list.
+        /// Updates Task list.
         /// </summary>
-        /// <param name="updateTaskListDto">New task list data.</param>
-        /// <returns>Updated task list DTO.</returns>
+        /// <param name="updateTaskListDto">New Task list data with existing Task list id.</param>
+        /// <returns>Task list DTO that represents the updated database entry.</returns>
         Task<TaskListDto> UpdateAsync(UpdateTaskListDto updateTaskListDto);
 
         /// <summary>
-        /// Deletes task list by id.
+        /// Deletes Task list.
         /// </summary>
-        /// <param name="id">Task list to delete id.</param>
+        /// <param name="id">Task list id.</param>
         Task DeleteByIdAsync(int id);
     }
 }

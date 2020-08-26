@@ -5,50 +5,53 @@ using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Services.Interfaces
 {
+    /// <summary>
+    /// Describes supported operations with Item entity.
+    /// </summary>
     public interface IItemService
     {
         /// <summary>
-        /// Creates new item.
+        /// Creates a new Item.
         /// </summary>
-        /// <param name="createItemDto">New Item DTO.</param>
-        /// <returns>Created item DTO.</returns>
+        /// <param name="createItemDto">Data to create a new Item.</param>
+        /// <returns>Item DTO that represents the new entry that was added to database.</returns>
         Task<ItemDto> CreateAsync(CreateItemDto createItemDto);
 
         /// <summary>
-        /// Returns all items for certain item list.
+        /// Gets all Items with given Item list id.
         /// </summary>
-        /// <param name="itemListId">Id of item list.</param>
+        /// <param name="itemListId">Id of Item list.</param>
         /// <param name="paginationDto">Pagination settings.</param>
-        /// <param name="searchString">Search string to filter data.</param>
-        /// <returns>Paged list with item DTOs.</returns>
+        /// <param name="searchString">String to filter data.</param>
+        /// <returns>Paged list of Item DTOs that represent the database entries.</returns>
         Task<PagedList<ItemDto>> GetAllByItemListIdAsync(int itemListId,
             string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Updates existing item.
+        /// Updates Item.
         /// </summary>
-        /// <param name="updateItemDto">Item DTO.</param>
-        /// <returns>Updated item DTO.</returns>
+        /// <param name="updateItemDto">Updated Item data with existing Item id.</param>
+        /// <returns>Item DTO that represents the updated database entry.</returns>
         Task<ItemDto> UpdateAsync(UpdateItemDto updateItemDto);
 
         /// <summary>
-        /// Updates existing item completeness.
+        /// Updates existing Item's completeness.
         /// </summary>
-        /// <param name="updateItemCompletenessDto">New item data with field that
-        /// determines is item completed.</param>
-        /// <returns>Updated item DTO.</returns>
+        /// <param name="updateItemCompletenessDto">New Item data with field that
+        /// determines is Item completed and Item id.</param>
+        /// <returns>Item DTO that represents the updated database entry.</returns>
         Task<ItemDto> UpdateCompletenessAsync(UpdateItemCompletenessDto updateItemCompletenessDto);
 
         /// <summary>
-        /// Gets item by id.
+        /// Gets Item by id.
         /// </summary>
         /// <param name="id">Item id.</param>
-        /// <returns>Item DTO.</returns>
+        /// <returns>Item DTO that represents the database entry.</returns>
         Task<ItemDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Deletes item by id.
+        /// Deletes Item.
         /// </summary>
         /// <param name="id">Item id.</param>
         Task DeleteByIdAsync(int id);

@@ -26,10 +26,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns an ItemList with the given Id.
+        /// Gets Item list by its id.
         /// </summary>
-        /// <param name="id">Id of ItemList.</param>
-        /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents ItemList database entry.</returns>
+        /// <param name="id">Id of Item list.</param>
+        /// <returns>Item list view model that
+        /// represents item list database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
@@ -44,12 +45,13 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns all ItemLists with the given Route Id.
+        /// Gets all Item lists with the given Route Id.
         /// </summary>
         /// <param name="routeId">Id of Route.</param>
         /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <param name="searchString">Search string to filter data.</param>
-        /// <returns>If operation is successful, returns <see cref="PagedList{ResultItemListViewModel}"/> object that represents the list of database entries with the given Route Id.</returns>
+        /// <param name="searchString">String to filter data.</param>
+        /// <returns>Paged list with Item list view models that
+        /// represent database entries with the given Route id.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<ResultItemListViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByRouteIdAsync(
@@ -69,10 +71,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates a new ItemList with the given <see cref="CreateItemListViewModel"/> object.
+        /// Creates a new Item list.
         /// </summary>
-        /// <param name="createItemListViewModel">ViewModel that represents new ItemList to be created.</param>
-        /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents the new entry that was added to database.</returns>
+        /// <param name="createItemListViewModel">Data for creating Item list.</param>
+        /// <returns>Item list view model that
+        /// represents the new entry that was added to database.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -96,10 +99,12 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates ItemList with the given <see cref="UpdateItemListViewModel"/> object.
+        /// Updates Item list.
         /// </summary>
-        /// <param name="updateItemListViewModel">ViewModel that represents changes in ItemList to be made.</param>
-        /// <returns>If operation is successful, returns <see cref="ResultItemListViewModel"/> object that represents the updated database entry.</returns>
+        /// <param name="updateItemListViewModel">New Item list data with
+        /// existing Item list id.</param>
+        /// <returns>Item list view model that
+        /// represents the updated database entry.</returns>
         /// /// <remarks>
         /// Sample request:
         /// 
@@ -123,10 +128,10 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes ItemList with the given Id.
+        /// Deletes Item list.
         /// </summary>
-        /// <param name="id">Id of ItemList to be deleted.</param>
-        /// <returns>If operation is successful, returns NoContent (HTTP code 204) result.</returns>
+        /// <param name="id">Id of Item list.</param>
+        /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]

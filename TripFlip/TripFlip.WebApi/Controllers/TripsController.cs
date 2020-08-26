@@ -27,8 +27,12 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all trips.
+        /// Gets all Trips.
         /// </summary>
+        /// <param name="searchString">String to filter Trips.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>Paged list of Trip view models that
+        /// represent database entries.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<TripViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync(
@@ -46,9 +50,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets trip by id.
+        /// Gets Trip by id.
         /// </summary>
-        /// <param name="id">trip id</param>
+        /// <param name="id">Trip id.</param>
+        /// <returns>Trip view model that
+        /// represents database entry.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(TripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
@@ -62,10 +68,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates trip.
+        /// Creates Trip.
         /// </summary>
-        /// <param name="createTripViewModel">new trip data</param>
-        /// <returns>created trip</returns>
+        /// <param name="createTripViewModel">Data to create Trip.</param>
+        /// <returns>Trip view model that
+        /// represents the new entry that was added to database.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -89,10 +96,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates existing trip.
+        /// Updates Trip.
         /// </summary>
-        /// <param name="tripViewModel">new trip data with existing trip id</param>
-        /// <returns>updated trip</returns>
+        /// <param name="tripViewModel">New Trip data with existing Trip id.</param>
+        /// <returns>Trip view model that
+        /// represents the updated database entry.</returns>
         /// <remarks>
         /// Sample request:
         /// 
@@ -119,8 +127,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Deletes trip.
         /// </summary>
-        /// <param name="id">trip id</param>
-        /// <returns>204 status code</returns>
+        /// <param name="id">Trip id.</param>
+        /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
