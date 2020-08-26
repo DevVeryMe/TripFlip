@@ -6,7 +6,7 @@ using TripFlip.Services.Interfaces.Helpers;
 namespace TripFlip.Services.Interfaces
 {
     /// <summary>
-    /// Interface that describes supported CRUD operations with Item list entity.
+    /// Describes supported operations with Item list entity.
     /// </summary>
     public interface IItemListService
     {

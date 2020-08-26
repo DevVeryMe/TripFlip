@@ -6,7 +6,7 @@ using TripFlip.Services.Interfaces.Helpers;
 namespace TripFlip.Services.Interfaces
 {
     /// <summary>
-    /// Interface that describes supported CRUD operations with Route entity.
+    /// Describes supported operations with Route entity.
     /// </summary>
     public interface IRouteService
     {
