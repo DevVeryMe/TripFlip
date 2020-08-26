@@ -17,6 +17,7 @@ namespace TripFlip.Services
     public class TaskListService : ITaskListService
     {
         private readonly TripFlipDbContext _tripFlipDbContext;
+
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -82,7 +83,8 @@ namespace TripFlip.Services
 
         public async Task<TaskListDto> GetByIdAsync(int id)
         {
-            var taskList = await _tripFlipDbContext.TaskLists.AsNoTracking()
+            var taskList = await _tripFlipDbContext.TaskLists
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskList is null)
@@ -115,7 +117,8 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            var taskListToDelete = await _tripFlipDbContext.TaskLists.AsNoTracking()
+            var taskListToDelete = await _tripFlipDbContext.TaskLists
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
             if (taskListToDelete is null)
@@ -134,13 +137,15 @@ namespace TripFlip.Services
         /// <param name="routeId">Route id.</param>
         private async Task ValidateRouteExistsAsync(int routeId)
         {
-            var route = await _tripFlipDbContext.Routes.AsNoTracking()
+            var route = await _tripFlipDbContext.Routes
+                .AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
 
             if (route is null)
             {
                 throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
             }
+
         }
     }
 }

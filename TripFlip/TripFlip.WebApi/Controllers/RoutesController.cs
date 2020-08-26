@@ -17,6 +17,7 @@ namespace TripFlip.WebApi.Controllers
     public class RoutesController : ControllerBase
     {
         private readonly IMapper _mapper;
+
         private readonly IRouteService _routeService;
 
         public RoutesController(IMapper mapper, IRouteService routeService)

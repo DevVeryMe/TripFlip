@@ -17,6 +17,7 @@ namespace TripFlip.WebApi.Controllers
     public class ItemListsController : ControllerBase
     {
         private readonly IMapper _mapper;
+
         private readonly IItemListService _itemListService;
 
         public ItemListsController(IMapper mapper, IItemListService itemListService)

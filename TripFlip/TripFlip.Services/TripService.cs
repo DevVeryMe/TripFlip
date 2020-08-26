@@ -57,7 +57,9 @@ namespace TripFlip.Services
 
         public async Task<TripDto> GetByIdAsync(int id)
         {
-            var trip = await _tripFlipDbContext.Trips.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
+            var trip = await _tripFlipDbContext.Trips
+                .AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == id);
 
             if (trip is null)
             {
