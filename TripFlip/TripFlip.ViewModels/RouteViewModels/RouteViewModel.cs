@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.Services.Dto.RouteDtos
+namespace TripFlip.ViewModels.RouteViewModels
 {
-    public class ResultRouteDto
+    public class RouteViewModel
     {
         public int Id { get; set; }
 

@@ -31,9 +31,9 @@ namespace TripFlip.Services.Interfaces
         /// <summary>
         /// Creates a new Task.
         /// </summary>
-        /// <param name="taskDto">Data to create a new Task.</param>
+        /// <param name="createTaskDto">Data to create a new Task.</param>
         /// <returns>Task DTO that represents the new entry that was added to database.</returns>
-        Task<TaskDto> CreateAsync(TaskDto taskDto);
+        Task<TaskDto> CreateAsync(CreateTaskDto createTaskDto);
 
         /// <summary>
         /// Updates Task.

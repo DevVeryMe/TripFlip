@@ -3,7 +3,7 @@ using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
-namespace TripFlip.Services.Interfaces.TripInterfaces
+namespace TripFlip.Services.Interfaces
 {
     /// <summary>
     /// Describes supported operations with Trip entity.

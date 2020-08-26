@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using TripFlip.DataAccess;
 using TripFlip.Services;
 using TripFlip.Services.Interfaces;
-using TripFlip.Services.Interfaces.TripInterfaces;
 
 namespace TripFlip.Root.ConfigureServicesExtension
 {
@@ -30,7 +29,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
                         configuration, 
-                        Constants.defaultConnectionStringName
+                        Constants.DefaultConnectionStringName
                     )
                 )
             );

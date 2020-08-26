@@ -48,10 +48,10 @@ namespace TripFlip.WebApi.Controllers
         {
             var createItemDto = _mapper.Map<CreateItemDto>(createItemViewModel);
 
-            var itemDto = await _itemService.CreateAsync(createItemDto);
-            var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
+            var createdItemDto = await _itemService.CreateAsync(createItemDto);
+            var createdItemViewModel = _mapper.Map<ItemViewModel>(createdItemDto);
 
-            return Ok(itemViewModel);
+            return Ok(createdItemViewModel);
         }
 
         /// <summary>
@@ -72,11 +72,11 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var items = await _itemService.GetAllByItemListIdAsync(itemListId, searchString, paginationDto);
+            var pagedItemDtos = await _itemService.GetAllByItemListIdAsync(itemListId, searchString, paginationDto);
 
-            var itemViewModels = _mapper.Map<PagedList<ItemViewModel>>(items);
+            var pagedItemViewModels = _mapper.Map<PagedList<ItemViewModel>>(pagedItemDtos);
 
-            return Ok(itemViewModels);
+            return Ok(pagedItemViewModels);
         }
 
         /// <summary>
@@ -101,11 +101,11 @@ namespace TripFlip.WebApi.Controllers
         [ProducesResponseType(typeof(ItemViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemViewModel updateItemViewModel)
         {
-            var itemDtoToUpdate = _mapper.Map<UpdateItemDto>(updateItemViewModel);
-            var itemDtoToReturn = await _itemService.UpdateAsync(itemDtoToUpdate);
-            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
+            var updateItemDto = _mapper.Map<UpdateItemDto>(updateItemViewModel);
+            var updatedItemDto = await _itemService.UpdateAsync(updateItemDto);
+            var updatedItemViewModel = _mapper.Map<ItemViewModel>(updatedItemDto);
 
-            return Ok(itemViewModelToReturn);
+            return Ok(updatedItemViewModel);
         }
 
         /// <summary>
@@ -130,12 +130,12 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> UpdateCompletenessAsync(
             [FromBody] UpdateItemCompletenessViewModel updateItemCompletenessViewModel)
         {
-            var updateTaskPriorityDto = _mapper.Map<UpdateItemCompletenessDto>(updateItemCompletenessViewModel);
+            var updateItemCompletenessDto = _mapper.Map<UpdateItemCompletenessDto>(updateItemCompletenessViewModel);
 
-            var updatedTaskDto = await _itemService.UpdateCompletenessAsync(updateTaskPriorityDto);
-            var updatedTaskViewModel = _mapper.Map<ItemViewModel>(updatedTaskDto);
+            var updatedItemDto = await _itemService.UpdateCompletenessAsync(updateItemCompletenessDto);
+            var updatedItemViewModel = _mapper.Map<ItemViewModel>(updatedItemDto);
 
-            return Ok(updatedTaskViewModel);
+            return Ok(updatedItemViewModel);
         }
 
         /// <summary>
@@ -150,10 +150,10 @@ namespace TripFlip.WebApi.Controllers
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
-            var itemDtoToReturn = await _itemService.GetByIdAsync(id);
-            var itemViewModelToReturn = _mapper.Map<ItemViewModel>(itemDtoToReturn);
+            var itemDto = await _itemService.GetByIdAsync(id);
+            var itemViewModel = _mapper.Map<ItemViewModel>(itemDto);
 
-            return Ok(itemViewModelToReturn);
+            return Ok(itemViewModel);
         }
 
         /// <summary>

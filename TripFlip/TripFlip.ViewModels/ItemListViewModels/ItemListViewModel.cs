@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.Services.Dto.ItemListDtos
+namespace TripFlip.ViewModels.ItemListViewModels
 {
-    public class ResultItemListDto
+    public class ItemListViewModel
     {
         public int Id { get; set; }
 

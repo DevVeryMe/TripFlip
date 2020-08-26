@@ -31,22 +31,22 @@ namespace TripFlip.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskDto> CreateAsync(TaskDto taskDto)
+        public async Task<TaskDto> CreateAsync(CreateTaskDto createTaskDto)
         {
-            var taskList = await _tripFlipDbContext.TaskLists
+            var taskListEntity = await _tripFlipDbContext.TaskLists
                 .AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == taskDto.TaskListId);
+                .SingleOrDefaultAsync(t => t.Id == createTaskDto.TaskListId);
 
-            ValidateTaskListEntityNotNull(taskList);
+            ValidateTaskListEntityNotNull(taskListEntity);
 
-            var taskEntity = _mapper.Map<TaskEntity>(taskDto);
+            var taskEntity = _mapper.Map<TaskEntity>(createTaskDto);
 
             await _tripFlipDbContext.Tasks.AddAsync(taskEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var taskToReturn = _mapper.Map<TaskDto>(taskEntity);
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
-            return taskToReturn;
+            return taskDto;
         }
 
         public async Task<PagedList<TaskDto>> GetAllByTaskListIdAsync(int taskListId,
@@ -78,11 +78,11 @@ namespace TripFlip.Services
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await taskEntitiesQuery.CountAsync();
 
-            var tasksPagedList = taskEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var pagedTaskEntities = taskEntitiesQuery.ToPagedList(pageNumber, pageSize);
 
-            var taskDtos = _mapper.Map< PagedList<TaskDto> >(tasksPagedList);
+            var pagedTaskDtos = _mapper.Map< PagedList<TaskDto> >(pagedTaskEntities);
 
-            return taskDtos;
+            return pagedTaskDtos;
         }
 
         public async Task<TaskDto> GetByIdAsync(int id)
@@ -100,81 +100,81 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks
+            var taskEntity = await _tripFlipDbContext.Tasks
                 .FindAsync(updateTaskDto.Id);
 
-            ValidateTaskEntityNotNull(taskToUpdateEntity);
+            ValidateTaskEntityNotNull(taskEntity);
 
-            taskToUpdateEntity.Description = updateTaskDto.Description;
-            taskToUpdateEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskDto.PriorityLevel);
-            taskToUpdateEntity.IsCompleted = updateTaskDto.IsCompleted;
+            taskEntity.Description = updateTaskDto.Description;
+            taskEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskDto.PriorityLevel);
+            taskEntity.IsCompleted = updateTaskDto.IsCompleted;
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
-            return updatedTaskDto;
+            return taskDto;
         }
 
         public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks
+            var taskEntity = await _tripFlipDbContext.Tasks
                 .FindAsync(updateTaskPriorityDto.Id);
 
-            ValidateTaskEntityNotNull(taskToUpdateEntity);
+            ValidateTaskEntityNotNull(taskEntity);
 
-            taskToUpdateEntity.PriorityLevel = _mapper
+            taskEntity.PriorityLevel = _mapper
                 .Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskPriorityDto.PriorityLevel);
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
-            return updatedTaskDto;
+            return taskDto;
         }
 
         public async Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto)
         {
-            var taskToUpdateEntity = await _tripFlipDbContext.Tasks
+            var taskEntity = await _tripFlipDbContext.Tasks
                 .FindAsync(updateTaskCompletenessDto.Id);
 
-            ValidateTaskEntityNotNull(taskToUpdateEntity);
+            ValidateTaskEntityNotNull(taskEntity);
 
-            taskToUpdateEntity.IsCompleted = updateTaskCompletenessDto.IsCompleted;
+            taskEntity.IsCompleted = updateTaskCompletenessDto.IsCompleted;
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var updatedTaskDto = _mapper.Map<TaskDto>(taskToUpdateEntity);
+            var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
-            return updatedTaskDto;
+            return taskDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var taskToDelete = await _tripFlipDbContext.Tasks
+            var taskEntity = await _tripFlipDbContext.Tasks
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            if (taskToDelete is null)
+            if (taskEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
-            _tripFlipDbContext.Tasks.Remove(taskToDelete);
+            _tripFlipDbContext.Tasks.Remove(taskEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        private void ValidateTaskEntityNotNull(TaskEntity task)
+        private void ValidateTaskEntityNotNull(TaskEntity taskEntity)
         {
 
-            if (task is null)
+            if (taskEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskNotFound);
             }
 
         }
 
-        private void ValidateTaskListEntityNotNull(TaskListEntity taskList)
+        private void ValidateTaskListEntityNotNull(TaskListEntity taskListEntity)
         {
 
-            if (taskList is null)
+            if (taskListEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TaskListNotFound);
             }

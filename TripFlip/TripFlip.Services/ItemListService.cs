@@ -31,7 +31,7 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<ResultItemListDto> GetByIdAsync(int id)
+        public async Task<ItemListDto> GetByIdAsync(int id)
         {
             var itemListEntity = await _tripFlipDbContext
                 .ItemLists
@@ -40,12 +40,12 @@ namespace TripFlip.Services
 
             ValidateItemListEntityIsNotNull(itemListEntity);
 
-            var resultItemListDto = _mapper.Map<ResultItemListDto>(itemListEntity);
+            var itemListDto = _mapper.Map<ItemListDto>(itemListEntity);
 
-            return resultItemListDto;
+            return itemListDto;
         }
 
-        public async Task<PagedList<ResultItemListDto>> GetAllByRouteIdAsync(int routeId,
+        public async Task<PagedList<ItemListDto>> GetAllByRouteIdAsync(int routeId,
             string searchString,
             PaginationDto paginationDto)
         {
@@ -70,13 +70,13 @@ namespace TripFlip.Services
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await itemListEntitiesQuery.CountAsync();
 
-            var pagedListOfItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
-            var pagedListOfItemListDtos = _mapper.Map<PagedList<ResultItemListDto>>(pagedListOfItemListEntities);
+            var pagedItemListEntities = itemListEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var pagedItemListDtos = _mapper.Map<PagedList<ItemListDto>>(pagedItemListEntities);
 
-            return pagedListOfItemListDtos;
+            return pagedItemListDtos;
         }
 
-        public async Task<ResultItemListDto> CreateAsync(CreateItemListDto createItemListDto)
+        public async Task<ItemListDto> CreateAsync(CreateItemListDto createItemListDto)
         {
             await ValidateRouteExistsAsync(createItemListDto.RouteId);
 
@@ -85,12 +85,12 @@ namespace TripFlip.Services
             var entityEntry = _tripFlipDbContext.ItemLists.Add(itemListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultItemListDto = _mapper.Map<ResultItemListDto>(entityEntry.Entity);
+            var itemListDto = _mapper.Map<ItemListDto>(entityEntry.Entity);
 
-            return resultItemListDto;
+            return itemListDto;
         }
 
-        public async Task<ResultItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto)
+        public async Task<ItemListDto> UpdateAsync(UpdateItemListDto updateItemListDto)
         {
             var itemListEntity = await _tripFlipDbContext
                 .ItemLists
@@ -102,20 +102,20 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var resultItemListDto = _mapper.Map<ResultItemListDto>(itemListEntity);
+            var itemListDto = _mapper.Map<ItemListDto>(itemListEntity);
 
-            return resultItemListDto;
+            return itemListDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var itemListEntityToDelete = await _tripFlipDbContext
+            var itemListEntity = await _tripFlipDbContext
                 .ItemLists
-                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
+                .SingleOrDefaultAsync(entity => entity.Id == id);
 
-            ValidateItemListEntityIsNotNull(itemListEntityToDelete);
+            ValidateItemListEntityIsNotNull(itemListEntity);
 
-            _tripFlipDbContext.ItemLists.Remove(itemListEntityToDelete);
+            _tripFlipDbContext.ItemLists.Remove(itemListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

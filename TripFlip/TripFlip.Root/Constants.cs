@@ -2,6 +2,6 @@
 {
     class Constants
     {
-        public static readonly string defaultConnectionStringName = "DefaultConnection";
+        public static readonly string DefaultConnectionStringName = "DefaultConnection";
     }
 }

@@ -40,9 +40,9 @@ namespace TripFlip.Services
             await _tripFlipDbContext.TaskLists.AddAsync(taskListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            var createdTaskListDto = _mapper.Map<TaskListDto>(taskListEntity);
+            var taskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
-            return createdTaskListDto;
+            return taskListDto;
         }
 
         public async Task<PagedList<TaskListDto>> GetAllByRouteIdAsync(int routeId,
@@ -74,50 +74,50 @@ namespace TripFlip.Services
             var pageNumber = paginationDto.PageNumber ?? 1;
             var pageSize = paginationDto.PageSize ?? await taskListEntitiesQuery.CountAsync();
 
-            var taskListsPagedList = taskListEntitiesQuery.ToPagedList(pageNumber, pageSize);
+            var pagedTaskListEntities = taskListEntitiesQuery.ToPagedList(pageNumber, pageSize);
 
-            var taskListDtos = _mapper.Map< PagedList<TaskListDto> >(taskListsPagedList);
+            var pagedTaskListDtos = _mapper.Map< PagedList<TaskListDto> >(pagedTaskListEntities);
 
-            return taskListDtos;
+            return pagedTaskListDtos;
         }
 
         public async Task<TaskListDto> GetByIdAsync(int id)
         {
-            var taskList = await _tripFlipDbContext.TaskLists
+            var taskListEntity = await _tripFlipDbContext.TaskLists
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTaskListEntityNotNull(taskList);
+            ValidateTaskListEntityNotNull(taskListEntity);
 
-            var taskListDto = _mapper.Map<TaskListDto>(taskList);
+            var taskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
             return taskListDto;
         }
 
         public async Task<TaskListDto> UpdateAsync(UpdateTaskListDto updateTaskListDto)
         {
-            var taskLsitToUpdateEntity = await _tripFlipDbContext.TaskLists
+            var taskListEntity = await _tripFlipDbContext.TaskLists
                 .FindAsync(updateTaskListDto.Id);
 
-            ValidateTaskListEntityNotNull(taskLsitToUpdateEntity);
+            ValidateTaskListEntityNotNull(taskListEntity);
 
-            taskLsitToUpdateEntity.Title = updateTaskListDto.Title;
+            taskListEntity.Title = updateTaskListDto.Title;
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var updatedTaskListDto = _mapper.Map<TaskListDto>(taskLsitToUpdateEntity);
+            var taskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
-            return updatedTaskListDto;
+            return taskListDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var taskListToDelete = await _tripFlipDbContext.TaskLists
+            var taskListEntity = await _tripFlipDbContext.TaskLists
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTaskListEntityNotNull(taskListToDelete);
+            ValidateTaskListEntityNotNull(taskListEntity);
 
-            _tripFlipDbContext.TaskLists.Remove(taskListToDelete);
+            _tripFlipDbContext.TaskLists.Remove(taskListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
@@ -128,11 +128,11 @@ namespace TripFlip.Services
         /// <param name="routeId">Route id.</param>
         private async Task ValidateRouteExistsAsync(int routeId)
         {
-            var route = await _tripFlipDbContext.Routes
+            var routeEntity = await _tripFlipDbContext.Routes
                 .AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
 
-            if (route is null)
+            if (routeEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
             }

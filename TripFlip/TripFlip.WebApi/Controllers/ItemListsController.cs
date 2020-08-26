@@ -33,16 +33,16 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Item list view model that
         /// represents item list database entry.</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
-            var resultRouteDto = await _itemListService.GetByIdAsync(id);
+            var routeDto = await _itemListService.GetByIdAsync(id);
 
-            var resultRouteViewModel = _mapper.Map<ResultItemListViewModel>(resultRouteDto);
+            var routeViewModel = _mapper.Map<ItemListViewModel>(routeDto);
 
-            return Ok(resultRouteViewModel);
+            return Ok(routeViewModel);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Paged list with Item list view models that
         /// represent database entries with the given Route id.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(PagedList<ResultItemListViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedList<ItemListViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByRouteIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromQuery] int routeId, 
@@ -63,12 +63,12 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var pagedListOfItemListDtos = 
+            var pagedItemListDtos = 
                 await _itemListService.GetAllByRouteIdAsync(routeId, searchString, paginationDto);
 
-            var pagedListOfItemListViewModels = _mapper.Map< PagedList<ResultItemListViewModel> >(pagedListOfItemListDtos);
+            var pagedItemListViewModels = _mapper.Map< PagedList<ItemListViewModel> >(pagedItemListDtos);
 
-            return Ok(pagedListOfItemListViewModels);
+            return Ok(pagedItemListViewModels);
         }
 
         /// <summary>
@@ -87,16 +87,16 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateItemListViewModel createItemListViewModel)
         {
             var createItemListDto = _mapper.Map<CreateItemListDto>(createItemListViewModel);
 
-            var resultItemListDto = await _itemListService.CreateAsync(createItemListDto);
+            var createdItemListDto = await _itemListService.CreateAsync(createItemListDto);
 
-            var resultItemListViewModel = _mapper.Map<ResultItemListViewModel>(resultItemListDto);
+            var createdItemListViewModel = _mapper.Map<ItemListViewModel>(createdItemListDto);
 
-            return Ok(resultItemListViewModel);
+            return Ok(createdItemListViewModel);
         }
 
         /// <summary>
@@ -116,16 +116,16 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        [ProducesResponseType(typeof(ResultItemListViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ItemListViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemListViewModel updateItemListViewModel)
         {
             var updateItemListDto = _mapper.Map<UpdateItemListDto>(updateItemListViewModel);
 
-            var resultItemListDto = await _itemListService.UpdateAsync(updateItemListDto);
+            var updatedItemListDto = await _itemListService.UpdateAsync(updateItemListDto);
 
-            var resultItemListViewModel = _mapper.Map<ResultItemListViewModel>(resultItemListDto);
+            var updatedItemListViewModel = _mapper.Map<ItemListViewModel>(updatedItemListDto);
 
-            return Ok(resultItemListViewModel);
+            return Ok(updatedItemListViewModel);
         }
 
         /// <summary>

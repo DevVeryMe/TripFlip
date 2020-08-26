@@ -9,7 +9,7 @@ using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.Interfaces.TripInterfaces;
+using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
@@ -49,71 +49,69 @@ namespace TripFlip.Services
                         tripEntity.Description.Contains(searchString));
             }
 
-            var tripEntitiesPagedList = tripsQuery.ToPagedList(pageNumber, pageSize);
-            var tripDtosPagedList = _mapper.Map<PagedList<TripDto>>(tripEntitiesPagedList);
+            var pagedTripEntities = tripsQuery.ToPagedList(pageNumber, pageSize);
+            var pagedTripDtos = _mapper.Map<PagedList<TripDto>>(pagedTripEntities);
 
-            return tripDtosPagedList;
+            return pagedTripDtos;
         }
 
         public async Task<TripDto> GetByIdAsync(int id)
         {
-            var trip = await _tripFlipDbContext.Trips
+            var tripEntity = await _tripFlipDbContext.Trips
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTripEntityNotNull(trip);
+            ValidateTripEntityNotNull(tripEntity);
 
-            var tripDto = _mapper.Map<TripDto>(trip);
+            var tripDto = _mapper.Map<TripDto>(tripEntity);
 
             return tripDto;
         }
 
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
-            var trip = _mapper.Map<TripEntity>(createTripDto);
+            var tripEntity = _mapper.Map<TripEntity>(createTripDto);
 
-            await _tripFlipDbContext.AddAsync(trip);
+            await _tripFlipDbContext.AddAsync(tripEntity);
             await _tripFlipDbContext.SaveChangesAsync();
-            var tripDto = _mapper.Map<TripDto>(trip);
+            var tripDto = _mapper.Map<TripDto>(tripEntity);
 
             return tripDto;
         }
 
         public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
-            var tripToUpdate = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
+            var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
-            ValidateTripEntityNotNull(tripToUpdate);
+            ValidateTripEntityNotNull(tripEntity);
 
-            tripToUpdate.Description = updateTripDto.Description;
-            tripToUpdate.Title = updateTripDto.Title;
-            tripToUpdate.StartsAt = updateTripDto.StartsAt;
-            tripToUpdate.EndsAt = updateTripDto.EndsAt;
+            tripEntity.Description = updateTripDto.Description;
+            tripEntity.Title = updateTripDto.Title;
+            tripEntity.StartsAt = updateTripDto.StartsAt;
+            tripEntity.EndsAt = updateTripDto.EndsAt;
 
             await _tripFlipDbContext.SaveChangesAsync();
-            var newTripDto = _mapper.Map<TripDto>(tripToUpdate);
+            var tripDto = _mapper.Map<TripDto>(tripEntity);
 
-            return newTripDto;
+            return tripDto;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var tripToDelete = await _tripFlipDbContext.Trips.FindAsync(id);
+            var tripEntity = await _tripFlipDbContext.Trips.FindAsync(id);
 
-            ValidateTripEntityNotNull(tripToDelete);
+            ValidateTripEntityNotNull(tripEntity);
 
-            _tripFlipDbContext.Remove(tripToDelete);
+            _tripFlipDbContext.Remove(tripEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        private void ValidateTripEntityNotNull(TripEntity trip)
+        void ValidateTripEntityNotNull(TripEntity tripEntity)
         {
-
-            if (trip is null)
+            if (tripEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
-
         }
     }
 }

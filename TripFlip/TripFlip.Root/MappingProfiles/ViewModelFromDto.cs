@@ -23,29 +23,29 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<PagedList<TripDto>, PagedList<TripViewModel>>();
 
-            CreateMap<TaskDto, GetTaskViewModel>();
+            CreateMap<TaskDto, TaskViewModel>();
 
             CreateMap<TaskDto, UpdateTaskViewModel>();
 
-            CreateMap<TaskListDto, GetTaskListViewModel>();
+            CreateMap<TaskListDto, TaskListViewModel>();
 
             CreateMap<TaskListDto, UpdateTaskListViewModel>();
 
             CreateMap<ItemDto, ItemViewModel>();
 
-            CreateMap<ResultRouteDto, ResultRouteViewModel>();
+            CreateMap<RouteDto, RouteViewModel>();
 
-            CreateMap<PagedList<ResultRouteDto>, PagedList<ResultRouteViewModel>>();
+            CreateMap<PagedList<RouteDto>, PagedList<RouteViewModel>>();
 
-            CreateMap<ResultItemListDto, ResultItemListViewModel>();
+            CreateMap<ItemListDto, ItemListViewModel>();
 
             CreateMap<PagedList<ItemDto>, PagedList<ItemViewModel>>();
 
-            CreateMap<PagedList<ResultItemListDto>, PagedList<ResultItemListViewModel>>();
+            CreateMap<PagedList<ItemListDto>, PagedList<ItemListViewModel>>();
 
-            CreateMap<PagedList<TaskDto>, PagedList<GetTaskViewModel>>();
+            CreateMap<PagedList<TaskDto>, PagedList<TaskViewModel>>();
 
-            CreateMap<PagedList<TaskListDto>, PagedList<GetTaskListViewModel>>();
+            CreateMap<PagedList<TaskListDto>, PagedList<TaskListViewModel>>();
         }
     }
 }

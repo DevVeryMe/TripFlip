@@ -43,14 +43,14 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTaskViewModel createTaskViewModel)
         {
-            var taskDto = _mapper.Map<TaskDto>(createTaskViewModel);
+            var createTaskDto = _mapper.Map<CreateTaskDto>(createTaskViewModel);
 
-            var taskToReturnDto = await _taskService.CreateAsync(taskDto);
+            var createdTaskDto = await _taskService.CreateAsync(createTaskDto);
 
-            var createdTaskViewModel = _mapper.Map<GetTaskViewModel>(taskToReturnDto);
+            var createdTaskViewModel = _mapper.Map<TaskViewModel>(createdTaskDto);
 
             return Ok(createdTaskViewModel);
         }
@@ -64,7 +64,7 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Paged list of Task view models that
         /// represent database entries specified by Task list id.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(PagedList<GetTaskViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedList<TaskViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllByTaskListIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromQuery] int taskListId,
@@ -73,12 +73,12 @@ namespace TripFlip.WebApi.Controllers
         {
             var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
 
-            var taskDtos = await _taskService.
+            var pagedTaskDtos = await _taskService.
                 GetAllByTaskListIdAsync(taskListId, searchString, paginationDto);
 
-            var taskViewModels = _mapper.Map< PagedList<GetTaskViewModel> >(taskDtos);
+            var pagedTaskViewModels = _mapper.Map< PagedList<TaskViewModel> >(pagedTaskDtos);
 
-            return Ok(taskViewModels);
+            return Ok(pagedTaskViewModels);
         }
 
         /// <summary>
@@ -88,15 +88,15 @@ namespace TripFlip.WebApi.Controllers
         /// <returns>Task view model with specified id that
         /// represents database entry.</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(GetTaskViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync(
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)]
             [FromRoute] int id)
         {
             var taskDto = await _taskService.GetByIdAsync(id);
-            var getTaskViewModel = _mapper.Map<GetTaskViewModel>(taskDto);
+            var taskViewModel = _mapper.Map<TaskViewModel>(taskDto);
 
-            return Ok(getTaskViewModel);
+            return Ok(taskViewModel);
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace TripFlip.WebApi.Controllers
         [ProducesResponseType(typeof(UpdateTaskViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateTaskViewModel updateTaskViewModel)
         {
-            var taskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
+            var updateTaskDto = _mapper.Map<UpdateTaskDto>(updateTaskViewModel);
 
-            var updatedTaskDto = await _taskService.UpdateAsync(taskDto);
+            var updatedTaskDto = await _taskService.UpdateAsync(updateTaskDto);
             var updatedTaskViewModel = _mapper.Map<UpdateTaskViewModel>(updatedTaskDto);
 
             return Ok(updatedTaskViewModel);

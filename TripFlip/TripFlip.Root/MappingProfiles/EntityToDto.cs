@@ -24,15 +24,15 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TaskListEntity, TaskListDto>();
 
-            CreateMap<RouteEntity, ResultRouteDto>();
+            CreateMap<RouteEntity, RouteDto>();
 
-            CreateMap<PagedList<RouteEntity>, PagedList<ResultRouteDto>>();
+            CreateMap<PagedList<RouteEntity>, PagedList<RouteDto>>();
 
-            CreateMap<ItemListEntity, ResultItemListDto>();
+            CreateMap<ItemListEntity, ItemListDto>();
             
             CreateMap<PagedList<ItemEntity>, PagedList<ItemDto>>();
 
-            CreateMap<PagedList<ItemListEntity>, PagedList<ResultItemListDto>>();
+            CreateMap<PagedList<ItemListEntity>, PagedList<ItemListDto>>();
 
             CreateMap<PagedList<TaskEntity>, PagedList<TaskDto>>();
 
