@@ -20,7 +20,8 @@ namespace WebApiUnitTests.Item
             Assert.IsTrue(result);
         }
 
-        private static UpdateItemCompletenessViewModel GetUpdateItemCompletenessViewModel(int id, bool isCompleted)
+        private static UpdateItemCompletenessViewModel GetUpdateItemCompletenessViewModel(
+            int id, bool isCompleted)
         {
             return new UpdateItemCompletenessViewModel()
             {

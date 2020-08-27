@@ -36,7 +36,7 @@ namespace WebApiUnitTests.Item
         }
 
         [DataTestMethod]
-        public void Create_UpdateItemViewModel_Given_Not_valid_Comment_too_long_length_Validation_should_be_failed()
+        public void Create_UpdateItemViewModel_Given_Not_valid_Comment_too_long_Validation_should_be_failed()
         {
             var comment = "The European languages are members of the same family. Their separate " +
                           "existence is a myth. For science, music, sport, etc, Europe uses the same" +
@@ -60,7 +60,7 @@ namespace WebApiUnitTests.Item
         }
 
         [DataTestMethod]
-        public void Create_UpdateItemViewModel_Given_Not_valid_Quantity_too_long_length_Validation_should_be_failed()
+        public void Create_UpdateItemViewModel_Given_Not_valid_Quantity_too_long_Validation_should_be_failed()
         {
             var quantity = "The European languages are members of the same family. Their separate " +
                           "existence is a myth.";
