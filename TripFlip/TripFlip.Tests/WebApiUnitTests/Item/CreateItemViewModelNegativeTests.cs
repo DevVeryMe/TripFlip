@@ -36,7 +36,7 @@ namespace WebApiUnitTests.Item
                           " will be more simple and regular than the existing European languages. It " +
                           "will be as simple as Occidental; in fact, it will be Occidental.";
 
-                var createItemViewModel = GetCreateItemViewModel("Tent", comment, null, 1);
+            var createItemViewModel = GetCreateItemViewModel("Tent", comment, null, 1);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
