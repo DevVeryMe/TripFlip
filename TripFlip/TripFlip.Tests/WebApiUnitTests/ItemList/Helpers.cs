@@ -33,16 +33,5 @@ namespace WebApiUnitTests.ItemList
                 1
             };
         }
-
-        internal static IEnumerable<object[]> Get_Invalid_ItemList_Id()
-        {
-            yield return new object[]
-            {
-                "Test case 1 : Test_ItemList_Id_Validation was given invalid Id that is less than 1" +
-                " Validation should be failed.",
-                "Valid ItemList title",
-                0
-            };
-        }
     }
 }

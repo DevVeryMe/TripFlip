@@ -31,18 +31,16 @@ namespace WebApiUnitTests.ItemList
             Assert.IsFalse(result, testCaseDisplayName);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(Helpers.Get_Invalid_ItemList_Id), typeof(Helpers), DynamicDataSourceType.Method)]
-        public void Test_ItemList_RouteId_Validation(
-           string testCaseDisplayName,
-           string validTitle,
-           int routeId)
+        [TestMethod]
+        public void Test_ItemList_RouteId_Validation()
         {
             // Arrange
+            string validTitle = "Valid item list title.";
+            int invalidRouteId = -1;
             var createItemListViewModel = new CreateItemListViewModel()
             {
                 Title = validTitle,
-                RouteId = routeId
+                RouteId = invalidRouteId
             };
 
             // Act
@@ -52,7 +50,7 @@ namespace WebApiUnitTests.ItemList
                 true);
 
             // Assert
-            Assert.IsFalse(result, testCaseDisplayName);
+            Assert.IsFalse(result);
         }
     }
 }

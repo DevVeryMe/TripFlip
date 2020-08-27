@@ -31,17 +31,15 @@ namespace WebApiUnitTests.ItemList
             Assert.IsFalse(result, testCaseDisplayName);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(Helpers.Get_Invalid_ItemList_Id), typeof(Helpers), DynamicDataSourceType.Method)]
-        public void Test_ItemList_Id_Validation(
-            string testCaseDisplayName,
-            string validTitle,
-            int id)
+        [TestMethod]
+        public void Test_ItemList_Id_Validation()
         {
             // Arrange
+            int invalidId = 0;
+            string validTitle = "Valid ItemList title";
             var updateItemListViewModel = new UpdateItemListViewModel()
             {
-                Id = id,
+                Id = invalidId,
                 Title = validTitle
             };
 
@@ -52,7 +50,7 @@ namespace WebApiUnitTests.ItemList
                 true);
 
             // Assert
-            Assert.IsFalse(result, testCaseDisplayName);
+            Assert.IsFalse(result);
         }
     }
 }
