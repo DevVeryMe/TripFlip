@@ -15,15 +15,15 @@ namespace WebApiUnitTests.ItemList
             int validId)
         {
             // Arrange
-            var createItemListViewModel = new UpdateItemListViewModel()
+            var updateItemListViewModel = new UpdateItemListViewModel()
             {
                 Id = validId,
                 Title = title
             };
 
             // Act
-            bool result = Validator.TryValidateObject(createItemListViewModel,
-                new ValidationContext(createItemListViewModel, null, null),
+            bool result = Validator.TryValidateObject(updateItemListViewModel,
+                new ValidationContext(updateItemListViewModel, null, null),
                 null,
                 true);
 
@@ -39,15 +39,15 @@ namespace WebApiUnitTests.ItemList
             int id)
         {
             // Arrange
-            var createItemListViewModel = new UpdateItemListViewModel()
+            var updateItemListViewModel = new UpdateItemListViewModel()
             {
                 Id = id,
                 Title = validTitle
             };
 
             // Act
-            bool result = Validator.TryValidateObject(createItemListViewModel,
-                new ValidationContext(createItemListViewModel, null, null),
+            bool result = Validator.TryValidateObject(updateItemListViewModel,
+                new ValidationContext(updateItemListViewModel, null, null),
                 null,
                 true);
 
