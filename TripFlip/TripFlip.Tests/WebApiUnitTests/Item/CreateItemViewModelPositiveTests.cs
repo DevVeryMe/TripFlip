@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.ItemViewModels;
 
-namespace WebApiUnitTests.ItemViewModels
+namespace WebApiUnitTests.Item
 {
     [TestClass]
     public class CreateItemViewModelPositiveTests
@@ -25,13 +25,15 @@ namespace WebApiUnitTests.ItemViewModels
         {
             yield return new object[]
             {
-                "Test case 1: Create_CreateItemViewModel_Given_Valid_Not_null_values_Should_be_successful",
+                "Test case 1: Create_CreateItemViewModel_Given_Valid_Not_null_values_" +
+                "Validation_should_be_successful",
                 GetCreateItemViewModel("Tent", null, null, 1)
             };
 
             yield return new object[]
             {
-                "Test case 1: Create_CreateItemViewModel_Given_Valid_With_null_values_where_possible_Should_be_successful",
+                "Test case 1: Create_CreateItemViewModel_Given_Valid_With_null_values_where_" +
+                "possible_Validation_should_be_successful",
                 GetCreateItemViewModel("Tent", "The most needed item.", "At least 1.", 1)
             };
         }

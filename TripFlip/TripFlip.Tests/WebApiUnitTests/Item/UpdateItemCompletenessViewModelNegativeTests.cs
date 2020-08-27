@@ -1,24 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.ItemViewModels;
 
-namespace WebApiUnitTests.ItemViewModels
+namespace WebApiUnitTests.Item
 {
     [TestClass]
-    public class UpdateItemCompletenessViewModelPositiveTests
+    public class UpdateItemCompletenessViewModelNegativeTests
     {
         [DataTestMethod]
-        public void Create_UpdateItemCompletenessViewModel_Given_Valid_values_Should_be_successful()
+        public void Create_UpdateItemCompletenessViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
-            var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(1, true);
+            var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(-1, true);
 
             var result = Validator.TryValidateObject(updateItemCompletenessViewModel,
                 new ValidationContext(updateItemCompletenessViewModel),
                 null,
                 true);
 
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
 
         private static UpdateItemCompletenessViewModel GetUpdateItemCompletenessViewModel(int id, bool isCompleted)

@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.ItemViewModels;
 
-namespace WebApiUnitTests.ItemViewModels
+namespace WebApiUnitTests.Item
 {
     [TestClass]
-    public class CreateItemViewModelNegativeTests
+    public class UpdateItemViewModelNegativeTests
     {
         [DataTestMethod]
-        [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
-        public void TestItemTitleValidation(string displayName, string title)
+        public void Create_UpdateItemViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
-            var createItemViewModel = GetCreateItemViewModel(title, null, null, 1);
+            var updateItemViewModel = GetUpdateItemViewModel(0, "Tent", null, null, true);
 
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
+            var result = Validator.TryValidateObject(updateItemViewModel,
+                new ValidationContext(updateItemViewModel),
                 null,
                 true);
 
@@ -23,7 +22,21 @@ namespace WebApiUnitTests.ItemViewModels
         }
 
         [DataTestMethod]
-        public void Create_CreateItemViewModel_Given_Not_valid_Comment_too_long_length_Validation_should_be_failed()
+        [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
+        public void TestItemTitleValidation(string displayName, string title)
+        {
+            var updateItemViewModel = GetUpdateItemViewModel(1, title, null, null, true);
+
+            var result = Validator.TryValidateObject(updateItemViewModel,
+                new ValidationContext(updateItemViewModel),
+                null,
+                true);
+
+            Assert.IsFalse(result);
+        }
+
+        [DataTestMethod]
+        public void Create_UpdateItemViewModel_Given_Not_valid_Comment_too_long_length_Validation_should_be_failed()
         {
             var comment = "The European languages are members of the same family. Their separate " +
                           "existence is a myth. For science, music, sport, etc, Europe uses the same" +
@@ -36,7 +49,7 @@ namespace WebApiUnitTests.ItemViewModels
                           " will be more simple and regular than the existing European languages. It " +
                           "will be as simple as Occidental; in fact, it will be Occidental.";
 
-                var createItemViewModel = GetCreateItemViewModel("Tent", comment, null, 1);
+            var createItemViewModel = GetUpdateItemViewModel(1, "Tent", comment, null, true);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -47,25 +60,12 @@ namespace WebApiUnitTests.ItemViewModels
         }
 
         [DataTestMethod]
-        public void Create_CreateItemViewModel_Given_Not_valid_Quantity_too_long_length_Validation_should_be_failed()
+        public void Create_UpdateItemViewModel_Given_Not_valid_Quantity_too_long_length_Validation_should_be_failed()
         {
             var quantity = "The European languages are members of the same family. Their separate " +
                           "existence is a myth.";
 
-            var createItemViewModel = GetCreateItemViewModel("Tent", null, quantity, 1);
-
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
-                null,
-                true);
-
-            Assert.IsFalse(result);
-        }
-
-        [DataTestMethod]
-        public void Create_CreateItemViewModel_Given_Not_valid_ItemListId_Validation_should_be_failed()
-        {
-            var createItemViewModel = GetCreateItemViewModel("Tent", null, null, -1);
+            var createItemViewModel = GetUpdateItemViewModel(1, "Tent", null, quantity, true);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -79,19 +79,22 @@ namespace WebApiUnitTests.ItemViewModels
         {
             yield return new object[]
             {
-                "Test case 1: Create_CreateItemViewModel_Given_Not_valid_Title_equals_null_Validation_should_be_failed",
+                "Test case 1: Create_UpdateItemViewModel_Given_Not_valid_Title_equals_null_" +
+                "Validation_should_be_failed",
                 null
             };
 
             yield return new object[]
             {
-                "Test case 2: Create_CreateItemViewModel_Given_Not_valid_Title_equals_empty_string_Validation_should_be_failed",
+                "Test case 2: Create_UpdateItemViewModel_Given_Not_valid_Title_equals_empty_string_" +
+                "Validation_should_be_failed",
                 string.Empty
             };
 
             yield return new object[]
             {
-                "Test case 3: Create_CreateItemViewModel_Given_Not_valid_Title_too_long_length_Validation_should_be_failed",
+                "Test case 3: Create_UpdateItemViewModel_Given_Not_valid_Title_too_long_length_" +
+                "Validation_should_be_failed",
 
                 "The European languages are members of the same family. Their separate existence is a myth. " +
                 "For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in" +
@@ -99,15 +102,16 @@ namespace WebApiUnitTests.ItemViewModels
             };
         }
 
-        private static CreateItemViewModel GetCreateItemViewModel(string title, string comment,
-            string quantity, int itemListId)
+        private static UpdateItemViewModel GetUpdateItemViewModel(int id, string title,
+            string comment, string quantity, bool isCompleted)
         {
-            return new CreateItemViewModel()
+            return new UpdateItemViewModel()
             {
+                Id = id,
                 Title = title,
                 Comment = comment,
                 Quantity = quantity,
-                ItemListId = itemListId
+                IsCompleted = isCompleted
             };
         }
     }
