@@ -22,7 +22,7 @@ namespace WebApiUnitTests.Item
             Assert.IsFalse(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         public void Create_CreateItemViewModel_Given_Not_valid_Comment_too_long_Validation_should_be_failed()
         {
             var comment = new string('*', 251);
@@ -36,7 +36,7 @@ namespace WebApiUnitTests.Item
             Assert.IsFalse(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         public void Create_CreateItemViewModel_Given_Not_valid_Quantity_too_long_Validation_should_be_failed()
         {
             var quantity = new string('*', 51);
@@ -51,7 +51,7 @@ namespace WebApiUnitTests.Item
             Assert.IsFalse(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         public void Create_CreateItemViewModel_Given_Not_valid_ItemListId_Validation_should_be_failed()
         {
             var createItemViewModel = GetCreateItemViewModel("Tent", null, null, -1);

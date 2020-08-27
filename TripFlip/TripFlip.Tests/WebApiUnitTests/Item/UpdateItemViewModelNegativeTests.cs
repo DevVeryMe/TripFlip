@@ -8,7 +8,7 @@ namespace WebApiUnitTests.Item
     [TestClass]
     public class UpdateItemViewModelNegativeTests
     {
-        [DataTestMethod]
+        [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
             var updateItemViewModel = GetUpdateItemViewModel(0, "Tent", null, null, true);
@@ -35,7 +35,7 @@ namespace WebApiUnitTests.Item
             Assert.IsFalse(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Comment_too_long_Validation_should_be_failed()
         {
             var comment = new string('*', 251);
@@ -50,7 +50,7 @@ namespace WebApiUnitTests.Item
             Assert.IsFalse(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Quantity_too_long_Validation_should_be_failed()
         {
             var quantity = new string('*', 51);

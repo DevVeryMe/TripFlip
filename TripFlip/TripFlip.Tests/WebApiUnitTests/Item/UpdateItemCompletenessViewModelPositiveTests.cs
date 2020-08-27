@@ -7,7 +7,7 @@ namespace WebApiUnitTests.Item
     [TestClass]
     public class UpdateItemCompletenessViewModelPositiveTests
     {
-        [DataTestMethod]
+        [TestMethod]
         public void Create_UpdateItemCompletenessViewModel_Given_Valid_values_Validation_should_be_successful()
         {
             var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(1, true);

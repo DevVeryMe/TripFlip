@@ -7,7 +7,7 @@ namespace WebApiUnitTests.Item
     [TestClass]
     public class UpdateItemCompletenessViewModelNegativeTests
     {
-        [DataTestMethod]
+        [TestMethod]
         public void Create_UpdateItemCompletenessViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
             var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(-1, true);
