@@ -73,13 +73,15 @@ namespace WebApiUnitTests.RouteViewModels.Negative
         {
             yield return new object[]
             {
-                "Test case 1: Title_IsNull_ExceptionThrown",
+                "Test case 1: Test CreateRouteViewModelBuilder validation" +
+                " if title set to null. Validation should fail.",
                 null
             };
 
             yield return new object[]
             {
-                "Test case 2: Title_IsEmptyString_ExceptionThrown",
+                "Test case 2: Test CreateRouteViewModelBuilder validation" +
+                " if title set to empty string. Validation should fail.",
                 string.Empty
             };
         }

@@ -17,11 +17,11 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int validId = 1;
             int validTripId = 1;
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsBuilder
                 .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            var titleValidationError = ModelValidator.Validate(createRouteViewModel);
+            var titleValidationError = ModelValidator.Validate(updateRouteViewModel);
 
             bool modelIsNotValid = (titleValidationError
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.EmptyTitleFieldError)).Count() > 0);
@@ -38,11 +38,11 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int validTripId = 1;
             string notValidTitle = new string('*', 101);
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsBuilder
                 .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            var titleError = ModelValidator.Validate(createRouteViewModel);
+            var titleError = ModelValidator.Validate(updateRouteViewModel);
 
             bool modelIsNotValid = (titleError
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.TitleLengthError)).Count() > 0);
@@ -59,11 +59,11 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int notValidTripId = -1;
             string validTitle = new string('*', 3);
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsBuilder
                 .BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(createRouteViewModel);
+            var validationResults = ModelValidator.Validate(updateRouteViewModel);
 
             bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
@@ -80,11 +80,11 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int validTripId = 1;
             string validTitle = new string('*', 3);
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsBuilder
                 .BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(createRouteViewModel);
+            var validationResults = ModelValidator.Validate(updateRouteViewModel);
 
             bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
@@ -97,13 +97,15 @@ namespace WebApiUnitTests.RouteViewModels.Negative
         {
             yield return new object[]
             {
-                "Test case 1: Title_IsNull_ExceptionThrown",
+                "Test case 1: Test UpdateRouteViewModelBuilder validation" +
+                " if title set to null. Validation should fail.",
                 null
             };
 
             yield return new object[]
             {
-                "Test case 2: Title_IsEmptyString_ExceptionThrown",
+                "Test case 1: Test UpdateRouteViewModelBuilder validation" +
+                " if title set to empty string. Validation should fail.",
                 string.Empty
             };
         }
