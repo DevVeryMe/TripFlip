@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using TripFlip.ViewModels.RouteViewModels;
-using WebApiUnitTests.RouteViewModels.Helpers;
+using WebApiUnitTests.Helpers;
 
-namespace WebApiUnitTests.RouteViewModels.Positive
+namespace WebApiUnitTests.UpdateRouteViewModelTests
 {
     public class UpdateRouteViewModelPositiveTests
     {

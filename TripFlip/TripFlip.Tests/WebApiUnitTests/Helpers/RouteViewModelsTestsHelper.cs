@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.RouteViewModels;
 
-namespace WebApiUnitTests.RouteViewModels.Helpers
+namespace WebApiUnitTests.Helpers
 {
     /// <summary>
     /// Helper class for Route view models test classes.

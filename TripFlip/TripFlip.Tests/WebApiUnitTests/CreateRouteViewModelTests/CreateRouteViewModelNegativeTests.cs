@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using WebApiUnitTests.RouteViewModels.Helpers;
+using WebApiUnitTests.Helpers;
 
-namespace WebApiUnitTests.RouteViewModels.Negative
+namespace WebApiUnitTests.CreateRouteViewModelTests
 {
     [TestClass]
     public class CreateRouteViewModelNegativeTests
