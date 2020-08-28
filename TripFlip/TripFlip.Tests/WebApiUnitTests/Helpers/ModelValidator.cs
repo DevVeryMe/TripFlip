@@ -2,9 +2,6 @@
 
 namespace WebApiUnitTests.Helpers
 {
-    /// <summary>
-    /// Helper class for Route view models test classes.
-    /// </summary>
     static class ModelValidator
     {
         /// <summary>
