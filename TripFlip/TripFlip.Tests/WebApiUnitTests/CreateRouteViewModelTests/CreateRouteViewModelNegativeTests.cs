@@ -9,7 +9,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidTitleData), DynamicDataSourceType.Method)]
-        public void Title_IsEmpty_ExceptionThrown(string displayName, string notValidTitle)
+        public void Title_IsNotValid_ExceptionThrown(string displayName, string notValidTitle)
         {
             // Arrange.
             int validTripId = 1;
