@@ -21,9 +21,9 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            var titleValidationError = ModelValidator.Validate(updateRouteViewModel);
+            var validationResults = ModelValidator.Validate(updateRouteViewModel);
 
-            bool modelIsNotValid = (titleValidationError
+            bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.EmptyTitleFieldError)).Count() > 0);
 
             // Assert.
@@ -42,9 +42,9 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            var titleError = ModelValidator.Validate(updateRouteViewModel);
+            var validationResults = ModelValidator.Validate(updateRouteViewModel);
 
-            bool modelIsNotValid = (titleError
+            bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.TitleLengthError)).Count() > 0);
 
             // Assert.
@@ -104,7 +104,7 @@ namespace WebApiUnitTests.RouteViewModels.Negative
 
             yield return new object[]
             {
-                "Test case 1: Test UpdateRouteViewModelBuilder validation" +
+                "Test case 2: Test UpdateRouteViewModelBuilder validation" +
                 " if title set to empty string. Validation should fail.",
                 string.Empty
             };

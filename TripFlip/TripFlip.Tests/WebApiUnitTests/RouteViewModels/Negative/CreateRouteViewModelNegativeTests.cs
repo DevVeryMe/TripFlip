@@ -20,9 +20,9 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 .BuildCreateRouteViewModel(notValidTitle, validTripId);
 
             // Act.
-            var titleValidationError = ModelValidator.Validate(createRouteViewModel);
+            var validationResults = ModelValidator.Validate(createRouteViewModel);
 
-            bool modelIsNotValid = (titleValidationError
+            bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.EmptyTitleFieldError)).Count() > 0);
 
             // Assert.
@@ -40,9 +40,9 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 .BuildCreateRouteViewModel(notValidTitle, validTripId);
 
             // Act.
-            var titleError = ModelValidator.Validate(createRouteViewModel);
+            var validationResults = ModelValidator.Validate(createRouteViewModel);
 
-            bool modelIsNotValid = (titleError
+            bool modelIsNotValid = (validationResults
                 .Where(error => error.ErrorMessage.Contains(ErrorConstants.TitleLengthError)).Count() > 0);
 
             // Assert.
