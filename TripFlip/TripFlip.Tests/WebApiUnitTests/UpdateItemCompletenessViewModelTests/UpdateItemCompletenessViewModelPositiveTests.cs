@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.ItemViewModels;
 
-namespace WebApiUnitTests.Item
+namespace WebApiUnitTests.UpdateItemCompletenessViewModelTests
 {
     [TestClass]
     public class UpdateItemCompletenessViewModelPositiveTests
