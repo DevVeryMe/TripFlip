@@ -19,7 +19,7 @@ namespace WebApiUnitTests.RouteViewModels.Helpers
         {
             var validationContext = new ValidationContext(model, null, null);
 
-            var isValid = Validator.TryValidateObject(model, validationContext, null, true);
+            bool isValid = Validator.TryValidateObject(model, validationContext, null, true);
 
             return isValid;
         }
