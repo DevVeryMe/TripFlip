@@ -27,7 +27,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
                 "Test case 1: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MAX allowed valid values.",
                 RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(new string('*', 100), int.MaxValue)
+                .BuildCreateRouteViewModel(title: new string('*', 100), tripId: int.MaxValue)
             };
 
             yield return new object[]
@@ -35,7 +35,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
                 "Test case 2: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MIN allowed valid values.",
                 RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(new string("*"), 1)
+                .BuildCreateRouteViewModel(title: new string("*"), tripId: 1)
             };
 
             yield return new object[]
@@ -43,7 +43,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
                 "Test case 3: Build CreateRouteViewModelBuilder object" +
                 " and set fields with simple valid values.",
                 RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(new string('*', 50), 50)
+                .BuildCreateRouteViewModel(title: new string('*', 50), tripId: 50)
             };
         }
     }
