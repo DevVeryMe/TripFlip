@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
-using TripFlip.ViewModels;
 using WebApiUnitTests.RouteViewModels.Helpers;
 
 namespace WebApiUnitTests.RouteViewModels.Negative
@@ -16,37 +14,14 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             // Arrange.
             int validTripId = 1;
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var createRouteViewModel = RouteViewModelsTestsHelper
                 .BuildCreateRouteViewModel(notValidTitle, validTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(createRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.EmptyTitleFieldError)).Count() > 0);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
 
             // Assert.
-            Assert.IsTrue(modelIsNotValid, displayName);
-        }
-
-        [TestMethod]
-        public void Title_LengthMoreThanAllowed_ExceptionThrown()
-        {
-            // Arrange.
-            string notValidTitle = new string('*', 101);
-            int validTripId = 1;
-
-            var createRouteViewModel = RouteViewModelsBuilder
-                .BuildCreateRouteViewModel(notValidTitle, validTripId);
-
-            // Act.
-            var validationResults = ModelValidator.Validate(createRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.TitleLengthError)).Count() > 0);
-
-            // Assert.
-            Assert.IsTrue(modelIsNotValid);
+            Assert.IsFalse(modelIsValid, displayName);
         }
 
         [TestMethod]
@@ -56,17 +31,14 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             string validTitle = new string('*', 3);
             int notValidTripId = -1;
 
-            var createRouteViewModel = RouteViewModelsBuilder
+            var createRouteViewModel = RouteViewModelsTestsHelper
                 .BuildCreateRouteViewModel(validTitle, notValidTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(createRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
 
             // Assert.
-            Assert.IsTrue(modelIsNotValid);
+            Assert.IsFalse(modelIsValid);
         }
 
         private static IEnumerable<object[]> GetInvalidTitleData()
@@ -83,6 +55,13 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 "Test case 2: Test CreateRouteViewModelBuilder validation" +
                 " if title set to empty string. Validation should fail.",
                 string.Empty
+            };
+
+            yield return new object[]
+            {
+                "Test case 3: Test CreateRouteViewModelBuilder validation" +
+                " if title length is more than allowed (> 100). Validation should fail.",
+                new string('*', 101)
             };
         }
     }

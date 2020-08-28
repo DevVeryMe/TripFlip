@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
-using TripFlip.ViewModels;
 using WebApiUnitTests.RouteViewModels.Helpers;
 
 namespace WebApiUnitTests.RouteViewModels.Negative
@@ -17,38 +15,14 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int validId = 1;
             int validTripId = 1;
 
-            var updateRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsTestsHelper
                 .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(updateRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.EmptyTitleFieldError)).Count() > 0);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
 
             // Assert.
-            Assert.IsTrue(modelIsNotValid, displayName);
-        }
-
-        [TestMethod]
-        public void Title_LengthMoreThanAllowed_ExceptionThrown()
-        {
-            // Arrange.
-            int validId = 1;
-            int validTripId = 1;
-            string notValidTitle = new string('*', 101);
-
-            var updateRouteViewModel = RouteViewModelsBuilder
-                .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
-
-            // Act.
-            var validationResults = ModelValidator.Validate(updateRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.TitleLengthError)).Count() > 0);
-
-            // Assert.
-            Assert.IsTrue(modelIsNotValid);
+            Assert.IsFalse(modelIsValid, displayName);
         }
 
         [TestMethod]
@@ -59,17 +33,14 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int notValidTripId = -1;
             string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsTestsHelper
                 .BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(updateRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
 
             // Assert.
-            Assert.IsTrue(modelIsNotValid);
+            Assert.IsFalse(modelIsValid);
         }
 
         [TestMethod]
@@ -80,17 +51,14 @@ namespace WebApiUnitTests.RouteViewModels.Negative
             int validTripId = 1;
             string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = RouteViewModelsBuilder
+            var updateRouteViewModel = RouteViewModelsTestsHelper
                 .BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
 
             // Act.
-            var validationResults = ModelValidator.Validate(updateRouteViewModel);
-
-            bool modelIsNotValid = (validationResults
-                .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
 
             // Assert.
-            Assert.IsTrue(modelIsNotValid);
+            Assert.IsFalse(modelIsValid);
         }
 
         private static IEnumerable<object[]> GetInvalidTitleData()
@@ -107,6 +75,13 @@ namespace WebApiUnitTests.RouteViewModels.Negative
                 "Test case 2: Test UpdateRouteViewModelBuilder validation" +
                 " if title set to empty string. Validation should fail.",
                 string.Empty
+            };
+
+            yield return new object[]
+            {
+                "Test case 3: Test CreateRouteViewModelBuilder validation" +
+                " if title length is more than allowed (> 100). Validation should fail.",
+                new string('*', 101)
             };
         }
     }

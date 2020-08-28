@@ -14,7 +14,7 @@ namespace WebApiUnitTests.RouteViewModels.Positive
             CreateRouteViewModel createRouteViewModel)
         {
             // Act.
-            bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
+            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
 
             // Assert.
             Assert.IsTrue(modelIsValid, displayName);
@@ -26,7 +26,7 @@ namespace WebApiUnitTests.RouteViewModels.Positive
             {
                 "Test case 1: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MAX allowed valid values.",
-                RouteViewModelsBuilder
+                RouteViewModelsTestsHelper
                 .BuildCreateRouteViewModel(new string('*', 100), int.MaxValue)
             };
 
@@ -34,7 +34,7 @@ namespace WebApiUnitTests.RouteViewModels.Positive
             {
                 "Test case 2: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MIN allowed valid values.",
-                RouteViewModelsBuilder
+                RouteViewModelsTestsHelper
                 .BuildCreateRouteViewModel(new string("*"), 1)
             };
 
@@ -42,7 +42,7 @@ namespace WebApiUnitTests.RouteViewModels.Positive
             {
                 "Test case 3: Build CreateRouteViewModelBuilder object" +
                 " and set fields with simple valid values.",
-                RouteViewModelsBuilder
+                RouteViewModelsTestsHelper
                 .BuildCreateRouteViewModel(new string('*', 50), 50)
             };
         }
