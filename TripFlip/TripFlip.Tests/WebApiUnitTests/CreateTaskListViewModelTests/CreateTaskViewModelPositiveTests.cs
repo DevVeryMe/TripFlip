@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.TaskListViewModels;
 
 namespace WebApiUnitTests.CreateTaskListViewModelTests
@@ -91,8 +91,6 @@ namespace WebApiUnitTests.CreateTaskListViewModelTests
                 int.MaxValue
             };
         }
-
-
 
         private CreateTaskListViewModel GetCreateTaskListViewModel(
             string title = "Valid value", int routeId = 1)

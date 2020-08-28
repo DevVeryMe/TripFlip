@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.TaskListViewModels;
 
 namespace WebApiUnitTests.CreateTaskListViewModelTests
@@ -26,7 +26,7 @@ namespace WebApiUnitTests.CreateTaskListViewModelTests
         }
 
         [TestMethod]
-        public void Create_CreateItemViewModel_Given_Not_valid_ItemListId_Validation_should_be_failed()
+        public void Create_CreateTaskViewModel_Given_Not_valid_RouteId_Validation_should_be_failed()
         {
             // Arrange
             var createTaskListViewModel = GetCreateTaskListViewModel(routeId: -1);
