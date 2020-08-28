@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.ItemListViewModels;
 
-namespace WebApiUnitTests.ItemList
+namespace WebApiUnitTests.UpdateItemListViewModelTests
 {
     [TestClass]
-    public class CreateItemListViewModel_Positive_Tests
+    public class UpdateItemListViewModel_Positive_Tests
     {
         [DataTestMethod]
         [DynamicData(nameof(Get_Valid_ItemList_Title), DynamicDataSourceType.Method)]
@@ -15,12 +15,12 @@ namespace WebApiUnitTests.ItemList
             string validTitle)
         {
             // Arrange
-            CreateItemListViewModel createItemListViewModel =
-                Get_Valid_CreateItemListViewModel(title: validTitle);
+            UpdateItemListViewModel updateItemListViewModel =
+                Get_Valid_UpdateItemListViewModel(title: validTitle);
 
             // Act
-            bool result = Validator.TryValidateObject(createItemListViewModel,
-                new ValidationContext(createItemListViewModel, null, null),
+            bool result = Validator.TryValidateObject(updateItemListViewModel,
+                new ValidationContext(updateItemListViewModel, null, null),
                 null,
                 true);
 
@@ -29,18 +29,18 @@ namespace WebApiUnitTests.ItemList
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(Get_Valid_ItemList_RouteId), DynamicDataSourceType.Method)]
-        public void Test_ItemList_RouteId_Validation(
+        [DynamicData(nameof(Get_Valid_ItemList_Id), DynamicDataSourceType.Method)]
+        public void Test_ItemList_Id_Validation(
             string testCaseDisplayName,
-            int validRouteId)
+            int validId)
         {
             // Arrange
-            CreateItemListViewModel createItemListViewModel =
-                Get_Valid_CreateItemListViewModel(routeId: validRouteId);
+            UpdateItemListViewModel updateItemListViewModel =
+                Get_Valid_UpdateItemListViewModel(id: validId);
 
             // Act
-            bool result = Validator.TryValidateObject(createItemListViewModel,
-                new ValidationContext(createItemListViewModel, null, null),
+            bool result = Validator.TryValidateObject(updateItemListViewModel,
+                new ValidationContext(updateItemListViewModel, null, null),
                 null,
                 true);
 
@@ -65,32 +65,32 @@ namespace WebApiUnitTests.ItemList
             };
         }
 
-        static IEnumerable<object[]> Get_Valid_ItemList_RouteId()
+        static IEnumerable<object[]> Get_Valid_ItemList_Id()
         {
             yield return new object[]
             {
-                "Test case 1 : Test_ItemList_Title_Validation was given routeId with minimal" +
+                "Test case 1 : Test_ItemList_Title_Validation was given Id with minimal" +
                 " valid value that equals 1. Validation should be successful.",
                 1
             };
 
             yield return new object[]
             {
-                "Test case 2 : Test_ItemList_Title_Validation was given routeId with maximum" +
+                "Test case 2 : Test_ItemList_Title_Validation was given Id with maximum" +
                 " valid length that equals maximum number that is supported by integer." +
                 " Validation should be successful.",
                 int.MaxValue
             };
         }
 
-        CreateItemListViewModel Get_Valid_CreateItemListViewModel(
-            string title = "Valid item list title.",
-            int routeId = 1)
+        UpdateItemListViewModel Get_Valid_UpdateItemListViewModel(
+            int id = 1,
+            string title = "Valid item list title.")
         {
-            return new CreateItemListViewModel()
+            return new UpdateItemListViewModel()
             {
-                Title = title,
-                RouteId = routeId
+                Id = id,
+                Title = title
             };
         }
     }
