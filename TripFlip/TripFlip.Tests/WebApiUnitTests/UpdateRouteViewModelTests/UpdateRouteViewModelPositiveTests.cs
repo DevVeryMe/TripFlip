@@ -39,7 +39,7 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
             {
                 "Test case 3: Build UpdateRouteViewModelBuilder object" +
                 " and set fields with simple valid values.",
-                BuildUpdateRouteViewModel(id: 50, title: new string('*', 50), tripId: 50)
+                BuildUpdateRouteViewModel()
             };
         }
     }

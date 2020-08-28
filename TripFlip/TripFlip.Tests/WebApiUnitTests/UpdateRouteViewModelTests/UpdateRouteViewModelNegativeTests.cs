@@ -12,10 +12,7 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
         public void Title_IsNotValid_ExceptionThrown(string displayName, string notValidTitle)
         {
             // Arrange.
-            int validId = 1;
-            int validTripId = 1;
-
-            var updateRouteViewModel = BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(title: notValidTitle);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
@@ -28,11 +25,9 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
         public void TripId_IsNegativeNumber_ExceptionThrown()
         {
             // Arrange.
-            int validId = 1;
             int notValidTripId = -1;
-            string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(tripId: notValidTripId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
@@ -46,10 +41,8 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
         {
             // Arrange.
             int notValidId = -1;
-            int validTripId = 1;
-            string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(id: notValidId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);

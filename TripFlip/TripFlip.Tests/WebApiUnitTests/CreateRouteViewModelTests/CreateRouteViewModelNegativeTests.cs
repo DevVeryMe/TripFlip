@@ -12,9 +12,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
         public void Title_IsNotValid_ExceptionThrown(string displayName, string notValidTitle)
         {
             // Arrange.
-            int validTripId = 1;
-
-            var createRouteViewModel = BuildCreateRouteViewModel(notValidTitle, validTripId);
+            var createRouteViewModel = BuildCreateRouteViewModel(title: notValidTitle);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
@@ -27,10 +25,9 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
         public void TripId_IsNegativeNumber_ExceptionThrown()
         {
             // Arrange.
-            string validTitle = new string('*', 3);
             int notValidTripId = -1;
 
-            var createRouteViewModel = BuildCreateRouteViewModel(validTitle, notValidTripId);
+            var createRouteViewModel = BuildCreateRouteViewModel(tripId: notValidTripId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
