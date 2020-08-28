@@ -21,57 +21,89 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
             Assert.IsFalse(modelIsValid, displayName);
         }
 
-        [TestMethod]
-        public void TripId_IsNegativeNumber_ExceptionThrown()
+        [DataTestMethod]
+        [DynamicData(nameof(GetInvalidTripIdData), DynamicDataSourceType.Method)]
+        public void TripId_IsNotValid_ExceptionThrown(string displayName, int notValidTripId)
         {
             // Arrange.
-            int notValidTripId = -1;
-
             var updateRouteViewModel = BuildUpdateRouteViewModel(tripId: notValidTripId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
 
             // Assert.
-            Assert.IsFalse(modelIsValid);
+            Assert.IsFalse(modelIsValid, displayName);
         }
 
-        [TestMethod]
-        public void Id_IsNegativeNumber_ExceptionThrown()
+        [DataTestMethod]
+        [DynamicData(nameof(GetInvalidIdData), DynamicDataSourceType.Method)]
+        public void Id_IsNotValid_ExceptionThrown(string displayName, int notValidId)
         {
             // Arrange.
-            int notValidId = -1;
-
             var updateRouteViewModel = BuildUpdateRouteViewModel(id: notValidId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
 
             // Assert.
-            Assert.IsFalse(modelIsValid);
+            Assert.IsFalse(modelIsValid, displayName);
         }
 
         private static IEnumerable<object[]> GetInvalidTitleData()
         {
             yield return new object[]
             {
-                "Test case 1: Test UpdateRouteViewModelBuilder validation" +
+                "Test case 1: Test UpdateRouteViewModel validation" +
                 " if title set to null. Validation should fail.",
                 null
             };
 
             yield return new object[]
             {
-                "Test case 2: Test UpdateRouteViewModelBuilder validation" +
+                "Test case 2: Test UpdateRouteViewModel validation" +
                 " if title set to empty string. Validation should fail.",
                 string.Empty
             };
 
             yield return new object[]
             {
-                "Test case 3: Test CreateRouteViewModelBuilder validation" +
+                "Test case 3: Test CreateRouteViewModel validation" +
                 " if title length is more than allowed (> 100). Validation should fail.",
                 new string('*', 101)
+            };
+        }
+
+        private static IEnumerable<object[]> GetInvalidIdData()
+        {
+            yield return new object[]
+            {
+                "Test case 1: Test UpdateRouteViewModel validation" +
+                " if Id is zero. Validation should fail.",
+                0
+            };
+
+            yield return new object[]
+            {
+                "Test case 2: Test UpdateRouteViewModel validation" +
+                " if Id is negative number. Validation should fail.",
+                -1
+            };
+        }
+
+        private static IEnumerable<object[]> GetInvalidTripIdData()
+        {
+            yield return new object[]
+            {
+                "Test case 1: Test UpdateRouteViewModel validation" +
+                " if Trip id is zero. Validation should fail.",
+                0
+            };
+
+            yield return new object[]
+            {
+                "Test case 2: Test UpdateRouteViewModel validation" +
+                " if Trip id is negative number. Validation should fail.",
+                -1
             };
         }
     }

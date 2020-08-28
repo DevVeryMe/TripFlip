@@ -11,7 +11,9 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
         /// <param name="title">Route title.</param>
         /// <param name="tripId">Trip id.</param>
         /// <returns>Created UpdateRouteViewModel object.</returns>
-        protected static UpdateRouteViewModel BuildUpdateRouteViewModel(int id = 3, string title = "Default", int tripId = 3)
+        protected static UpdateRouteViewModel BuildUpdateRouteViewModel(int id = 3,
+            string title = "Default",
+            int tripId = 3)
         {
             var updateRouteViewModel = new UpdateRouteViewModel()
             {
