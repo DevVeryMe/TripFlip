@@ -7,7 +7,7 @@ using WebApiUnitTests.RouteViewModels.Helpers;
 namespace WebApiUnitTests.RouteViewModels.Negative
 {
     [TestClass]
-    public class UpdateRouteViewModelNegativetests
+    public class UpdateRouteViewModelNegativeTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidTitleData), DynamicDataSourceType.Method)]
