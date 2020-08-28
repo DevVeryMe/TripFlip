@@ -10,13 +10,16 @@ namespace WebApiUnitTests.Item
         [TestMethod]
         public void Create_UpdateItemCompletenessViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
+            // Arrange
             var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(id: -1);
 
+            // Act
             var result = Validator.TryValidateObject(updateItemCompletenessViewModel,
                 new ValidationContext(updateItemCompletenessViewModel),
                 null,
                 true);
 
+            // Assert
             Assert.IsFalse(result);
         }
 

@@ -11,13 +11,16 @@ namespace WebApiUnitTests.Item
         [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
+            // Arrange
             var updateItemViewModel = GetUpdateItemViewModel(id: 0);
 
+            // Act
             var result = Validator.TryValidateObject(updateItemViewModel,
                 new ValidationContext(updateItemViewModel),
                 null,
                 true);
 
+            // Assert
             Assert.IsFalse(result);
         }
 
@@ -25,43 +28,50 @@ namespace WebApiUnitTests.Item
         [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
         public void TestItemTitleValidation(string displayName, string title)
         {
+            // Arrange
             var updateItemViewModel = GetUpdateItemViewModel(title: title);
 
+            // Act
             var result = Validator.TryValidateObject(updateItemViewModel,
                 new ValidationContext(updateItemViewModel),
                 null,
                 true);
 
+            // Assert
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Comment_too_long_Validation_should_be_failed()
         {
+            // Arrange
             var comment = new string('*', 251);
-
             var createItemViewModel = GetUpdateItemViewModel(comment: comment);
 
+            // Act
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
                 null,
                 true);
 
+            // Assert
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Quantity_too_long_Validation_should_be_failed()
         {
+            // Arrange
             var quantity = new string('*', 51);
-
             var createItemViewModel = GetUpdateItemViewModel(quantity: quantity);
 
+            // Act
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
                 null,
                 true);
 
+            // Assert
             Assert.IsFalse(result);
         }
 
@@ -90,7 +100,7 @@ namespace WebApiUnitTests.Item
         }
 
         private static UpdateItemViewModel GetUpdateItemViewModel(int id = 1, string title = "Tent",
-            string comment = "The most needed item.", string quantity = "At least one.", 
+            string comment = null, string quantity = null, 
             bool isCompleted = false)
         {
             return new UpdateItemViewModel()

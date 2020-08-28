@@ -13,11 +13,13 @@ namespace WebApiUnitTests.Item
         public void TestItemViewModelValidation(string displayName,
             CreateItemViewModel createItemViewModel)
         {
+            // Act
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel), 
                 null, 
                 true);
 
+            // Assert
             Assert.IsTrue(result);
         }
 
@@ -55,8 +57,9 @@ namespace WebApiUnitTests.Item
             };
         }
 
-        private static CreateItemViewModel GetCreateItemViewModel(string title, string comment,
-            string quantity, int itemListId)
+        private static CreateItemViewModel GetCreateItemViewModel(string title = "Tent", 
+            string comment = null, string quantity = null, 
+            int itemListId = 1)
         {
             return new CreateItemViewModel()
             {
