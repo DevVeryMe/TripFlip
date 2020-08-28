@@ -9,7 +9,7 @@ namespace WebApiUnitTests.CreateItemViewModelTests
     public class CreateItemViewModelNegativeTests
     {
         [DataTestMethod]
-        [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(GetTestTitleData), DynamicDataSourceType.Method)]
         public void TestItemTitleValidation(string displayName, string title)
         {
             // Arrange
@@ -75,7 +75,7 @@ namespace WebApiUnitTests.CreateItemViewModelTests
             Assert.IsFalse(result);
         }
 
-        private static IEnumerable<object[]> GetTestItemTitleData()
+        private static IEnumerable<object[]> GetTestTitleData()
         {
             yield return new object[]
             {
@@ -99,7 +99,7 @@ namespace WebApiUnitTests.CreateItemViewModelTests
             };
         }
 
-        private static CreateItemViewModel GetCreateItemViewModel(string title = "Tent",
+        private static CreateItemViewModel GetCreateItemViewModel(string title = "Valid value",
             string comment = null, string quantity = null, int itemListId = 1)
         {
             return new CreateItemViewModel()

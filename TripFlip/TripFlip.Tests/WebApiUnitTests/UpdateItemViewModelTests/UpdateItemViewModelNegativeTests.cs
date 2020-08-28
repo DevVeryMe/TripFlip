@@ -99,8 +99,8 @@ namespace WebApiUnitTests.UpdateItemViewModelTests
             };
         }
 
-        private static UpdateItemViewModel GetUpdateItemViewModel(int id = 1, string title = "Tent",
-            string comment = null, string quantity = null, 
+        private static UpdateItemViewModel GetUpdateItemViewModel(int id = 1, 
+            string title = "Valid value", string comment = null, string quantity = null, 
             bool isCompleted = false)
         {
             return new UpdateItemViewModel()
