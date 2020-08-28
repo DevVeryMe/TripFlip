@@ -6,7 +6,7 @@ using WebApiUnitTests.Helpers;
 namespace WebApiUnitTests.CreateRouteViewModelTests
 {
     [TestClass]
-    public class CreateRouteViewModelPositiveTests
+    public class CreateRouteViewModelPositiveTests : CreateRouteViewModelTestsBase
     {
         [DataTestMethod]
         [DynamicData(nameof(GetCreateRouteViewModelValidData), DynamicDataSourceType.Method)]
@@ -14,7 +14,7 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
             CreateRouteViewModel createRouteViewModel)
         {
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
 
             // Assert.
             Assert.IsTrue(modelIsValid, displayName);
@@ -26,24 +26,21 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
             {
                 "Test case 1: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MAX allowed valid values.",
-                RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(title: new string('*', 100), tripId: int.MaxValue)
+                BuildCreateRouteViewModel(title: new string('*', 100), tripId: int.MaxValue)
             };
 
             yield return new object[]
             {
                 "Test case 2: Build CreateRouteViewModelBuilder object" +
                 " and set fields with MIN allowed valid values.",
-                RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(title: new string("*"), tripId: 1)
+                BuildCreateRouteViewModel(title: new string("*"), tripId: 1)
             };
 
             yield return new object[]
             {
                 "Test case 3: Build CreateRouteViewModelBuilder object" +
                 " and set fields with simple valid values.",
-                RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(title: new string('*', 50), tripId: 50)
+                BuildCreateRouteViewModel(title: new string('*', 50), tripId: 50)
             };
         }
     }

@@ -5,7 +5,7 @@ using WebApiUnitTests.Helpers;
 namespace WebApiUnitTests.UpdateRouteViewModelTests
 {
     [TestClass]
-    public class UpdateRouteViewModelNegativeTests
+    public class UpdateRouteViewModelNegativeTests : UpdateRouteViewModelTestsBase
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidTitleData), DynamicDataSourceType.Method)]
@@ -15,11 +15,10 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
             int validId = 1;
             int validTripId = 1;
 
-            var updateRouteViewModel = RouteViewModelsTestsHelper
-                .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid, displayName);
@@ -33,11 +32,10 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
             int notValidTripId = -1;
             string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = RouteViewModelsTestsHelper
-                .BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
 
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid);
@@ -51,11 +49,10 @@ namespace WebApiUnitTests.UpdateRouteViewModelTests
             int validTripId = 1;
             string validTitle = new string('*', 3);
 
-            var updateRouteViewModel = RouteViewModelsTestsHelper
-                .BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
+            var updateRouteViewModel = BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
 
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(updateRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateRouteViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid);

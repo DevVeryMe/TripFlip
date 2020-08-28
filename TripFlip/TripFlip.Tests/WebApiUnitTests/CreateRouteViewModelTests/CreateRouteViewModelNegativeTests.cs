@@ -5,7 +5,7 @@ using WebApiUnitTests.Helpers;
 namespace WebApiUnitTests.CreateRouteViewModelTests
 {
     [TestClass]
-    public class CreateRouteViewModelNegativeTests
+    public class CreateRouteViewModelNegativeTests : CreateRouteViewModelTestsBase
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidTitleData), DynamicDataSourceType.Method)]
@@ -14,11 +14,10 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
             // Arrange.
             int validTripId = 1;
 
-            var createRouteViewModel = RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(notValidTitle, validTripId);
+            var createRouteViewModel = BuildCreateRouteViewModel(notValidTitle, validTripId);
 
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid, displayName);
@@ -31,11 +30,10 @@ namespace WebApiUnitTests.CreateRouteViewModelTests
             string validTitle = new string('*', 3);
             int notValidTripId = -1;
 
-            var createRouteViewModel = RouteViewModelsTestsHelper
-                .BuildCreateRouteViewModel(validTitle, notValidTripId);
+            var createRouteViewModel = BuildCreateRouteViewModel(validTitle, notValidTripId);
 
             // Act.
-            bool modelIsValid = RouteViewModelsTestsHelper.IsModelValid(createRouteViewModel);
+            bool modelIsValid = ModelValidator.IsValid(createRouteViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid);
