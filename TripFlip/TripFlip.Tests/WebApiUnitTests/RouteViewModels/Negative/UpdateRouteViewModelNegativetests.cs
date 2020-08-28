@@ -7,17 +7,18 @@ using WebApiUnitTests.RouteViewModels.Helpers;
 namespace WebApiUnitTests.RouteViewModels.Negative
 {
     [TestClass]
-    public class CreateRouteViewModelNegativeTests
+    public class UpdateRouteViewModelNegativetests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidTitleData), DynamicDataSourceType.Method)]
         public void Title_IsEmpty_ExceptionThrown(string displayName, string notValidTitle)
         {
             // Arrange.
+            int validId = 1;
             int validTripId = 1;
 
             var createRouteViewModel = RouteViewModelsBuilder
-                .BuildCreateRouteViewModel(notValidTitle, validTripId);
+                .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
             var titleValidationError = ModelValidator.Validate(createRouteViewModel);
@@ -33,11 +34,12 @@ namespace WebApiUnitTests.RouteViewModels.Negative
         public void Title_LengthMoreThanAllowed_ExceptionThrown()
         {
             // Arrange.
-            string notValidTitle = new string('*', 101);
+            int validId = 1;
             int validTripId = 1;
+            string notValidTitle = new string('*', 101);
 
             var createRouteViewModel = RouteViewModelsBuilder
-                .BuildCreateRouteViewModel(notValidTitle, validTripId);
+                .BuildUpdateRouteViewModel(validId, notValidTitle, validTripId);
 
             // Act.
             var titleError = ModelValidator.Validate(createRouteViewModel);
@@ -53,11 +55,33 @@ namespace WebApiUnitTests.RouteViewModels.Negative
         public void TripId_IsNegativeNumber_ExceptionThrown()
         {
             // Arrange.
-            string validTitle = new string('*', 3);
+            int validId = 1;
             int notValidTripId = -1;
+            string validTitle = new string('*', 3);
 
             var createRouteViewModel = RouteViewModelsBuilder
-                .BuildCreateRouteViewModel(validTitle, notValidTripId);
+                .BuildUpdateRouteViewModel(validId, validTitle, notValidTripId);
+
+            // Act.
+            var validationResults = ModelValidator.Validate(createRouteViewModel);
+
+            bool modelIsNotValid = (validationResults
+                .Where(error => error.ErrorMessage.Contains(ErrorConstants.IdLessThanOneError)).Count() > 0);
+
+            // Assert.
+            Assert.IsTrue(modelIsNotValid);
+        }
+
+        [TestMethod]
+        public void Id_IsNegativeNumber_ExceptionThrown()
+        {
+            // Arrange.
+            int notValidId = -1;
+            int validTripId = 1;
+            string validTitle = new string('*', 3);
+
+            var createRouteViewModel = RouteViewModelsBuilder
+                .BuildUpdateRouteViewModel(notValidId, validTitle, validTripId);
 
             // Act.
             var validationResults = ModelValidator.Validate(createRouteViewModel);
