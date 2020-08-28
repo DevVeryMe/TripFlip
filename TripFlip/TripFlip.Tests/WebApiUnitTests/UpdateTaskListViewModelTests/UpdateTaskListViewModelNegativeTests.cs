@@ -12,11 +12,11 @@ namespace WebApiUnitTests.UpdateTaskListViewModelTests
         public void Create_UpdateTaskViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
             // Arrange
-            var createTaskListViewModel = GetUpdateTaskListViewModel(id: -1);
+            var updateTaskListViewModel = GetUpdateTaskListViewModel(id: -1);
 
             // Act
-            var result = Validator.TryValidateObject(createTaskListViewModel,
-                new ValidationContext(createTaskListViewModel),
+            var result = Validator.TryValidateObject(updateTaskListViewModel,
+                new ValidationContext(updateTaskListViewModel),
                 null,
                 true);
 

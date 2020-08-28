@@ -14,11 +14,11 @@ namespace WebApiUnitTests.CreateTaskListViewModelTests
             string title)
         {
             // Arrange
-            var createTaskViewViewModel = GetCreateTaskListViewModel(title: title);
+            var createTaskListViewModel = GetCreateTaskListViewModel(title: title);
 
             // Act
-            var result = Validator.TryValidateObject(createTaskViewViewModel,
-                new ValidationContext(createTaskViewViewModel),
+            var result = Validator.TryValidateObject(createTaskListViewModel,
+                new ValidationContext(createTaskListViewModel),
                 null,
                 true);
 
@@ -32,11 +32,11 @@ namespace WebApiUnitTests.CreateTaskListViewModelTests
             int routeId)
         {
             // Arrange
-            var createTaskViewViewModel = GetCreateTaskListViewModel(routeId: routeId);
+            var createTaskListViewModel = GetCreateTaskListViewModel(routeId: routeId);
 
             // Act
-            var result = Validator.TryValidateObject(createTaskViewViewModel,
-                new ValidationContext(createTaskViewViewModel),
+            var result = Validator.TryValidateObject(createTaskListViewModel,
+                new ValidationContext(createTaskListViewModel),
                 null,
                 true);
 
