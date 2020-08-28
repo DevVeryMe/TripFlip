@@ -11,7 +11,7 @@ namespace WebApiUnitTests.Item
         [TestMethod]
         public void Create_UpdateItemViewModel_Given_Not_valid_Id_Validation_should_be_failed()
         {
-            var updateItemViewModel = GetUpdateItemViewModel(0, "Tent", null, null, true);
+            var updateItemViewModel = GetUpdateItemViewModel(id: 0);
 
             var result = Validator.TryValidateObject(updateItemViewModel,
                 new ValidationContext(updateItemViewModel),
@@ -25,7 +25,7 @@ namespace WebApiUnitTests.Item
         [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
         public void TestItemTitleValidation(string displayName, string title)
         {
-            var updateItemViewModel = GetUpdateItemViewModel(1, title, null, null, true);
+            var updateItemViewModel = GetUpdateItemViewModel(title: title);
 
             var result = Validator.TryValidateObject(updateItemViewModel,
                 new ValidationContext(updateItemViewModel),
@@ -40,7 +40,7 @@ namespace WebApiUnitTests.Item
         {
             var comment = new string('*', 251);
 
-            var createItemViewModel = GetUpdateItemViewModel(1, "Tent", comment, null, true);
+            var createItemViewModel = GetUpdateItemViewModel(comment: comment);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -55,7 +55,7 @@ namespace WebApiUnitTests.Item
         {
             var quantity = new string('*', 51);
 
-            var createItemViewModel = GetUpdateItemViewModel(1, "Tent", null, quantity, true);
+            var createItemViewModel = GetUpdateItemViewModel(quantity: quantity);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -89,8 +89,9 @@ namespace WebApiUnitTests.Item
             };
         }
 
-        private static UpdateItemViewModel GetUpdateItemViewModel(int id, string title,
-            string comment, string quantity, bool isCompleted)
+        private static UpdateItemViewModel GetUpdateItemViewModel(int id = 1, string title = "Tent",
+            string comment = "The most needed item.", string quantity = "At least one.", 
+            bool isCompleted = false)
         {
             return new UpdateItemViewModel()
             {

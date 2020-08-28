@@ -10,7 +10,7 @@ namespace WebApiUnitTests.Item
         [TestMethod]
         public void Create_UpdateItemCompletenessViewModel_Given_Valid_values_Validation_should_be_successful()
         {
-            var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(1, true);
+            var updateItemCompletenessViewModel = GetUpdateItemCompletenessViewModel(id: 1);
 
             var result = Validator.TryValidateObject(updateItemCompletenessViewModel,
                 new ValidationContext(updateItemCompletenessViewModel),
@@ -21,7 +21,7 @@ namespace WebApiUnitTests.Item
         }
 
         private static UpdateItemCompletenessViewModel GetUpdateItemCompletenessViewModel(
-            int id, bool isCompleted)
+            int id, bool isCompleted = false)
         {
             return new UpdateItemCompletenessViewModel()
             {

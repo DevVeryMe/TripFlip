@@ -12,7 +12,7 @@ namespace WebApiUnitTests.Item
         [DynamicData(nameof(GetTestItemTitleData), DynamicDataSourceType.Method)]
         public void TestItemTitleValidation(string displayName, string title)
         {
-            var createItemViewModel = GetCreateItemViewModel(title, null, null, 1);
+            var createItemViewModel = GetCreateItemViewModel(title: title);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -26,7 +26,7 @@ namespace WebApiUnitTests.Item
         public void Create_CreateItemViewModel_Given_Not_valid_Comment_too_long_Validation_should_be_failed()
         {
             var comment = new string('*', 251);
-            var createItemViewModel = GetCreateItemViewModel("Tent", comment, null, 1);
+            var createItemViewModel = GetCreateItemViewModel(comment: comment);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -41,7 +41,7 @@ namespace WebApiUnitTests.Item
         {
             var quantity = new string('*', 51);
 
-            var createItemViewModel = GetCreateItemViewModel("Tent", null, quantity, 1);
+            var createItemViewModel = GetCreateItemViewModel(quantity: quantity);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -54,7 +54,7 @@ namespace WebApiUnitTests.Item
         [TestMethod]
         public void Create_CreateItemViewModel_Given_Not_valid_ItemListId_Validation_should_be_failed()
         {
-            var createItemViewModel = GetCreateItemViewModel("Tent", null, null, -1);
+            var createItemViewModel = GetCreateItemViewModel(itemListId: -1);
 
             var result = Validator.TryValidateObject(createItemViewModel,
                 new ValidationContext(createItemViewModel),
@@ -88,8 +88,8 @@ namespace WebApiUnitTests.Item
             };
         }
 
-        private static CreateItemViewModel GetCreateItemViewModel(string title, string comment,
-            string quantity, int itemListId)
+        private static CreateItemViewModel GetCreateItemViewModel(string title = "Tent",
+            string comment = null, string quantity = null, int itemListId = 1)
         {
             return new CreateItemViewModel()
             {

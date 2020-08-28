@@ -27,28 +27,32 @@ namespace WebApiUnitTests.Item
             {
                 "Test case 1: Create_UpdateItemViewModel_Given_Valid_null_values_where_possible_" +
                 "Validation_should_be_successful",
-                GetUpdateItemViewModel(1, "Tent", null, null, true)
+                GetUpdateItemViewModel(id: 1, title: "Tent", comment: null, 
+                    quantity: null, isCompleted: true)
             };
 
             yield return new object[]
             {
                 "Test case 2: Create_UpdateItemViewModel_Given_Valid_without_null_values_where_" +
                 "possible_Validation_should_be_successful",
-                GetUpdateItemViewModel(1, "Tent", "The most needed item.", "At least 1.", true)
+                GetUpdateItemViewModel(id: 1, title: "Tent", comment: "The most needed item.", 
+                    quantity: "At least 1.", isCompleted: true)
             };
 
             yield return new object[]
             {
                 "Test case 3: Create_UpdateItemViewModel_Given_Valid_Comment_equals_null_" +
                 "Validation_should_be_successful",
-                GetUpdateItemViewModel(1, "Tent", null, "At least 1.", true)
+                GetUpdateItemViewModel(id: 1, title: "Tent", comment: null, 
+                    quantity: "At least 1.", isCompleted: true)
             };
 
             yield return new object[]
             {
                 "Test case 4: Create_UpdateItemViewModel_Given_Valid_Quantity_equals_null_" +
                 "Validation_should_be_successful",
-                GetUpdateItemViewModel(1, "Tent", "The most needed item.", null, true)
+                GetUpdateItemViewModel(id: 1, title: "Tent", comment: "The most needed item.", 
+                    quantity: null, isCompleted: true)
             };
         }
 
