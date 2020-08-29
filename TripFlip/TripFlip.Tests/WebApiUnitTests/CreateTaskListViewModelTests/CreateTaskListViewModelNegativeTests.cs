@@ -6,7 +6,7 @@ using TripFlip.ViewModels.TaskListViewModels;
 namespace WebApiUnitTests.CreateTaskListViewModelTests
 {
     [TestClass]
-    public class CreateTaskViewModelNegativeTests
+    public class CreateTaskListViewModelNegativeTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetTestTitleData), DynamicDataSourceType.Method)]
