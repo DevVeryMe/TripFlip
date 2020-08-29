@@ -10,16 +10,16 @@ namespace WebApiUnitTests.UpdateTaskCompletenessViewModelTests
         /// <param name="id">Task id.</param>
         /// <param name="isCompleted">Task completeness</param>
         /// <returns>Created UpdateTaskCompletenessViewModel object.</returns>
-        protected static UpdateTaskCompletenessViewModel BuildUpdateTaskViewModel(int id = 3,
+        protected static UpdateTaskCompletenessViewModel BuildUpdateTaskCompletenessViewModel(int id = 3,
             bool isCompleted = false)
         {
-            var updateTaskViewModel = new UpdateTaskCompletenessViewModel()
+            var updateTaskCompletenessViewModel = new UpdateTaskCompletenessViewModel()
             {
                 Id = id,
                 IsCompleted = isCompleted
             };
 
-            return updateTaskViewModel;
+            return updateTaskCompletenessViewModel;
         }
     }
 }

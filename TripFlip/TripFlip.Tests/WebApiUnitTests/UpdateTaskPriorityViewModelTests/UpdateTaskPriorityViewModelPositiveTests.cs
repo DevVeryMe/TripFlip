@@ -5,17 +5,19 @@ using WebApiUnitTests.Helpers;
 namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
 {
     [TestClass]
-    public class UpdateTaskPriorityViewModelPositiveTests : UpdateTaskPriorityViewModelTestsBase
+    public class UpdateTaskPriorityViewModelPositiveTests
+        : UpdateTaskPriorityViewModelTestsBase
     {
         [DataTestMethod]
         [DynamicData(nameof(GetValidIdData), DynamicDataSourceType.Method)]
         public void Id_Validation_Successful(string displayName, int validId)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(id: validId);
+            var updateTaskPriorityViewModel = 
+                BuildUpdateTaskPriorityViewModel(id: validId);
 
             // Act.
-            bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateTaskPriorityViewModel);
 
             // Assert.
             Assert.IsTrue(modelIsValid, displayName);
@@ -27,10 +29,11 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
             int validPriorityLevel)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(priorityLevel: validPriorityLevel);
+            var updateTaskPriorityViewModel = 
+                BuildUpdateTaskPriorityViewModel(priorityLevel: validPriorityLevel);
 
             // Act.
-            bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateTaskPriorityViewModel);
 
             // Assert.
             Assert.IsTrue(modelIsValid, displayName);
@@ -40,21 +43,21 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Build UpdateTaskViewModel object" +
+                "Test case 1: Build UpdateTaskPriorityViewModel object" +
                 " and set Id field with MAX allowed valid value.",
                 int.MaxValue
             };
 
             yield return new object[]
             {
-                "Test case 2: Build UpdateTaskViewModel object" +
+                "Test case 2: Build UpdateTaskPriorityViewModel object" +
                 " and set Id field with MIN allowed valid value.",
                 1
             };
 
             yield return new object[]
             {
-                "Test case 3: Build UpdateTaskViewModel object" +
+                "Test case 3: Build UpdateTaskPriorityViewModel object" +
                 " and set Id field with simple valid value.",
                 100
             };
@@ -64,21 +67,21 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Build UpdateTaskViewModel object" +
+                "Test case 1: Build UpdateTaskPriorityViewModel object" +
                 " and set Priority level field with MAX allowed valid value.",
                 4
             };
 
             yield return new object[]
             {
-                "Test case 2: Build UpdateTaskViewModel object" +
+                "Test case 2: Build UpdateTaskPriorityViewModel object" +
                 " and set Priority level field with MIN allowed valid value.",
                 1
             };
 
             yield return new object[]
             {
-                "Test case 3: Build UpdateTaskViewModel object" +
+                "Test case 3: Build UpdateTaskPriorityViewModel object" +
                 " and set Priority level field with simple valid value.",
                 2
             };

@@ -12,10 +12,11 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
         public void Id_IsNotValid_ExceptionThrown(string displayName, int notValidId)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(id: notValidId);
+            var updateTaskPriorityViewModel = 
+                BuildUpdateTaskPriorityViewModel(id: notValidId);
 
             // Act.
-            bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateTaskPriorityViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid, displayName);
@@ -27,10 +28,11 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
             int notValidPriorityLevel)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(priorityLevel: notValidPriorityLevel);
+            var updateTaskPriorityViewModel = 
+                BuildUpdateTaskPriorityViewModel(priorityLevel: notValidPriorityLevel);
 
             // Act.
-            bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
+            bool modelIsValid = ModelValidator.IsValid(updateTaskPriorityViewModel);
 
             // Assert.
             Assert.IsFalse(modelIsValid, displayName);
@@ -40,14 +42,14 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Test UpdateTaskViewModel validation" +
+                "Test case 1: Test UpdateTaskPriorityViewModel validation" +
                 " if Id is zero. Validation should fail.",
                 0
             };
 
             yield return new object[]
             {
-                "Test case 2: Test UpdateTaskViewModel validation" +
+                "Test case 2: Test UpdateTaskPriorityViewModel validation" +
                 " if Id is negative number. Validation should fail.",
                 -1
             };
@@ -57,14 +59,14 @@ namespace WebApiUnitTests.UpdateTaskPriorityViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Test UpdateTaskViewModel validation" +
+                "Test case 1: Test UpdateTaskPriorityViewModel validation" +
                 " if Priority level is less than allowed (< 1). Validation should fail.",
                 0
             };
 
             yield return new object[]
             {
-                "Test case 2: Test UpdateTaskViewModel validation" +
+                "Test case 2: Test UpdateTaskPriorityViewModel validation" +
                 " if Priority level is more than allowed (> 4). Validation should fail.",
                 5
             };

@@ -5,14 +5,16 @@ using WebApiUnitTests.Helpers;
 namespace WebApiUnitTests.UpdateTaskCompletenessViewModelTests
 {
     [TestClass]
-    public class UpdateTaskCompletenessViewModelNegativeTests : UpdateTaskCompletenessViewModelTestsBase
+    public class UpdateTaskCompletenessViewModelNegativeTests
+        : UpdateTaskCompletenessViewModelTestsBase
     {
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidIdData), DynamicDataSourceType.Method)]
         public void Id_IsNotValid_ExceptionThrown(string displayName, int notValidId)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(id: notValidId);
+            var updateTaskViewModel = 
+                BuildUpdateTaskCompletenessViewModel(id: notValidId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
@@ -25,14 +27,14 @@ namespace WebApiUnitTests.UpdateTaskCompletenessViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Test UpdateTaskViewModel validation" +
+                "Test case 1: Test UpdateTaskCompletenessViewModel validation" +
                 " if Id is zero. Validation should fail.",
                 0
             };
 
             yield return new object[]
             {
-                "Test case 2: Test UpdateTaskViewModel validation" +
+                "Test case 2: Test UpdateTaskCompletenessViewModel validation" +
                 " if Id is negative number. Validation should fail.",
                 -1
             };

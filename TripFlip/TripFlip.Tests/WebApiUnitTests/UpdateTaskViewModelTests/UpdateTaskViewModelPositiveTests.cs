@@ -12,7 +12,8 @@ namespace WebApiUnitTests.UpdateTaskViewModelTests
             string validDescription)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(description: validDescription);
+            var updateTaskViewModel = 
+                BuildUpdateTaskViewModel(description: validDescription);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
@@ -41,7 +42,8 @@ namespace WebApiUnitTests.UpdateTaskViewModelTests
             int validPriorityLevel)
         {
             // Arrange.
-            var updateTaskViewModel = BuildUpdateTaskViewModel(priorityLevel: validPriorityLevel);
+            var updateTaskViewModel = 
+                BuildUpdateTaskViewModel(priorityLevel: validPriorityLevel);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(updateTaskViewModel);
