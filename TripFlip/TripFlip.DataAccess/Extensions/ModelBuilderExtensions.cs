@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 using TripFlip.Domain.Entities;
 
 namespace TripFlip.DataAccess.Extensions
@@ -14,8 +15,10 @@ namespace TripFlip.DataAccess.Extensions
                 Title = "Our first trip",
                 Description = "We wanna visit several different cities of Ukraine",
                 DateCreated = DateTimeOffset.Now,
-                StartsAt = DateTimeOffset.Parse("17/08/2020 14:00:00"),
-                EndsAt = DateTimeOffset.Parse("20/08/2020 19:00:00")
+                StartsAt = DateTimeOffset.Parse("17/08/2020 14:00:00", 
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
+                EndsAt = DateTimeOffset.Parse("20/08/2020 19:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
             });
 
             modelBuilder.Entity<RouteEntity>().HasData(
