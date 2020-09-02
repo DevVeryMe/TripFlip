@@ -13,8 +13,7 @@ namespace TripFlip.Services.Helpers
         public static string HashPassword(string password)
         {
             var passwordHasher = new PasswordHasher<UserEntity>();
-            var user = new UserEntity();
-            var hashedPassword = passwordHasher.HashPassword(user, password);
+            var hashedPassword = passwordHasher.HashPassword(null, password);
 
             return hashedPassword;
         }

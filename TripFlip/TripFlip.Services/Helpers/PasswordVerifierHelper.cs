@@ -14,10 +14,9 @@ namespace TripFlip.Services.Helpers
         public static bool VerifyPassword(string password, string storedPasswordHash)
         {
             var isVerified = false;
-            var user = new UserEntity();
             var passwordHasher = new PasswordHasher<UserEntity>();
 
-            var result = passwordHasher.VerifyHashedPassword(user, storedPasswordHash, password);
+            var result = passwordHasher.VerifyHashedPassword(null, storedPasswordHash, password);
 
             if (result == PasswordVerificationResult.Success ||
                 result == PasswordVerificationResult.SuccessRehashNeeded)
