@@ -1,6 +1,15 @@
-﻿namespace TripFlip.Domain.Entities
+﻿using System;
+
+namespace TripFlip.Domain.Entities
 {
     public class UserEntity
     {
+        public Guid Id { get; set; }
+
+        public string Email { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public DateTimeOffset DateCreated { get; set; }
     }
 }

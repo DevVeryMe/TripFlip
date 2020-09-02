@@ -89,6 +89,29 @@ namespace TripFlip.DataAccess.Extensions
                 new TaskEntity() { Id = 3, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy tent" },
                 new TaskEntity() { Id = 4, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy drugs" },
                 new TaskEntity() { Id = 5, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy chips" });
+
+            modelBuilder.Entity<UserEntity>().HasData(
+                new UserEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "sample1.email@mail.com",
+                    PasswordHash = "some_hash",
+                    DateCreated = DateTimeOffset.Now
+                },
+                new UserEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "sample2.email@mail.com",
+                    PasswordHash = "some_other_hash",
+                    DateCreated = DateTimeOffset.Now
+                },
+                new UserEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "sample3.email@mail.com",
+                    PasswordHash = "hash_hash",
+                    DateCreated = DateTimeOffset.Now
+                });
         }
     }
 }
