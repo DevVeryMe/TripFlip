@@ -11,7 +11,6 @@ namespace TripFlip.ViewModels.UserViewModels
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyPasswordFieldError)]
-        [ValidatePasswordIsCorrectFormat(ErrorMessage = ErrorConstants.PasswordNotCorrectFormatError)]
         public string Password { get; set; }
     }
 }

@@ -41,9 +41,5 @@
         public const string EmptyPasswordFieldError = "Field 'password' cannot be empty.";
 
         public const string EmailNotCorrectFormatError = "Email does not suit correct email format.";
-
-        public const string PasswordNotCorrectFormatError = "Password need to contain at least 1 " +
-                                                            "upper case letter, 1 digit, minimum 8 symbols" +
-                                                            "and maximun 50.";
     }
 }
