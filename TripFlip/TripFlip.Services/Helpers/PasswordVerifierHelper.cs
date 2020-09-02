@@ -14,9 +14,14 @@ namespace TripFlip.Services.Helpers
         public static bool VerifyPassword(string password, string storedPasswordHash)
         {
             var isVerified = false;
-            var passwordHasher = new PasswordHasher<UserEntity>();
 
-            var result = passwordHasher.VerifyHashedPassword(null, storedPasswordHash, password);
+            // Type parameter do not affect on the behaviour of hasher and
+            // is used only to implement custom hashers, so
+            // in this case no matter with which class PasswordHasher 
+            // is typed. That's why parameter user is null.
+            var passwordHasher = new PasswordHasher<UserEntity>();
+            var result = passwordHasher.VerifyHashedPassword(user: null, 
+                hashedPassword: storedPasswordHash, providedPassword: password);
 
             if (result == PasswordVerificationResult.Success ||
                 result == PasswordVerificationResult.SuccessRehashNeeded)
