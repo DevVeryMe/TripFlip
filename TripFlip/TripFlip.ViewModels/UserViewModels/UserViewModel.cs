@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TripFlip.Services.Dto.UserDtos
+namespace TripFlip.ViewModels.UserViewModels
 {
-    public class UserDto
+    public class UserViewModel
     {
         public Guid Id { get; set; }
 
