@@ -11,7 +11,7 @@ namespace TripFlip.ViewModels.UserViewModels
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyPasswordFieldError)]
-        [StringLength(50, MinimumLength = 8, ErrorMessage = ErrorConstants.PasswordLengthError)]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = ErrorConstants.PasswordLengthError)]
         public string Password { get; set; }
     }
 }
