@@ -90,6 +90,7 @@ namespace TripFlip.WebApi
 
             applicationBuilder.UseRouting();
 
+            applicationBuilder.UseAuthentication();
             applicationBuilder.UseAuthorization();
 
             applicationBuilder.UseEndpoints(endpoints =>
