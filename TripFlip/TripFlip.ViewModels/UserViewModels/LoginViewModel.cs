@@ -6,7 +6,7 @@ namespace TripFlip.ViewModels.UserViewModels
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyEmailFieldError)]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,4})+)$", 
-            ErrorMessage = ErrorConstants.EmailNotCorrectFormatError)]
+            ErrorMessage = ErrorConstants.InvalidEmailFormatError)]
         [StringLength(320, MinimumLength = 6, ErrorMessage = ErrorConstants.EmailLengthError)]
         public string Email { get; set; }
 
