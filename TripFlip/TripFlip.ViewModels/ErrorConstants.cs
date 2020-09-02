@@ -41,5 +41,11 @@
         public const string EmptyPasswordFieldError = "Field 'password' cannot be empty.";
 
         public const string EmailNotCorrectFormatError = "Email does not suit correct email format.";
+
+        public const string PasswordLengthError = "Password should consist of at least 8 characters and" +
+                                                  "maximum 50.";
+
+        public const string EmailLengthError = "Email should consist of at least 6 characters and" +
+                                                  "maximum 320.";
     }
 }
