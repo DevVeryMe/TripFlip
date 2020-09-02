@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
+using System.Text;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using TripFlip.DataAccess;
@@ -25,6 +28,25 @@ namespace TripFlip.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["Jwt:Audience"],
+
+                        ValidateLifetime = true,
+
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(Configuration["Jwt:SecretKey"]))
+                    };
+                });
 
             services.AddSwaggerGen(options =>
             {
