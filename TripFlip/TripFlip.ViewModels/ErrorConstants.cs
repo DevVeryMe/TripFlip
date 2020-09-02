@@ -40,9 +40,9 @@
 
         public const string EmptyPasswordFieldError = "Field 'password' cannot be empty.";
 
-        public const string EmailNotCorrectFormatError = "Email does not suit correct email format.";
+        public const string InvalidEmailFormatError = "Email does not suit correct email format.";
 
-        public const string PasswordNotCorrectFormatError = "Password does not suit correct password format.";
+        public const string InvalidPasswordFormatError = "Password does not suit correct password format.";
 
         public const string EmailLengthError = "Email length must be between 6 and 320 characters.";
 
