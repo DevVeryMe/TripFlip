@@ -10,7 +10,7 @@ namespace TripFlip.Services.Helpers
         /// </summary>
         /// <param name="password">The password supplied for comparison.</param>
         /// <param name="storedPasswordHash">The hash value for a user's stored password.</param>
-        /// <returns>Bool value indicating the result of a password hash comparison</returns>
+        /// <returns>Bool value indicating the result of a password hash comparison.</returns>
         public static bool VerifyPassword(string password, string storedPasswordHash)
         {
             var isVerified = false;
