@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
@@ -25,11 +26,18 @@ namespace TripFlip.Services.Interfaces
         Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto);
 
         /// <summary>
+        /// Updates the User.
+        /// </summary>
+        /// <param name="updateUserDto">New User data with existing User id.</param>
+        /// <returns>User DTO that represents the updated database entry.</returns>
+        Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto);
+
+        /// <summary>
         /// Gets User with the given id.
         /// </summary>
         /// <param name="id">User id.</param>
         /// <returns>User DTO that represents the database entry with the given id.</returns>
-        Task<UserDto> GetByIdAsync(int id);
+        Task<UserDto> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Gets all Users.
@@ -44,6 +52,6 @@ namespace TripFlip.Services.Interfaces
         /// Deletes User.
         /// </summary>
         /// <param name="id">User id.</param>
-        Task DeleteByIdAsync(int id);
+        Task DeleteByIdAsync(Guid id);
     }
 }
