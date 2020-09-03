@@ -37,7 +37,7 @@ namespace TripFlip.WebApi.Controllers
         ///     {
         ///         "id": 0f8fad5b-d9cb-469f-a165-70867728950e,
         ///         "email": "sample@gmail.com",
-        ///         "password": "123456",
+        ///         "password": "TestPassword@1",
         ///     }
         /// </remarks>
         [HttpPut]
