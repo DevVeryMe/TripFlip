@@ -69,6 +69,11 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Checks if the given <see cref="UserEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// </summary>
+        /// <param name="userEntity">Object that should be checked.</param>
         private void ValidateUserEntityNotNull(UserEntity userEntity)
         {
             if (userEntity is null)
