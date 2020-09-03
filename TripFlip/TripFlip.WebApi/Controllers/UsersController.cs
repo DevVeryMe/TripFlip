@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
@@ -39,10 +41,17 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserViewModel updateUserViewModel)
         {
-            return Ok();
+            var updateUserDto = _mapper.Map<UpdateUserDto>(updateUserViewModel);
+
+            var userDto = await _userService.UpdateAsync(updateUserDto);
+
+            var userViewModel = _mapper.Map<UserViewModel>(userDto);
+
+            return Ok(userViewModel);
         }
     }
 }
