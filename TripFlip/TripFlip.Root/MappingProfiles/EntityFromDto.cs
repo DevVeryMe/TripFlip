@@ -37,6 +37,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<UserDto, UserEntity>();
 
             CreateMap<RegisterUserDto, UserEntity>();
+
+            CreateMap<UpdateUserDto, UserEntity>();
         }
     }
 }
