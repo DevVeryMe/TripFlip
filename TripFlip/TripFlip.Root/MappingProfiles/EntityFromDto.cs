@@ -34,6 +34,8 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<CreateItemListDto, ItemListEntity>();
 
+            CreateMap<UserDto, UserEntity>();
+
             CreateMap<RegisterUserDto, UserEntity>();
         }
     }

@@ -6,6 +6,7 @@ using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
 namespace TripFlip.Root.MappingProfiles
@@ -37,6 +38,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<PagedList<TaskEntity>, PagedList<TaskDto>>();
 
             CreateMap<PagedList<TaskListEntity>, PagedList<TaskListDto>>();
+
+            CreateMap<UserEntity, UserDto>();
         }
     }
 }
