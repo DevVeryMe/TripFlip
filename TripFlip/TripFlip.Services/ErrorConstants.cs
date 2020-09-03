@@ -14,6 +14,8 @@
 
         public static readonly string RouteNotFound = "Route is not found.";
 
+        public static readonly string UserNotFound = "User is not found.";
+
         public static readonly string AddingTaskToNotExistingTaskList = "Trying to add task to not existing task list.";
 
         public static readonly string AddingTaskListToNotExistingRoute = "Trying to add task list to not existing route.";
