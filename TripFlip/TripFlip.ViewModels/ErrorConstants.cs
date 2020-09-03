@@ -42,10 +42,14 @@
 
         public const string InvalidEmailFormatError = "Email does not suit correct email format.";
 
-        public const string PasswordLengthError = "Password should consist of at least 8 characters and" +
-                                                  "maximum 50.";
+        public const string InvalidPasswordFormatError = "Password does not suit correct password format.";
 
-        public const string EmailLengthError = "Email should consist of at least 6 characters and" +
-                                                  "maximum 320.";
+        public const string EmailLengthError = "Email length must be between 6 and 320 characters.";
+
+        public const string PasswordLengthError = "Password length must be between 8 and 100 characters.";
+
+        public const string EmptyPasswordConfirmationFieldError = "Field 'password confirmation' cannot be empty.";
+
+        public const string MissmatchPasswordConfirmationError = "Password confirmation doesn't match password.";
     }
 }

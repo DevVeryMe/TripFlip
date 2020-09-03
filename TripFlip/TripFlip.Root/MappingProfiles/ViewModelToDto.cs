@@ -57,6 +57,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<PaginationViewModel, PaginationDto>();
 
             CreateMap<LoginViewModel, LoginDto>();
+
+            CreateMap<RegisterUserViewModel, RegisterUserDto>();
         }
     }
 }
