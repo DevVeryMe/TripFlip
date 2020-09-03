@@ -45,7 +45,7 @@ namespace TripFlip.Services.Interfaces
         /// <param name="paginationDto">Pagination parameters.</param>
         /// <param name="searchString">String to filter Users.</param>
         /// <returns>Paged list of User DTOs that represent the database entries.</returns>
-        Task<PagedList<UserDto>> GetAllByTripIdAsync(string searchString,
+        Task<PagedList<UserDto>> GetAllAsync(string searchString,
             PaginationDto paginationDto);
 
         /// <summary>
