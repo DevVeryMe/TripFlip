@@ -52,6 +52,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<UserDto, UserViewModel>();
 
             CreateMap<AuthenticatedUserDto, AuthenticatedUserViewModel>();
+
+            CreateMap<PagedList<UserDto>, PagedList<UserViewModel>>();
         }
     }
 }
