@@ -29,7 +29,7 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public Task<PagedList<UserDto>> GetAllByTripIdAsync(string searchString, PaginationDto paginationDto)
+        public Task<PagedList<UserDto>> GetAllAsync(string searchString, PaginationDto paginationDto)
         {
             throw new NotImplementedException();
         }
