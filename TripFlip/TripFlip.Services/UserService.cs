@@ -56,7 +56,6 @@ namespace TripFlip.Services
             ValidateUserEntityNotNull(userEntity);
 
             userEntity.Email = updateUserDto.Email;
-            userEntity.PasswordHash = PasswordHasherHelper.HashPassword(updateUserDto.Password);
 
             await _tripFlipDbContext.SaveChangesAsync();
             var userDto = _mapper.Map<UserDto>(userEntity);
