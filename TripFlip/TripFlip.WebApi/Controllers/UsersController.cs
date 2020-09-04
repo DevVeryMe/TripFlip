@@ -53,5 +53,34 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok(userViewModel);
         }
+
+        /// <summary>
+        /// Authorizes User.
+        /// </summary>
+        /// <param name="loginViewModel">User credentials to log in.</param>
+        /// <returns>User view model that
+        /// represents the authorized User.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users
+        ///     {
+        ///         "email": "sample@gmail.com",
+        ///         "password": "TestPassword@1",
+        ///     }
+        /// </remarks>
+        [HttpPut("login")]
+        [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginViewModel)
+        {
+            var loginDto = _mapper.Map<LoginDto>(loginViewModel);
+
+            var authenticatedUserDto = await _userService.AuthorizeAsync(loginDto);
+
+            var authenticatedUserViewModel =
+                _mapper.Map<AuthenticatedUserViewModel>(authenticatedUserDto);
+
+            return Ok(authenticatedUserViewModel);
+        }
     }
 }

@@ -1,5 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -18,18 +23,25 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        private readonly IConfiguration _appConfiguration;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public UserService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="appConfiguration">IConfiguration instance.</param>
+        public UserService(TripFlipDbContext tripFlipDbContext, 
+            IMapper mapper,
+            IConfiguration appConfiguration)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
+            _appConfiguration = appConfiguration;
         }
 
-        public Task<PagedList<UserDto>> GetAllAsync(string searchString, PaginationDto paginationDto)
+        public Task<PagedList<UserDto>> GetAllAsync(string searchString,
+            PaginationDto paginationDto)
         {
             throw new NotImplementedException();
         }
@@ -39,9 +51,23 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
-        public Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto)
+        public async Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            UserEntity userEntity = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(user => user.Email == loginDto.Email
+                && PasswordHasherHelper
+                .VerifyPassword(loginDto.Password, user.PasswordHash));
+
+            ValidateUserEntityNotNull(userEntity);
+
+            AuthenticatedUserDto authenticatedUserDto = 
+                _mapper.Map<AuthenticatedUserDto>(userEntity);
+
+            authenticatedUserDto.Token = GenerateJsonWebToken();
+
+            return authenticatedUserDto;
         }
 
         public Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
@@ -79,6 +105,34 @@ namespace TripFlip.Services
             {
                 throw new ArgumentException(ErrorConstants.UserNotFound);
             }
+        }
+
+        /// <summary>
+        /// Generates JWT.
+        /// </summary>
+        /// <returns>Encoded JWT.</returns>
+        private string GenerateJsonWebToken()
+        {
+            var encodedSecretKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(_appConfiguration["Jwt:SecretKey"]));
+                var credentials = new SigningCredentials(
+                encodedSecretKey,
+                SecurityAlgorithms.HmacSha256
+                );
+
+            int expirationTime = int.Parse(_appConfiguration["Jwt:TokenLifetime"]);
+
+            // creating JWT
+            var jwt = new JwtSecurityToken(
+                issuer: _appConfiguration["Jwt:Issuer"],
+                audience: _appConfiguration["Jwt:Audience"],
+                expires: DateTime.Now.AddMinutes(expirationTime),
+                signingCredentials: credentials
+                );
+
+            string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return encodedJwt;
         }
     }
 }
