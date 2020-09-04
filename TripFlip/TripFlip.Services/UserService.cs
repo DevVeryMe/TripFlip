@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -65,7 +67,7 @@ namespace TripFlip.Services
             AuthenticatedUserDto authenticatedUserDto = 
                 _mapper.Map<AuthenticatedUserDto>(userEntity);
 
-            authenticatedUserDto.Token = GenerateJsonWebToken();
+            authenticatedUserDto.Token = GenerateJsonWebToken(userEntity);
 
             return authenticatedUserDto;
         }
@@ -111,7 +113,7 @@ namespace TripFlip.Services
         /// Generates JWT.
         /// </summary>
         /// <returns>Encoded JWT.</returns>
-        private string GenerateJsonWebToken()
+        private string GenerateJsonWebToken(UserEntity user)
         {
             var encodedSecretKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(_appConfiguration["Jwt:SecretKey"]));
@@ -122,10 +124,17 @@ namespace TripFlip.Services
 
             int expirationTime = int.Parse(_appConfiguration["Jwt:TokenLifetime"]);
 
+            var claims = new List<Claim>
+            {
+                new Claim("id", user.Id.ToString()),
+                new Claim("email", user.Email)
+            };
+
             // creating JWT
             var jwt = new JwtSecurityToken(
                 issuer: _appConfiguration["Jwt:Issuer"],
                 audience: _appConfiguration["Jwt:Audience"],
+                claims: claims,
                 expires: DateTime.Now.AddMinutes(expirationTime),
                 signingCredentials: credentials
                 );

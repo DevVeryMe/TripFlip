@@ -41,6 +41,8 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<UserEntity, UserDto>();
 
+            CreateMap<UserEntity, AuthenticatedUserDto>();
+
             CreateMap<PagedList<UserEntity>, PagedList<UserDto>>();
         }
     }

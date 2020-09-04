@@ -70,6 +70,7 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut("login")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticatedUserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginViewModel)
         {
