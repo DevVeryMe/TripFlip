@@ -59,11 +59,11 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="loginViewModel">User credentials to log in.</param>
         /// <returns>User view model that
-        /// represents the authorized User.</returns>
+        /// represents the authenticated User.</returns>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users/login
+        ///     PUT /users/authorize
         ///     {
         ///         "email": "sample@gmail.com",
         ///         "password": "TestPassword@1",
