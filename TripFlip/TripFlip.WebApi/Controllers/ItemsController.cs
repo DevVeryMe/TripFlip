@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace TripFlip.WebApi.Controllers
 {
     [Route("api/items")]
     [ApiController]
+    [Authorize]
     public class ItemsController : ControllerBase
     {
         private readonly IItemService _itemService;
