@@ -61,6 +61,7 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">User id.</param>
         /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteByIdAsync(Guid id)
         {
             await _userService.DeleteByIdAsync(id);
