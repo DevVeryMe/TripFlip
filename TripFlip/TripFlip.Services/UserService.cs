@@ -112,6 +112,7 @@ namespace TripFlip.Services
         /// <summary>
         /// Generates JWT.
         /// </summary>
+        /// <param name="user">User entity needed to add claims.</param>
         /// <returns>Encoded JWT.</returns>
         private string GenerateJsonWebToken(UserEntity user)
         {
