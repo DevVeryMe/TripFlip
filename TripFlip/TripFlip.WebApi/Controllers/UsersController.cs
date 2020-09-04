@@ -69,10 +69,10 @@ namespace TripFlip.WebApi.Controllers
         ///         "password": "TestPassword@1",
         ///     }
         /// </remarks>
-        [HttpPut("login")]
+        [HttpPut("authorize")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticatedUserViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginViewModel)
+        public async Task<IActionResult> AuthorizeAsync([FromBody] LoginViewModel loginViewModel)
         {
             var loginDto = _mapper.Map<LoginDto>(loginViewModel);
 
