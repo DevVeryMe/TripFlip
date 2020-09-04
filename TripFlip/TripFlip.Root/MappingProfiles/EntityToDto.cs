@@ -40,6 +40,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<PagedList<TaskListEntity>, PagedList<TaskListDto>>();
 
             CreateMap<UserEntity, UserDto>();
+
+            CreateMap<PagedList<UserEntity>, PagedList<UserDto>>();
         }
     }
 }

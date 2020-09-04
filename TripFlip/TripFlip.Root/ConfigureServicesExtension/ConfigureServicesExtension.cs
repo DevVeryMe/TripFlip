@@ -25,6 +25,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IItemListService, ItemListService>();
 
+            services.AddTransient<IUserService, UserService>();
+
             services.AddDbContext<TripFlipDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(
