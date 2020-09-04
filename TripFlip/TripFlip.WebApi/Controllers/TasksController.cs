@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,7 @@ using TripFlip.ViewModels.TaskViewModels;
 namespace TripFlip.WebApi.Controllers
 {
     [Route("api/tasks")]
+    [Authorize]
     [ApiController]
     public class TasksController : ControllerBase
     {
