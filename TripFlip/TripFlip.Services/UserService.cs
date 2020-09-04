@@ -126,8 +126,8 @@ namespace TripFlip.Services
 
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString()),
-                new Claim("email", user.Email)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email)
             };
 
             // creating JWT
