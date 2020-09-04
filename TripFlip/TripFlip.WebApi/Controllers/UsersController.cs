@@ -63,14 +63,14 @@ namespace TripFlip.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users
+        ///     PUT /users/login
         ///     {
         ///         "email": "sample@gmail.com",
         ///         "password": "TestPassword@1",
         ///     }
         /// </remarks>
         [HttpPut("login")]
-        [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticatedUserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginViewModel)
         {
             var loginDto = _mapper.Map<LoginDto>(loginViewModel);
