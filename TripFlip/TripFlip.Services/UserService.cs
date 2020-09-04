@@ -53,7 +53,7 @@ namespace TripFlip.Services
 
         public async Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto)
         {
-            UserEntity userEntity = await _tripFlipDbContext
+            var userEntity = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(user => user.Email == loginDto.Email
