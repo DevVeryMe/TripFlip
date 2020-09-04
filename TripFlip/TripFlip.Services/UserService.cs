@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
@@ -34,9 +35,18 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserDto> GetByIdAsync(Guid id)
+        public async Task<UserDto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(user => user.Id == id);
+
+            ValidateUserEntityNotNull(userEntity);
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto)
