@@ -2,8 +2,10 @@
 using System;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
+using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 
@@ -47,14 +49,36 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
+        public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
         {
-            throw new NotImplementedException();
+            var userEntity = await _tripFlipDbContext.Users.FindAsync(updateUserDto.Id);
+
+            ValidateUserEntityNotNull(userEntity);
+
+            userEntity.Email = updateUserDto.Email;
+
+            await _tripFlipDbContext.SaveChangesAsync();
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public Task DeleteByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks if the given <see cref="UserEntity"/> is not null. If null,
+        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// </summary>
+        /// <param name="userEntity">Object that should be checked.</param>
+        private void ValidateUserEntityNotNull(UserEntity userEntity)
+        {
+            if (userEntity is null)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
         }
     }
 }
