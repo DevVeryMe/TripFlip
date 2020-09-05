@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TripFlip.Domain.Entities
 {
@@ -13,5 +14,7 @@ namespace TripFlip.Domain.Entities
         public TripEntity Trip { get; set; }
 
         public DateTimeOffset DateSubscribed { get; set; }
+
+        public ICollection<TripSubscriberRoleEntity> TripRoles { get; set; }
     }
 }
