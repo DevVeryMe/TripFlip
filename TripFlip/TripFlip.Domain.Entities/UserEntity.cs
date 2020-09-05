@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TripFlip.Domain.Entities
 {
@@ -11,5 +12,7 @@ namespace TripFlip.Domain.Entities
         public string PasswordHash { get; set; }
 
         public DateTimeOffset DateCreated { get; set; }
+
+        public ICollection<TripSubscriberEntity> TripSubscriptions { get; set; }
     }
 }
