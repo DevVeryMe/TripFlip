@@ -25,6 +25,8 @@ namespace TripFlip.DataAccess
 
         public DbSet<UserEntity> Users { get; set; }
 
+        public DbSet<TripRoleEntity> TripRoles { get; set; }
+
         public TripFlipDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +40,7 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new TripEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripFileEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TripRoleEntityConfiguration());
 
             modelBuilder.Seed();
         }

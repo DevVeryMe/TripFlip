@@ -112,6 +112,20 @@ namespace TripFlip.DataAccess.Extensions
                     PasswordHash = "hash_hash",
                     DateCreated = DateTimeOffset.Now
                 });
+
+            modelBuilder.Entity<TripRoleEntity>().HasData(
+                new TripRoleEntity()
+                {
+                    Name = "Admin"
+                },
+                new TripRoleEntity()
+                {
+                    Name = "Editor"
+                },
+                new TripRoleEntity()
+                {
+                    Name = "Guest"
+                });
         }
     }
 }
