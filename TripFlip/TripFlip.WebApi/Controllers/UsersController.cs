@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
@@ -52,6 +53,20 @@ namespace TripFlip.WebApi.Controllers
             var userViewModel = _mapper.Map<UserViewModel>(userDto);
 
             return Ok(userViewModel);
+        }
+
+        /// <summary>
+        /// Deletes User.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>No content (HTTP code 204).</returns>
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteByIdAsync(Guid id)
+        {
+            await _userService.DeleteByIdAsync(id);
+
+            return NoContent();
         }
     }
 }

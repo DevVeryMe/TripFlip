@@ -63,9 +63,14 @@ namespace TripFlip.Services
             return userDto;
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
+
+            ValidateUserEntityNotNull(userEntity);
+
+            _tripFlipDbContext.Remove(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         /// <summary>
