@@ -116,14 +116,17 @@ namespace TripFlip.DataAccess.Extensions
             modelBuilder.Entity<TripRoleEntity>().HasData(
                 new TripRoleEntity()
                 {
+                    Id = 1,
                     Name = "Admin"
                 },
                 new TripRoleEntity()
                 {
+                    Id = 2,
                     Name = "Editor"
                 },
                 new TripRoleEntity()
                 {
+                    Id = 3,
                     Name = "Guest"
                 });
         }
