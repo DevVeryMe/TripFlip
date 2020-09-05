@@ -26,6 +26,23 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Gets User by id.
+        /// </summary>
+        /// <param name="id">Id of User.</param>
+        /// <returns>User view model that represents
+        ///  user database entry.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
+        {
+            var userDto = await _userService.GetByIdAsync(id);
+
+            var userViewModel = _mapper.Map<UserViewModel>(userDto);
+
+            return Ok(userViewModel);
+        }
+
+        /// <summary>
         /// Updates User.
         /// </summary>
         /// <param name="updateUserViewModel">New User data with existing User id.</param>
