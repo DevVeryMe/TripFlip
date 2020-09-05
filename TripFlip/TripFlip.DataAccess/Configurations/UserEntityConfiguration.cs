@@ -18,6 +18,10 @@ namespace TripFlip.DataAccess.Configurations
                 .IsRequired()
                 .HasMaxLength(255);
 
+            builder
+                .HasIndex(user => user.Email)
+                .IsUnique();
+
             builder.Property(userEntity => userEntity.DateCreated)
                 .HasDefaultValueSql("SYSDATETIMEOFFSET()");
         }

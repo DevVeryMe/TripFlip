@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,9 +48,18 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserDto> GetByIdAsync(Guid id)
+        public async Task<UserDto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(user => user.Id == id);
+
+            ValidateUserEntityNotNull(userEntity);
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public async Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto)
@@ -77,9 +87,28 @@ namespace TripFlip.Services
             return authenticatedUserDto;
         }
 
-        public Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
+        public async Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
         {
-            throw new NotImplementedException();
+            bool emailIsAlreadyTaken = _tripFlipDbContext
+                .Users
+                .Any(user => user.Email == registerUserDto.Email);
+
+            if (emailIsAlreadyTaken)
+            {
+                throw new ArgumentException(ErrorConstants.EmailIsTaken);
+            }
+
+            var userEntity = _mapper.Map<UserEntity>(registerUserDto);
+
+            userEntity.PasswordHash = 
+                PasswordHasherHelper.HashPassword(registerUserDto.Password);
+
+            _tripFlipDbContext.Users.Add(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
