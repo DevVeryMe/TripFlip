@@ -19,5 +19,7 @@
         public static readonly string AddingTaskToNotExistingTaskList = "Trying to add task to not existing task list.";
 
         public static readonly string AddingTaskListToNotExistingRoute = "Trying to add task list to not existing route.";
+
+        public static readonly string EmailIsTaken = "This Email is already taken.";
     }
 }

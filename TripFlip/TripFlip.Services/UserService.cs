@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
@@ -44,9 +45,28 @@ namespace TripFlip.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
+        public async Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
         {
-            throw new NotImplementedException();
+            bool emailIsAlreadyTaken = _tripFlipDbContext
+                .Users
+                .Any(user => user.Email == registerUserDto.Email);
+
+            if (emailIsAlreadyTaken)
+            {
+                throw new ArgumentException(ErrorConstants.EmailIsTaken);
+            }
+
+            var userEntity = _mapper.Map<UserEntity>(registerUserDto);
+
+            userEntity.PasswordHash = 
+                PasswordHasherHelper.HashPassword(registerUserDto.Password);
+
+            _tripFlipDbContext.Users.Add(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
