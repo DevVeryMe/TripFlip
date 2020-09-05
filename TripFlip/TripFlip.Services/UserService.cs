@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -25,21 +24,21 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
-        private readonly IConfiguration _appConfiguration;
+        private readonly JsonWebTokenConfig _jsonWebTokenConfig;
 
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        /// <param name="appConfiguration">IConfiguration instance.</param>
-        public UserService(TripFlipDbContext tripFlipDbContext, 
-            IMapper mapper,
-            IConfiguration appConfiguration)
+        /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        public UserService(IMapper mapper,
+            TripFlipDbContext tripFlipDbContext,
+            JsonWebTokenConfig jsonWebTokenConfig)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
-            _appConfiguration = appConfiguration;
+            _jsonWebTokenConfig = jsonWebTokenConfig;
         }
 
         public Task<PagedList<UserDto>> GetAllAsync(string searchString,
@@ -58,11 +57,17 @@ namespace TripFlip.Services
             var userEntity = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(user => user.Email == loginDto.Email
-                && PasswordHasherHelper
-                .VerifyPassword(loginDto.Password, user.PasswordHash));
+                .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
             ValidateUserEntityNotNull(userEntity);
+
+            bool isPasswordVerified = PasswordHasherHelper
+                .VerifyPassword(loginDto.Password, userEntity.PasswordHash);
+
+            if (!isPasswordVerified)
+            {
+                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
+            }
 
             AuthenticatedUserDto authenticatedUserDto = 
                 _mapper.Map<AuthenticatedUserDto>(userEntity);
@@ -122,13 +127,13 @@ namespace TripFlip.Services
         private string GenerateJsonWebToken(UserEntity user)
         {
             var encodedSecretKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(_appConfiguration["Jwt:SecretKey"]));
+                Encoding.ASCII.GetBytes(_jsonWebTokenConfig.SecretKey));
                 var credentials = new SigningCredentials(
                 encodedSecretKey,
                 SecurityAlgorithms.HmacSha256
                 );
 
-            int expirationTime = int.Parse(_appConfiguration["Jwt:TokenLifetime"]);
+            int expirationTime = _jsonWebTokenConfig.TokenLifetime;
 
             var claims = new List<Claim>
             {
@@ -138,8 +143,8 @@ namespace TripFlip.Services
 
             // creating JWT
             var jwt = new JwtSecurityToken(
-                issuer: _appConfiguration["Jwt:Issuer"],
-                audience: _appConfiguration["Jwt:Audience"],
+                issuer: _jsonWebTokenConfig.Issuer,
+                audience: _jsonWebTokenConfig.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(expirationTime),
                 signingCredentials: credentials
