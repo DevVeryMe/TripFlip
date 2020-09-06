@@ -168,11 +168,18 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.NoGrantAdminRolePermission);
             }
 
-            var token =
-                JwtHeaderParseHelper.ParseHeader(_httpContextAccessor.HttpContext.Request.Headers);
+            var currentUserIdToParse = _httpContextAccessor
+                .HttpContext
+                .User
+                ?.Claims
+                ?.SingleOrDefault(c =>
+                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                ?.Value;
 
-            var currentUserIdToParse = token.Claims
-                .FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+            if (currentUserIdToParse is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             var currentUserId = Guid.Parse(currentUserIdToParse);
 
@@ -189,7 +196,8 @@ namespace TripFlip.Services
             ValidateEntityNotNull<TripSubscriberEntity>(subscriberEntity, ErrorConstants.NotSubscriberOfTheTrip);
 
             var currentUserTripAdmin = trip.TripSubscribers
-                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)?.TripRoles
+                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)?
+                .TripRoles
                 .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
 
             ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, ErrorConstants.NoGrantRolePermission);
