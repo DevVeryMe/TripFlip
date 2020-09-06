@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TripFlip.DataAccess;
 using TripFlip.Services;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Root.ConfigureServicesExtension
@@ -26,6 +27,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
             services.AddTransient<IItemListService, ItemListService>();
 
             services.AddTransient<IUserService, UserService>();
+
+            services.AddSingleton<JsonWebTokenConfig>();
 
             services.AddDbContext<TripFlipDbContext>(options =>
                 options.UseSqlServer(
