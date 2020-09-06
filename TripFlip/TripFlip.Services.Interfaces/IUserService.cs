@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.TripSubscribersRolesDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
@@ -53,5 +54,12 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="id">User id.</param>
         Task DeleteByIdAsync(Guid id);
+
+        /// <summary>
+        /// Grants a role to any user, if the current one is granted with the admin role.
+        /// </summary>
+        /// <param name="grantSubscriberRoleDto">Data to with user id and role to grant.</param>
+        /// <returns></returns>
+        Task GrantRole(GrantSubscriberRoleDto grantSubscriberRoleDto);
     }
 }

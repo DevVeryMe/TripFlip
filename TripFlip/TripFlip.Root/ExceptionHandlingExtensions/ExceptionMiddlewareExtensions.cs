@@ -7,6 +7,7 @@ using NLog;
 using System;
 using System.Net;
 using TripFlip.Root.ExceptionHandlingExtensions.Models;
+using TripFlip.Services.Exceptions;
 
 namespace TripFlip.Root.ExceptionHandlingExtensions
 {
@@ -36,6 +37,10 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                         if (exception.Error is ArgumentException)
                         {
                             context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                        }
+                        else if (exception.Error is NoGrantRolePermissionException)
+                        {
+                            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                         }
 
                         var errorDetails = new ErrorDetails

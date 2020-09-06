@@ -23,5 +23,7 @@
         public static readonly string PasswordNotVerified = "Password is not verified.";
 
         public static readonly string EmailIsTaken = "This Email is already taken.";
+
+        public static readonly string NoGrantRolePermission = "You have no permission to grant roles to other users.";
     }
 }

@@ -8,10 +8,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.TripSubscribersRolesDtos;
 using TripFlip.Services.Dto.UserDtos;
+using TripFlip.Services.Exceptions;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -28,19 +31,24 @@ namespace TripFlip.Services
 
         private readonly JsonWebTokenConfig _jsonWebTokenConfig;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
-            JsonWebTokenConfig jsonWebTokenConfig)
+            JsonWebTokenConfig jsonWebTokenConfig, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jsonWebTokenConfig = jsonWebTokenConfig;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -151,6 +159,31 @@ namespace TripFlip.Services
             ValidateUserEntityNotNull(userEntity);
 
             _tripFlipDbContext.Remove(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task GrantRole(GrantSubscriberRoleDto grantSubscriberRoleDto)
+        {
+            var token =
+                JwtHeaderParseHelper.ParseHeader(_httpContextAccessor.HttpContext.Request.Headers);
+
+            var currentUserIdToParse = token.Claims
+                .FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+
+            var currentUserId = Guid.Parse(currentUserIdToParse);
+
+            var result = await _tripFlipDbContext.TripSubscribersRoles
+                .AnyAsync(tripSubscriberRoleEntity => 
+                    tripSubscriberRoleEntity.TripSubscriberId == grantSubscriberRoleDto.TripSubscriberId &&
+                    tripSubscriberRoleEntity.TripRole.Name == TripRoleNames.AdminRole);
+
+            if (!result)
+            {
+                throw new NoGrantRolePermissionException(ErrorConstants.NoGrantRolePermission);
+            }
+
+            var tripSubscribersRolesEntityToAdd = _mapper.Map<TripSubscriberRoleEntity>(grantSubscriberRoleDto);
+            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscribersRolesEntityToAdd);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace TripFlip.ViewModels
+﻿using System.Data;
+
+namespace TripFlip.ViewModels
 {
     public static class ErrorConstants
     {
@@ -51,5 +53,15 @@
         public const string EmptyPasswordConfirmationFieldError = "Field 'password confirmation' cannot be empty.";
 
         public const string MissmatchPasswordConfirmationError = "Password confirmation doesn't match password.";
+
+        public const string RequiredTripSubscriberIdError = "Id of participant of selected trip is required.";
+
+        public const string TripSubscriberIdLessThanOneError = "Id of participant of selected trip cannot be" +
+                                                               "less than 1.";
+
+        public const string RequiredRoleIdError = "Id of role of trip participant is required.";
+
+        public const string RoleIdLessThanOneError = "Id of role of trip participant cannot be" +
+                                                               "less than 1.";
     }
 }
