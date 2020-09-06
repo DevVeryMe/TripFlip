@@ -180,14 +180,16 @@ namespace TripFlip.Services
             var subscriberEntity = trip.TripSubscribers
                 .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
 
-            ValidateEntityNotNull<TripSubscriberEntity>(subscriberEntity, ErrorConstants.NotSubscriberOfTheTrip);
+            ValidateEntityNotNull<TripSubscriberEntity>(subscriberEntity, 
+                ErrorConstants.NotSubscriberOfTheTrip);
 
             var currentUserTripAdmin = trip.TripSubscribers
                 .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)?
                 .TripRoles
                 .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
 
-            ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, ErrorConstants.NoGrantRolePermission);
+            ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
+                ErrorConstants.NoGrantRolePermission);
 
             var isRoleAlreadySet = subscriberEntity.TripRoles
                 .Any(t => t.TripRoleId == grantSubscriberRoleDto.TripRoleId);
