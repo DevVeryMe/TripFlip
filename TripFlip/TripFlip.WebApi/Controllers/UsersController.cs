@@ -87,7 +87,7 @@ namespace TripFlip.WebApi.Controllers
         ///         "password": "TestPassword@1",
         ///     }
         /// </remarks>
-        [HttpPut("authorize")]
+        [HttpPost("authorize")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticatedUserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> AuthorizeAsync([FromBody] LoginViewModel loginViewModel)
