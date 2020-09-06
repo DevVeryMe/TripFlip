@@ -9,7 +9,7 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
-using TripFlip.Services.Helpers;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -83,21 +83,27 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.AddAsync(tripEntity);
 
-            var token =
-                JwtHeaderParseHelper.ParseHeader(_httpContextAccessor.HttpContext.Request.Headers);
+            var currentUserId = GetUserIdFromClaims();
 
-            var currentUserId = token.Claims
-                .FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+            bool userExists = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .AnyAsync(u => u.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
 
             var tripSubscriberEntity = new TripSubscriberEntity()
             {
-                UserId = Guid.Parse(currentUserId),
+                UserId = currentUserId,
                 Trip = tripEntity
             };
 
             var tripRoleEntity = await _tripFlipDbContext
                 .TripRoles
-                .SingleOrDefaultAsync(role => role.Name == TripRoleNames.AdminRole);
+                .SingleOrDefaultAsync(role => role.Id == (int)TripRoles.Admin);
 
             var tripSubscriberRoleEntity = new TripSubscriberRoleEntity()
             {
@@ -146,6 +152,30 @@ namespace TripFlip.Services
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
             }
+        }
+
+        /// <summary>
+        /// Gets users id from http request user claims.
+        /// </summary>
+        /// <returns>The users id.</returns>
+        private Guid GetUserIdFromClaims()
+        {
+            var currentUserIdToParse = _httpContextAccessor
+                .HttpContext
+                .User
+                ?.Claims
+                ?.SingleOrDefault(c =>
+                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                ?.Value;
+
+            if (currentUserIdToParse is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            var currentUserId = Guid.Parse(currentUserIdToParse);
+
+            return currentUserId;
         }
     }
 }

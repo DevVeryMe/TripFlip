@@ -37,6 +37,10 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                         {
                             context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                         }
+                        else if (exception.Error is UnauthorizedAccessException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        }
 
                         var errorDetails = new ErrorDetails
                         {
