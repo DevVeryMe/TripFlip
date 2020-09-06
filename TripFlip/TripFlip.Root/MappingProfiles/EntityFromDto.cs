@@ -39,8 +39,6 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<RegisterUserDto, UserEntity>();
 
             CreateMap<UpdateUserDto, UserEntity>();
-
-            CreateMap<GrantSubscriberRoleDto, TripSubscriberRoleEntity>();
         }
     }
 }

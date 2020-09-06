@@ -168,20 +168,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.NoGrantAdminRolePermission);
             }
 
-            var currentUserIdToParse = _httpContextAccessor
-                .HttpContext
-                .User
-                ?.Claims
-                ?.SingleOrDefault(c =>
-                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
-                ?.Value;
-
-            if (currentUserIdToParse is null)
-            {
-                throw new UnauthorizedAccessException();
-            }
-
-            var currentUserId = Guid.Parse(currentUserIdToParse);
+            var currentUserId = GetUserIdFromClaims();
 
             var trip = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
@@ -233,12 +220,43 @@ namespace TripFlip.Services
             }
         }
 
+        /// <summary>
+        /// Validates whether entity is not null. If null,
+        /// throws an ArgumentException.
+        /// </summary>
+        /// <typeparam name="TEntity">Any entity to check.</typeparam>
+        /// <param name="entity">Instance of TEntity.</param>
+        /// <param name="errorMessage">Error message to display.</param>
         private void ValidateEntityNotNull<TEntity>(TEntity entity, string errorMessage)
         {
             if (entity is null)
             {
                 throw new ArgumentException(errorMessage);
             }
+        }
+
+        /// <summary>
+        /// Gets users id from http request user claims.
+        /// </summary>
+        /// <returns>The users id.</returns>
+        private Guid GetUserIdFromClaims()
+        {
+            var currentUserIdToParse = _httpContextAccessor
+                .HttpContext
+                .User
+                ?.Claims
+                ?.SingleOrDefault(c =>
+                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                ?.Value;
+
+            if (currentUserIdToParse is null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            var currentUserId = Guid.Parse(currentUserIdToParse);
+
+            return currentUserId;
         }
 
         /// <summary>
