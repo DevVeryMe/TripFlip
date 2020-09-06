@@ -161,7 +161,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task GrantRole(GrantSubscriberRoleDto grantSubscriberRoleDto)
+        public async Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
         {
             if (grantSubscriberRoleDto.TripRoleId == (int) TripRoles.Admin)
             {
@@ -184,8 +184,8 @@ namespace TripFlip.Services
                 ErrorConstants.NotSubscriberOfTheTrip);
 
             var currentUserTripAdmin = trip.TripSubscribers
-                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)?
-                .TripRoles
+                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)
+                ?.TripRoles
                 .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
 
             ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 

@@ -173,7 +173,8 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Grants role to trip subscriber.
         /// </summary>
-        /// <param name="grantSubscriberRoleViewModel">Data with trip subscriber id and role id.</param>
+        /// <param name="grantSubscriberRoleViewModel">Data with trip id,
+        /// user id and role id.</param>
         /// <remarks>
         /// Sample request:
         /// 
@@ -192,7 +193,7 @@ namespace TripFlip.WebApi.Controllers
             var grantSubscriberRoleDto =
                 _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
 
-            await _userService.GrantRole(grantSubscriberRoleDto);
+            await _userService.GrantRoleAsync(grantSubscriberRoleDto);
 
             return Ok();
         }

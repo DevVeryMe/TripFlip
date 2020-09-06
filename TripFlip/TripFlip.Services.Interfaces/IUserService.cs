@@ -58,6 +58,6 @@ namespace TripFlip.Services.Interfaces
         /// Grants a role to any user, if the current one is granted with the admin role.
         /// </summary>
         /// <param name="grantSubscriberRoleDto">Data to with user id and role to grant.</param>
-        Task GrantRole(GrantSubscriberRoleDto grantSubscriberRoleDto);
+        Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto);
     }
 }
