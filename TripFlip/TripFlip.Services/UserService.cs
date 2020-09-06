@@ -15,6 +15,7 @@ using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.Services.Interfaces.Helpers.Extensions;
 
 namespace TripFlip.Services
 {
@@ -42,10 +43,28 @@ namespace TripFlip.Services
             _jsonWebTokenConfig = jsonWebTokenConfig;
         }
 
-        public Task<PagedList<UserDto>> GetAllAsync(string searchString,
+        public async Task<PagedList<UserDto>> GetAllAsync(
+            string searchString,
             PaginationDto paginationDto)
         {
-            throw new NotImplementedException();
+            int pageNumber = paginationDto.PageNumber ?? 1;
+            int pageSize = paginationDto.PageSize ?? 
+                await _tripFlipDbContext.Users.CountAsync();
+
+            var usersQuery = _tripFlipDbContext
+                .Users
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                usersQuery = usersQuery
+                    .Where(userEntity => userEntity.Email.Contains(searchString));
+            }
+
+            var pagedUserEntities = usersQuery.ToPagedList(pageNumber, pageSize);
+            var pagedUserDtos = _mapper.Map<PagedList<UserDto>>(pagedUserEntities);
+
+            return pagedUserDtos;
         }
 
         public async Task<UserDto> GetByIdAsync(Guid id)
