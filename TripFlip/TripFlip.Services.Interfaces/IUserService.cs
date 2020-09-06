@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
-using TripFlip.Services.Dto.TripSubscribersRolesDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 

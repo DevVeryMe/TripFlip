@@ -6,7 +6,6 @@ using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
-using TripFlip.Services.Dto.TripSubscribersRolesDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.ItemListViewModels;
@@ -14,7 +13,6 @@ using TripFlip.ViewModels.ItemViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.TaskViewModels;
-using TripFlip.ViewModels.TripSubscribersRolesViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
 

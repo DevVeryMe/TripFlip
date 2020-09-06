@@ -6,7 +6,6 @@ using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
-using TripFlip.Services.Dto.TripSubscribersRolesDtos;
 using TripFlip.Services.Dto.UserDtos;
 
 namespace TripFlip.Root.MappingProfiles
