@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Helpers;
+using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
@@ -20,15 +23,21 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
-        /// <param name="tripFlipDbContext">database context</param>
-        /// <param name="mapper">mapper</param>
-        public TripService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
+        public TripService(TripFlipDbContext tripFlipDbContext,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor)
         {
             _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(
@@ -73,7 +82,32 @@ namespace TripFlip.Services
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
 
             await _tripFlipDbContext.AddAsync(tripEntity);
+
+            var token =
+                JwtHeaderParseHelper.ParseHeader(_httpContextAccessor.HttpContext.Request.Headers);
+
+            var currentUserId = token.Claims
+                .FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value;
+
+            var tripSubscriberEntity = new TripSubscriberEntity()
+            {
+                UserId = Guid.Parse(currentUserId),
+                Trip = tripEntity
+            };
+
+            var tripRoleEntity = await _tripFlipDbContext
+                .TripRoles
+                .SingleOrDefaultAsync(role => role.Name == TripRoleNames.AdminRole);
+
+            var tripSubscriberRoleEntity = new TripSubscriberRoleEntity()
+            {
+                TripSubscriber = tripSubscriberEntity,
+                TripRole = tripRoleEntity
+            };
+
+            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntity);
             await _tripFlipDbContext.SaveChangesAsync();
+
             var tripDto = _mapper.Map<TripDto>(tripEntity);
 
             return tripDto;

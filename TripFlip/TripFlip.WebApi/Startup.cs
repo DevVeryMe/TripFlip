@@ -81,6 +81,8 @@ namespace TripFlip.WebApi
             });
 
             services.ConfigureServices(Configuration);
+
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment environment, 
