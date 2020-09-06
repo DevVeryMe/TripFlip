@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
@@ -21,15 +26,21 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        private readonly JsonWebTokenConfig _jsonWebTokenConfig;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public UserService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        public UserService(IMapper mapper,
+            TripFlipDbContext tripFlipDbContext,
+            JsonWebTokenConfig jsonWebTokenConfig)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
+            _jsonWebTokenConfig = jsonWebTokenConfig;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -70,14 +81,53 @@ namespace TripFlip.Services
             return userDto;
         }
 
-        public Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto)
+        public async Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
+
+            ValidateUserEntityNotNull(userEntity);
+
+            bool isPasswordVerified = PasswordHasherHelper
+                .VerifyPassword(loginDto.Password, userEntity.PasswordHash);
+
+            if (!isPasswordVerified)
+            {
+                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
+            }
+
+            AuthenticatedUserDto authenticatedUserDto = 
+                _mapper.Map<AuthenticatedUserDto>(userEntity);
+
+            authenticatedUserDto.Token = GenerateJsonWebToken(userEntity);
+
+            return authenticatedUserDto;
         }
 
-        public Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
+        public async Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto)
         {
-            throw new NotImplementedException();
+            bool emailIsAlreadyTaken = _tripFlipDbContext
+                .Users
+                .Any(user => user.Email == registerUserDto.Email);
+
+            if (emailIsAlreadyTaken)
+            {
+                throw new ArgumentException(ErrorConstants.EmailIsTaken);
+            }
+
+            var userEntity = _mapper.Map<UserEntity>(registerUserDto);
+
+            userEntity.PasswordHash = 
+                PasswordHasherHelper.HashPassword(registerUserDto.Password);
+
+            _tripFlipDbContext.Users.Add(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
@@ -115,6 +165,42 @@ namespace TripFlip.Services
             {
                 throw new ArgumentException(ErrorConstants.UserNotFound);
             }
+        }
+
+        /// <summary>
+        /// Generates JWT.
+        /// </summary>
+        /// <param name="user">User entity needed to add claims.</param>
+        /// <returns>Encoded JWT.</returns>
+        private string GenerateJsonWebToken(UserEntity user)
+        {
+            var encodedSecretKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(_jsonWebTokenConfig.SecretKey));
+                var credentials = new SigningCredentials(
+                encodedSecretKey,
+                SecurityAlgorithms.HmacSha256
+                );
+
+            int expirationTime = _jsonWebTokenConfig.TokenLifetime;
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+            };
+
+            // creating JWT
+            var jwt = new JwtSecurityToken(
+                issuer: _jsonWebTokenConfig.Issuer,
+                audience: _jsonWebTokenConfig.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(expirationTime),
+                signingCredentials: credentials
+                );
+
+            string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return encodedJwt;
         }
     }
 }

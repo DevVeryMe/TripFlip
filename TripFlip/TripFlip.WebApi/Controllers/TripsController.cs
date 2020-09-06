@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +13,7 @@ using TripFlip.ViewModels.TripViewModels;
 
 namespace TripFlip.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/trips")]
     [ApiController]
     public class TripsController : ControllerBase

@@ -100,6 +100,63 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Authorizes User.
+        /// </summary>
+        /// <param name="loginViewModel">User credentials to log in.</param>
+        /// <returns>User view model that
+        /// represents the authenticated User.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users/authorize
+        ///     {
+        ///         "email": "sample@gmail.com",
+        ///         "password": "TestPassword@1",
+        ///     }
+        /// </remarks>
+        [HttpPost("authorize")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(AuthenticatedUserViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> AuthorizeAsync([FromBody] LoginViewModel loginViewModel)
+        {
+            var loginDto = _mapper.Map<LoginDto>(loginViewModel);
+
+            var authenticatedUserDto = await _userService.AuthorizeAsync(loginDto);
+
+            var authenticatedUserViewModel =
+                _mapper.Map<AuthenticatedUserViewModel>(authenticatedUserDto);
+
+            return Ok(authenticatedUserViewModel);
+        }
+
+        /// Registers User.
+        /// </summary>
+        /// <param name="registerUserViewModel">Data to register User with.</param>
+        /// <returns>User view model that
+        /// represents the new entry that was added to database.</returns>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /users
+        ///     {
+        ///         "email": "example@mail.com",
+        ///         "password": "rel1able-Password",
+        ///         "passwordConfirmation": "rel1able-Password"
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> RegisterAsync(
+            [FromBody] RegisterUserViewModel registerUserViewModel)
+        {
+            var registerUserDto = _mapper.Map<RegisterUserDto>(registerUserViewModel);
+            var registeredUserDto = await _userService.RegisterAsync(registerUserDto);
+            var registeredUserViewModel = _mapper.Map<UserViewModel>(registeredUserDto);
+
+            return Ok(registeredUserViewModel);
+        }
+
+        /// <summary>
         /// Deletes User.
         /// </summary>
         /// <param name="id">User id.</param>
