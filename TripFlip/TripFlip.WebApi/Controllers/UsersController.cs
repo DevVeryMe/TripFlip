@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
 
@@ -40,6 +43,30 @@ namespace TripFlip.WebApi.Controllers
             var userViewModel = _mapper.Map<UserViewModel>(userDto);
 
             return Ok(userViewModel);
+        }
+
+        /// <summary>
+        /// Gets all Users.
+        /// </summary>
+        /// <param name="searchString">String to filter Users.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>Paged list of User view models that
+        /// represent database entries.</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync(
+            [FromQuery] string searchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
+        {
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var pagedUserDtos = await _userService.GetAllAsync(
+                searchString,
+                paginationDto);
+
+            var pagedUserViewModels = _mapper.Map<PagedList<UserViewModel>>(pagedUserDtos);
+
+            return Ok(pagedUserViewModels);
         }
 
         /// <summary>
