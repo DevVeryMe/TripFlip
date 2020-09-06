@@ -19,11 +19,11 @@ namespace TripFlip.Services.Interfaces
         Task<UserDto> RegisterAsync(RegisterUserDto registerUserDto);
 
         /// <summary>
-        /// Logs User in.
+        /// Authorizes User.
         /// </summary>
         /// <param name="loginDto">User credentials to log in.</param>
         /// <returns>User DTO that represents the authenticated User.</returns>
-        Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto);
+        Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto);
 
         /// <summary>
         /// Updates the User.

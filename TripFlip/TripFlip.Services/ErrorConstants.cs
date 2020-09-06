@@ -20,6 +20,8 @@
 
         public static readonly string AddingTaskListToNotExistingRoute = "Trying to add task list to not existing route.";
 
+        public static readonly string PasswordNotVerified = "Password is not verified.";
+
         public static readonly string EmailIsTaken = "This Email is already taken.";
     }
 }
