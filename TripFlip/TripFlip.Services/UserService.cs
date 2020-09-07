@@ -192,7 +192,8 @@ namespace TripFlip.Services
                 ErrorConstants.NoGrantRolePermission);
 
             var isRoleAlreadySet = subscriberEntity.TripRoles
-                .Any(t => t.TripRoleId == grantSubscriberRoleDto.TripRoleId);
+                .Any(tripSubscriberRoleEntity => 
+                    tripSubscriberRoleEntity.TripRoleId == grantSubscriberRoleDto.TripRoleId);
 
             if (isRoleAlreadySet)
             {
