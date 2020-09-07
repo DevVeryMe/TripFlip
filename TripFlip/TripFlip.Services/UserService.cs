@@ -163,46 +163,60 @@ namespace TripFlip.Services
 
         public async Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
         {
-            if (grantSubscriberRoleDto.TripRoleId == (int) TripRoles.Admin)
-            {
-                throw new ArgumentException(ErrorConstants.NoGrantAdminRolePermission);
-            }
-
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+
+            var userToGrantRoleExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == grantSubscriberRoleDto.UserId);
+
+            if (!userToGrantRoleExists)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
 
             var trip = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
                 .ThenInclude(subscribers => subscribers.TripRoles)
                 .FirstOrDefaultAsync(t => t.Id == grantSubscriberRoleDto.TripId);
 
-            ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
-
-            var subscriberEntity = trip.TripSubscribers
-                .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
-
-            ValidateEntityNotNull<TripSubscriberEntity>(subscriberEntity, 
-                ErrorConstants.NotSubscriberOfTheTrip);
+            EntityValidationHelper.
+                ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
 
             var currentUserTripAdmin = trip.TripSubscribers
                 .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)
                 ?.TripRoles
                 .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
-
-            ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
+            
+            EntityValidationHelper.
+                ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
                 ErrorConstants.NoGrantRolePermission);
 
-            var isRoleAlreadySet = subscriberEntity.TripRoles
-                .Any(tripSubscriberRoleEntity => 
-                    tripSubscriberRoleEntity.TripRoleId == grantSubscriberRoleDto.TripRoleId);
+            var userSubscriber = trip.TripSubscribers
+                .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
 
-            if (isRoleAlreadySet)
+            // If user is already subscribed, checking it's roles, otherwise subscribes.
+            if (userSubscriber != null)
             {
-                throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
+                var sameUserRole = userSubscriber.TripRoles
+                    .FirstOrDefault(tripSubscriberRoleEntity =>
+                        tripSubscriberRoleEntity.TripRoleId == grantSubscriberRoleDto.TripRoleId);
+
+                if (sameUserRole != null)
+                {
+                    throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
+                }
+            }
+            else
+            {
+                userSubscriber = new TripSubscriberEntity()
+                {
+                    TripId = grantSubscriberRoleDto.TripId,
+                    UserId = grantSubscriberRoleDto.UserId
+                };
             }
 
             var tripSubscriberRoleEntityToAdd = new TripSubscriberRoleEntity()
             {
-                TripSubscriber = subscriberEntity,
+                TripSubscriber = userSubscriber,
                 TripRoleId = grantSubscriberRoleDto.TripRoleId
             };
 
@@ -220,21 +234,6 @@ namespace TripFlip.Services
             if (userEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.UserNotFound);
-            }
-        }
-
-        /// <summary>
-        /// Validates whether entity is not null. If null,
-        /// throws an ArgumentException.
-        /// </summary>
-        /// <typeparam name="TEntity">Any entity to check.</typeparam>
-        /// <param name="entity">Instance of TEntity.</param>
-        /// <param name="errorMessage">Error message to display.</param>
-        private void ValidateEntityNotNull<TEntity>(TEntity entity, string errorMessage)
-        {
-            if (entity is null)
-            {
-                throw new ArgumentException(errorMessage);
             }
         }
 
