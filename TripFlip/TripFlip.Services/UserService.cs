@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -12,6 +13,7 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -28,19 +30,24 @@ namespace TripFlip.Services
 
         private readonly JsonWebTokenConfig _jsonWebTokenConfig;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
-            JsonWebTokenConfig jsonWebTokenConfig)
+            JsonWebTokenConfig jsonWebTokenConfig, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jsonWebTokenConfig = jsonWebTokenConfig;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -151,6 +158,69 @@ namespace TripFlip.Services
             ValidateUserEntityNotNull(userEntity);
 
             _tripFlipDbContext.Remove(userEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
+        {
+            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+
+            var userToGrantRoleExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == grantSubscriberRoleDto.UserId);
+
+            if (!userToGrantRoleExists)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
+
+            var trip = await _tripFlipDbContext.Trips
+                .Include(t => t.TripSubscribers)
+                .ThenInclude(subscribers => subscribers.TripRoles)
+                .FirstOrDefaultAsync(t => t.Id == grantSubscriberRoleDto.TripId);
+
+            EntityValidationHelper.
+                ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
+
+            var currentUserTripAdmin = trip.TripSubscribers
+                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)
+                ?.TripRoles
+                .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
+            
+            EntityValidationHelper.
+                ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
+                ErrorConstants.NoGrantRolePermission);
+
+            var userSubscriber = trip.TripSubscribers
+                .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
+
+            // If user is already subscribed, checking it's roles, otherwise subscribes.
+            if (userSubscriber != null)
+            {
+                var sameUserRole = userSubscriber.TripRoles
+                    .FirstOrDefault(tripSubscriberRoleEntity =>
+                        tripSubscriberRoleEntity.TripRoleId == grantSubscriberRoleDto.TripRoleId);
+
+                if (sameUserRole != null)
+                {
+                    throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
+                }
+            }
+            else
+            {
+                userSubscriber = new TripSubscriberEntity()
+                {
+                    TripId = grantSubscriberRoleDto.TripId,
+                    UserId = grantSubscriberRoleDto.UserId
+                };
+            }
+
+            var tripSubscriberRoleEntityToAdd = new TripSubscriberRoleEntity()
+            {
+                TripSubscriber = userSubscriber,
+                TripRoleId = grantSubscriberRoleDto.TripRoleId
+            };
+
+            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntityToAdd);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

@@ -25,5 +25,17 @@
         public static readonly string EmailIsTaken = "This Email is already taken.";
 
         public static readonly string TripRoleNotFound = "Trip role is not found.";
+
+        public static readonly string NoGrantRolePermission = "You have no permission to grant roles to " +
+                                                              "other users in this trip.";
+
+        public static readonly string NotSubscriberOfTheTrip = "User is not a subscriber of this trip.";
+
+        public static readonly string NoGrantAdminRolePermission = "You have no permission to " +
+                                                                   "grant admin role to other users.";
+
+        public static readonly string AlreadyRoleSet = "This role for this user is already set.";
+
+        public static readonly string NotAuthorized = "Not authorized access.";
     }
 }

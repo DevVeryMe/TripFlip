@@ -169,5 +169,33 @@ namespace TripFlip.WebApi.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Grants role to trip subscriber.
+        /// </summary>
+        /// <param name="grantSubscriberRoleViewModel">Data with trip id,
+        /// user id and role id.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users
+        ///     {
+        ///         "tripId": 1,
+        ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
+        ///         "roleId": 1,
+        ///     }
+        /// </remarks>
+        [HttpPut("grant-role")]
+        [Authorize]
+        public async Task<IActionResult> GrantRoleAsync(
+            [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
+        {
+            var grantSubscriberRoleDto =
+                _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
+
+            await _userService.GrantRoleAsync(grantSubscriberRoleDto);
+
+            return Ok();
+        }
     }
 }
