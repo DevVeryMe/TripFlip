@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
@@ -28,7 +29,7 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
-        private readonly JsonWebTokenConfig _jsonWebTokenConfig;
+        private readonly JwtConfiguration _jwtConfiguration;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -37,16 +38,16 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        /// <param name="jwtConfiguration">JwtConfiguration instance.</param>
         /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
-            JsonWebTokenConfig jsonWebTokenConfig, 
+            JwtConfiguration jwtConfiguration, 
             IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
-            _jsonWebTokenConfig = jsonWebTokenConfig;
+            _jwtConfiguration = jwtConfiguration;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -245,13 +246,13 @@ namespace TripFlip.Services
         private string GenerateJsonWebToken(UserEntity user)
         {
             var encodedSecretKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(_jsonWebTokenConfig.SecretKey));
+                Encoding.ASCII.GetBytes(_jwtConfiguration.SecretKey));
                 var credentials = new SigningCredentials(
                 encodedSecretKey,
                 SecurityAlgorithms.HmacSha256
                 );
 
-            int expirationTime = _jsonWebTokenConfig.TokenLifetime;
+            int expirationTime = _jwtConfiguration.TokenLifetime;
 
             var claims = new List<Claim>
             {
@@ -261,8 +262,8 @@ namespace TripFlip.Services
 
             // creating JWT
             var jwt = new JwtSecurityToken(
-                issuer: _jsonWebTokenConfig.Issuer,
-                audience: _jsonWebTokenConfig.Audience,
+                issuer: _jwtConfiguration.Issuer,
+                audience: _jwtConfiguration.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(expirationTime),
                 signingCredentials: credentials
