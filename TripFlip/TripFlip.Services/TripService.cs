@@ -81,20 +81,10 @@ namespace TripFlip.Services
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
-
-            await _tripFlipDbContext.AddAsync(tripEntity);
-
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
-            bool userExists = await _tripFlipDbContext
-                .Users
-                .AsNoTracking()
-                .AnyAsync(u => u.Id == currentUserId);
-
-            if (!userExists)
-            {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
-            }
+            await ValidateUserExistsById(currentUserId);
+            await ValidateTripRoleExistsById((int)TripRoles.Admin);
 
             var tripSubscriberEntity = new TripSubscriberEntity()
             {
@@ -102,14 +92,10 @@ namespace TripFlip.Services
                 Trip = tripEntity
             };
 
-            var tripRoleEntity = await _tripFlipDbContext
-                .TripRoles
-                .SingleOrDefaultAsync(role => role.Id == (int)TripRoles.Admin);
-
             var tripSubscriberRoleEntity = new TripSubscriberRoleEntity()
             {
                 TripSubscriber = tripSubscriberEntity,
-                TripRole = tripRoleEntity
+                TripRoleId = (int)TripRoles.Admin
             };
 
             await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntity);
@@ -147,11 +133,37 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        void ValidateTripEntityNotNull(TripEntity tripEntity)
+        private void ValidateTripEntityNotNull(TripEntity tripEntity)
         {
             if (tripEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+        }
+
+        private async Task ValidateUserExistsById(Guid userId)
+        {
+            bool userExists = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .AnyAsync(u => u.Id == userId);
+
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
+        }
+
+        private async Task ValidateTripRoleExistsById(int tripRoleId)
+        {
+            bool tripRoleExists = await _tripFlipDbContext
+                .TripRoles
+                .AsNoTracking()
+                .AnyAsync(r => r.Id == tripRoleId);
+
+            if (!tripRoleExists)
+            {
+                throw new ArgumentException(ErrorConstants.TripRoleNotFound);
             }
         }
     }
