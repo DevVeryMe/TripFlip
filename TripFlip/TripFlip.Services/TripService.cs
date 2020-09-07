@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Enums;
+using TripFlip.Services.Helpers;
+using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
 {
@@ -20,15 +24,21 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
-        /// <param name="tripFlipDbContext">database context</param>
-        /// <param name="mapper">mapper</param>
-        public TripService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
+        public TripService(TripFlipDbContext tripFlipDbContext,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor)
         {
             _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(
@@ -71,9 +81,26 @@ namespace TripFlip.Services
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
+            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
-            await _tripFlipDbContext.AddAsync(tripEntity);
+            await ValidateUserExistsById(currentUserId);
+            await ValidateTripRoleExistsById((int)TripRoles.Admin);
+
+            var tripSubscriberEntity = new TripSubscriberEntity()
+            {
+                UserId = currentUserId,
+                Trip = tripEntity
+            };
+
+            var tripSubscriberRoleEntity = new TripSubscriberRoleEntity()
+            {
+                TripSubscriber = tripSubscriberEntity,
+                TripRoleId = (int)TripRoles.Admin
+            };
+
+            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntity);
             await _tripFlipDbContext.SaveChangesAsync();
+
             var tripDto = _mapper.Map<TripDto>(tripEntity);
 
             return tripDto;
@@ -106,11 +133,37 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        void ValidateTripEntityNotNull(TripEntity tripEntity)
+        private void ValidateTripEntityNotNull(TripEntity tripEntity)
         {
             if (tripEntity is null)
             {
                 throw new ArgumentException(ErrorConstants.TripNotFound);
+            }
+        }
+
+        private async Task ValidateUserExistsById(Guid userId)
+        {
+            bool userExists = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .AnyAsync(u => u.Id == userId);
+
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.UserNotFound);
+            }
+        }
+
+        private async Task ValidateTripRoleExistsById(int tripRoleId)
+        {
+            bool tripRoleExists = await _tripFlipDbContext
+                .TripRoles
+                .AsNoTracking()
+                .AnyAsync(r => r.Id == tripRoleId);
+
+            if (!tripRoleExists)
+            {
+                throw new ArgumentException(ErrorConstants.TripRoleNotFound);
             }
         }
     }
