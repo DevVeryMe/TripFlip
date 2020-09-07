@@ -224,6 +224,39 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
+        public async Task SubscribeTrip(int tripId)
+        {
+            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+
+            var tripEntity = await _tripFlipDbContext.Trips
+                .Include(t => t.TripSubscribers)
+                .FirstOrDefaultAsync(t => t.Id == tripId);
+
+            EntityValidationHelper.ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
+
+            var isAlreadySubscriber = tripEntity.TripSubscribers
+                .Any(subscriber => subscriber.UserId == currentUserId);
+
+            if (isAlreadySubscriber)
+            {
+                throw new ArgumentException(ErrorConstants.IsAlreadySubscriber);
+            }
+
+            var subscriberRole = new TripSubscriberRoleEntity()
+            {
+                TripSubscriber = new TripSubscriberEntity()
+                {
+                    UserId = currentUserId,
+                    TripId = tripId
+                },
+
+                TripRoleId = (int)TripRoles.Guest
+            };
+
+            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(subscriberRole);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Checks if the given <see cref="UserEntity"/> is not null. If null,
         /// then throws an <see cref="ArgumentException"/> with a corresponding message.
