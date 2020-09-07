@@ -197,5 +197,18 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Subscribes current user to the trip.
+        /// </summary>
+        /// <param name="tripId">Id of trip to subscribe.</param>
+        [HttpPut("subscribe-trip/{tripId}")]
+        [Authorize]
+        public async Task<IActionResult> SubscribeTripAsync([FromRoute] int tripId)
+        {
+            await _userService.SubscribeTrip(tripId);
+
+            return Ok();
+        }
     }
 }
