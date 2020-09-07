@@ -65,6 +65,6 @@ namespace TripFlip.Services.Interfaces
         /// Subscribes current user to a certain trip.
         /// </summary>
         /// <param name="tripId">Id of the trip to subscribe.</param>
-        Task SubscribeTrip(int tripId);
+        Task SubscribeToTripAsync(int tripId);
     }
 }

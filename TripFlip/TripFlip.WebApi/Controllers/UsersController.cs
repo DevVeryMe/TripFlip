@@ -205,10 +205,10 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="tripId">Id of trip to subscribe.</param>
         [HttpPut("subscribe-trip/{tripId}")]
         [Authorize]
-        public async Task<IActionResult> SubscribeTripAsync([FromRoute] 
+        public async Task<IActionResult> SubscribeToTripAsync([FromRoute] 
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
         {
-            await _userService.SubscribeTrip(tripId);
+            await _userService.SubscribeToTripAsync(tripId);
 
             return Ok();
         }

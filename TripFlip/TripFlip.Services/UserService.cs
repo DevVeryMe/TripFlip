@@ -224,7 +224,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task SubscribeTrip(int tripId)
+        public async Task SubscribeToTripAsync(int tripId)
         {
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
