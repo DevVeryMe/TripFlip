@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
+using System.Security.Claims;
 
 namespace TripFlip.Services.Helpers
 {
@@ -17,7 +18,7 @@ namespace TripFlip.Services.Helpers
                 .User
                 ?.Claims
                 ?.SingleOrDefault(c =>
-                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                    c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
 
             if (currentUserIdToParse is null)
