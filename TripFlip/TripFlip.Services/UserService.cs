@@ -168,7 +168,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.NoGrantAdminRolePermission);
             }
 
-            var currentUserId = GetUserIdFromClaims();
+            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
             var trip = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
@@ -236,30 +236,6 @@ namespace TripFlip.Services
             {
                 throw new ArgumentException(errorMessage);
             }
-        }
-
-        /// <summary>
-        /// Gets users id from http request user claims.
-        /// </summary>
-        /// <returns>The users id.</returns>
-        private Guid GetUserIdFromClaims()
-        {
-            var currentUserIdToParse = _httpContextAccessor
-                .HttpContext
-                .User
-                ?.Claims
-                ?.SingleOrDefault(c =>
-                    c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
-                ?.Value;
-
-            if (currentUserIdToParse is null)
-            {
-                throw new UnauthorizedAccessException();
-            }
-
-            var currentUserId = Guid.Parse(currentUserIdToParse);
-
-            return currentUserId;
         }
 
         /// <summary>
