@@ -129,6 +129,13 @@ namespace TripFlip.DataAccess.Extensions
                     Id = 3,
                     Name = "Guest"
                 });
+
+            modelBuilder.Entity<ApplicationRoleEntity>().HasData(
+                new ApplicationRoleEntity()
+                {
+                    Id = 1,
+                    Name = "SuperAdmin"
+                });
         }
     }
 }

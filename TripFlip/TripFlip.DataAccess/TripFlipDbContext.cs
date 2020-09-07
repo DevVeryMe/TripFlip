@@ -51,6 +51,8 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new TripRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripSubscriberEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripSubscriberRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ApplicationRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ApplicationUserRoleEntityConfiguration());
 
             modelBuilder.Seed();
         }
