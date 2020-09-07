@@ -108,7 +108,7 @@ namespace TripFlip.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users/authorize
+        ///     Post /users/authorize
         ///     {
         ///         "email": "sample@gmail.com",
         ///         "password": "TestPassword@1",
