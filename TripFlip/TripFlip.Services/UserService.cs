@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -30,7 +29,8 @@ namespace TripFlip.Services
 
         private readonly JsonWebTokenConfig _jsonWebTokenConfig;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        //private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes database context and automapper.
@@ -38,16 +38,16 @@ namespace TripFlip.Services
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
-        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
+        /// <param name="currentUserService">ICurrentUserService instance.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
-            JsonWebTokenConfig jsonWebTokenConfig, 
-            IHttpContextAccessor httpContextAccessor)
+            JsonWebTokenConfig jsonWebTokenConfig,
+            ICurrentUserService currentUserService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jsonWebTokenConfig = jsonWebTokenConfig;
-            _httpContextAccessor = httpContextAccessor;
+            _currentUserService = currentUserService;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -163,7 +163,8 @@ namespace TripFlip.Services
 
         public async Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
         {
-            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
 
             var userToGrantRoleExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == grantSubscriberRoleDto.UserId);
@@ -226,7 +227,8 @@ namespace TripFlip.Services
 
         public async Task SubscribeToTripAsync(int tripId)
         {
-            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
 
             var userExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == currentUserId);
