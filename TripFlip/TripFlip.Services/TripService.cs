@@ -170,6 +170,10 @@ namespace TripFlip.Services
             }
         }
 
+        /// <summary>
+        /// Validates whether current user is trip admin.
+        /// </summary>
+        /// <param name="tripId">Trip id.</param>
         private async Task ValidateCurrentUserTripAdmin(int tripId)
         {
             var currentUserIdString = _currentUserService.UserId;
