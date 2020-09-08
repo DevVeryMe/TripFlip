@@ -37,5 +37,7 @@
         public static readonly string AlreadyRoleSet = "This role for this user is already set.";
 
         public static readonly string NotAuthorized = "Not authorized access.";
+
+        public static readonly string IsAlreadySubscriber = "You already subscribed this trip.";
     }
 }

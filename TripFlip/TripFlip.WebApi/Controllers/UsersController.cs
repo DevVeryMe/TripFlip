@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
@@ -194,6 +195,20 @@ namespace TripFlip.WebApi.Controllers
                 _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
 
             await _userService.GrantRoleAsync(grantSubscriberRoleDto);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Subscribes current user to the trip.
+        /// </summary>
+        /// <param name="tripId">Id of trip to subscribe.</param>
+        [HttpPut("subscribe-trip/{tripId}")]
+        [Authorize]
+        public async Task<IActionResult> SubscribeToTripAsync([FromRoute] 
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
+        {
+            await _userService.SubscribeToTripAsync(tripId);
 
             return Ok();
         }
