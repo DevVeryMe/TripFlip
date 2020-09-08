@@ -212,5 +212,17 @@ namespace TripFlip.WebApi.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Gets all trips, which are subscribed by current user, with includes.
+        /// </summary>
+        [HttpPut("subscribed-trips")]
+        [Authorize]
+        public async Task<IActionResult> GetAllSubscribedTrips()
+        {
+            var dto = await _userService.GetAllSubscribedTripsAsync();
+
+            return Ok(dto);
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
@@ -66,5 +68,10 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="tripId">Id of the trip to subscribe.</param>
         Task SubscribeToTripAsync(int tripId);
+
+        /// <summary>
+        /// Gets all trips, which are subscribed by current user, with includes.
+        /// </summary>
+        Task<IEnumerable<TripWithRolesDto>> GetAllSubscribedTripsAsync();
     }
 }

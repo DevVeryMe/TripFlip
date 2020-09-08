@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using TripFlip.Services.Dto.RouteDtos;
-using TripFlip.Services.Dto.UserDtos;
 
 namespace TripFlip.Services.Dto.TripDtos
 {
@@ -18,7 +17,5 @@ namespace TripFlip.Services.Dto.TripDtos
         public DateTimeOffset? EndsAt { get; set; }
 
         public ICollection<RouteWithIncludesDto> Routes { get; set; }
-
-        public ICollection<SubscriberWithRolesDto> TripSubscribers { get; set; }
     }
 }

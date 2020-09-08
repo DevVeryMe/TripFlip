@@ -18,7 +18,5 @@ namespace TripFlip.ViewModels.TripViewModels
         public DateTimeOffset? EndsAt { get; set; }
 
         public ICollection<RouteWithIncludesViewModel> Routes { get; set; }
-
-        public ICollection<SubscriberWithRolesViewModel> TripSubscribers { get; set; }
     }
 }

@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
@@ -263,6 +265,37 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.TripSubscribersRoles.AddAsync(subscriberRole);
             await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<TripWithRolesDto>> GetAllSubscribedTripsAsync()
+        {
+            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.NotAuthorized);
+            }
+
+            var result = await _tripFlipDbContext.TripSubscribers
+                .Include(ts => ts.Trip)
+                    .ThenInclude(t => t.Routes)
+                        .ThenInclude(r => r.TaskLists)
+                            .ThenInclude(tl => tl.Tasks)
+                .Include(ts => ts.Trip)
+                    .ThenInclude(t => t.Routes)
+                        .ThenInclude(r => r.ItemLists)
+                            .ThenInclude(il => il.Items)
+                .Include(ts => ts.TripRoles)
+                    .ThenInclude(tr => tr.TripRole)
+                .Where(ts => ts.UserId == currentUserId)
+                .ToListAsync();
+
+            var dto = _mapper.Map<List<TripWithRolesDto>>(result);
+
+            return dto;
         }
 
         /// <summary>

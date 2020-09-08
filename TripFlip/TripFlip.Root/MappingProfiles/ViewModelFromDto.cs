@@ -68,8 +68,6 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TripRoleDto, TripViewModel>();
 
-            CreateMap<SubscriberWithRolesDto, SubscriberWithRolesViewModel>();
-
             CreateMap<TripWithIncludesDto, TripWithIncludesViewModel>();
         }
     }
