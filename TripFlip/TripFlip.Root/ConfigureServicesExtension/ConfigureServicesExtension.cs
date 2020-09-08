@@ -28,6 +28,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IUserService, UserService>();
 
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
             services.AddSingleton<JsonWebTokenConfig>();
 
             services.AddDbContext<TripFlipDbContext>(options =>
