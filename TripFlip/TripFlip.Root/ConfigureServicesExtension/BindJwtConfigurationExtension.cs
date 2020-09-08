@@ -12,7 +12,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
         {
             var jwtConfiguration = new JwtConfiguration();
 
-            configuration.GetSection("Jwt").Bind(jwtConfiguration);
+            configuration.GetSection(Constants.JwtSection).Bind(jwtConfiguration);
             services.AddSingleton(jwtConfiguration);
         }
     }
