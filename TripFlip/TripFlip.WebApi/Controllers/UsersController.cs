@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
@@ -220,9 +221,11 @@ namespace TripFlip.WebApi.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllSubscribedTrips()
         {
-            var dto = await _userService.GetAllSubscribedTripsAsync();
+            var tripWithRolesDto = await _userService.GetAllSubscribedTripsAsync();
 
-            return Ok(dto);
+            var tripWithRolesViewModel = _mapper.Map<List<TripWithRolesViewModel>>(tripWithRolesDto);
+
+            return Ok(tripWithRolesViewModel);
         }
     }
 }

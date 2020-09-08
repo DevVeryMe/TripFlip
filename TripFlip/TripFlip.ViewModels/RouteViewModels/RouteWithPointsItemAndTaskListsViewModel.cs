@@ -5,7 +5,7 @@ using TripFlip.ViewModels.TaskListViewModels;
 
 namespace TripFlip.ViewModels.RouteViewModels
 {
-    public class RouteWithIncludesViewModel
+    public class RouteWithPointsItemAndTaskListsViewModel
     {
         public int Id { get; set; }
 
@@ -13,8 +13,8 @@ namespace TripFlip.ViewModels.RouteViewModels
 
         public ICollection<RoutePointViewModel> RoutePoints { get; set; }
 
-        public ICollection<ItemListWithIncludesViewModel> ItemLists { get; set; }
+        public ICollection<ItemListWithItemsViewModel> ItemLists { get; set; }
 
-        public ICollection<TaskListWithIncludesViewModel> TaskLists { get; set; }
+        public ICollection<TaskListWithTasksViewModel> TaskLists { get; set; }
     }
 }

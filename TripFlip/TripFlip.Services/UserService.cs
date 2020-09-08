@@ -279,7 +279,7 @@ namespace TripFlip.Services
                 throw new ArgumentException(ErrorConstants.NotAuthorized);
             }
 
-            var result = await _tripFlipDbContext.TripSubscribers
+            var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
                 .Include(ts => ts.Trip)
                     .ThenInclude(t => t.Routes)
                         .ThenInclude(r => r.TaskLists)
@@ -293,9 +293,9 @@ namespace TripFlip.Services
                 .Where(ts => ts.UserId == currentUserId)
                 .ToListAsync();
 
-            var dto = _mapper.Map<List<TripWithRolesDto>>(result);
+            var tripSubscriberDto = _mapper.Map<List<TripWithRolesDto>>(tripSubscriberEntities);
 
-            return dto;
+            return tripSubscriberDto;
         }
 
         /// <summary>

@@ -25,6 +25,10 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TaskEntity, TaskDto>();
 
+            CreateMap<ItemEntity, ItemWithoutListIdDto>();
+
+            CreateMap<TaskEntity, TaskWithoutListIdDto>();
+
             CreateMap<TaskListEntity, TaskListDto>();
 
             CreateMap<RouteEntity, RouteDto>();
@@ -47,13 +51,13 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<PagedList<UserEntity>, PagedList<UserDto>>();
 
-            CreateMap<ItemListEntity, ItemListWithIncludesDto>();
+            CreateMap<ItemListEntity, ItemListWithItemsDto>();
 
-            CreateMap<TaskListEntity, TaskListWithIncludesDto>();
+            CreateMap<TaskListEntity, TaskListWithTasksDto>();
 
             CreateMap<RoutePointEntity, RoutePointDto>();
 
-            CreateMap<RouteEntity, RouteWithIncludesDto>();
+            CreateMap<RouteEntity, RouteWithPointsItemAndTaskListsDto>();
 
             CreateMap<TripSubscriberRoleEntity, TripRoleDto>()
                 .ForMember(x => x.Id, 
@@ -63,7 +67,7 @@ namespace TripFlip.Root.MappingProfiles
                     a =>
                         a.MapFrom(z => z.TripRole.Name));
 
-            CreateMap<TripEntity, TripWithIncludesDto>();
+            CreateMap<TripEntity, TripWithRoutesDto>();
 
             CreateMap<TripSubscriberEntity, TripWithRolesDto>();
         }

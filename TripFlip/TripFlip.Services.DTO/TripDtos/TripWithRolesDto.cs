@@ -5,7 +5,7 @@ namespace TripFlip.Services.Dto.TripDtos
 {
     public class TripWithRolesDto
     {
-        public TripWithIncludesDto Trip { get; set; }
+        public TripWithRoutesDto Trip { get; set; }
 
         public ICollection<TripRoleDto> TripRoles { get; set; }
     }

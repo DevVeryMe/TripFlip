@@ -5,7 +5,7 @@ using TripFlip.Services.Dto.TaskListDtos;
 
 namespace TripFlip.Services.Dto.RouteDtos
 {
-    public class RouteWithIncludesDto
+    public class RouteWithPointsItemAndTaskListsDto
     {
         public int Id { get; set; }
 
@@ -13,8 +13,8 @@ namespace TripFlip.Services.Dto.RouteDtos
 
         public ICollection<RoutePointDto> RoutePoints { get; set; }
 
-        public ICollection<ItemListWithIncludesDto> ItemLists { get; set; }
+        public ICollection<ItemListWithItemsDto> ItemLists { get; set; }
 
-        public ICollection<TaskListWithIncludesDto> TaskLists { get; set; }
+        public ICollection<TaskListWithTasksDto> TaskLists { get; set; }
     }
 }

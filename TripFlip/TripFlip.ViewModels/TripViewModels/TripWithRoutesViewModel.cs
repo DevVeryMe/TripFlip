@@ -5,7 +5,7 @@ using TripFlip.ViewModels.UserViewModels;
 
 namespace TripFlip.ViewModels.TripViewModels
 {
-    public class TripWithIncludesViewModel
+    public class TripWithRoutesViewModel
     {
         public int Id { get; set; }
 
@@ -17,6 +17,6 @@ namespace TripFlip.ViewModels.TripViewModels
 
         public DateTimeOffset? EndsAt { get; set; }
 
-        public ICollection<RouteWithIncludesViewModel> Routes { get; set; }
+        public ICollection<RouteWithPointsItemAndTaskListsViewModel> Routes { get; set; }
     }
 }

@@ -15,6 +15,7 @@ using TripFlip.ViewModels.RoutePointViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.TaskViewModels;
+using TripFlip.ViewModels.TripRoleViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
 
@@ -58,17 +59,23 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<PagedList<UserDto>, PagedList<UserViewModel>>();
 
-            CreateMap<ItemListWithIncludesDto, ItemListWithIncludesViewModel>();
+            CreateMap<ItemListWithItemsDto, ItemListWithItemsViewModel>();
 
-            CreateMap<TaskListWithIncludesDto, TaskListWithIncludesViewModel>();
+            CreateMap<TaskListWithTasksDto, TaskListWithTasksViewModel>();
 
             CreateMap<RoutePointDto, RoutePointViewModel>();
 
-            CreateMap<RouteWithIncludesDto, RouteWithIncludesViewModel>();
+            CreateMap<RouteWithPointsItemAndTaskListsDto, RouteWithPointsItemAndTaskListsViewModel>();
 
-            CreateMap<TripRoleDto, TripViewModel>();
+            CreateMap<TripRoleDto, TripRoleViewModel>();
 
-            CreateMap<TripWithIncludesDto, TripWithIncludesViewModel>();
+            CreateMap<TripWithRoutesDto, TripWithRoutesViewModel>();
+
+            CreateMap<TripWithRolesDto, TripWithRolesViewModel>();
+
+            CreateMap<ItemWithoutListIdDto, ItemWithoutListIdViewModel>();
+
+            CreateMap<TaskWithoutListIdDto, TaskWithoutListIdViewModel>();
         }
     }
 }

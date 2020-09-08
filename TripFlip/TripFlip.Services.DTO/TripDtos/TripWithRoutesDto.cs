@@ -4,7 +4,7 @@ using TripFlip.Services.Dto.RouteDtos;
 
 namespace TripFlip.Services.Dto.TripDtos
 {
-    public class TripWithIncludesDto
+    public class TripWithRoutesDto
     {
         public int Id { get; set; }
 
@@ -16,6 +16,6 @@ namespace TripFlip.Services.Dto.TripDtos
 
         public DateTimeOffset? EndsAt { get; set; }
 
-        public ICollection<RouteWithIncludesDto> Routes { get; set; }
+        public ICollection<RouteWithPointsItemAndTaskListsDto> Routes { get; set; }
     }
 }

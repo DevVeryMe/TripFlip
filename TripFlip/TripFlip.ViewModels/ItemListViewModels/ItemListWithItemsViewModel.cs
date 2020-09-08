@@ -4,12 +4,12 @@ using TripFlip.ViewModels.ItemViewModels;
 
 namespace TripFlip.ViewModels.ItemListViewModels
 {
-    public class ItemListWithIncludesViewModel
+    public class ItemListWithItemsViewModel
     {
         public int Id { get; set; }
 
         public string Title { get; set; }
 
-        public ICollection<ItemViewModel> Items { get; set; }
+        public ICollection<ItemWithoutListIdViewModel> Items { get; set; }
     }
 }
