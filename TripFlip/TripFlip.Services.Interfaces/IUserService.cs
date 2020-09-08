@@ -60,5 +60,11 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="grantSubscriberRoleDto">Data to with user id and role to grant.</param>
         Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto);
+
+        /// <summary>
+        /// Subscribes current user to a certain trip.
+        /// </summary>
+        /// <param name="tripId">Id of the trip to subscribe.</param>
+        Task SubscribeToTripAsync(int tripId);
     }
 }
