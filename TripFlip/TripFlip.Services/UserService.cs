@@ -228,6 +228,14 @@ namespace TripFlip.Services
         {
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.NotAuthorized);
+            }
+
             var tripEntity = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
                 .FirstOrDefaultAsync(t => t.Id == tripId);
