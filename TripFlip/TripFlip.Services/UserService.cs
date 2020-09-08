@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -93,6 +94,8 @@ namespace TripFlip.Services
             var userEntity = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
+                .Include(user => user.ApplicationRoles)
+                .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
             ValidateUserEntityNotNull(userEntity);
@@ -281,9 +284,9 @@ namespace TripFlip.Services
         /// <summary>
         /// Generates JWT.
         /// </summary>
-        /// <param name="user">User entity needed to add claims.</param>
+        /// <param name="userIncludingRoles">User entity with included roles.</param>
         /// <returns>Encoded JWT.</returns>
-        private string GenerateJsonWebToken(UserEntity user)
+        private string GenerateJsonWebToken(UserEntity userIncludingRoles)
         {
             var encodedSecretKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(_jsonWebTokenConfig.SecretKey));
@@ -294,10 +297,14 @@ namespace TripFlip.Services
 
             int expirationTime = _jsonWebTokenConfig.TokenLifetime;
 
+            var roles = userIncludingRoles.ApplicationRoles
+                .Select(role => new {Id = role.ApplicationRole.Id, Name = role.ApplicationRole.Name});
+
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.Sub, userIncludingRoles.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email),
+                new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(roles))
             };
 
             // creating JWT
