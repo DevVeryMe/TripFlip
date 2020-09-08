@@ -107,7 +107,7 @@ namespace TripFlip.Services
 
         public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
-            await ValidateCurrentUserTripAdmin(updateTripDto.Id);
+            await ValidateCurrentUserIsTripAdmin(updateTripDto.Id);
 
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
@@ -126,7 +126,7 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            await ValidateCurrentUserTripAdmin(id);
+            await ValidateCurrentUserIsTripAdmin(id);
 
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(id);
 
@@ -174,7 +174,7 @@ namespace TripFlip.Services
         /// Validates whether current user is trip admin.
         /// </summary>
         /// <param name="tripId">Trip id.</param>
-        private async Task ValidateCurrentUserTripAdmin(int tripId)
+        private async Task ValidateCurrentUserIsTripAdmin(int tripId)
         {
             var currentUserIdString = _currentUserService.UserId;
             var currentUserId = Guid.Parse(currentUserIdString);
