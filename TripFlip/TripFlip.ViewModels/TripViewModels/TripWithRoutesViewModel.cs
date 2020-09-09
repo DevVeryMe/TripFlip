@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.ViewModels.TripRoleViewModels;
-using TripFlip.ViewModels.UserViewModels;
 
 namespace TripFlip.ViewModels.TripViewModels
 {
