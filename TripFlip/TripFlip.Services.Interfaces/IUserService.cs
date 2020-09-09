@@ -49,7 +49,7 @@ namespace TripFlip.Services.Interfaces
             PaginationDto paginationDto);
 
         /// <summary>
-        /// Gets all Users by trip Id, and grouped by roles.
+        /// Gets all Users by trip Id, and categorized by roles.
         /// </summary>
         /// <param name="tripId">Id of a trip to find users with.</param>
         /// <returns>User DTO that represent all users that are subscribed to a given trip. 
