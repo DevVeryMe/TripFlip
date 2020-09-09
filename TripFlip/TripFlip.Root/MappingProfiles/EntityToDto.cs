@@ -1,3 +1,4 @@
+using System.Linq;
 using AutoMapper;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto.ItemDtos;
@@ -59,17 +60,29 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<RouteEntity, RouteWithPointsItemAndTaskListsDto>();
 
-            CreateMap<TripSubscriberRoleEntity, TripRoleDto>()
-                .ForMember(x => x.Id, 
-                    a => 
-                        a.MapFrom(z => z.TripRole.Id))
-                .ForMember(x => x.Name,
-                    a =>
-                        a.MapFrom(z => z.TripRole.Name));
-
-            CreateMap<TripEntity, TripWithRoutesDto>();
-
-            CreateMap<TripSubscriberEntity, TripWithRolesDto>();
+            CreateMap<TripSubscriberEntity, TripWithRoutesDto>()
+                .ForMember(destination => destination.Title,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.Title))
+                .ForMember(destination => destination.Description,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.Description))
+                .ForMember(destination => destination.Id,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.Id))
+                .ForMember(destination => destination.StartsAt,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.StartsAt))
+                .ForMember(destination => destination.EndsAt,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.EndsAt))
+                .ForMember(destination => destination.Routes,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.Trip.Routes))
+                .ForMember(destination => destination.TripRoles,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(tripSubscriberEntity => tripSubscriberEntity.TripRoles
+                            .Select(role => new TripRoleDto() { Id = role.TripRole.Id, Name = role.TripRole.Name })));
         }
     }
 }

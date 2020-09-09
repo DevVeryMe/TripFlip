@@ -70,8 +70,10 @@ namespace TripFlip.Services.Interfaces
         Task SubscribeToTripAsync(int tripId);
 
         /// <summary>
-        /// Gets all trips, which are subscribed by current user, with includes.
+        /// Gets all trips, which are subscribed by current user, with included
+        /// routes with points, task and item lists with tasks and items, user roles
+        /// in this trips.
         /// </summary>
-        Task<IEnumerable<TripWithRolesDto>> GetAllSubscribedTripsAsync();
+        Task<IEnumerable<TripWithRoutesDto>> GetAllSubscribedTripsAsync();
     }
 }

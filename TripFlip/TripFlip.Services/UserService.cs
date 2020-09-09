@@ -267,7 +267,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TripWithRolesDto>> GetAllSubscribedTripsAsync()
+        public async Task<IEnumerable<TripWithRoutesDto>> GetAllSubscribedTripsAsync()
         {
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
@@ -280,22 +280,25 @@ namespace TripFlip.Services
             }
 
             var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
-                .Include(ts => ts.Trip)
-                    .ThenInclude(t => t.Routes)
-                        .ThenInclude(r => r.TaskLists)
-                            .ThenInclude(tl => tl.Tasks)
-                .Include(ts => ts.Trip)
-                    .ThenInclude(t => t.Routes)
-                        .ThenInclude(r => r.ItemLists)
-                            .ThenInclude(il => il.Items)
-                .Include(ts => ts.TripRoles)
-                    .ThenInclude(tr => tr.TripRole)
-                .Where(ts => ts.UserId == currentUserId)
+                .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
+                    .ThenInclude(tripEntity => tripEntity.Routes)
+                        .ThenInclude(routeEntity => routeEntity.TaskLists)
+                            .ThenInclude(taskListEntity => taskListEntity.Tasks)
+                .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
+                    .ThenInclude(tripEntity => tripEntity.Routes)
+                        .ThenInclude(routeEntity => routeEntity.ItemLists)
+                            .ThenInclude(itemListEntity => itemListEntity.Items)
+                .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
+                    .ThenInclude(tripEntity => tripEntity.Routes)
+                        .ThenInclude(routeEntity => routeEntity.RoutePoints)
+                .Include(tripSubscriberEntity => tripSubscriberEntity.TripRoles)
+                    .ThenInclude(tripSubscriberRoleEntity => tripSubscriberRoleEntity.TripRole)
+                .Where(tripSubscriberEntity => tripSubscriberEntity.UserId == currentUserId)
                 .ToListAsync();
 
-            var tripSubscriberDto = _mapper.Map<List<TripWithRolesDto>>(tripSubscriberEntities);
+            var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesDto>>(tripSubscriberEntities);
 
-            return tripSubscriberDto;
+            return tripWithRoutesDto;
         }
 
         /// <summary>

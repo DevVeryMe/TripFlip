@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TripFlip.ViewModels.RouteViewModels;
+using TripFlip.ViewModels.TripRoleViewModels;
 using TripFlip.ViewModels.UserViewModels;
 
 namespace TripFlip.ViewModels.TripViewModels
@@ -18,5 +19,7 @@ namespace TripFlip.ViewModels.TripViewModels
         public DateTimeOffset? EndsAt { get; set; }
 
         public ICollection<RouteWithPointsItemAndTaskListsViewModel> Routes { get; set; }
+
+        public ICollection<TripRoleViewModel> TripRoles { get; set; }
     }
 }

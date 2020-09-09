@@ -215,17 +215,19 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all trips, which are subscribed by current user, with includes.
+        /// Gets all trips, which are subscribed by current user, with included routes,
+        /// including route points, task, item lists with tasks and items and roles of
+        /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]
         [Authorize]
         public async Task<IActionResult> GetAllSubscribedTrips()
         {
-            var tripWithRolesDto = await _userService.GetAllSubscribedTripsAsync();
+            var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();
 
-            var tripWithRolesViewModel = _mapper.Map<List<TripWithRolesViewModel>>(tripWithRolesDto);
+            var tripWithRoutesViewModel = _mapper.Map<List<TripWithRoutesViewModel>>(tripWithRoutesDto);
 
-            return Ok(tripWithRolesViewModel);
+            return Ok(tripWithRoutesViewModel);
         }
     }
 }
