@@ -5,7 +5,7 @@ using TripFlip.Services.Dto.TripRoleDtos;
 
 namespace TripFlip.Services.Dto.TripDtos
 {
-    public class TripWithRoutesDto
+    public class TripWithRoutesAndUserRolesDto
     {
         public int Id { get; set; }
 

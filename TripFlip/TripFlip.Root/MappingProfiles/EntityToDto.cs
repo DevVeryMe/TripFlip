@@ -60,7 +60,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<RouteEntity, RouteWithPointsItemAndTaskListsDto>();
 
-            CreateMap<TripSubscriberEntity, TripWithRoutesDto>()
+            CreateMap<TripSubscriberEntity, TripWithRoutesAndUserRolesDto>()
                 .ForMember(destination => destination.Title,
                     configurationExpression =>
                         configurationExpression.MapFrom(

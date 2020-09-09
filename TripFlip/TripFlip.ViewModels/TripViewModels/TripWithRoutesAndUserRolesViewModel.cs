@@ -5,7 +5,7 @@ using TripFlip.ViewModels.TripRoleViewModels;
 
 namespace TripFlip.ViewModels.TripViewModels
 {
-    public class TripWithRoutesViewModel
+    public class TripWithRoutesAndUserRolesViewModel
     {
         public int Id { get; set; }
 

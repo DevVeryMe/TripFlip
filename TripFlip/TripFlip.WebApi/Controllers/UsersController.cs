@@ -225,7 +225,7 @@ namespace TripFlip.WebApi.Controllers
         {
             var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();
 
-            var tripWithRoutesViewModel = _mapper.Map<List<TripWithRoutesViewModel>>(tripWithRoutesDto);
+            var tripWithRoutesViewModel = _mapper.Map<List<TripWithRoutesAndUserRolesViewModel>>(tripWithRoutesDto);
 
             return Ok(tripWithRoutesViewModel);
         }

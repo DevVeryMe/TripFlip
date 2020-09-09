@@ -267,7 +267,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TripWithRoutesDto>> GetAllSubscribedTripsAsync()
+        public async Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync()
         {
             var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
 
@@ -296,7 +296,7 @@ namespace TripFlip.Services
                 .Where(tripSubscriberEntity => tripSubscriberEntity.UserId == currentUserId)
                 .ToListAsync();
 
-            var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesDto>>(tripSubscriberEntities);
+            var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesAndUserRolesDto>>(tripSubscriberEntities);
 
             return tripWithRoutesDto;
         }

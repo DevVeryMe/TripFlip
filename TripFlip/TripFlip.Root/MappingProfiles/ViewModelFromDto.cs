@@ -69,7 +69,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TripRoleDto, TripRoleViewModel>();
 
-            CreateMap<TripWithRoutesDto, TripWithRoutesViewModel>();
+            CreateMap<TripWithRoutesAndUserRolesDto, TripWithRoutesAndUserRolesViewModel>();
 
             CreateMap<ItemWithoutListIdDto, ItemWithoutListIdViewModel>();
 

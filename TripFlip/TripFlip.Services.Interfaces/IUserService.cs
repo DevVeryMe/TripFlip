@@ -74,6 +74,6 @@ namespace TripFlip.Services.Interfaces
         /// routes with points, task and item lists with tasks and items, user roles
         /// in this trips.
         /// </summary>
-        Task<IEnumerable<TripWithRoutesDto>> GetAllSubscribedTripsAsync();
+        Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync();
     }
 }
