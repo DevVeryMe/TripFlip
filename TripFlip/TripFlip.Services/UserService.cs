@@ -95,11 +95,11 @@ namespace TripFlip.Services
                 .ToListAsync();
 
             // Get subscribers lists by each role.
-            var tripAdmins = GetSubbedUsersByTripIdAndRole(subbedUsersList, 
+            var tripAdmins = GetSubbedUsersByRole(subbedUsersList, 
                 (int)TripRoles.Admin);
-            var tripEditors = GetSubbedUsersByTripIdAndRole(subbedUsersList, 
+            var tripEditors = GetSubbedUsersByRole(subbedUsersList, 
                 (int)TripRoles.Editor);
-            var tripGuests = GetSubbedUsersByTripIdAndRole(subbedUsersList, 
+            var tripGuests = GetSubbedUsersByRole(subbedUsersList, 
                 (int)TripRoles.Guest);
 
             // Map entities to DTOs.
@@ -124,8 +124,8 @@ namespace TripFlip.Services
         /// <param name="source">Source collection of users to search in.</param>
         /// <param name="roleId">Role id to search users with.</param>
         /// <returns>List of users that with role that match a given role id.</returns>
-        List<UserEntity> GetSubbedUsersByTripIdAndRole(
-            IEnumerable<UserEntity> source,
+        List<UserEntity> GetSubbedUsersByRole(
+            List<UserEntity> source,
             int roleId)
         {
             var subbedUsersByRole = from user in source
