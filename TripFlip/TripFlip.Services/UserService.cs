@@ -125,7 +125,7 @@ namespace TripFlip.Services
         /// <param name="roleId">Role id to search users with.</param>
         /// <returns>List of users that with role that match a given role id.</returns>
         List<UserEntity> GetSubbedUsersByRole(
-            List<UserEntity> source,
+            IEnumerable<UserEntity> source,
             int roleId)
         {
             var subbedUsersByRole = from user in source
