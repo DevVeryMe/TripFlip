@@ -65,5 +65,9 @@ namespace TripFlip.ViewModels
 
         public const string RoleIdLessThanOneError = "Id of role cannot be" +
                                                                "less than 1.";
+
+        public const string RequiredRolesArray = "Role identifiers array is required.";
+
+        public const string PassedArrayIsEmpty = "You can't pass an empty array.";
     }
 }

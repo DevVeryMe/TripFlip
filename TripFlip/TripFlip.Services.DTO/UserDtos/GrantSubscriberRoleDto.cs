@@ -8,6 +8,6 @@ namespace TripFlip.Services.Dto.UserDtos
 
         public Guid UserId { get; set; }
 
-        public int TripRoleId { get; set; }
+        public int[] TripRoleIds { get; set; }
     }
 }
