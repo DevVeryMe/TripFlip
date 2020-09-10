@@ -30,6 +30,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IUserService, UserService>();
 
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
             services.AddDbContext<TripFlipDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(

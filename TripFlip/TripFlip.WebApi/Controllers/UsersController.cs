@@ -130,6 +130,7 @@ namespace TripFlip.WebApi.Controllers
             return Ok(authenticatedUserViewModel);
         }
 
+        /// <summary>
         /// Registers User.
         /// </summary>
         /// <param name="registerUserViewModel">Data to register User with.</param>

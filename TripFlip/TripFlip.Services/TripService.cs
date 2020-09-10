@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -10,7 +8,6 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Enums;
-using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -24,21 +21,21 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="mapper">IMapper instance.</param>
-        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
+        /// <param name="currentUserService">ICurrentUserService instance.</param>
         public TripService(TripFlipDbContext tripFlipDbContext,
             IMapper mapper,
-            IHttpContextAccessor httpContextAccessor)
+            ICurrentUserService currentUserService)
         {
             _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
+            _currentUserService = currentUserService;
         }
 
         public async Task<PagedList<TripDto>> GetAllTripsAsync(
@@ -81,7 +78,8 @@ namespace TripFlip.Services
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
-            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
 
             await ValidateUserExistsById(currentUserId);
             await ValidateTripRoleExistsById((int)TripRoles.Admin);
