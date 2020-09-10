@@ -8,6 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Enums;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -106,6 +107,8 @@ namespace TripFlip.Services
 
         public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
+            await ValidateCurrentUserIsTripAdminAsync(updateTripDto.Id);
+
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
             ValidateTripEntityNotNull(tripEntity);
@@ -123,6 +126,8 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
+            await ValidateCurrentUserIsTripAdminAsync(id);
+
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(id);
 
             ValidateTripEntityNotNull(tripEntity);
@@ -162,6 +167,38 @@ namespace TripFlip.Services
             if (!tripRoleExists)
             {
                 throw new ArgumentException(ErrorConstants.TripRoleNotFound);
+            }
+        }
+
+        /// <summary>
+        /// Validates whether current user is trip admin.
+        /// </summary>
+        /// <param name="tripId">Trip id.</param>
+        private async Task ValidateCurrentUserIsTripAdminAsync(int tripId)
+        {
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
+
+            var tripSubscriberEntity = await _tripFlipDbContext
+                .TripSubscribers
+                .AsNoTracking()
+                .Include(tripSubscriber => tripSubscriber.TripRoles)
+                .SingleOrDefaultAsync(tripSubscriber =>
+                tripSubscriber.UserId == currentUserId
+                && tripSubscriber.TripId == tripId);
+
+            EntityValidationHelper
+                .ValidateEntityNotNull(tripSubscriberEntity,
+                ErrorConstants.TripSubscriberNotFound);
+
+            var tripSubscriberIsAdmin = tripSubscriberEntity
+                .TripRoles
+                .Any(tripRole =>
+                tripRole.TripRoleId == (int)TripRoles.Admin);
+
+            if (!tripSubscriberIsAdmin)
+            {
+                throw new ArgumentException(ErrorConstants.NotTripAdmin);
             }
         }
     }
