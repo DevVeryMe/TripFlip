@@ -221,7 +221,7 @@ namespace TripFlip.Services
                 bool requestedRoleIdIsValid =
                     tripRolesValues.Any(realRoleId => realRoleId == requestedRoleId);
 
-                if (subscriberAlreadyOwnsThisRole == false && requestedRoleIdIsValid)
+                if (!subscriberAlreadyOwnsThisRole && requestedRoleIdIsValid)
                 {
                     var newTripSubscriberRole = new TripSubscriberRoleEntity()
                     {
