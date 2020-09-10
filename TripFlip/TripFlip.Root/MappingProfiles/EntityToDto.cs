@@ -1,11 +1,14 @@
 using AutoMapper;
+using System.Linq;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Dto.RoutePointDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Dto.TripRoleDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 
@@ -22,6 +25,10 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<ItemEntity, ItemDto>();
 
             CreateMap<TaskEntity, TaskDto>();
+
+            CreateMap<ItemEntity, ItemWithoutListIdDto>();
+
+            CreateMap<TaskEntity, TaskWithoutListIdDto>();
 
             CreateMap<TaskListEntity, TaskListDto>();
 
@@ -44,6 +51,45 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<UserEntity, AuthenticatedUserDto>();
 
             CreateMap<PagedList<UserEntity>, PagedList<UserDto>>();
+
+            CreateMap<ItemListEntity, ItemListWithItemsDto>();
+
+            CreateMap<TaskListEntity, TaskListWithTasksDto>();
+
+            CreateMap<RoutePointEntity, RoutePointDto>();
+
+            CreateMap<RouteEntity, RouteWithPointsItemAndTaskListsDto>();
+
+            CreateMap<TripSubscriberEntity, TripWithRoutesAndUserRolesDto>()
+                .ForMember(destination => destination.Title,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.Title))
+                .ForMember(destination => destination.Description,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.Description))
+                .ForMember(destination => destination.Id,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.Id))
+                .ForMember(destination => destination.StartsAt,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.StartsAt))
+                .ForMember(destination => destination.EndsAt,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.EndsAt))
+                .ForMember(destination => destination.Routes,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.Trip.Routes))
+                .ForMember(destination => destination.TripRoles,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            tripSubscriberEntity => tripSubscriberEntity.TripRoles
+                            .Select(role => new TripRoleDto() { Id = role.TripRole.Id, Name = role.TripRole.Name })));
         }
     }
 }
