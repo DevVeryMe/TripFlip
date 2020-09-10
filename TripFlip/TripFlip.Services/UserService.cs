@@ -275,7 +275,8 @@ namespace TripFlip.Services
 
         public async Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync()
         {
-            var currentUserId = HttpContextClaimsParser.GetUserIdFromClaims(_httpContextAccessor);
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
 
             var userExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == currentUserId);
