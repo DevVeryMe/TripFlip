@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TripFlip.Services.Dto.UserDtos
 {
@@ -8,6 +9,6 @@ namespace TripFlip.Services.Dto.UserDtos
 
         public Guid UserId { get; set; }
 
-        public int[] TripRoleIds { get; set; }
+        public IEnumerable<int> TripRoleIds { get; set; }
     }
 }
