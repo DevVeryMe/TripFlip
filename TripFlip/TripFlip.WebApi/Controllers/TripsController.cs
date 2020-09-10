@@ -106,7 +106,7 @@ namespace TripFlip.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     POST /trips
+        ///     PUT /trips
         ///     {
         ///         "id": 1,
         ///         "title": "Updated trip.",
