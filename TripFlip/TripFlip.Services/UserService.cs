@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
@@ -27,9 +30,8 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
-        private readonly JsonWebTokenConfig _jsonWebTokenConfig;
+        private readonly JwtConfiguration _jwtConfiguration;
 
-        //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
@@ -37,16 +39,16 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        /// <param name="jsonWebTokenConfig">JsonWebTokenConfig instance.</param>
+        /// <param name="jwtConfiguration">JwtConfiguration instance.</param>
         /// <param name="currentUserService">ICurrentUserService instance.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
-            JsonWebTokenConfig jsonWebTokenConfig,
+            JwtConfiguration jwtConfiguration,
             ICurrentUserService currentUserService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
-            _jsonWebTokenConfig = jsonWebTokenConfig;
+            _jwtConfiguration = jwtConfiguration;
             _currentUserService = currentUserService;
         }
 
@@ -93,6 +95,8 @@ namespace TripFlip.Services
             var userEntity = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
+                .Include(user => user.ApplicationRoles)
+                .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
             ValidateUserEntityNotNull(userEntity);
@@ -283,29 +287,33 @@ namespace TripFlip.Services
         /// <summary>
         /// Generates JWT.
         /// </summary>
-        /// <param name="user">User entity needed to add claims.</param>
+        /// <param name="userIncludingRoles">User entity with included roles.</param>
         /// <returns>Encoded JWT.</returns>
-        private string GenerateJsonWebToken(UserEntity user)
+        private string GenerateJsonWebToken(UserEntity userIncludingRoles)
         {
             var encodedSecretKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(_jsonWebTokenConfig.SecretKey));
+                Encoding.ASCII.GetBytes(_jwtConfiguration.SecretKey));
                 var credentials = new SigningCredentials(
                 encodedSecretKey,
                 SecurityAlgorithms.HmacSha256
                 );
 
-            int expirationTime = _jsonWebTokenConfig.TokenLifetime;
+            int expirationTime = _jwtConfiguration.TokenLifetime;
+
+            var roles = userIncludingRoles.ApplicationRoles
+                .Select(role => new {Id = role.ApplicationRole.Id, Name = role.ApplicationRole.Name});
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.Sub, userIncludingRoles.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email),
+                new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(roles))
             };
 
             // creating JWT
             var jwt = new JwtSecurityToken(
-                issuer: _jsonWebTokenConfig.Issuer,
-                audience: _jsonWebTokenConfig.Audience,
+                issuer: _jwtConfiguration.Issuer,
+                audience: _jwtConfiguration.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(expirationTime),
                 signingCredentials: credentials
