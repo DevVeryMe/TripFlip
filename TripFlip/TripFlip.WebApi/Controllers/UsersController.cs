@@ -71,7 +71,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Users by trip Id, and grouped by roles.
+        /// Gets all Users by trip Id and categorized by roles.
         /// </summary>
         /// <param name="tripId">Id of a trip to find users with.</param>
         /// <returns>User view model that
