@@ -128,10 +128,11 @@ namespace TripFlip.Services
             IEnumerable<TripSubscriberEntity> source,
             int roleId)
         {
-            var subbedUsersByRole = from subscriber in source
-                                    from tripRole in subscriber.TripRoles
-                                    where tripRole.TripRoleId == roleId
-                                    select subscriber.User;
+            var subbedUsersByRole = source
+                .Where(subscriber => subscriber
+                    .TripRoles
+                    .Any(tripRole => tripRole.TripRoleId == roleId))
+                .Select(subscriber => subscriber.User);
 
             return subbedUsersByRole;
         }
