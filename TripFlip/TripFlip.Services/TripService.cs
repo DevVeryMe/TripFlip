@@ -79,8 +79,7 @@ namespace TripFlip.Services
         public async Task<TripDto> CreateAsync(CreateTripDto createTripDto)
         {
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             await ValidateUserExistsById(currentUserId);
             await ValidateTripRoleExistsById((int)TripRoles.Admin);
@@ -176,8 +175,7 @@ namespace TripFlip.Services
         /// <param name="tripId">Trip id.</param>
         private async Task ValidateCurrentUserIsTripAdminAsync(int tripId)
         {
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             var tripSubscriberEntity = await _tripFlipDbContext
                 .TripSubscribers
