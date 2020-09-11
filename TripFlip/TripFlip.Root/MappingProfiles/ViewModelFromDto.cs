@@ -2,16 +2,20 @@ using AutoMapper;
 using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Dto.RoutePointDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Dto.TripRoleDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.ViewModels.ItemViewModels;
+using TripFlip.ViewModels.RoutePointViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.TaskViewModels;
+using TripFlip.ViewModels.TripRoleViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
 
@@ -54,6 +58,22 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<AuthenticatedUserDto, AuthenticatedUserViewModel>();
 
             CreateMap<PagedList<UserDto>, PagedList<UserViewModel>>();
+
+            CreateMap<ItemListWithItemsDto, ItemListWithItemsViewModel>();
+
+            CreateMap<TaskListWithTasksDto, TaskListWithTasksViewModel>();
+
+            CreateMap<RoutePointDto, RoutePointViewModel>();
+
+            CreateMap<RouteWithPointsItemAndTaskListsDto, RouteWithPointsItemAndTaskListsViewModel>();
+
+            CreateMap<TripRoleDto, TripRoleViewModel>();
+
+            CreateMap<TripWithRoutesAndUserRolesDto, TripWithRoutesAndUserRolesViewModel>();
+
+            CreateMap<ItemWithoutListIdDto, ItemWithoutListIdViewModel>();
+
+            CreateMap<TaskWithoutListIdDto, TaskWithoutListIdViewModel>();
 
             CreateMap<UsersByTripAndCategorizedByRoleDto, UsersByTripAndCategorizedByRoleViewModel>();
         }

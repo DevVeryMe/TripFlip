@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto;
@@ -149,6 +150,7 @@ namespace TripFlip.WebApi.Controllers
             return Ok(authenticatedUserViewModel);
         }
 
+        /// <summary>
         /// Registers User.
         /// </summary>
         /// <param name="registerUserViewModel">Data to register User with.</param>
@@ -230,6 +232,22 @@ namespace TripFlip.WebApi.Controllers
             await _userService.SubscribeToTripAsync(tripId);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets all trips, which are subscribed by current user, with included routes,
+        /// including route points, task, item lists with tasks and items and roles of
+        /// current user in these trips.
+        /// </summary>
+        [HttpPut("subscribed-trips")]
+        [Authorize]
+        public async Task<IActionResult> GetAllSubscribedTrips()
+        {
+            var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();
+
+            var tripWithRoutesViewModel = _mapper.Map<List<TripWithRoutesAndUserRolesViewModel>>(tripWithRoutesDto);
+
+            return Ok(tripWithRoutesViewModel);
         }
     }
 }

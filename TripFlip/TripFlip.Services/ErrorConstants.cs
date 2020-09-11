@@ -39,5 +39,9 @@
         public static readonly string NotAuthorized = "Not authorized access.";
 
         public static readonly string IsAlreadySubscriber = "You already subscribed this trip.";
+
+        public static readonly string TripSubscriberNotFound = "Trip subscriber is not found.";
+
+        public static readonly string NotTripAdmin = "Current user is not trip admin.";
     }
 }
