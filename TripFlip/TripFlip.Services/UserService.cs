@@ -85,7 +85,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(user => user.Id == id);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             var userDto = _mapper.Map<UserDto>(userEntity);
 
@@ -101,7 +102,8 @@ namespace TripFlip.Services
                 .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             bool isPasswordVerified = PasswordHasherHelper
                 .VerifyPassword(loginDto.Password, userEntity.PasswordHash);
@@ -145,13 +147,25 @@ namespace TripFlip.Services
 
         public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
         {
-            var userEntity = await _tripFlipDbContext.Users.FindAsync(updateUserDto.Id);
+            string userIdString = _currentUserService.UserId;
+            Guid userId = Guid.Parse(userIdString); // todo: update with [TN202B-210]
 
-            ValidateUserEntityNotNull(userEntity);
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .FindAsync(userId);
+
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             userEntity.Email = updateUserDto.Email;
+            userEntity.FirstName = updateUserDto.FirstName;
+            userEntity.LastName = updateUserDto.LastName;
+            userEntity.AboutMe = updateUserDto.AboutMe;
+            userEntity.Gender =  (TripFlip.Domain.Entities.Enums.UserGender?) updateUserDto.Gender;
+            userEntity.BirthDate = updateUserDto.BirthDate;
 
             await _tripFlipDbContext.SaveChangesAsync();
+
             var userDto = _mapper.Map<UserDto>(userEntity);
 
             return userDto;
@@ -161,7 +175,8 @@ namespace TripFlip.Services
         {
             var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             _tripFlipDbContext.Remove(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
@@ -306,19 +321,6 @@ namespace TripFlip.Services
             var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesAndUserRolesDto>>(tripSubscriberEntities);
 
             return tripWithRoutesDto;
-        }
-
-        /// <summary>
-        /// Checks if the given <see cref="UserEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="userEntity">Object that should be checked.</param>
-        private void ValidateUserEntityNotNull(UserEntity userEntity)
-        {
-            if (userEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
-            }
         }
 
         /// <summary>

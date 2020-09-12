@@ -72,9 +72,9 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates User.
+        /// Updates authorized User.
         /// </summary>
-        /// <param name="updateUserViewModel">New User data with existing User id.</param>
+        /// <param name="updateUserViewModel">New User data.</param>
         /// <returns>User view model that
         /// represents the updated database entry.</returns>
         /// <remarks>
@@ -82,14 +82,17 @@ namespace TripFlip.WebApi.Controllers
         /// 
         ///     PUT /users
         ///     {
-        ///         "id": 0f8fad5b-d9cb-469f-a165-70867728950e,
         ///         "email": "sample@gmail.com",
-        ///         "password": "TestPassword@1",
+        ///         "firstName": "Marco",
+        ///         "lastName": "Polo",
+        ///         "aboutMe": "A great adventurer from Venice.",
+        ///         "gender": 1,
+        ///         "birthDate": "1524-09-12T19:45:44.631Z"
         ///     }
         /// </remarks>
         [HttpPut]
         [Authorize]
-        [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserViewModel updateUserViewModel)
         {
             var updateUserDto = _mapper.Map<UpdateUserDto>(updateUserViewModel);
@@ -145,6 +148,11 @@ namespace TripFlip.WebApi.Controllers
         ///         "email": "example@mail.com",
         ///         "password": "rel1able-Password",
         ///         "passwordConfirmation": "rel1able-Password"
+        ///         "firstName": "Marco",
+        ///         "lastName": "Polo",
+        ///         "aboutMe": "A great adventurer from Venice.",
+        ///         "gender": 1,
+        ///         "birthDate": "1524-09-12T19:45:44.631Z"
         ///     }
         /// </remarks>
         [HttpPost]
