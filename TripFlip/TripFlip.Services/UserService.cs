@@ -166,8 +166,7 @@ namespace TripFlip.Services
 
         public async Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto)
         {
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             var currentUser = await _tripFlipDbContext
                 .Users
@@ -199,21 +198,21 @@ namespace TripFlip.Services
 
             var userAlreadyHasGrantingRole = userToGrantRole
                 .ApplicationRoles
-                .Any(appRole => appRole.UserId == userToGrantRole.Id
-                && appRole.ApplicationRoleId == (int)grantApplicationRoleDto.ApplicationRole);
+                .Any(appRole => 
+                appRole.ApplicationRoleId == (int)grantApplicationRoleDto.ApplicationRole);
 
             if (userAlreadyHasGrantingRole)
             {
                 throw new ArgumentException(ErrorConstants.UserAlreadyHasGrantingAppRole);
             }
 
-            var applicationUserRole = new ApplicationUserRoleEntity()
+            var applicationUserRoleEntity = new ApplicationUserRoleEntity()
             {
                 UserId = userToGrantRole.Id,
                 ApplicationRoleId = (int)grantApplicationRoleDto.ApplicationRole
             };
 
-            await _tripFlipDbContext.ApplicationUsersRoles.AddAsync(applicationUserRole);
+            await _tripFlipDbContext.ApplicationUsersRoles.AddAsync(applicationUserRoleEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
