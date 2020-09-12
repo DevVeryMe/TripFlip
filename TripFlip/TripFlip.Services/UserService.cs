@@ -199,59 +199,41 @@ namespace TripFlip.Services
             var tripSubscriber = trip.TripSubscribers
                 .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
 
-            // Set roles to trip subscriber.
-            var rolesToAdd = new List<TripSubscriberRoleEntity>();
-            var rolesToRemove = new List<TripSubscriberRoleEntity>();
+            // Subscribe given user to trip if he's not subscribed.
             if (tripSubscriber is null)
             {
-                // Subscribe to trip.
                 tripSubscriber = new TripSubscriberEntity()
                 {
                     TripId = grantSubscriberRoleDto.TripId,
                     UserId = grantSubscriberRoleDto.UserId
                 };
-
-                foreach (int roleId in grantSubscriberRoleDto.TripRoleIds)
-                {
-                    rolesToAdd.Add(new TripSubscriberRoleEntity()
-                    {
-                        TripSubscriber = tripSubscriber,
-                        TripRoleId = roleId
-                    });
-                }
             }
-            else
+
+            // Remove subscriber's current set of roles.
+            if (!(tripSubscriber.TripRoles is null))
             {
-                IEnumerable<int> ownedRolesIds = tripSubscriber
-                    .TripRoles
-                    .Select(subscriberRole => subscriberRole.TripRoleId);
+                _tripFlipDbContext.TripSubscribersRoles.RemoveRange(
+                    tripSubscriber.TripRoles);
+            }
 
-                IEnumerable<int> rolesToAddIds = grantSubscriberRoleDto
-                    .TripRoleIds
-                    .Except(ownedRolesIds);
+            // Add requested set of roles to subscriber.
+            bool collectionHasRolesToAdd = grantSubscriberRoleDto.TripRoleIds.Count() > 0;
+            if (collectionHasRolesToAdd)
+            {
+                var rolesToAdd = new List<TripSubscriberRoleEntity>();
 
-                foreach (int roleId in rolesToAddIds)
+                foreach (int requestedRoleId in grantSubscriberRoleDto.TripRoleIds)
                 {
                     rolesToAdd.Add(new TripSubscriberRoleEntity()
                     {
                         TripSubscriber = tripSubscriber,
-                        TripRoleId = roleId
+                        TripRoleId = requestedRoleId
                     });
                 }
 
-                IEnumerable<int> rolesToRemoveIds = ownedRolesIds
-                    .Except(grantSubscriberRoleDto.TripRoleIds);
-
-                foreach (int roleId in rolesToRemoveIds)
-                {
-                    rolesToRemove.Add(
-                        tripSubscriber.TripRoles.First(
-                            subscriberRole => subscriberRole.TripRoleId == roleId));
-                }
+                _tripFlipDbContext.TripSubscribersRoles.AddRange(rolesToAdd);
             }
-
-            _tripFlipDbContext.TripSubscribersRoles.AddRange(rolesToAdd);
-            _tripFlipDbContext.TripSubscribersRoles.RemoveRange(rolesToRemove);
+            
 
             await _tripFlipDbContext.SaveChangesAsync();
         }
