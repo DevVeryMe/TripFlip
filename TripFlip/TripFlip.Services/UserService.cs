@@ -219,8 +219,7 @@ namespace TripFlip.Services
 
         public async Task GrantTripRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
         {
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             var userToGrantRoleExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == grantSubscriberRoleDto.UserId);
@@ -283,8 +282,7 @@ namespace TripFlip.Services
 
         public async Task SubscribeToTripAsync(int tripId)
         {
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             var userExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == currentUserId);
@@ -325,8 +323,7 @@ namespace TripFlip.Services
 
         public async Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync()
         {
-            var currentUserIdString = _currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = _currentUserService.UserId;
 
             var userExists = await _tripFlipDbContext.Users
                 .AnyAsync(user => user.Id == currentUserId);
