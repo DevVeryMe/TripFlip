@@ -31,8 +31,7 @@ namespace TripFlip.Services
                         c.Type == ClaimTypes.NameIdentifier)
                     ?.Value;
 
-                if (userIdToParse == null ||
-                    !Guid.TryParse(userIdToParse, out var parsedUserId))
+                if (!Guid.TryParse(userIdToParse, out var parsedUserId))
                 {
                     throw new UnauthorizedAccessException(ErrorConstants.NotAuthorized);
                 }
