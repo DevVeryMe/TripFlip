@@ -6,6 +6,7 @@ namespace TripFlip.ViewModels.UserViewModels
 {
     public class GrantApplicationRoleViewModel
     {
+        [Required(ErrorMessage = ErrorConstants.RequiredUserIdError)]
         public Guid UserId { get; set; }
 
         [Required(ErrorMessage = ErrorConstants.EmptyApplicationRoleFieldError)]

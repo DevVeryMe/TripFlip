@@ -384,7 +384,7 @@ namespace TripFlip.Services
             int expirationTime = _jwtConfiguration.TokenLifetime;
 
             var roles = userIncludingRoles.ApplicationRoles
-                .Select(role => new { Name = role.ApplicationRole.Name });
+                .Select(role => new Claim(ClaimTypes.Role, role.ApplicationRole.Name));
 
             var claims = new List<Claim>
             {
@@ -392,9 +392,7 @@ namespace TripFlip.Services
                 new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email)
             };
 
-            claims.AddRange(
-                roles.Select(role => new Claim(ClaimTypes.Role, role.Name))
-                );
+            claims.AddRange(roles);
 
             // creating JWT
             var jwt = new JwtSecurityToken(
