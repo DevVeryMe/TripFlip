@@ -78,6 +78,8 @@ namespace TripFlip.WebApi
                         new string[] { }
                     }
                 });
+
+                options.EnableAnnotations();
             });
 
             services.ConfigureServices(Configuration);

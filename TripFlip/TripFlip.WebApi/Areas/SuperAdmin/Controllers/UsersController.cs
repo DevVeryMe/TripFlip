@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
@@ -39,6 +40,7 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         ///         "applicationRole": 2
         ///     }
         /// </remarks>
+        [SwaggerOperation(Tags = new[] { AreaName.SuperAdmin })]
         [HttpPut("grant-application-role")]
         public async Task<IActionResult> GrantRoleAsync(
             [FromBody] GrantApplicationRoleViewModel grantApplicationRoleViewModel)
