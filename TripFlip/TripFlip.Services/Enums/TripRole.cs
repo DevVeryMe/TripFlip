@@ -1,6 +1,6 @@
 ﻿namespace TripFlip.Services.Enums
 {
-    public enum TripRoles
+    public enum TripRole
     {
         Admin = 1,
         Editor = 2,

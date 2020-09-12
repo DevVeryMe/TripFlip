@@ -196,7 +196,7 @@ namespace TripFlip.WebApi.Controllers
             var grantSubscriberRoleDto =
                 _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
 
-            await _userService.GrantRoleAsync(grantSubscriberRoleDto);
+            await _userService.GrantTripRoleAsync(grantSubscriberRoleDto);
 
             return Ok();
         }

@@ -43,5 +43,7 @@
         public static readonly string TripSubscriberNotFound = "Trip subscriber is not found.";
 
         public static readonly string NotTripAdmin = "Current user is not trip admin.";
+
+        public static readonly string UserAlreadyHasGrantingAppRole = "User already has granting application role.";
     }
 }
