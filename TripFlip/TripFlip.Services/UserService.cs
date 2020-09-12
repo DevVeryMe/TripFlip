@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,7 +12,6 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto;
-using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
@@ -169,7 +166,30 @@ namespace TripFlip.Services
 
         public async Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto)
         {
-            var userToGrantRole = await _tripFlipDbContext.Users
+            var currentUserIdString = _currentUserService.UserId;
+            var currentUserId = Guid.Parse(currentUserIdString);
+
+            var currentUser = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .Include(user => user.ApplicationRoles)
+                .SingleOrDefaultAsync(user => user.Id == currentUserId);
+
+            EntityValidationHelper
+                .ValidateEntityNotNull(currentUser, ErrorConstants.UserNotFound);
+
+            var currentUserHasHigherRole = currentUser
+                .ApplicationRoles
+                .Any(appRole => 
+                appRole.ApplicationRoleId < (int)grantApplicationRoleDto.ApplicationRole);
+
+            if (!currentUserHasHigherRole)
+            {
+                throw new ArgumentException(ErrorConstants.CurrentUserAppRoleMustBeHigherThanGranting);
+            }
+
+            var userToGrantRole = await _tripFlipDbContext
+                .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
                 .SingleOrDefaultAsync(user => user.Id == grantApplicationRoleDto.UserId);
@@ -368,14 +388,17 @@ namespace TripFlip.Services
             int expirationTime = _jwtConfiguration.TokenLifetime;
 
             var roles = userIncludingRoles.ApplicationRoles
-                .Select(role => new {Id = role.ApplicationRole.Id, Name = role.ApplicationRole.Name});
+                .Select(role => new { Name = role.ApplicationRole.Name });
 
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userIncludingRoles.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email),
-                new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(roles))
+                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email)
             };
+
+            claims.AddRange(
+                roles.Select(role => new Claim(ClaimTypes.Role, role.Name))
+                );
 
             // creating JWT
             var jwt = new JwtSecurityToken(

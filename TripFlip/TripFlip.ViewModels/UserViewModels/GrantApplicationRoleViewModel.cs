@@ -9,7 +9,7 @@ namespace TripFlip.ViewModels.UserViewModels
         public Guid UserId { get; set; }
 
         [Required(ErrorMessage = ErrorConstants.EmptyApplicationRoleFieldError)]
-        [EnumDataType(typeof(TaskPriorityLevel), ErrorMessage = ErrorConstants.NotMatchAnyTaskPriorityLevelError)]
+        [EnumDataType(typeof(ApplicationRole), ErrorMessage = ErrorConstants.NotMatchAnyApplicationRoleError)]
         public ApplicationRole ApplicationRole { get; set; }
     }
 }
