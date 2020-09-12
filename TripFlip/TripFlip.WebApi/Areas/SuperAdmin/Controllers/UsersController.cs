@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
 using TripFlip.ViewModels.UserViewModels;
+using TripFlip.WebApi.StringConstants;
 
 namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 {
-    [Area("SuperAdmin")]
+    [Area(AreaName.SuperAdmin)]
     [Route("api/super-admin/users")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = ApplicationRoleName.SuperAdmin)]
     [ApiController]
     public class UsersController : ControllerBase
     {
