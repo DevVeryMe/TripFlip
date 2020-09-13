@@ -239,7 +239,7 @@ namespace TripFlip.Services
             var currentUserTripAdmin = trip.TripSubscribers
                 .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)
                 ?.TripRoles
-                .FirstOrDefault(role => role.TripRoleId == (int) TripRole.Admin);
+                .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
             
             EntityValidationHelper.
                 ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
@@ -313,7 +313,7 @@ namespace TripFlip.Services
                     TripId = tripId
                 },
 
-                TripRoleId = (int)TripRole.Guest
+                TripRoleId = (int)TripRoles.Guest
             };
 
             await _tripFlipDbContext.TripSubscribersRoles.AddAsync(subscriberRole);

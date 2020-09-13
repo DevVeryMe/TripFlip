@@ -82,7 +82,7 @@ namespace TripFlip.Services
             var currentUserId = _currentUserService.UserId;
 
             await ValidateUserExistsById(currentUserId);
-            await ValidateTripRoleExistsById((int)TripRole.Admin);
+            await ValidateTripRoleExistsById((int)TripRoles.Admin);
 
             var tripSubscriberEntity = new TripSubscriberEntity()
             {
@@ -93,7 +93,7 @@ namespace TripFlip.Services
             var tripSubscriberRoleEntity = new TripSubscriberRoleEntity()
             {
                 TripSubscriber = tripSubscriberEntity,
-                TripRoleId = (int)TripRole.Admin
+                TripRoleId = (int)TripRoles.Admin
             };
 
             await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntity);
@@ -192,7 +192,7 @@ namespace TripFlip.Services
             var tripSubscriberIsAdmin = tripSubscriberEntity
                 .TripRoles
                 .Any(tripRole =>
-                tripRole.TripRoleId == (int)TripRole.Admin);
+                tripRole.TripRoleId == (int)TripRoles.Admin);
 
             if (!tripSubscriberIsAdmin)
             {
