@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
