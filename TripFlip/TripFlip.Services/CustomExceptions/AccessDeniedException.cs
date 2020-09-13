@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
-namespace TripFlip.Root.CustomExceptions
+namespace TripFlip.Services.CustomExceptions
 {
     [Serializable]
     public class AccessDeniedException : Exception
@@ -15,6 +16,11 @@ namespace TripFlip.Root.CustomExceptions
 
         public AccessDeniedException(string message, Exception innerException)
             : base(message, innerException)
+        {
+        }
+
+        protected AccessDeniedException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
 
         }

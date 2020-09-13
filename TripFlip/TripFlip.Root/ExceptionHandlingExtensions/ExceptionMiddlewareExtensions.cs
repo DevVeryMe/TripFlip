@@ -6,8 +6,8 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using System;
 using System.Net;
-using TripFlip.Root.CustomExceptions;
 using TripFlip.Root.ExceptionHandlingExtensions.Models;
+using TripFlip.Services.CustomExceptions;
 
 namespace TripFlip.Root.ExceptionHandlingExtensions
 {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Enums;
@@ -198,7 +199,7 @@ namespace TripFlip.Services
 
             if (!tripSubscriberIsAdmin)
             {
-                throw new ArgumentException(ErrorConstants.NotTripAdmin);
+                throw new AccessDeniedException(ErrorConstants.NotTripAdmin);
             }
         }
     }

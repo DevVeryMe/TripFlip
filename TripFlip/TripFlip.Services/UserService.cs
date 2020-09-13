@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
@@ -106,7 +107,7 @@ namespace TripFlip.Services
 
             if (!isPasswordVerified)
             {
-                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
+                throw new BadRequestException(ErrorConstants.PasswordNotVerified);
             }
 
             AuthenticatedUserDto authenticatedUserDto = 
@@ -125,7 +126,7 @@ namespace TripFlip.Services
 
             if (emailIsAlreadyTaken)
             {
-                throw new ArgumentException(ErrorConstants.EmailIsTaken);
+                throw new BadRequestException(ErrorConstants.EmailIsTaken);
             }
 
             var userEntity = _mapper.Map<UserEntity>(registerUserDto);
@@ -207,7 +208,7 @@ namespace TripFlip.Services
 
                 if (sameUserRole != null)
                 {
-                    throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
+                    throw new BadRequestException(ErrorConstants.AlreadyRoleSet);
                 }
             }
             else
@@ -253,7 +254,7 @@ namespace TripFlip.Services
 
             if (isAlreadySubscriber)
             {
-                throw new ArgumentException(ErrorConstants.IsAlreadySubscriber);
+                throw new BadRequestException(ErrorConstants.IsAlreadySubscriber);
             }
 
             var subscriberRole = new TripSubscriberRoleEntity()

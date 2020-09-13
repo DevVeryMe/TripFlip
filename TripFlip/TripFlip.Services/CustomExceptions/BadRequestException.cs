@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
-namespace TripFlip.Root.CustomExceptions
+namespace TripFlip.Services.CustomExceptions
 {
     [Serializable]
     public class BadRequestException : Exception
@@ -15,6 +16,12 @@ namespace TripFlip.Root.CustomExceptions
 
         public BadRequestException(string message, Exception innerException)
             : base(message, innerException)
+        {
+
+        }
+
+        protected BadRequestException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
 
         }
