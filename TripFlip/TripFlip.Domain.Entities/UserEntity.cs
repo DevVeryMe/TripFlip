@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TripFlip.Domain.Entities.Enums;
 
 namespace TripFlip.Domain.Entities
 {
@@ -12,6 +13,16 @@ namespace TripFlip.Domain.Entities
         public string PasswordHash { get; set; }
 
         public DateTimeOffset DateCreated { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string AboutMe { get; set; }
+
+        public UserGender? Gender { get; set; }
+
+        public DateTimeOffset? BirthDate { get; set; }
 
         public ICollection<TripSubscriberEntity> TripSubscriptions { get; set; }
 
