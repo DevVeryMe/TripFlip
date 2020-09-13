@@ -1,4 +1,6 @@
-﻿namespace TripFlip.Services.Interfaces
+﻿using System;
+
+namespace TripFlip.Services.Interfaces
 {
     /// <summary>
     /// Interface that describes accessible properties of the current user.
@@ -8,7 +10,7 @@
         /// <summary>
         /// Property that reflects Id of the current user.
         /// </summary>
-        string UserId { get; }
+        Guid UserId { get; }
 
         /// <summary>
         /// Property that reflects Email of the current user.

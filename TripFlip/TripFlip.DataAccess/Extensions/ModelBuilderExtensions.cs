@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Domain.Entities.Enums;
 
 namespace TripFlip.DataAccess.Extensions
 {
@@ -96,21 +97,36 @@ namespace TripFlip.DataAccess.Extensions
                     Id = Guid.NewGuid(),
                     Email = "sample1.email@mail.com",
                     PasswordHash = "some_hash",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Now,
+                    FirstName = "Andrew",
+                    LastName = "Kravchuk",
+                    AboutMe = "About me",
+                    Gender = UserGender.Male,
+                    BirthDate = DateTimeOffset.Now
                 },
                 new UserEntity()
                 {
                     Id = Guid.NewGuid(),
                     Email = "sample2.email@mail.com",
                     PasswordHash = "some_other_hash",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Now,
+                    FirstName = "Andrew",
+                    LastName = "Veremiy",
+                    AboutMe = "About me",
+                    Gender = UserGender.Male,
+                    BirthDate = DateTimeOffset.Now
                 },
                 new UserEntity()
                 {
                     Id = Guid.NewGuid(),
                     Email = "sample3.email@mail.com",
                     PasswordHash = "hash_hash",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Now,
+                    FirstName = "Stas",
+                    LastName = "Lazarev",
+                    AboutMe = "About me",
+                    Gender = UserGender.Male,
+                    BirthDate = DateTimeOffset.Now
                 });
 
             modelBuilder.Entity<TripRoleEntity>().HasData(

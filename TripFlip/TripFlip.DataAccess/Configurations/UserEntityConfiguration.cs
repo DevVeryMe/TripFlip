@@ -24,6 +24,15 @@ namespace TripFlip.DataAccess.Configurations
 
             builder.Property(userEntity => userEntity.DateCreated)
                 .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+            builder.Property(userEntity => userEntity.FirstName)
+                .HasMaxLength(50);
+
+            builder.Property(userEntity => userEntity.LastName)
+                .HasMaxLength(50);
+
+            builder.Property(userEntity => userEntity.AboutMe)
+                .HasMaxLength(300);
         }
     }
 }
