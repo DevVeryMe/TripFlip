@@ -204,8 +204,7 @@ namespace TripFlip.Services
 
         public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
         {
-            string userIdString = _currentUserService.UserId;
-            Guid userId = Guid.Parse(userIdString); // todo: update with [TN202B-210]
+            Guid userId = _currentUserService.UserId;
 
             var userEntity = await _tripFlipDbContext
                 .Users
@@ -246,7 +245,8 @@ namespace TripFlip.Services
             // Validate user-to-grant-role-to exists.
             var userToGrantRole = await _tripFlipDbContext.Users
                 .SingleOrDefaultAsync(user => user.Id == grantSubscriberRoleDto.UserId);
-            ValidateUserEntityNotNull(userToGrantRole);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userToGrantRole, ErrorConstants.UserNotFound);
 
             // Validate trip exists.
             var trip = await _tripFlipDbContext.Trips
