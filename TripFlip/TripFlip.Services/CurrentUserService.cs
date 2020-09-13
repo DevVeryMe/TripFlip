@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
@@ -18,17 +19,24 @@ namespace TripFlip.Services
         }
 
         /// <inheritdoc/>
-        public string UserId
+        public Guid UserId
         {
             get
             {
-                return _httpContextAccessor
+                var userIdToParse = _httpContextAccessor
                     .HttpContext
                     .User
                     ?.Claims
                     ?.SingleOrDefault(c =>
                         c.Type == ClaimTypes.NameIdentifier)
                     ?.Value;
+
+                if (!Guid.TryParse(userIdToParse, out var parsedUserId))
+                {
+                    throw new UnauthorizedAccessException(ErrorConstants.NotAuthorized);
+                }
+
+                return parsedUserId;
             }
         }
 
@@ -37,13 +45,20 @@ namespace TripFlip.Services
         {
             get
             {
-                return _httpContextAccessor
+                var email = _httpContextAccessor
                     .HttpContext
                     .User
                     ?.Claims
                     ?.SingleOrDefault(c =>
                         c.Type == ClaimTypes.Email)
                     ?.Value;
+
+                if (email == null)
+                {
+                    throw new UnauthorizedAccessException(ErrorConstants.NotAuthorized);
+                }
+
+                return email;
             }
         }
     }
