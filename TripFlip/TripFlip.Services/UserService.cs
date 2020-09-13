@@ -107,7 +107,7 @@ namespace TripFlip.Services
 
             if (!isPasswordVerified)
             {
-                throw new BadRequestException(ErrorConstants.PasswordNotVerified);
+                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
             }
 
             AuthenticatedUserDto authenticatedUserDto = 
@@ -126,7 +126,7 @@ namespace TripFlip.Services
 
             if (emailIsAlreadyTaken)
             {
-                throw new BadRequestException(ErrorConstants.EmailIsTaken);
+                throw new ArgumentException(ErrorConstants.EmailIsTaken);
             }
 
             var userEntity = _mapper.Map<UserEntity>(registerUserDto);
@@ -176,7 +176,7 @@ namespace TripFlip.Services
 
             if (!userToGrantRoleExists)
             {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
+                throw new NotFoundException(ErrorConstants.UserNotFound);
             }
 
             var trip = await _tripFlipDbContext.Trips
@@ -208,7 +208,7 @@ namespace TripFlip.Services
 
                 if (sameUserRole != null)
                 {
-                    throw new BadRequestException(ErrorConstants.AlreadyRoleSet);
+                    throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
                 }
             }
             else
@@ -240,7 +240,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripEntity = await _tripFlipDbContext.Trips
@@ -254,7 +254,7 @@ namespace TripFlip.Services
 
             if (isAlreadySubscriber)
             {
-                throw new BadRequestException(ErrorConstants.IsAlreadySubscriber);
+                throw new ArgumentException(ErrorConstants.IsAlreadySubscriber);
             }
 
             var subscriberRole = new TripSubscriberRoleEntity()
@@ -282,7 +282,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
@@ -309,14 +309,14 @@ namespace TripFlip.Services
 
         /// <summary>
         /// Checks if the given <see cref="UserEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
         /// </summary>
         /// <param name="userEntity">Object that should be checked.</param>
         private void ValidateUserEntityNotNull(UserEntity userEntity)
         {
             if (userEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
+                throw new NotFoundException(ErrorConstants.UserNotFound);
             }
         }
 

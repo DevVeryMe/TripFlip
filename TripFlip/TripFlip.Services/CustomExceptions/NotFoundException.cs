@@ -4,23 +4,23 @@ using System.Runtime.Serialization;
 namespace TripFlip.Services.CustomExceptions
 {
     [Serializable]
-    public class BadRequestException : Exception
+    public class NotFoundException : Exception
     {
-        public BadRequestException() { }
+        public NotFoundException() { }
 
-        public BadRequestException(string message)
+        public NotFoundException(string message)
             : base(message)
         {
 
         }
 
-        public BadRequestException(string message, Exception innerException)
+        public NotFoundException(string message, Exception innerException)
             : base(message, innerException)
         {
 
         }
 
-        protected BadRequestException(SerializationInfo info, StreamingContext context)
+        protected NotFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 

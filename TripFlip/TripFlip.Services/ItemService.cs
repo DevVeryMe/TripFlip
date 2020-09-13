@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Interfaces;
@@ -39,7 +40,7 @@ namespace TripFlip.Services
 
             if (itemListEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.ItemListNotFound);
+                throw new NotFoundException(ErrorConstants.ItemListNotFound);
             }
 
             var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
@@ -61,7 +62,7 @@ namespace TripFlip.Services
 
             if (!itemListExists)
             {
-                throw new ArgumentException(ErrorConstants.ItemListNotFound);
+                throw new NotFoundException(ErrorConstants.ItemListNotFound);
             }
 
             var itemEntitiesQuery = _tripFlipDbContext.Items
@@ -143,7 +144,7 @@ namespace TripFlip.Services
 
             if (itemEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.ItemNotFound);
+                throw new NotFoundException(ErrorConstants.ItemNotFound);
             }
 
         }
