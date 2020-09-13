@@ -40,7 +40,6 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         ///         "applicationRole": 2
         ///     }
         /// </remarks>
-        [SwaggerOperation(Tags = new[] { AreaName.SuperAdmin })]
         [HttpPut("grant-application-role")]
         public async Task<IActionResult> GrantRoleAsync(
             [FromBody] GrantApplicationRoleViewModel grantApplicationRoleViewModel)

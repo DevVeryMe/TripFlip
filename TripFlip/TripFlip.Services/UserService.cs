@@ -12,6 +12,7 @@ using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
@@ -175,16 +176,16 @@ namespace TripFlip.Services
                 .SingleOrDefaultAsync(user => user.Id == currentUserId);
 
             EntityValidationHelper
-                .ValidateEntityNotNull(currentUser, ErrorConstants.UserNotFound);
+                .ValidateEntityNotNull(currentUser, ErrorConstants.NotAuthorized);
 
-            var currentUserHasHigherRole = currentUser
+            var currentUserIsSuperAdmin = currentUser
                 .ApplicationRoles
                 .Any(appRole => 
-                appRole.ApplicationRoleId < (int)grantApplicationRoleDto.ApplicationRole);
+                appRole.ApplicationRoleId == (int)ApplicationRole.SuperAdmin);
 
-            if (!currentUserHasHigherRole)
+            if (!currentUserIsSuperAdmin)
             {
-                throw new ArgumentException(ErrorConstants.CurrentUserAppRoleMustBeHigherThanGranting);
+                throw new ArgumentException(ErrorConstants.NotSuperAdmin);
             }
 
             var userToGrantRole = await _tripFlipDbContext
