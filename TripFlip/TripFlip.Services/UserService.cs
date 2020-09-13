@@ -231,62 +231,69 @@ namespace TripFlip.Services
             var currentUserIdString = _currentUserService.UserId;
             var currentUserId = Guid.Parse(currentUserIdString);
 
-            var userToGrantRoleExists = await _tripFlipDbContext.Users
-                .AnyAsync(user => user.Id == grantSubscriberRoleDto.UserId);
+            // Validate user-to-grant-role-to exists.
+            var userToGrantRole = await _tripFlipDbContext.Users
+                .SingleOrDefaultAsync(user => user.Id == grantSubscriberRoleDto.UserId);
+            ValidateUserEntityNotNull(userToGrantRole);
 
-            if (!userToGrantRoleExists)
-            {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
-            }
-
+            // Validate trip exists.
             var trip = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
                 .ThenInclude(subscribers => subscribers.TripRoles)
                 .FirstOrDefaultAsync(t => t.Id == grantSubscriberRoleDto.TripId);
-
             EntityValidationHelper.
                 ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
 
-            var currentUserTripAdmin = trip.TripSubscribers
-                .FirstOrDefault(subscriber => subscriber.UserId == currentUserId)
-                ?.TripRoles
-                .FirstOrDefault(role => role.TripRoleId == (int) TripRoles.Admin);
-            
-            EntityValidationHelper.
-                ValidateEntityNotNull<TripSubscriberRoleEntity>(currentUserTripAdmin, 
-                ErrorConstants.NoGrantRolePermission);
+            // Validate current user is trip admin.
+            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
+                _currentUserService, _tripFlipDbContext, grantSubscriberRoleDto.TripId);
 
-            var userSubscriber = trip.TripSubscribers
+            // Remove invalid values from requested role id collection.
+            var realTripRolesIds = (IEnumerable<int>) Enum.GetValues(typeof(TripRoles));
+            grantSubscriberRoleDto.TripRoleIds = grantSubscriberRoleDto
+                .TripRoleIds
+                .Distinct()
+                .Where(requestedId => realTripRolesIds.Contains(requestedId));
+
+            var tripSubscriber = trip.TripSubscribers
                 .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
 
-            // If user is already subscribed, checking it's roles, otherwise subscribes.
-            if (userSubscriber != null)
+            // Subscribe given user to trip if he's not subscribed.
+            if (tripSubscriber is null)
             {
-                var sameUserRole = userSubscriber.TripRoles
-                    .FirstOrDefault(tripSubscriberRoleEntity =>
-                        tripSubscriberRoleEntity.TripRoleId == grantSubscriberRoleDto.TripRoleId);
-
-                if (sameUserRole != null)
-                {
-                    throw new ArgumentException(ErrorConstants.AlreadyRoleSet);
-                }
-            }
-            else
-            {
-                userSubscriber = new TripSubscriberEntity()
+                tripSubscriber = new TripSubscriberEntity()
                 {
                     TripId = grantSubscriberRoleDto.TripId,
                     UserId = grantSubscriberRoleDto.UserId
                 };
             }
 
-            var tripSubscriberRoleEntityToAdd = new TripSubscriberRoleEntity()
+            // Remove subscriber's current set of roles.
+            if (!(tripSubscriber.TripRoles is null))
             {
-                TripSubscriber = userSubscriber,
-                TripRoleId = grantSubscriberRoleDto.TripRoleId
-            };
+                _tripFlipDbContext.TripSubscribersRoles.RemoveRange(
+                    tripSubscriber.TripRoles);
+            }
 
-            await _tripFlipDbContext.TripSubscribersRoles.AddAsync(tripSubscriberRoleEntityToAdd);
+            // Add requested set of roles to subscriber.
+            bool collectionHasRolesToAdd = grantSubscriberRoleDto.TripRoleIds.Count() > 0;
+            if (collectionHasRolesToAdd)
+            {
+                var rolesToAdd = new List<TripSubscriberRoleEntity>();
+
+                foreach (int requestedRoleId in grantSubscriberRoleDto.TripRoleIds)
+                {
+                    rolesToAdd.Add(new TripSubscriberRoleEntity()
+                    {
+                        TripSubscriber = tripSubscriber,
+                        TripRoleId = requestedRoleId
+                    });
+                }
+
+                _tripFlipDbContext.TripSubscribersRoles.AddRange(rolesToAdd);
+            }
+            
+
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

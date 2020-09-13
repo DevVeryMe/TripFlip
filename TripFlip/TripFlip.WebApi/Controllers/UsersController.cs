@@ -196,15 +196,15 @@ namespace TripFlip.WebApi.Controllers
         /// Grants role to trip subscriber.
         /// </summary>
         /// <param name="grantSubscriberRoleViewModel">Data with trip id,
-        /// user id and role id.</param>
+        /// user id and role ids.</param>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users
+        ///     PUT /users/grant-role
         ///     {
         ///         "tripId": 1,
         ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
-        ///         "roleId": 1,
+        ///         "tripRoleIds": [1, 2, 3]
         ///     }
         /// </remarks>
         [HttpPut("grant-role")]
