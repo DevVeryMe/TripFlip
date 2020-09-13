@@ -78,6 +78,65 @@ namespace TripFlip.Services
             return pagedUserDtos;
         }
 
+        public async Task<UsersByTripAndCategorizedByRoleDto> 
+            GetAllByTripIdAndCategorizeByRoleAsync(int tripId)
+        {
+            var tripSubscribersList = await _tripFlipDbContext
+                .TripSubscribers
+                .AsNoTracking()
+                .Include(subscriber => subscriber.User)
+                .Include(subscriber => subscriber.TripRoles)
+                .Include(subscriber => subscriber.Trip)
+                .Where(subscriber => subscriber.TripId == tripId)
+                .ToListAsync();
+
+            // Trip exists check.
+            EntityValidationHelper.ValidateEntityNotNull(
+                tripSubscribersList.FirstOrDefault()?.Trip, ErrorConstants.TripNotFound);
+
+            // Get subscribers lists by each role.
+            var tripAdmins = GetSubscribedUsersByRole(tripSubscribersList, 
+                (int)TripRoles.Admin);
+            var tripEditors = GetSubscribedUsersByRole(tripSubscribersList, 
+                (int)TripRoles.Editor);
+            var tripGuests = GetSubscribedUsersByRole(tripSubscribersList, 
+                (int)TripRoles.Guest);
+
+            // Map entities to DTOs.
+            var tripAdminsDtos = _mapper.Map<IEnumerable<UserDto>>(tripAdmins);
+            var tripEditorsDtos = _mapper.Map<IEnumerable<UserDto>>(tripEditors);
+            var tripGuestsDtos = _mapper.Map<IEnumerable<UserDto>>(tripGuests);
+
+            // Create result DTO.
+            return new UsersByTripAndCategorizedByRoleDto()
+            {
+                TripId = tripId,
+                TripAdmins = tripAdminsDtos,
+                TripEditors = tripEditorsDtos,
+                TripGuests = tripGuestsDtos
+            };
+        }
+
+        /// <summary>
+        /// Makes a LINQ query to a given source collection of trip subscribers 
+        /// and returns collection of users with a role that matches a given role id.
+        /// </summary>
+        /// <param name="source">Source collection of trip subscribers to search in.</param>
+        /// <param name="roleId">Role id to search users with.</param>
+        /// <returns>Collection of users with a role that matches a given role id.</returns>
+        IEnumerable<UserEntity> GetSubscribedUsersByRole(
+            IEnumerable<TripSubscriberEntity> source,
+            int roleId)
+        {
+            var subbedUsersByRole = source
+                .Where(subscriber => subscriber
+                    .TripRoles
+                    .Any(tripRole => tripRole.TripRoleId == roleId))
+                .Select(subscriber => subscriber.User);
+
+            return subbedUsersByRole;
+        }
+
         public async Task<UserDto> GetByIdAsync(Guid id)
         {
             var userEntity = await _tripFlipDbContext

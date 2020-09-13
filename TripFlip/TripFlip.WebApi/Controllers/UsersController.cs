@@ -72,6 +72,25 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Gets all Users by trip Id and categorized by roles.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to find users with.</param>
+        /// <returns>User view model that
+        /// represent all users that are subscribed to a given trip. 
+        /// All users are categorized by their trip roles.</returns>
+        [HttpGet("get-by-trip/{tripId}")]
+        [ProducesResponseType(typeof(UsersByTripAndCategorizedByRoleViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllByTripIdAndCategorizeByRoleAsync(
+            int tripId)
+        {
+            var resultDto = await _userService.GetAllByTripIdAndCategorizeByRoleAsync(tripId);
+
+            var resultViewModel = _mapper.Map<UsersByTripAndCategorizedByRoleViewModel>(resultDto);
+
+            return Ok(resultViewModel);
+        }
+
+        /// <summary>
         /// Updates User.
         /// </summary>
         /// <param name="updateUserViewModel">New User data with existing User id.</param>
