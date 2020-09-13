@@ -51,6 +51,15 @@ namespace TripFlip.Services.Interfaces
             PaginationDto paginationDto);
 
         /// <summary>
+        /// Gets all Users by trip Id, and categorized by roles.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to find users with.</param>
+        /// <returns>User DTO that represent all users that are subscribed to a given trip. 
+        /// All users are categorized by their trip roles.</returns>
+        Task<UsersByTripAndCategorizedByRoleDto> GetAllByTripIdAndCategorizeByRoleAsync(
+            int tripId);
+
+        /// <summary>
         /// Deletes User.
         /// </summary>
         /// <param name="id">User id.</param>

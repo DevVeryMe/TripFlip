@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TripFlip.ViewModels.UserViewModels
@@ -12,8 +13,7 @@ namespace TripFlip.ViewModels.UserViewModels
         [Required(ErrorMessage = ErrorConstants.RequiredUserIdError)]
         public Guid UserId { get; set; }
 
-        [Required(ErrorMessage = ErrorConstants.RequiredRoleIdError)]
-        [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.RoleIdLessThanOneError)]
-        public int TripRoleId { get; set; }
+        [Required(ErrorMessage = ErrorConstants.RequiredRolesArray)]
+        public IEnumerable<int> TripRoleIds { get; set; }
     }
 }
