@@ -38,8 +38,7 @@ namespace TripFlip.Services.Helpers
             TripFlipDbContext tripFlipDbContext,
             int tripId)
         {
-            var currentUserIdString = currentUserService.UserId;
-            var currentUserId = Guid.Parse(currentUserIdString);
+            var currentUserId = currentUserService.UserId;
 
             var tripSubscriberEntity = await tripFlipDbContext
                 .TripSubscribers
