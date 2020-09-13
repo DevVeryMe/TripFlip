@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using System;
 using System.Net;
+using TripFlip.Root.CustomExceptions;
 using TripFlip.Root.ExceptionHandlingExtensions.Models;
 
 namespace TripFlip.Root.ExceptionHandlingExtensions
@@ -40,6 +41,14 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                         else if (exception.Error is UnauthorizedAccessException)
                         {
                             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        }
+                        else if (exception.Error is AccessDeniedException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        }
+                        else if (exception.Error is BadRequestException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         }
 
                         var errorDetails = new ErrorDetails
