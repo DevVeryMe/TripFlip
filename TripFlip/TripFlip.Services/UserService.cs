@@ -235,7 +235,6 @@ namespace TripFlip.Services
                 .Users
                 .FirstOrDefaultAsync(user => user.Id == userId);
 
-            // validate User Entity exists?
             EntityValidationHelper.ValidateEntityNotNull(
                 userEntity, ErrorConstants.UserNotFound);
 
