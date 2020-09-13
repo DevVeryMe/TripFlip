@@ -1,4 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TripFlip.DataAccess;
+using TripFlip.Services.Enums;
+using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services.Helpers
 {
@@ -16,6 +22,43 @@ namespace TripFlip.Services.Helpers
             if (entity is null)
             {
                 throw new ArgumentException(errorMessage);
+            }
+        }
+
+        /// <summary>
+        /// Validates whether current user is trip admin.
+        /// </summary>
+        /// <param name="currentUserService">Instance of service class that provides access 
+        /// to properties of the current user.</param>
+        /// <param name="tripFlipDbContext">Instance of database context.</param>
+        /// <param name="tripId">Trip id.</param>
+        /// <returns></returns>
+        public static async Task ValidateCurrentUserIsTripAdminAsync(
+            ICurrentUserService currentUserService,
+            TripFlipDbContext tripFlipDbContext,
+            int tripId)
+        {
+            var currentUserId = currentUserService.UserId;
+
+            var tripSubscriberEntity = await tripFlipDbContext
+                .TripSubscribers
+                .AsNoTracking()
+                .Include(tripSubscriber => tripSubscriber.TripRoles)
+                .SingleOrDefaultAsync(tripSubscriber =>
+                    tripSubscriber.UserId == currentUserId
+                    && tripSubscriber.TripId == tripId);
+
+            ValidateEntityNotNull(tripSubscriberEntity, 
+                ErrorConstants.TripSubscriberNotFound);
+
+            var tripSubscriberIsAdmin = tripSubscriberEntity
+                .TripRoles
+                .Any(tripRole =>
+                tripRole.TripRoleId == (int)TripRoles.Admin);
+
+            if (!tripSubscriberIsAdmin)
+            {
+                throw new ArgumentException(ErrorConstants.NotTripAdmin);
             }
         }
     }

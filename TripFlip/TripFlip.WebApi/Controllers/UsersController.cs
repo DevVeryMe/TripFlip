@@ -72,7 +72,26 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates authorized User.
+        /// Gets all Users by trip Id and categorized by roles.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to find users with.</param>
+        /// <returns>User view model that
+        /// represent all users that are subscribed to a given trip. 
+        /// All users are categorized by their trip roles.</returns>
+        [HttpGet("get-by-trip/{tripId}")]
+        [ProducesResponseType(typeof(UsersByTripAndCategorizedByRoleViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllByTripIdAndCategorizeByRoleAsync(
+            int tripId)
+        {
+            var resultDto = await _userService.GetAllByTripIdAndCategorizeByRoleAsync(tripId);
+
+            var resultViewModel = _mapper.Map<UsersByTripAndCategorizedByRoleViewModel>(resultDto);
+
+            return Ok(resultViewModel);
+        }
+
+        /// <summary>
+        /// Updates User.
         /// </summary>
         /// <param name="updateUserViewModel">New User data.</param>
         /// <returns>User view model that
@@ -185,15 +204,15 @@ namespace TripFlip.WebApi.Controllers
         /// Grants role to trip subscriber.
         /// </summary>
         /// <param name="grantSubscriberRoleViewModel">Data with trip id,
-        /// user id and role id.</param>
+        /// user id and role ids.</param>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users
+        ///     PUT /users/grant-role
         ///     {
         ///         "tripId": 1,
         ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
-        ///         "roleId": 1,
+        ///         "tripRoleIds": [1, 2, 3]
         ///     }
         /// </remarks>
         [HttpPut("grant-role")]
