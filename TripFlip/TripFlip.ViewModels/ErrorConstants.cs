@@ -70,5 +70,7 @@ namespace TripFlip.ViewModels
 
         public const string NotMatchAnyApplicationRoleError = "Value of 'application role' field doesn't" +
             " match any application role.";
+
+        public const string RequiredRolesArray = "Role identifiers array is required.";
     }
 }
