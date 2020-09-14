@@ -48,30 +48,6 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all Users.
-        /// </summary>
-        /// <param name="searchString">String to filter Users.</param>
-        /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <returns>Paged list of User view models that
-        /// represent database entries.</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAsync(
-            [FromQuery] string searchString,
-            [FromQuery] PaginationViewModel paginationViewModel)
-        {
-            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
-
-            var pagedUserDtos = await _userService.GetAllAsync(
-                searchString,
-                paginationDto);
-
-            var pagedUserViewModels = _mapper.Map<PagedList<UserViewModel>>(pagedUserDtos);
-
-            return Ok(pagedUserViewModels);
-        }
-
-        /// <summary>
         /// Gets all Users by trip Id and categorized by roles.
         /// </summary>
         /// <param name="tripId">Id of a trip to find users with.</param>

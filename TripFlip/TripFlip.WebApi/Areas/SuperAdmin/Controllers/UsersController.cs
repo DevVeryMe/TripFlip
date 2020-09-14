@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.UserViewModels;
 using TripFlip.WebApi.StringConstants;
 
@@ -11,7 +15,6 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 {
     [Area(AreaName.SuperAdmin)]
     [Route("api/super-admin/users")]
-    [Authorize(Roles = ApplicationRoleName.SuperAdmin)]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -40,6 +43,7 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         ///     }
         /// </remarks>
         [HttpPut("grant-application-role")]
+        [Authorize(Roles = ApplicationRoleName.SuperAdmin)]
         public async Task<IActionResult> GrantRoleAsync(
             [FromBody] GrantApplicationRoleViewModel grantApplicationRoleViewModel)
         {
@@ -49,6 +53,31 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
             await _userService.GrantApplicationRoleAsync(grantApplicationRoleDto);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets all Users.
+        /// </summary>
+        /// <param name="searchString">String to filter Users.</param>
+        /// <param name="paginationViewModel">Pagination settings.</param>
+        /// <returns>Paged list of User view models that
+        /// represent database entries.</returns>
+        [HttpGet]
+        [Authorize(Roles = ApplicationRoleName.SuperAdminAndAdminRoles)]
+        [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync(
+            [FromQuery] string searchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
+        {
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var pagedUserDtos = await _userService.GetAllAsync(
+                searchString,
+                paginationDto);
+
+            var pagedUserViewModels = _mapper.Map<PagedList<UserViewModel>>(pagedUserDtos);
+
+            return Ok(pagedUserViewModels);
         }
     }
 }
