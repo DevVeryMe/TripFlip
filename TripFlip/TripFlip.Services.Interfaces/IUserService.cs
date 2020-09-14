@@ -67,7 +67,7 @@ namespace TripFlip.Services.Interfaces
 
         /// <summary>
         /// Grants an application role to any user,
-        /// if the current one is granted with the higher role.
+        /// if the current one is granted with super admin role.
         /// </summary>
         /// <param name="grantApplicationRoleDto">Data to with user id and role to grant.</param>
         Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto);
