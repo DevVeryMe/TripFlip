@@ -26,25 +26,27 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         }
 
         /// <summary>
-        /// Grants appication role to user.
+        /// Grants appication roles to user.
         /// </summary>
-        /// <param name="grantApplicationRoleViewModel">Data with
-        /// user id and application role.</param>
+        /// <param name="grantApplicationRolesViewModel">Data with
+        /// user id and application roles.</param>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /super-admin/users/grant-application-role
+        ///     PUT /super-admin/users/grant-application-roles
         ///     {
         ///         "userId": "17E9456A-A362-46CA-9CD4-3DC1CD2061FF",
-        ///         "applicationRole": 2
+        ///         "applicationRoleIds": [
+        ///         1, 2
+        ///         ]
         ///     }
         /// </remarks>
-        [HttpPut("grant-application-role")]
+        [HttpPut("grant-application-roles")]
         public async Task<IActionResult> GrantRoleAsync(
-            [FromBody] GrantApplicationRoleViewModel grantApplicationRoleViewModel)
+            [FromBody] GrantApplicationRolesViewModel grantApplicationRolesViewModel)
         {
             var grantApplicationRoleDto =
-                _mapper.Map<GrantApplicationRoleDto>(grantApplicationRoleViewModel);
+                _mapper.Map<GrantApplicationRolesDto>(grantApplicationRolesViewModel);
 
             await _userService.GrantApplicationRoleAsync(grantApplicationRoleDto);
 

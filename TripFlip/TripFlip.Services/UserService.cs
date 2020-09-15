@@ -225,55 +225,64 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto)
+        public async Task GrantApplicationRoleAsync(GrantApplicationRolesDto grantApplicationRolesDto)
         {
-            var currentUserId = _currentUserService.UserId;
+            // Validate not trying to grant application super admin role.
+            bool isGrantingSuperAdminRole = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Any(appRoleId => appRoleId == (int)ApplicationRole.SuperAdmin);
 
-            var currentUser = await _tripFlipDbContext
+            if (isGrantingSuperAdminRole)
+            {
+                throw new ArgumentException(ErrorConstants.GrantingSuperAdminRole);
+            }
+
+            // Validate current user is application super admin.
+            await EntityValidationHelper
+                .ValidateCurrentUserIsSuperAdminAsync(_currentUserService, _tripFlipDbContext);
+
+            // Validate user-to-grant-roles-to exists.
+            var userToGrantRoles = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
-                .SingleOrDefaultAsync(user => user.Id == currentUserId);
+                .SingleOrDefaultAsync(user => user.Id == grantApplicationRolesDto.UserId);
 
             EntityValidationHelper
-                .ValidateEntityNotNull(currentUser, ErrorConstants.NotAuthorized);
+                .ValidateEntityNotNull(userToGrantRoles, ErrorConstants.UserNotFound);
 
-            var currentUserIsSuperAdmin = currentUser
-                .ApplicationRoles
-                .Any(appRole => 
-                appRole.ApplicationRoleId == (int)ApplicationRole.SuperAdmin);
-
-            if (!currentUserIsSuperAdmin)
+            // Remove user's current set of roles.
+            if (!(userToGrantRoles.ApplicationRoles is null))
             {
-                throw new ArgumentException(ErrorConstants.NotSuperAdmin);
+                _tripFlipDbContext.ApplicationUsersRoles.RemoveRange(
+                    userToGrantRoles.ApplicationRoles);
             }
 
-            var userToGrantRole = await _tripFlipDbContext
-                .Users
-                .AsNoTracking()
-                .Include(user => user.ApplicationRoles)
-                .SingleOrDefaultAsync(user => user.Id == grantApplicationRoleDto.UserId);
+            // Remove invalid values from requested role id collection.
+            var existingApplicationRolesIds = (IEnumerable<int>)Enum.GetValues(typeof(ApplicationRole));
+            grantApplicationRolesDto.ApplicationRoleIds = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Distinct()
+                .Where(requestedId => existingApplicationRolesIds.Contains(requestedId));
 
-            EntityValidationHelper
-                .ValidateEntityNotNull(userToGrantRole, ErrorConstants.UserNotFound);
-
-            var userAlreadyHasGrantingRole = userToGrantRole
-                .ApplicationRoles
-                .Any(appRole => 
-                appRole.ApplicationRoleId == (int)grantApplicationRoleDto.ApplicationRole);
-
-            if (userAlreadyHasGrantingRole)
+            // Add requested set of roles to user.
+            bool collectionHasRolesToAdd = grantApplicationRolesDto.ApplicationRoleIds.Count() > 0;
+            if (collectionHasRolesToAdd)
             {
-                throw new ArgumentException(ErrorConstants.UserAlreadyHasGrantingAppRole);
+                var rolesToAdd = new List<ApplicationUserRoleEntity>();
+
+                foreach (var requestedRole in grantApplicationRolesDto.ApplicationRoleIds)
+                {
+                    rolesToAdd.Add(new ApplicationUserRoleEntity()
+                    {
+                        UserId = userToGrantRoles.Id,
+                        ApplicationRoleId = (int)requestedRole
+                    });
+                }
+
+                _tripFlipDbContext.ApplicationUsersRoles.AddRange(rolesToAdd);
             }
-
-            var applicationUserRoleEntity = new ApplicationUserRoleEntity()
-            {
-                UserId = userToGrantRole.Id,
-                ApplicationRoleId = (int)grantApplicationRoleDto.ApplicationRole
-            };
-
-            await _tripFlipDbContext.ApplicationUsersRoles.AddAsync(applicationUserRoleEntity);
+            
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

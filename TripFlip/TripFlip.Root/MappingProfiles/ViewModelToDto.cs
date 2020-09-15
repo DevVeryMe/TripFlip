@@ -64,7 +64,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<GrantSubscriberRoleViewModel, GrantSubscriberRoleDto>();
 
-            CreateMap<GrantApplicationRoleViewModel, GrantApplicationRoleDto>();
+            CreateMap<GrantApplicationRolesViewModel, GrantApplicationRolesDto>();
         }
     }
 }

@@ -66,11 +66,11 @@ namespace TripFlip.Services.Interfaces
         Task DeleteByIdAsync(Guid id);
 
         /// <summary>
-        /// Grants an application role to any user,
+        /// Grants an application roles to any user,
         /// if the current one is granted with super admin role.
         /// </summary>
-        /// <param name="grantApplicationRoleDto">Data to with user id and role to grant.</param>
-        Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto);
+        /// <param name="grantApplicationRolesDto">Data to with user id and roles to grant.</param>
+        Task GrantApplicationRoleAsync(GrantApplicationRolesDto grantApplicationRolesDto);
 
         /// <summary>
         /// Grants a role to any user, who is subscriber of a trip,
