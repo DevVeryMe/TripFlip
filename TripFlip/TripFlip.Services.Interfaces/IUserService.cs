@@ -35,6 +35,13 @@ namespace TripFlip.Services.Interfaces
         Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto);
 
         /// <summary>
+        /// Changes password of authorized user.
+        /// </summary>
+        /// <param name="changeUserPasswordDto">DTO that contains both 
+        /// old and new user passwords.</param>
+        Task ChangePasswordAsync(ChangeUserPasswordDto changeUserPasswordDto);
+
+        /// <summary>
         /// Gets User with the given id.
         /// </summary>
         /// <param name="id">User id.</param>

@@ -124,6 +124,34 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Changes password of authorized user.
+        /// </summary>
+        /// <param name="changeUserPasswordViewModel">View model that contains both 
+        /// old and new user passwords.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users/change-password
+        ///     {
+        ///         "oldPassword": "old-Password1",
+        ///         "newPassword": "new-Password2",
+        ///         "newPasswordConfirmation": "new-Password2"
+        ///     }
+        /// </remarks>
+        [HttpPut("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePasswordAsync(
+            [FromBody] ChangeUserPasswordViewModel changeUserPasswordViewModel)
+        {
+            var changeUserPasswordDto = _mapper.Map<ChangeUserPasswordDto>(
+                changeUserPasswordViewModel);
+
+            await _userService.ChangePasswordAsync(changeUserPasswordDto);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Authorizes User.
         /// </summary>
         /// <param name="loginViewModel">User credentials to log in.</param>

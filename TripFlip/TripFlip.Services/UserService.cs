@@ -227,6 +227,32 @@ namespace TripFlip.Services
             return userDto;
         }
 
+        public async Task ChangePasswordAsync(ChangeUserPasswordDto changeUserPasswordDto)
+        {
+            Guid userId = _currentUserService.UserId;
+
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .FirstOrDefaultAsync(user => user.Id == userId);
+
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
+
+            bool passwordIsVerified = PasswordHasherHelper.VerifyPassword(
+                changeUserPasswordDto.OldPassword, userEntity.PasswordHash);
+            if (!passwordIsVerified)
+            {
+                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
+            }
+
+            string newHashedPassword = PasswordHasherHelper.HashPassword(
+                changeUserPasswordDto.NewPassword);
+
+            userEntity.PasswordHash = newHashedPassword;
+
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
         public async Task DeleteByIdAsync(Guid id)
         {
             var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
