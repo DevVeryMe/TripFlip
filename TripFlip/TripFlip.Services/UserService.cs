@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,6 +13,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Enums;
@@ -265,7 +265,68 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task GrantRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
+        public async Task GrantApplicationRoleAsync(GrantApplicationRolesDto grantApplicationRolesDto)
+        {
+            // Validate not trying to grant application super admin role.
+            bool isGrantingSuperAdminRole = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Any(appRoleId => appRoleId == (int)ApplicationRole.SuperAdmin);
+
+            if (isGrantingSuperAdminRole)
+            {
+                throw new ArgumentException(ErrorConstants.GrantingSuperAdminRole);
+            }
+
+            // Validate current user is application super admin.
+            await EntityValidationHelper
+                .ValidateCurrentUserIsSuperAdminAsync(_currentUserService, _tripFlipDbContext);
+
+            // Validate user-to-grant-roles-to exists.
+            var userToGrantRoles = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .Include(user => user.ApplicationRoles)
+                .SingleOrDefaultAsync(user => user.Id == grantApplicationRolesDto.UserId);
+
+            EntityValidationHelper
+                .ValidateEntityNotNull(userToGrantRoles, ErrorConstants.UserNotFound);
+
+            // Remove user's current set of roles.
+            if (!(userToGrantRoles.ApplicationRoles is null))
+            {
+                _tripFlipDbContext.ApplicationUsersRoles.RemoveRange(
+                    userToGrantRoles.ApplicationRoles);
+            }
+
+            // Remove invalid values from requested role id collection.
+            var existingApplicationRolesIds = (IEnumerable<int>)Enum.GetValues(typeof(ApplicationRole));
+            grantApplicationRolesDto.ApplicationRoleIds = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Distinct()
+                .Where(requestedId => existingApplicationRolesIds.Contains(requestedId));
+
+            // Add requested set of roles to user.
+            bool collectionHasRolesToAdd = grantApplicationRolesDto.ApplicationRoleIds.Count() > 0;
+            if (collectionHasRolesToAdd)
+            {
+                var rolesToAdd = new List<ApplicationUserRoleEntity>();
+
+                foreach (var requestedRole in grantApplicationRolesDto.ApplicationRoleIds)
+                {
+                    rolesToAdd.Add(new ApplicationUserRoleEntity()
+                    {
+                        UserId = userToGrantRoles.Id,
+                        ApplicationRoleId = (int)requestedRole
+                    });
+                }
+
+                _tripFlipDbContext.ApplicationUsersRoles.AddRange(rolesToAdd);
+            }
+            
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task GrantTripRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
         {
             var currentUserId = _currentUserService.UserId;
 
@@ -428,14 +489,15 @@ namespace TripFlip.Services
             int expirationTime = _jwtConfiguration.TokenLifetime;
 
             var roles = userIncludingRoles.ApplicationRoles
-                .Select(role => new {Id = role.ApplicationRole.Id, Name = role.ApplicationRole.Name});
+                .Select(role => new Claim(ClaimTypes.Role, role.ApplicationRole.Name));
 
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userIncludingRoles.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email),
-                new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(roles))
+                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email)
             };
+
+            claims.AddRange(roles);
 
             // creating JWT
             var jwt = new JwtSecurityToken(

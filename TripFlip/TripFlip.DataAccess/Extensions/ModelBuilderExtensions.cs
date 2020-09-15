@@ -151,6 +151,11 @@ namespace TripFlip.DataAccess.Extensions
                 {
                     Id = 1,
                     Name = "SuperAdmin"
+                },
+                new ApplicationRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Admin"
                 });
         }
     }
