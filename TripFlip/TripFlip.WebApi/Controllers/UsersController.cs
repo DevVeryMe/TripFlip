@@ -91,7 +91,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates User.
+        /// Updates profile of authorized user.
         /// </summary>
         /// <param name="updateUserViewModel">New User data.</param>
         /// <returns>User view model that
@@ -112,11 +112,11 @@ namespace TripFlip.WebApi.Controllers
         [HttpPut]
         [Authorize]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserViewModel updateUserViewModel)
+        public async Task<IActionResult> UpdateUserProfileAsync([FromBody] UpdateUserProfileViewModel updateUserViewModel)
         {
-            var updateUserDto = _mapper.Map<UpdateUserDto>(updateUserViewModel);
+            var updateUserDto = _mapper.Map<UpdateUserProfileDto>(updateUserViewModel);
 
-            var userDto = await _userService.UpdateAsync(updateUserDto);
+            var userDto = await _userService.UpdateUserProfileAsync(updateUserDto);
 
             var userViewModel = _mapper.Map<UserViewModel>(userDto);
 

@@ -5,7 +5,7 @@ using TripFlip.ViewModels.Enums;
 
 namespace TripFlip.ViewModels.UserViewModels
 {
-    public class UpdateUserViewModel
+    public class UpdateUserProfileViewModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyEmailFieldError)]
         [StringLength(320, MinimumLength = 6, ErrorMessage = ErrorConstants.EmailLengthError)]

@@ -60,7 +60,7 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<RegisterUserViewModel, RegisterUserDto>();
 
-            CreateMap<UpdateUserViewModel, UpdateUserDto>();
+            CreateMap<UpdateUserProfileViewModel, UpdateUserProfileDto>();
 
             CreateMap<ChangeUserPasswordViewModel, ChangeUserPasswordDto>();
 

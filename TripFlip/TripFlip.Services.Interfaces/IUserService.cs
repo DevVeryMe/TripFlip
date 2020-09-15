@@ -32,7 +32,7 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="updateUserDto">New User data.</param>
         /// <returns>User DTO that represents the updated database entry.</returns>
-        Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto);
+        Task<UserDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserDto);
 
         /// <summary>
         /// Changes password of authorized user.

@@ -203,7 +203,7 @@ namespace TripFlip.Services
             return userDto;
         }
 
-        public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
+        public async Task<UserDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserDto)
         {
             Guid userId = _currentUserService.UserId;
 

@@ -3,7 +3,7 @@ using TripFlip.Services.Dto.Enums;
 
 namespace TripFlip.Services.Dto.UserDtos
 {
-    public class UpdateUserDto
+    public class UpdateUserProfileDto
     {
         public string Email { get; set; }
 
