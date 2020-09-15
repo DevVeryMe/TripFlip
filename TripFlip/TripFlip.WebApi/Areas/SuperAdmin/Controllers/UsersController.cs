@@ -62,10 +62,11 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         /// <summary>
         /// Gets all Users.
         /// </summary>
-        /// <param name="searchString">String to filter Users.</param>
-        /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <returns>Paged list of User view models that
-        /// represent database entries.</returns>
+        /// <param name="searchString">Optional search string to filter users by their email.</param>
+        /// <param name="paginationViewModel">Optional pagination settings that consist of 
+        /// page number and page size.</param>
+        /// <returns>Paged list of user view models that
+        /// represent user database entries.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync(
