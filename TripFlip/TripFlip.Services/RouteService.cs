@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Interfaces;
@@ -128,7 +129,7 @@ namespace TripFlip.Services
 
         /// <summary>
         /// Checks if the given <see cref="TripEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
         /// </summary>
         /// <param name="tripEntity">Object that should be checked.</param>
         void ValidateTripEntityIsNotNull(TripEntity tripEntity)
@@ -136,14 +137,14 @@ namespace TripFlip.Services
 
             if (tripEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new NotFoundException(ErrorConstants.TripNotFound);
             }
 
         }
 
         /// <summary>
         /// Checks if the given <see cref="RouteEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
         /// </summary>
         /// <param name="routeEntity">Object that should be checked.</param>
         void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
@@ -151,7 +152,7 @@ namespace TripFlip.Services
 
             if (routeEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.RouteNotFound);
+                throw new NotFoundException(ErrorConstants.RouteNotFound);
             }
 
         }
@@ -168,7 +169,7 @@ namespace TripFlip.Services
 
             if (tripEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new NotFoundException(ErrorConstants.TripNotFound);
             }
 
         }

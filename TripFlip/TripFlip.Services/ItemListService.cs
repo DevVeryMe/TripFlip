@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Interfaces;
@@ -54,7 +55,7 @@ namespace TripFlip.Services
 
             if (!routeExists)
             {
-                throw new ArgumentException(ErrorConstants.RouteNotFound);
+                throw new NotFoundException(ErrorConstants.RouteNotFound);
             }
 
             var itemListEntitiesQuery = _tripFlipDbContext.ItemLists
@@ -121,7 +122,7 @@ namespace TripFlip.Services
 
         /// <summary>
         /// Checks if the given <see cref="ItemListEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
         /// </summary>
         /// <param name="itemListEntity">Object that should be checked.</param>
         void ValidateItemListEntityIsNotNull(ItemListEntity itemListEntity)
@@ -129,7 +130,7 @@ namespace TripFlip.Services
 
             if (itemListEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.ItemListNotFound);
+                throw new NotFoundException(ErrorConstants.ItemListNotFound);
             }
 
         }
@@ -147,7 +148,7 @@ namespace TripFlip.Services
 
             if (routeEntity == null)
             {
-                throw new ArgumentException(ErrorConstants.RouteNotFound);
+                throw new NotFoundException(ErrorConstants.RouteNotFound);
             }
 
         }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
@@ -303,7 +304,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripEntity = await _tripFlipDbContext.Trips
@@ -344,7 +345,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
@@ -371,14 +372,14 @@ namespace TripFlip.Services
 
         /// <summary>
         /// Checks if the given <see cref="UserEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
+        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
         /// </summary>
         /// <param name="userEntity">Object that should be checked.</param>
         private void ValidateUserEntityNotNull(UserEntity userEntity)
         {
             if (userEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
+                throw new NotFoundException(ErrorConstants.UserNotFound);
             }
         }
 
