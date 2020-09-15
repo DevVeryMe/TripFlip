@@ -91,9 +91,9 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates User.
+        /// Updates profile of authorized user.
         /// </summary>
-        /// <param name="updateUserViewModel">New User data with existing User id.</param>
+        /// <param name="updateUserViewModel">New User data.</param>
         /// <returns>User view model that
         /// represents the updated database entry.</returns>
         /// <remarks>
@@ -101,23 +101,54 @@ namespace TripFlip.WebApi.Controllers
         /// 
         ///     PUT /users
         ///     {
-        ///         "id": 0f8fad5b-d9cb-469f-a165-70867728950e,
         ///         "email": "sample@gmail.com",
-        ///         "password": "TestPassword@1",
+        ///         "firstName": "Marco",
+        ///         "lastName": "Polo",
+        ///         "aboutMe": "A great adventurer from Venice.",
+        ///         "gender": 1,
+        ///         "birthDate": "1524-09-12T19:45:44.631Z"
         ///     }
         /// </remarks>
         [HttpPut]
         [Authorize]
-        [ProducesResponseType(typeof(UpdateTripViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserViewModel updateUserViewModel)
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateUserProfileAsync([FromBody] UpdateUserProfileViewModel updateUserViewModel)
         {
-            var updateUserDto = _mapper.Map<UpdateUserDto>(updateUserViewModel);
+            var updateUserDto = _mapper.Map<UpdateUserProfileDto>(updateUserViewModel);
 
-            var userDto = await _userService.UpdateAsync(updateUserDto);
+            var userDto = await _userService.UpdateUserProfileAsync(updateUserDto);
 
             var userViewModel = _mapper.Map<UserViewModel>(userDto);
 
             return Ok(userViewModel);
+        }
+
+        /// <summary>
+        /// Changes password of authorized user.
+        /// </summary>
+        /// <param name="changeUserPasswordViewModel">View model that contains both 
+        /// old and new user passwords.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users/change-password
+        ///     {
+        ///         "oldPassword": "old-Password1",
+        ///         "newPassword": "new-Password2",
+        ///         "newPasswordConfirmation": "new-Password2"
+        ///     }
+        /// </remarks>
+        [HttpPut("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePasswordAsync(
+            [FromBody] ChangeUserPasswordViewModel changeUserPasswordViewModel)
+        {
+            var changeUserPasswordDto = _mapper.Map<ChangeUserPasswordDto>(
+                changeUserPasswordViewModel);
+
+            await _userService.ChangePasswordAsync(changeUserPasswordDto);
+
+            return Ok();
         }
 
         /// <summary>
@@ -164,6 +195,11 @@ namespace TripFlip.WebApi.Controllers
         ///         "email": "example@mail.com",
         ///         "password": "rel1able-Password",
         ///         "passwordConfirmation": "rel1able-Password"
+        ///         "firstName": "Marco",
+        ///         "lastName": "Polo",
+        ///         "aboutMe": "A great adventurer from Venice.",
+        ///         "gender": 1,
+        ///         "birthDate": "1524-09-12T19:45:44.631Z"
         ///     }
         /// </remarks>
         [HttpPost]

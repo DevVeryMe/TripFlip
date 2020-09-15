@@ -28,11 +28,18 @@ namespace TripFlip.Services.Interfaces
         Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto);
 
         /// <summary>
-        /// Updates the User.
+        /// Updates authorized User.
         /// </summary>
-        /// <param name="updateUserDto">New User data with existing User id.</param>
+        /// <param name="updateUserDto">New User data.</param>
         /// <returns>User DTO that represents the updated database entry.</returns>
-        Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto);
+        Task<UserDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserDto);
+
+        /// <summary>
+        /// Changes password of authorized user.
+        /// </summary>
+        /// <param name="changeUserPasswordDto">DTO that contains both 
+        /// old and new user passwords.</param>
+        Task ChangePasswordAsync(ChangeUserPasswordDto changeUserPasswordDto);
 
         /// <summary>
         /// Gets User with the given id.
