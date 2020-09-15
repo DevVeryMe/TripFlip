@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Interfaces;
@@ -59,7 +60,7 @@ namespace TripFlip.Services
 
             if (!taskListExists)
             {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+                throw new NotFoundException(ErrorConstants.TaskListNotFound);
             }
 
             var taskEntitiesQuery = _tripFlipDbContext
@@ -154,7 +155,7 @@ namespace TripFlip.Services
 
             if (taskEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new NotFoundException(ErrorConstants.TaskNotFound);
             }
 
             _tripFlipDbContext.Tasks.Remove(taskEntity);
@@ -166,7 +167,7 @@ namespace TripFlip.Services
 
             if (taskEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskNotFound);
+                throw new NotFoundException(ErrorConstants.TaskNotFound);
             }
 
         }
@@ -176,7 +177,7 @@ namespace TripFlip.Services
 
             if (taskListEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+                throw new NotFoundException(ErrorConstants.TaskListNotFound);
             }
 
         }

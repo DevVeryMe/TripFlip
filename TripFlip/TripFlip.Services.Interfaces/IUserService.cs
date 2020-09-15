@@ -28,11 +28,18 @@ namespace TripFlip.Services.Interfaces
         Task<AuthenticatedUserDto> AuthorizeAsync(LoginDto loginDto);
 
         /// <summary>
-        /// Updates the User.
+        /// Updates authorized User.
         /// </summary>
-        /// <param name="updateUserDto">New User data with existing User id.</param>
+        /// <param name="updateUserDto">New User data.</param>
         /// <returns>User DTO that represents the updated database entry.</returns>
-        Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto);
+        Task<UserDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserDto);
+
+        /// <summary>
+        /// Changes password of authorized user.
+        /// </summary>
+        /// <param name="changeUserPasswordDto">DTO that contains both 
+        /// old and new user passwords.</param>
+        Task ChangePasswordAsync(ChangeUserPasswordDto changeUserPasswordDto);
 
         /// <summary>
         /// Gets User with the given id.
@@ -66,11 +73,11 @@ namespace TripFlip.Services.Interfaces
         Task DeleteByIdAsync(Guid id);
 
         /// <summary>
-        /// Grants an application role to any user,
+        /// Grants an application roles to any user,
         /// if the current one is granted with super admin role.
         /// </summary>
-        /// <param name="grantApplicationRoleDto">Data to with user id and role to grant.</param>
-        Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto);
+        /// <param name="grantApplicationRolesDto">Data to with user id and roles to grant.</param>
+        Task GrantApplicationRoleAsync(GrantApplicationRolesDto grantApplicationRolesDto);
 
         /// <summary>
         /// Grants a role to any user, who is subscriber of a trip,

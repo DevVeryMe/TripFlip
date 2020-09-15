@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
+using TripFlip.Services.CustomExceptions;
+using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Enums;
 using TripFlip.Services.Interfaces;
 
@@ -21,7 +23,7 @@ namespace TripFlip.Services.Helpers
         {
             if (entity is null)
             {
-                throw new ArgumentException(errorMessage);
+                throw new NotFoundException(errorMessage);
             }
         }
 
@@ -59,6 +61,37 @@ namespace TripFlip.Services.Helpers
             if (!tripSubscriberIsAdmin)
             {
                 throw new ArgumentException(ErrorConstants.NotTripAdmin);
+            }
+        }
+
+        /// <summary>
+        /// Validates whether current user is application super admin.
+        /// </summary>
+        /// <param name="currentUserService">Instance of service class that provides access 
+        /// to properties of the current user.</param>
+        /// <param name="tripFlipDbContext">Instance of database context.</param>
+        public static async Task ValidateCurrentUserIsSuperAdminAsync(
+            ICurrentUserService currentUserService,
+            TripFlipDbContext tripFlipDbContext)
+        {
+            var currentUserId = currentUserService.UserId;
+
+            var currentUser = await tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .Include(user => user.ApplicationRoles)
+                .SingleOrDefaultAsync(user => user.Id == currentUserId);
+            
+            ValidateEntityNotNull(currentUser, ErrorConstants.NotAuthorized);
+
+            var currentUserIsSuperAdmin = currentUser
+                .ApplicationRoles
+                .Any(appRole =>
+                appRole.ApplicationRoleId == (int)ApplicationRole.SuperAdmin);
+
+            if (!currentUserIsSuperAdmin)
+            {
+                throw new ArgumentException(ErrorConstants.NotSuperAdmin);
             }
         }
     }

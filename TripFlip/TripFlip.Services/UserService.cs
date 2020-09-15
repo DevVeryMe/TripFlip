@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TripDtos;
@@ -142,7 +143,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(user => user.Id == id);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             var userDto = _mapper.Map<UserDto>(userEntity);
 
@@ -158,7 +160,8 @@ namespace TripFlip.Services
                 .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             bool isPasswordVerified = PasswordHasherHelper
                 .VerifyPassword(loginDto.Password, userEntity.PasswordHash);
@@ -200,79 +203,126 @@ namespace TripFlip.Services
             return userDto;
         }
 
-        public async Task<UserDto> UpdateAsync(UpdateUserDto updateUserDto)
+        public async Task<UserDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserDto)
         {
-            var userEntity = await _tripFlipDbContext.Users.FindAsync(updateUserDto.Id);
+            Guid userId = _currentUserService.UserId;
 
-            ValidateUserEntityNotNull(userEntity);
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .FindAsync(userId);
+
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             userEntity.Email = updateUserDto.Email;
+            userEntity.FirstName = updateUserDto.FirstName;
+            userEntity.LastName = updateUserDto.LastName;
+            userEntity.AboutMe = updateUserDto.AboutMe;
+            userEntity.Gender =  (TripFlip.Domain.Entities.Enums.UserGender?) updateUserDto.Gender;
+            userEntity.BirthDate = updateUserDto.BirthDate;
 
             await _tripFlipDbContext.SaveChangesAsync();
+
             var userDto = _mapper.Map<UserDto>(userEntity);
 
             return userDto;
+        }
+
+        public async Task ChangePasswordAsync(ChangeUserPasswordDto changeUserPasswordDto)
+        {
+            Guid userId = _currentUserService.UserId;
+
+            var userEntity = await _tripFlipDbContext
+                .Users
+                .FirstOrDefaultAsync(user => user.Id == userId);
+
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
+
+            bool passwordIsVerified = PasswordHasherHelper.VerifyPassword(
+                changeUserPasswordDto.OldPassword, userEntity.PasswordHash);
+            if (!passwordIsVerified)
+            {
+                throw new ArgumentException(ErrorConstants.PasswordNotVerified);
+            }
+
+            string newHashedPassword = PasswordHasherHelper.HashPassword(
+                changeUserPasswordDto.NewPassword);
+
+            userEntity.PasswordHash = newHashedPassword;
+
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         public async Task DeleteByIdAsync(Guid id)
         {
             var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
 
-            ValidateUserEntityNotNull(userEntity);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userEntity, ErrorConstants.UserNotFound);
 
             _tripFlipDbContext.Remove(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task GrantApplicationRoleAsync(GrantApplicationRoleDto grantApplicationRoleDto)
+        public async Task GrantApplicationRoleAsync(GrantApplicationRolesDto grantApplicationRolesDto)
         {
-            var currentUserId = _currentUserService.UserId;
+            // Validate not trying to grant application super admin role.
+            bool isGrantingSuperAdminRole = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Any(appRoleId => appRoleId == (int)ApplicationRole.SuperAdmin);
 
-            var currentUser = await _tripFlipDbContext
+            if (isGrantingSuperAdminRole)
+            {
+                throw new ArgumentException(ErrorConstants.GrantingSuperAdminRole);
+            }
+
+            // Validate current user is application super admin.
+            await EntityValidationHelper
+                .ValidateCurrentUserIsSuperAdminAsync(_currentUserService, _tripFlipDbContext);
+
+            // Validate user-to-grant-roles-to exists.
+            var userToGrantRoles = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
-                .SingleOrDefaultAsync(user => user.Id == currentUserId);
+                .SingleOrDefaultAsync(user => user.Id == grantApplicationRolesDto.UserId);
 
             EntityValidationHelper
-                .ValidateEntityNotNull(currentUser, ErrorConstants.NotAuthorized);
+                .ValidateEntityNotNull(userToGrantRoles, ErrorConstants.UserNotFound);
 
-            var currentUserIsSuperAdmin = currentUser
-                .ApplicationRoles
-                .Any(appRole => 
-                appRole.ApplicationRoleId == (int)ApplicationRole.SuperAdmin);
-
-            if (!currentUserIsSuperAdmin)
+            // Remove user's current set of roles.
+            if (!(userToGrantRoles.ApplicationRoles is null))
             {
-                throw new ArgumentException(ErrorConstants.NotSuperAdmin);
+                _tripFlipDbContext.ApplicationUsersRoles.RemoveRange(
+                    userToGrantRoles.ApplicationRoles);
             }
 
-            var userToGrantRole = await _tripFlipDbContext
-                .Users
-                .AsNoTracking()
-                .Include(user => user.ApplicationRoles)
-                .SingleOrDefaultAsync(user => user.Id == grantApplicationRoleDto.UserId);
+            // Remove invalid values from requested role id collection.
+            var existingApplicationRolesIds = (IEnumerable<int>)Enum.GetValues(typeof(ApplicationRole));
+            grantApplicationRolesDto.ApplicationRoleIds = grantApplicationRolesDto
+                .ApplicationRoleIds
+                .Distinct()
+                .Where(requestedId => existingApplicationRolesIds.Contains(requestedId));
 
-            EntityValidationHelper
-                .ValidateEntityNotNull(userToGrantRole, ErrorConstants.UserNotFound);
-
-            var userAlreadyHasGrantingRole = userToGrantRole
-                .ApplicationRoles
-                .Any(appRole => 
-                appRole.ApplicationRoleId == (int)grantApplicationRoleDto.ApplicationRole);
-
-            if (userAlreadyHasGrantingRole)
+            // Add requested set of roles to user.
+            bool collectionHasRolesToAdd = grantApplicationRolesDto.ApplicationRoleIds.Count() > 0;
+            if (collectionHasRolesToAdd)
             {
-                throw new ArgumentException(ErrorConstants.UserAlreadyHasGrantingAppRole);
+                var rolesToAdd = new List<ApplicationUserRoleEntity>();
+
+                foreach (var requestedRole in grantApplicationRolesDto.ApplicationRoleIds)
+                {
+                    rolesToAdd.Add(new ApplicationUserRoleEntity()
+                    {
+                        UserId = userToGrantRoles.Id,
+                        ApplicationRoleId = (int)requestedRole
+                    });
+                }
+
+                _tripFlipDbContext.ApplicationUsersRoles.AddRange(rolesToAdd);
             }
-
-            var applicationUserRoleEntity = new ApplicationUserRoleEntity()
-            {
-                UserId = userToGrantRole.Id,
-                ApplicationRoleId = (int)grantApplicationRoleDto.ApplicationRole
-            };
-
-            await _tripFlipDbContext.ApplicationUsersRoles.AddAsync(applicationUserRoleEntity);
+            
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
@@ -283,7 +333,8 @@ namespace TripFlip.Services
             // Validate user-to-grant-role-to exists.
             var userToGrantRole = await _tripFlipDbContext.Users
                 .SingleOrDefaultAsync(user => user.Id == grantSubscriberRoleDto.UserId);
-            ValidateUserEntityNotNull(userToGrantRole);
+            EntityValidationHelper.ValidateEntityNotNull(
+                userToGrantRole, ErrorConstants.UserNotFound);
 
             // Validate trip exists.
             var trip = await _tripFlipDbContext.Trips
@@ -355,7 +406,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripEntity = await _tripFlipDbContext.Trips
@@ -396,7 +447,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
@@ -419,19 +470,6 @@ namespace TripFlip.Services
             var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesAndUserRolesDto>>(tripSubscriberEntities);
 
             return tripWithRoutesDto;
-        }
-
-        /// <summary>
-        /// Checks if the given <see cref="UserEntity"/> is not null. If null,
-        /// then throws an <see cref="ArgumentException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="userEntity">Object that should be checked.</param>
-        private void ValidateUserEntityNotNull(UserEntity userEntity)
-        {
-            if (userEntity is null)
-            {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
-            }
         }
 
         /// <summary>

@@ -41,8 +41,8 @@
 
         public static readonly string NotTripAdmin = "Current user is not trip admin.";
 
-        public static readonly string UserAlreadyHasGrantingAppRole = "User already has granting application role.";
-
         public static readonly string NotSuperAdmin = "Current user is not application super admin.";
+
+        public static readonly string GrantingSuperAdminRole = "Trying to grant application super admin role.";
     }
 }

@@ -66,11 +66,16 @@ namespace TripFlip.ViewModels
         public const string RoleIdLessThanOneError = "Id of role cannot be" +
                                                                "less than 1.";
 
-        public const string EmptyApplicationRoleFieldError = "Field 'application role' cannot be empty.";
-
-        public const string NotMatchAnyApplicationRoleError = "Value of 'application role' field doesn't" +
-            " match any application role.";
-
         public const string RequiredRolesArray = "Role identifiers array is required.";
+
+        public const string UserFirstNameExceedsMaxLengthError = "First name exceeds max length of 50 characters.";
+
+        public const string UserLastNameExceedsMaxLengthError = "Last name exceeds max length of 50 characters.";
+
+        public const string UserAboutMeExceedsMaxLengthError = "\'About me\' exceeds max length of 300 characters.";
+
+        public const string InvalidUserGenderError = "Invalid user gender value.";
+
+        public const string InvalidUserBirthDateError = "Invalid user birthdate value.";
     }
 }
