@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Interfaces;
@@ -55,7 +56,7 @@ namespace TripFlip.Services
 
             if (!routeExists)
             {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+                throw new NotFoundException(ErrorConstants.TaskListNotFound);
             }
 
             var taskListEntitiesQuery = _tripFlipDbContext
@@ -134,7 +135,7 @@ namespace TripFlip.Services
 
             if (routeEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.AddingTaskListToNotExistingRoute);
+                throw new NotFoundException(ErrorConstants.AddingTaskListToNotExistingRoute);
             }
 
         }
@@ -144,7 +145,7 @@ namespace TripFlip.Services
 
             if (taskList is null)
             {
-                throw new ArgumentException(ErrorConstants.TaskListNotFound);
+                throw new NotFoundException(ErrorConstants.TaskListNotFound);
             }
 
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Enums;
@@ -141,7 +142,7 @@ namespace TripFlip.Services
         {
             if (tripEntity is null)
             {
-                throw new ArgumentException(ErrorConstants.TripNotFound);
+                throw new NotFoundException(ErrorConstants.TripNotFound);
             }
         }
 
@@ -154,7 +155,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.UserNotFound);
+                throw new NotFoundException(ErrorConstants.UserNotFound);
             }
         }
 
@@ -167,7 +168,7 @@ namespace TripFlip.Services
 
             if (!tripRoleExists)
             {
-                throw new ArgumentException(ErrorConstants.TripRoleNotFound);
+                throw new NotFoundException(ErrorConstants.TripRoleNotFound);
             }
         }
     }

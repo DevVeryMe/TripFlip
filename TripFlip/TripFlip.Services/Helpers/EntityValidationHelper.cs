@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TripFlip.DataAccess;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Enums;
 using TripFlip.Services.Interfaces;
 
@@ -21,7 +22,7 @@ namespace TripFlip.Services.Helpers
         {
             if (entity is null)
             {
-                throw new ArgumentException(errorMessage);
+                throw new NotFoundException(errorMessage);
             }
         }
 
