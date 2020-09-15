@@ -5,23 +5,13 @@ using TripFlip.ViewModels.Enums;
 
 namespace TripFlip.ViewModels.UserViewModels
 {
-    public class RegisterUserViewModel
+    public class UpdateUserProfileViewModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyEmailFieldError)]
         [StringLength(320, MinimumLength = 6, ErrorMessage = ErrorConstants.EmailLengthError)]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,4})+)$",
             ErrorMessage = ErrorConstants.InvalidEmailFormatError)]
         public string Email { get; set; }
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyPasswordFieldError)]
-        [StringLength(100, MinimumLength = 8, ErrorMessage = ErrorConstants.PasswordLengthError)]
-        [ValidatePasswordHasCorrectFormat(ErrorMessage = ErrorConstants.InvalidPasswordFormatError)]
-        public string Password { get; set; }
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = ErrorConstants.EmptyPasswordConfirmationFieldError)]
-        [StringLength(100, MinimumLength = 8, ErrorMessage = ErrorConstants.PasswordLengthError)]
-        [Compare("Password", ErrorMessage = ErrorConstants.MissmatchPasswordConfirmationError)]
-        public string PasswordConfirmation { get; set; }
 
         [StringLength(maximumLength: 50, ErrorMessage = ErrorConstants.UserFirstNameExceedsMaxLengthError)]
         public string FirstName { get; set; }
