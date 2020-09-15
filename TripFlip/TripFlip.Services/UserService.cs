@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
+using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
@@ -344,7 +345,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripEntity = await _tripFlipDbContext.Trips
@@ -385,7 +386,7 @@ namespace TripFlip.Services
 
             if (!userExists)
             {
-                throw new ArgumentException(ErrorConstants.NotAuthorized);
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
             var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers

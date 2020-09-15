@@ -7,6 +7,7 @@ using NLog;
 using System;
 using System.Net;
 using TripFlip.Root.ExceptionHandlingExtensions.Models;
+using TripFlip.Services.CustomExceptions;
 
 namespace TripFlip.Root.ExceptionHandlingExtensions
 {
@@ -35,11 +36,19 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
 
                         if (exception.Error is ArgumentException)
                         {
-                            context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                        }
+                        else if (exception.Error is NotFoundException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                         }
                         else if (exception.Error is UnauthorizedAccessException)
                         {
                             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        }
+                        else if (exception.Error is AccessDeniedException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         }
 
                         var errorDetails = new ErrorDetails
