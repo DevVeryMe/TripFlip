@@ -449,14 +449,13 @@ namespace TripFlip.Services
                 routeSubscriber.RouteRoles.Clear();
             }
 
-            var rolesToAdd = grantRouteRolesDto.RouteRoleIds
+            routeSubscriber.RouteRoles = grantRouteRolesDto.RouteRoleIds
                 .Select(routeRoleId => new RouteSubscriberRoleEntity()
                 {
                     RouteRoleId = routeRoleId,
                     RouteSubscriber = routeSubscriber
-                });
+                }).ToList();
 
-            await _tripFlipDbContext.RouteSubscribersRoles.AddRangeAsync(rolesToAdd);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
