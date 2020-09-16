@@ -130,11 +130,14 @@ namespace TripFlip.Services
             await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
                 _currentUserService, _tripFlipDbContext, id);
 
-            var tripEntity = await _tripFlipDbContext.Trips.FindAsync(id);
+            var tripEntity = await _tripFlipDbContext.Trips
+                .Include(trip => trip.Routes)
+                .FirstOrDefaultAsync(trip => trip.Id == id);
 
             ValidateTripEntityNotNull(tripEntity);
 
             _tripFlipDbContext.Remove(tripEntity);
+            _tripFlipDbContext.RemoveRange(tripEntity.Routes);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
