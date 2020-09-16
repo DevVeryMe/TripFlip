@@ -31,6 +31,12 @@ namespace TripFlip.DataAccess
 
         public DbSet<TripSubscriberRoleEntity> TripSubscribersRoles { get; set; }
 
+        public DbSet<RouteRoleEntity> RouteRoles { get; set; }
+
+        public DbSet<RouteSubscriberEntity> RouteSubscribers { get; set; }
+
+        public DbSet<RouteSubscriberRoleEntity> RouteSubscribersRoles { get; set; }
+
         public DbSet<ApplicationRoleEntity> ApplicationRoles { get; set; }
 
         public DbSet<ApplicationUserRoleEntity> ApplicationUsersRoles { get; set; }
@@ -51,6 +57,9 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new TripRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripSubscriberEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripSubscriberRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RouteRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RouteSubscriberEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RouteSubscriberRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationUserRoleEntityConfiguration());
 
