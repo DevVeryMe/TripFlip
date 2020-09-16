@@ -175,21 +175,48 @@ namespace TripFlip.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users/grant-role
+        ///     PUT /users/grant-trip-roles
         ///     {
         ///         "tripId": 1,
         ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
         ///         "tripRoleIds": [1, 2, 3]
         ///     }
         /// </remarks>
-        [HttpPut("grant-role")]
-        public async Task<IActionResult> GrantRoleAsync(
+        [HttpPut("grant-trip-roles")]
+        public async Task<IActionResult> GrantTripRolesAsync(
             [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
         {
             var grantSubscriberRoleDto =
                 _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
 
             await _userService.GrantTripRoleAsync(grantSubscriberRoleDto);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Grants roles to a route subscriber.
+        /// </summary>
+        /// <param name="grantRouteRolesViewModel">Data with route id,
+        /// user id and role ids.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /users/grant-route-roles
+        ///     {
+        ///         "routeId": 1,
+        ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
+        ///         "routeRoleIds": [1, 2]
+        ///     }
+        /// </remarks>
+        [HttpPut("grant-route-roles")]
+        public async Task<IActionResult> GrantRouteRolesAsync(
+            [FromBody] GrantRouteRolesViewModel grantRouteRolesViewModel)
+        {
+            var grantSubscriberRoleDto =
+                _mapper.Map<GrantRouteRolesDto>(grantRouteRolesViewModel);
+
+            await _userService.GrantRouteRoleAsync(grantSubscriberRoleDto);
 
             return Ok();
         }
