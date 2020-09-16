@@ -17,6 +17,7 @@ using TripFlip.ViewModels.UserViewModels;
 namespace TripFlip.WebApi.Controllers
 {
     [Route("api/users")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -28,66 +29,6 @@ namespace TripFlip.WebApi.Controllers
         {
             _userService = userService;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Gets User by id.
-        /// </summary>
-        /// <param name="id">Id of User.</param>
-        /// <returns>User view model that represents
-        ///  user database entry.</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
-        {
-            var userDto = await _userService.GetByIdAsync(id);
-
-            var userViewModel = _mapper.Map<UserViewModel>(userDto);
-
-            return Ok(userViewModel);
-        }
-
-        /// <summary>
-        /// Gets all Users.
-        /// </summary>
-        /// <param name="searchString">String to filter Users.</param>
-        /// <param name="paginationViewModel">Pagination settings.</param>
-        /// <returns>Paged list of User view models that
-        /// represent database entries.</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAsync(
-            [FromQuery] string searchString,
-            [FromQuery] PaginationViewModel paginationViewModel)
-        {
-            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
-
-            var pagedUserDtos = await _userService.GetAllAsync(
-                searchString,
-                paginationDto);
-
-            var pagedUserViewModels = _mapper.Map<PagedList<UserViewModel>>(pagedUserDtos);
-
-            return Ok(pagedUserViewModels);
-        }
-
-        /// <summary>
-        /// Gets all Users by trip Id and categorized by roles.
-        /// </summary>
-        /// <param name="tripId">Id of a trip to find users with.</param>
-        /// <returns>User view model that
-        /// represent all users that are subscribed to a given trip. 
-        /// All users are categorized by their trip roles.</returns>
-        [HttpGet("get-by-trip/{tripId}")]
-        [ProducesResponseType(typeof(UsersByTripAndCategorizedByRoleViewModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllByTripIdAndCategorizeByRoleAsync(
-            int tripId)
-        {
-            var resultDto = await _userService.GetAllByTripIdAndCategorizeByRoleAsync(tripId);
-
-            var resultViewModel = _mapper.Map<UsersByTripAndCategorizedByRoleViewModel>(resultDto);
-
-            return Ok(resultViewModel);
         }
 
         /// <summary>
@@ -110,7 +51,6 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        [Authorize]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateUserProfileAsync([FromBody] UpdateUserProfileViewModel updateUserViewModel)
         {
@@ -139,7 +79,6 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut("change-password")]
-        [Authorize]
         public async Task<IActionResult> ChangePasswordAsync(
             [FromBody] ChangeUserPasswordViewModel changeUserPasswordViewModel)
         {
@@ -203,6 +142,7 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         public async Task<IActionResult> RegisterAsync(
             [FromBody] RegisterUserViewModel registerUserViewModel)
@@ -220,7 +160,6 @@ namespace TripFlip.WebApi.Controllers
         /// <param name="id">User id.</param>
         /// <returns>No content (HTTP code 204).</returns>
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> DeleteByIdAsync(Guid id)
         {
             await _userService.DeleteByIdAsync(id);
@@ -244,7 +183,6 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut("grant-role")]
-        [Authorize]
         public async Task<IActionResult> GrantRoleAsync(
             [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
         {
@@ -261,7 +199,6 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         /// <param name="tripId">Id of trip to subscribe.</param>
         [HttpPut("subscribe-trip/{tripId}")]
-        [Authorize]
         public async Task<IActionResult> SubscribeToTripAsync([FromRoute] 
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
         {
@@ -276,7 +213,6 @@ namespace TripFlip.WebApi.Controllers
         /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]
-        [Authorize]
         public async Task<IActionResult> GetAllSubscribedTrips()
         {
             var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();

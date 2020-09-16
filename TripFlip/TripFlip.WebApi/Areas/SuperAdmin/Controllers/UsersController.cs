@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
+using TripFlip.ViewModels;
 using TripFlip.ViewModels.UserViewModels;
 using TripFlip.WebApi.StringConstants;
 
@@ -11,7 +16,7 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 {
     [Area(AreaName.SuperAdmin)]
     [Route("api/super-admin/users")]
-    [Authorize(Roles = ApplicationRoleName.SuperAdmin)]
+    [Authorize(Roles = ApplicationRoleName.SuperAdminAndAdminRoles)]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -42,6 +47,7 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
         ///     }
         /// </remarks>
         [HttpPut("grant-application-roles")]
+        [Authorize(Roles = ApplicationRoleName.SuperAdmin)]
         public async Task<IActionResult> GrantRoleAsync(
             [FromBody] GrantApplicationRolesViewModel grantApplicationRolesViewModel)
         {
@@ -51,6 +57,67 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
             await _userService.GrantApplicationRoleAsync(grantApplicationRoleDto);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets all Users.
+        /// </summary>
+        /// <param name="searchString">Optional search string to filter users by their email.</param>
+        /// <param name="paginationViewModel">Optional pagination settings that consist of 
+        /// page number and page size.</param>
+        /// <returns>Paged list of user view models that
+        /// represent user database entries.</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedList<UserViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync(
+            [FromQuery] string searchString,
+            [FromQuery] PaginationViewModel paginationViewModel)
+        {
+            var paginationDto = _mapper.Map<PaginationDto>(paginationViewModel);
+
+            var pagedUserDtos = await _userService.GetAllAsync(
+                searchString,
+                paginationDto);
+
+            var pagedUserViewModels = _mapper.Map<PagedList<UserViewModel>>(pagedUserDtos);
+
+            return Ok(pagedUserViewModels);
+        }
+
+        /// <summary>
+        /// Gets all Users by trip Id and categorized by roles.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to find users with.</param>
+        /// <returns>User view model that
+        /// represent all users that are subscribed to a given trip. 
+        /// All users are categorized by their trip roles.</returns>
+        [HttpGet("get-by-trip/{tripId}")]
+        [ProducesResponseType(typeof(UsersByTripAndCategorizedByRoleViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllByTripIdAndCategorizeByRoleAsync(
+            int tripId)
+        {
+            var resultDto = await _userService.GetAllByTripIdAndCategorizeByRoleAsync(tripId);
+
+            var resultViewModel = _mapper.Map<UsersByTripAndCategorizedByRoleViewModel>(resultDto);
+
+            return Ok(resultViewModel);
+        }
+
+        /// <summary>
+        /// Gets User by id.
+        /// </summary>
+        /// <param name="id">Id of User.</param>
+        /// <returns>User view model that represents
+        ///  user database entry.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
+        {
+            var userDto = await _userService.GetByIdAsync(id);
+
+            var userViewModel = _mapper.Map<UserViewModel>(userDto);
+
+            return Ok(userViewModel);
         }
     }
 }
