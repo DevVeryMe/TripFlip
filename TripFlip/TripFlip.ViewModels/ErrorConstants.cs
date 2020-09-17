@@ -77,5 +77,13 @@ namespace TripFlip.ViewModels
         public const string InvalidUserGenderError = "Invalid user gender value.";
 
         public const string InvalidUserBirthDateError = "Invalid user birthdate value.";
+
+        public const string EmptyTaskIdFieldError = "Field 'task id' cannot be empty.";
+
+        public const string TaskIdLessThanOneError = "Task id cannot be less than 1.";
+
+        public const string EmptyRouteSubscriberIdsFieldError = "Field 'route subscriber ids' cannot be empty.";
+
+        public const string InvalidRouteSubscriberIdsError = "Field 'route subscriber ids' contains invalid values.";
     }
 }
