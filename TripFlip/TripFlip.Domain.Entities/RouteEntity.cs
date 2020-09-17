@@ -11,7 +11,7 @@ namespace TripFlip.Domain.Entities
 
         public DateTimeOffset DateCreated { get; set; }
 
-        public int? TripId { get; set; }
+        public int TripId { get; set; }
 
         public TripEntity Trip { get; set; }
 
