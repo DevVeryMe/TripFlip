@@ -175,34 +175,48 @@ namespace TripFlip.Services
             var taskToSetAssignees = await _tripFlipDbContext
                 .Tasks
                 .AsNoTracking()
-                .Include(task => task.TaskList)
                 .Include(task => task.TaskAssignees)
+                .Include(task => task.TaskList)
+                .ThenInclude(taskList => taskList.Route)
+                .ThenInclude(route => route.RouteSubscribers)
                 .SingleOrDefaultAsync(task => task.Id == taskAssigneesDto.TaskId);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(taskToSetAssignees, ErrorConstants.TaskNotFound);
 
-            // Get current route id.
-            var currentRouteId = taskToSetAssignees.TaskList.RouteId;
+            // Get current task route id.
+            var currentTaskRoute = taskToSetAssignees.TaskList.Route;
 
             // Validate current user has route editor role.
             await EntityValidationHelper.ValidateCurrentUserIsRouteEditorAsync(
-                _currentUserService, _tripFlipDbContext, currentRouteId);
+                _currentUserService, _tripFlipDbContext, currentTaskRoute.Id);
 
             // Validate route subscribers exist and has same route id as task.
-            var currentRouteSubscriberIds = _tripFlipDbContext
+            var currentRouteSubscriberIds = currentTaskRoute
                 .RouteSubscribers
-                .AsNoTracking()
-                .Where(subscriber => subscriber.RouteId == currentRouteId)
                 .Select(subscriber => subscriber.Id);
 
-            var currentRouteSubscribersNotExist = taskAssigneesDto
+            var allGivenCurrentRouteSubscribersExist = taskAssigneesDto
                 .RouteSubscriberIds
-                .Any(id => !currentRouteSubscriberIds.Contains(id));
+                .All(id => currentRouteSubscriberIds.Contains(id));
 
-            if (currentRouteSubscribersNotExist)
+            if (!allGivenCurrentRouteSubscribersExist)
             {
-                throw new NotFoundException(ErrorConstants.RouteSubscribersNotFound);
+                throw new ArgumentException(ErrorConstants.RouteSubscribersNotFound);
+            }
+
+            // Validate new task assignees set is not the same with old one.
+            var currentTaskAssigneeIds = taskToSetAssignees
+                .TaskAssignees
+                .Select(assignee => assignee.RouteSubscriberId);
+
+            var currentTaskHasSameTaskAssignees = taskAssigneesDto
+                .RouteSubscriberIds
+                .All(id => currentTaskAssigneeIds.Contains(id));
+
+            if (currentTaskHasSameTaskAssignees)
+            {
+                return;
             }
 
             // Remove task's current set of assignees.
@@ -210,19 +224,15 @@ namespace TripFlip.Services
                 taskToSetAssignees.TaskAssignees);
 
             // Add requested set of assignees to task.
-            bool collectionHasAssigneesToAdd = taskAssigneesDto.RouteSubscriberIds.Any();
-            if (collectionHasAssigneesToAdd)
-            {
-                var assigneesToAdd = taskAssigneesDto
-                    .RouteSubscriberIds
-                    .Select(subscriberId => new TaskAssigneeEntity()
-                    {
-                        Task = taskToSetAssignees,
-                        RouteSubscriberId = subscriberId
-                    });
+            var assigneesToAdd = taskAssigneesDto
+                .RouteSubscriberIds
+                .Select(subscriberId => new TaskAssigneeEntity()
+                {
+                    TaskId = taskToSetAssignees.Id,
+                    RouteSubscriberId = subscriberId
+                });
 
-                _tripFlipDbContext.TaskAssignees.AddRange(assigneesToAdd);
-            }
+            _tripFlipDbContext.TaskAssignees.AddRange(assigneesToAdd);
 
             await _tripFlipDbContext.SaveChangesAsync();
         }

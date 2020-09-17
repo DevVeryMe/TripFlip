@@ -45,7 +45,7 @@
 
         public static readonly string GrantingSuperAdminRole = "Trying to grant application super admin role.";
 
-        public static readonly string RouteSubscribersNotFound = "At least one of given route subscriber is not found.";
+        public static readonly string RouteSubscribersNotFound = "At least one of given route subscribers' ids is not found.";
 
         public static readonly string NotRouteEditor = "Current user is not granted with route editor role.";
     }
