@@ -64,6 +64,7 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new RouteSubscriberRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationUserRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskAssigneeEntityConfiguration());
 
             modelBuilder.Seed();
         }
