@@ -404,8 +404,6 @@ namespace TripFlip.Services
                 .Include(route => route.Trip)
                     .ThenInclude(trip => trip.TripSubscribers)
                 .Include(route => route.RouteSubscribers)
-                    .ThenInclude(routeSubscriber => routeSubscriber.TripSubscriber)
-                .Include(route => route.RouteSubscribers)
                     .ThenInclude(routeSubscriber => routeSubscriber.RouteRoles)
                 .FirstOrDefaultAsync(route => route.Id == grantRouteRolesDto.RouteId);
 
@@ -443,6 +441,8 @@ namespace TripFlip.Services
                     TripSubscriberId = tripSubscriberToGrant.Id,
                     RouteId = routeEntity.Id
                 };
+
+                await _tripFlipDbContext.RouteSubscribers.AddAsync(routeSubscriber);
             }
             else
             {
