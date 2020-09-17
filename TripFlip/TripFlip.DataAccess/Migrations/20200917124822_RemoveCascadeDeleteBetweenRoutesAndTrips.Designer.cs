@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TripFlip.DataAccess;
 
 namespace TripFlip.DataAccess.Migrations
 {
     [DbContext(typeof(TripFlipDbContext))]
-    partial class TripFlipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200917124822_RemoveCascadeDeleteBetweenRoutesAndTrips")]
+    partial class RemoveCascadeDeleteBetweenRoutesAndTrips
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
