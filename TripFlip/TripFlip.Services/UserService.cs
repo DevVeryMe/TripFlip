@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.Configuration.Annotations;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
@@ -438,9 +439,26 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public Task UnsubscribeFromTripAsync(int tripId)
+        public async Task UnsubscribeFromTripAsync(int tripId)
         {
-            throw new NotImplementedException();
+            var currentUserId = _currentUserService.UserId;
+
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
+            }
+
+            var tripSubscriberEntity = await _tripFlipDbContext.TripSubscribers
+                .FirstOrDefaultAsync(tripSubscriber => tripSubscriber.UserId == currentUserId &&
+                                                       tripSubscriber.TripId == tripId);
+
+            EntityValidationHelper.ValidateEntityNotNull(tripSubscriberEntity, ErrorConstants.NotSubscriberOfTheTrip);
+
+            _tripFlipDbContext.TripSubscribers.Remove(tripSubscriberEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         public Task UnsubscribeFromRouteAsync(int routeId)

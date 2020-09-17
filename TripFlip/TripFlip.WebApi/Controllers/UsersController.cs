@@ -228,7 +228,7 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> UnsubscribeFromRouteAsync([FromRoute]
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId)
         {
-            await _userService.UnsubscribeFromTripAsync(routeId);
+            await _userService.UnsubscribeFromRouteAsync(routeId);
 
             return Ok();
         }
