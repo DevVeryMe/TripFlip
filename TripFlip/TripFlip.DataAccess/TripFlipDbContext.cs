@@ -41,6 +41,8 @@ namespace TripFlip.DataAccess
 
         public DbSet<ApplicationUserRoleEntity> ApplicationUsersRoles { get; set; }
 
+        public DbSet<TaskAssigneeEntity> TaskAssignees { get; set; }
+
         public TripFlipDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
