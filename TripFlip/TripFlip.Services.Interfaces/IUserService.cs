@@ -93,6 +93,18 @@ namespace TripFlip.Services.Interfaces
         Task SubscribeToTripAsync(int tripId);
 
         /// <summary>
+        /// Unsubscribes current user from a trip.
+        /// </summary>
+        /// <param name="tripId">Id of the trip to unsubscribe from.</param>
+        Task UnsubscribeFromTripAsync(int tripId);
+
+        /// <summary>
+        /// Unsubscribes current user from a route.
+        /// </summary>
+        /// <param name="routeId">Id of the route to unsubscribe from.</param>
+        Task UnsubscribeFromRouteAsync(int routeId);
+
+        /// <summary>
         /// Gets all trips, which are subscribed by current user, with included
         /// routes with points, task and item lists with tasks and items, user roles
         /// in this trips.

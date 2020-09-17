@@ -438,6 +438,16 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
+        public Task UnsubscribeFromTripAsync(int tripId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnsubscribeFromRouteAsync(int routeId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync()
         {
             var currentUserId = _currentUserService.UserId;
