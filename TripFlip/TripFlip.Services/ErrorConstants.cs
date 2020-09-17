@@ -28,6 +28,8 @@
 
         public static readonly string NotSubscriberOfTheTrip = "User is not a subscriber of this trip.";
 
+        public static readonly string NotSubscriberOfTheRoute = "User is not a subscriber of this route.";
+
         public static readonly string NoGrantAdminRolePermission = "You have no permission to " +
                                                                    "grant admin role to other users.";
 

@@ -461,9 +461,28 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public Task UnsubscribeFromRouteAsync(int routeId)
+        public async Task UnsubscribeFromRouteAsync(int routeId)
         {
-            throw new NotImplementedException();
+            var currentUserId = _currentUserService.UserId;
+
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
+            }
+
+            var routeSubscriberEntity = await _tripFlipDbContext.RouteSubscribers
+                .FirstOrDefaultAsync(routeSubscriber => 
+                    routeSubscriber.TripSubscriber.UserId == currentUserId && 
+                    routeSubscriber.RouteId == routeId);
+
+            EntityValidationHelper.ValidateEntityNotNull(routeSubscriberEntity, 
+                ErrorConstants.NotSubscriberOfTheRoute);
+
+            _tripFlipDbContext.RouteSubscribers.Remove(routeSubscriberEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync()
