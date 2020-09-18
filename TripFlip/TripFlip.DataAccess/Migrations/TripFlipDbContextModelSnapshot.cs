@@ -173,14 +173,14 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(9741), new TimeSpan(0, 3, 0, 0, 0)),
                             RouteId = 1,
                             Title = "Most needed items"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(407), new TimeSpan(0, 3, 0, 0, 0)),
                             RouteId = 1,
                             Title = "Not needed, but you can take"
                         });
@@ -216,14 +216,14 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 697, DateTimeKind.Unspecified).AddTicks(7893), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(2296), new TimeSpan(0, 3, 0, 0, 0)),
                             Title = "First route",
                             TripId = 1
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(3031), new TimeSpan(0, 3, 0, 0, 0)),
                             Title = "Second route",
                             TripId = 1
                         });
@@ -263,7 +263,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(6461), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 56.642000000000003,
                             Longitude = 14.333,
                             Order = 1,
@@ -272,7 +272,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7139), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 60.341000000000001,
                             Longitude = 17.332000000000001,
                             Order = 2,
@@ -281,7 +281,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7172), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 62.622,
                             Longitude = 18.199000000000002,
                             Order = 3,
@@ -290,7 +290,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7182), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 70.849000000000004,
                             Longitude = 22.143999999999998,
                             Order = 4,
@@ -299,7 +299,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7188), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 97.787000000000006,
                             Longitude = 31.122,
                             Order = 5,
@@ -308,7 +308,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7195), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 118.782,
                             Longitude = 49.523000000000003,
                             Order = 1,
@@ -317,7 +317,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7201), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 145.899,
                             Longitude = 54.320999999999998,
                             Order = 2,
@@ -326,7 +326,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7208), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 160.99799999999999,
                             Longitude = 69.212999999999994,
                             Order = 3,
@@ -335,7 +335,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 9,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7214), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 180.11099999999999,
                             Longitude = 71.293999999999997,
                             Order = 4,
@@ -344,83 +344,12 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 10,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7220), new TimeSpan(0, 3, 0, 0, 0)),
                             Latitude = 185.23500000000001,
                             Longitude = 73.224999999999994,
                             Order = 5,
                             RouteId = 2
                         });
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteRoleEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RouteRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Editor"
-                        });
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTimeOffset>("DateSubscribed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.Property<int>("RouteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripSubscriberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RouteId");
-
-                    b.HasIndex("TripSubscriberId");
-
-                    b.ToTable("RouteSubscribers");
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberRoleEntity", b =>
-                {
-                    b.Property<int>("RouteSubscriberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RouteRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RouteSubscriberId", "RouteRoleId");
-
-                    b.HasIndex("RouteRoleId");
-
-                    b.ToTable("RouteSubscribersRoles");
                 });
 
             modelBuilder.Entity("TripFlip.Domain.Entities.TaskEntity", b =>
@@ -463,7 +392,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(7472), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "Buy food.",
                             IsCompleted = false,
                             PriorityLevel = 0,
@@ -472,7 +401,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8700), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "Buy train tickets",
                             IsCompleted = false,
                             PriorityLevel = 0,
@@ -481,7 +410,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8739), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "Buy tent",
                             IsCompleted = false,
                             PriorityLevel = 0,
@@ -490,7 +419,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8746), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "Buy drugs",
                             IsCompleted = false,
                             PriorityLevel = 0,
@@ -499,7 +428,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8752), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "Buy chips",
                             IsCompleted = false,
                             PriorityLevel = 0,
@@ -537,7 +466,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(5239), new TimeSpan(0, 3, 0, 0, 0)),
                             RouteId = 1,
                             Title = "Tasks"
                         });
@@ -578,7 +507,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 691, DateTimeKind.Unspecified).AddTicks(7890), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 259, DateTimeKind.Unspecified).AddTicks(6140), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "We wanna visit several different cities of Ukraine",
                             EndsAt = new DateTimeOffset(new DateTime(2020, 8, 20, 19, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)),
                             StartsAt = new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)),
@@ -736,10 +665,10 @@ namespace TripFlip.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a4384744-04a0-47d8-87f8-ae3ec555f52b"),
+                            Id = new Guid("15ad6d18-958d-4e94-b086-b0507209659e"),
                             AboutMe = "About me",
-                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)),
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 700, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)),
+                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4254), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(1082), new TimeSpan(0, 3, 0, 0, 0)),
                             Email = "sample1.email@mail.com",
                             FirstName = "Andrew",
                             Gender = 1,
@@ -748,10 +677,10 @@ namespace TripFlip.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3fa2d55f-77b0-49bd-acfe-476470972ea1"),
+                            Id = new Guid("be725055-2cc1-48b2-b2ac-5a482e44cb40"),
                             AboutMe = "About me",
-                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)),
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)),
+                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4963), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4905), new TimeSpan(0, 3, 0, 0, 0)),
                             Email = "sample2.email@mail.com",
                             FirstName = "Andrew",
                             Gender = 1,
@@ -760,10 +689,10 @@ namespace TripFlip.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fa7f47a6-71f0-416b-bb87-c43af5308a34"),
+                            Id = new Guid("c26aeac0-b50c-42e2-8642-7040960eba0c"),
                             AboutMe = "About me",
-                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)),
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)),
+                            BirthDate = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(5054), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(5045), new TimeSpan(0, 3, 0, 0, 0)),
                             Email = "sample3.email@mail.com",
                             FirstName = "Stas",
                             Gender = 1,
@@ -819,36 +748,6 @@ namespace TripFlip.DataAccess.Migrations
                     b.HasOne("TripFlip.Domain.Entities.RouteEntity", "Route")
                         .WithMany("RoutePoints")
                         .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberEntity", b =>
-                {
-                    b.HasOne("TripFlip.Domain.Entities.RouteEntity", "Route")
-                        .WithMany("RouteSubscribers")
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TripFlip.Domain.Entities.TripSubscriberEntity", "TripSubscriber")
-                        .WithMany("RouteSubscriptions")
-                        .HasForeignKey("TripSubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberRoleEntity", b =>
-                {
-                    b.HasOne("TripFlip.Domain.Entities.RouteRoleEntity", "RouteRole")
-                        .WithMany("RouteSubscribers")
-                        .HasForeignKey("RouteRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TripFlip.Domain.Entities.RouteSubscriberEntity", "RouteSubscriber")
-                        .WithMany("RouteRoles")
-                        .HasForeignKey("RouteSubscriberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
