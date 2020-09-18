@@ -69,6 +69,8 @@ namespace TripFlip.Root.MappingProfiles
             CreateMap<GrantApplicationRolesViewModel, GrantApplicationRolesDto>();
 
             CreateMap<TaskAssigneesViewModel, TaskAssigneesDto>();
+
+            CreateMap<GrantRouteRolesViewModel, GrantRouteRolesDto>();
         }
     }
 }

@@ -184,7 +184,7 @@ namespace TripFlip.Services
             EntityValidationHelper
                 .ValidateEntityNotNull(taskToSetAssignees, ErrorConstants.TaskNotFound);
 
-            // Get current task route id.
+            // Get current task route.
             var currentTaskRoute = taskToSetAssignees.TaskList.Route;
 
             // Validate current user has route editor role.

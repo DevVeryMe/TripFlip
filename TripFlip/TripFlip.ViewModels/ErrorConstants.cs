@@ -61,6 +61,8 @@ namespace TripFlip.ViewModels
         public const string TripIdLessThanOneError = "Id of the trip cannot be" +
                                                                "less than 1.";
 
+        public const string RouteIdLessThanOneError = "Id of the route cannot be less than 1.";
+
         public const string RequiredRoleIdError = "Id of role of trip participant is required.";
 
         public const string RoleIdLessThanOneError = "Id of role cannot be" +
