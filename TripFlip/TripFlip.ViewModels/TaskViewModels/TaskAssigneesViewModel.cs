@@ -12,6 +12,8 @@ namespace TripFlip.ViewModels.TaskViewModels
         public int TaskId { get; set; }
 
         [Required(ErrorMessage = ErrorConstants.EmptyRouteSubscriberIdsFieldError)]
+        [UniqueIntArrayValues(
+            ErrorMessage = ErrorConstants.RouteSubscriberIdsValuesRepeatedError)]
         [IntArrayRange(1, int.MaxValue,
             ErrorMessage = ErrorConstants.InvalidRouteSubscriberIdsError)]
         public IEnumerable<int> RouteSubscriberIds { get; set; }

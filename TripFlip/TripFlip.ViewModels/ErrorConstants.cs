@@ -85,5 +85,7 @@ namespace TripFlip.ViewModels
         public const string EmptyRouteSubscriberIdsFieldError = "Field 'route subscriber ids' cannot be empty.";
 
         public const string InvalidRouteSubscriberIdsError = "Field 'route subscriber ids' contains invalid values.";
+
+        public const string RouteSubscriberIdsValuesRepeatedError = "Field 'route subscriber ids' contains repeating values.";
     }
 }
