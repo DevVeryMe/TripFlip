@@ -527,7 +527,7 @@ namespace TripFlip.Services
 
             if (isCurrentUserTripAdmin)
             {
-                ValidateNotAloneTripAdminWhenUnsubscribe(tripSubscriberEntities);
+                ValidateNotSingleTripAdminWhenUnsubscribe(tripSubscriberEntities);
             }
 
             _tripFlipDbContext.TripSubscribers.Remove(currentUserTripSubscriber);
@@ -639,7 +639,7 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="tripSubscriberEntitiesWithRoles">Collection with trip subscribers
         /// including their roles.</param>
-        private void ValidateNotAloneTripAdminWhenUnsubscribe(
+        private void ValidateNotSingleTripAdminWhenUnsubscribe(
             ICollection<TripSubscriberEntity> tripSubscriberEntitiesWithRoles)
         {
             var tripAdminsCount = tripSubscriberEntitiesWithRoles
