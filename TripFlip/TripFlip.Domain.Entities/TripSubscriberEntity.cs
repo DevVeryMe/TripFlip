@@ -16,5 +16,7 @@ namespace TripFlip.Domain.Entities
         public DateTimeOffset DateSubscribed { get; set; }
 
         public ICollection<TripSubscriberRoleEntity> TripRoles { get; set; }
+
+        public ICollection<RouteSubscriberEntity> RouteSubscriptions { get; set; }
     }
 }

@@ -182,6 +182,18 @@ namespace TripFlip.DataAccess.Extensions
                     Name = "Guest"
                 });
 
+            modelBuilder.Entity<RouteRoleEntity>().HasData(
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
+                });
+
             modelBuilder.Entity<ApplicationRoleEntity>().HasData(
                 new ApplicationRoleEntity()
                 {

@@ -15,6 +15,8 @@ namespace TripFlip.Domain.Entities
 
         public TripEntity Trip { get; set; }
 
+        public ICollection<RouteSubscriberEntity> RouteSubscribers { get; set; }
+
         public ICollection<RoutePointEntity> RoutePoints { get; set; }
 
         public ICollection<ItemListEntity> ItemLists { get; set; }
