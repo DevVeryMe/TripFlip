@@ -451,13 +451,34 @@ namespace TripFlip.Services
                 throw new NotFoundException(ErrorConstants.NotAuthorized);
             }
 
-            var tripSubscriberEntity = await _tripFlipDbContext.TripSubscribers
-                .FirstOrDefaultAsync(tripSubscriber => tripSubscriber.UserId == currentUserId &&
-                                                       tripSubscriber.TripId == tripId);
+            var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
+                .Include(tripSubscriber => tripSubscriber.TripRoles)
+                .Where(tripSubscriber => tripSubscriber.TripId == tripId)
+                .ToListAsync();
 
-            EntityValidationHelper.ValidateEntityNotNull(tripSubscriberEntity, ErrorConstants.NotSubscriberOfTheTrip);
+            var currentUserTripSubscriber = tripSubscriberEntities
+                .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == currentUserId);
 
-            _tripFlipDbContext.TripSubscribers.Remove(tripSubscriberEntity);
+            EntityValidationHelper.ValidateEntityNotNull(currentUserTripSubscriber, ErrorConstants.NotSubscriberOfTheTrip);
+
+            var isCurrentUserTripAdmin = currentUserTripSubscriber.TripRoles
+                .Any(tripSubscriberRole => tripSubscriberRole.TripRoleId == (int) TripRoles.Admin);
+
+            if (isCurrentUserTripAdmin)
+            {
+                var tripAdminsCount = tripSubscriberEntities
+                    .Select(tripSubscriber => tripSubscriber.TripRoles)
+                    .Count(roles =>
+                        roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
+
+                // If there is the only one admin trip, no permission to delete trip.
+                if (tripAdminsCount == 1)
+                {
+                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeTrip);
+                }
+            }
+
+            _tripFlipDbContext.TripSubscribers.Remove(currentUserTripSubscriber);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

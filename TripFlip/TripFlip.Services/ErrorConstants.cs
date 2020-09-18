@@ -46,5 +46,8 @@
         public static readonly string NotSuperAdmin = "Current user is not application super admin.";
 
         public static readonly string GrantingSuperAdminRole = "Trying to grant application super admin role.";
+
+        public static readonly string SingleAdminTryToUnsubscribeTrip =
+            "Current user is the only one admin of this trip, he cannot unsubscribe it.";
     }
 }
