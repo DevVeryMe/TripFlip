@@ -15,8 +15,7 @@ namespace TripFlip.DataAccess.Configurations
 
             builder.HasOne<TripEntity>(r => r.Trip).
                 WithMany(t => t.Routes).
-                HasForeignKey(r => r.TripId).
-                OnDelete(DeleteBehavior.NoAction);
+                HasForeignKey(r => r.TripId);
         }
     }
 }
