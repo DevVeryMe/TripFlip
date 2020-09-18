@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TripFlip.DataAccess;
 
 namespace TripFlip.DataAccess.Migrations
 {
     [DbContext(typeof(TripFlipDbContext))]
-    partial class TripFlipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200918112048_ChangeSeedDataToConstants")]
+    partial class ChangeSeedDataToConstants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -466,7 +468,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 18, 14, 25, 38, 433, DateTimeKind.Unspecified).AddTicks(6213), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 18, 14, 20, 47, 731, DateTimeKind.Unspecified).AddTicks(3150), new TimeSpan(0, 3, 0, 0, 0)),
                             RouteId = 1,
                             Title = "Tasks"
                         });
@@ -739,7 +741,7 @@ namespace TripFlip.DataAccess.Migrations
                     b.HasOne("TripFlip.Domain.Entities.TripEntity", "Trip")
                         .WithMany("Routes")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
