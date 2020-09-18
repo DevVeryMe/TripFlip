@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper.Configuration.Annotations;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
@@ -528,16 +527,7 @@ namespace TripFlip.Services
 
             if (isCurrentUserTripAdmin)
             {
-                var tripAdminsCount = tripSubscriberEntities
-                    .Select(tripSubscriber => tripSubscriber.TripRoles)
-                    .Count(roles =>
-                        roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
-
-                // If there is the only one admin trip, no permission to delete trip.
-                if (tripAdminsCount == 1)
-                {
-                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeTrip);
-                }
+                ValidateNotAloneTripAdminWhenUnsubscribe(tripSubscriberEntities);
             }
 
             _tripFlipDbContext.TripSubscribers.Remove(currentUserTripSubscriber);
@@ -641,6 +631,27 @@ namespace TripFlip.Services
             string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return encodedJwt;
+        }
+
+        /// <summary>
+        /// Validates whether there is more than one admin
+        /// between trip subscribers.
+        /// </summary>
+        /// <param name="tripSubscriberEntitiesWithRoles">Collection with trip subscribers
+        /// including their roles.</param>
+        private void ValidateNotAloneTripAdminWhenUnsubscribe(
+            ICollection<TripSubscriberEntity> tripSubscriberEntitiesWithRoles)
+        {
+            var tripAdminsCount = tripSubscriberEntitiesWithRoles
+                    .Select(tripSubscriber => tripSubscriber.TripRoles)
+                    .Count(roles =>
+                        roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
+
+                // If there is the only one admin trip, no permission to delete trip.
+                if (tripAdminsCount == 1)
+                {
+                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeTrip);
+                }
         }
     }
 }
