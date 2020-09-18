@@ -394,6 +394,68 @@ namespace TripFlip.Services
                 _tripFlipDbContext.TripSubscribersRoles.AddRange(rolesToAdd);
             }
             
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task GrantRouteRoleAsync(GrantRouteRolesDto grantRouteRolesDto)
+        {
+            var currentUserId = _currentUserService.UserId;
+
+            var routeEntity = await _tripFlipDbContext.Routes
+                .Include(route => route.Trip)
+                    .ThenInclude(trip => trip.TripSubscribers)
+                .Include(route => route.RouteSubscribers)
+                    .ThenInclude(routeSubscriber => routeSubscriber.RouteRoles)
+                .FirstOrDefaultAsync(route => route.Id == grantRouteRolesDto.RouteId);
+
+            // Validate route exists.
+            EntityValidationHelper.ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
+
+            // Validate current user is trip admin.
+            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
+                _currentUserService, _tripFlipDbContext, routeEntity.Trip.Id);
+
+            var tripSubscriberToGrant = routeEntity.Trip.TripSubscribers
+                .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == grantRouteRolesDto.UserId);
+
+            // Validate user is the subscriber of a trip, which contains current route.
+            EntityValidationHelper.ValidateEntityNotNull(tripSubscriberToGrant, 
+                ErrorConstants.TripSubscriberNotFound);
+
+            // Remove invalid values from requested role id collection.
+            var realRouteRolesIds = (IEnumerable<int>)Enum.GetValues(typeof(TripRoles));
+            grantRouteRolesDto.RouteRoleIds = grantRouteRolesDto
+                .RouteRoleIds
+                .Distinct()
+                .Where(requestedId => realRouteRolesIds.Contains(requestedId));
+
+            var routeSubscriber = routeEntity.RouteSubscribers
+                .FirstOrDefault(routeSubscriber =>
+                    routeSubscriber.TripSubscriber.UserId == grantRouteRolesDto.UserId);
+
+            // If trip subscriber is not route subscriber - subscribes to route,
+            // otherwise removes all his route roles.
+            if (routeSubscriber is null)
+            {
+                routeSubscriber = new RouteSubscriberEntity()
+                {
+                    TripSubscriberId = tripSubscriberToGrant.Id,
+                    RouteId = routeEntity.Id
+                };
+
+                await _tripFlipDbContext.RouteSubscribers.AddAsync(routeSubscriber);
+            }
+            else
+            {
+                routeSubscriber.RouteRoles.Clear();
+            }
+
+            routeSubscriber.RouteRoles = grantRouteRolesDto.RouteRoleIds
+                .Select(routeRoleId => new RouteSubscriberRoleEntity()
+                {
+                    RouteRoleId = routeRoleId,
+                    RouteSubscriber = routeSubscriber
+                }).ToList();
 
             await _tripFlipDbContext.SaveChangesAsync();
         }
