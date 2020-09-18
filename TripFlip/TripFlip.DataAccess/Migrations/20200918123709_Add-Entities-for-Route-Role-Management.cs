@@ -7,21 +7,6 @@ namespace TripFlip.DataAccess.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("15ad6d18-958d-4e94-b086-b0507209659e"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("be725055-2cc1-48b2-b2ac-5a482e44cb40"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("c26aeac0-b50c-42e2-8642-7040960eba0c"));
-
             migrationBuilder.CreateTable(
                 name: "RouteRoles",
                 columns: table => new
@@ -91,84 +76,84 @@ namespace TripFlip.DataAccess.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "ItemLists",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 10,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.InsertData(
                 table: "RouteRoles",
@@ -184,73 +169,84 @@ namespace TripFlip.DataAccess.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 697, DateTimeKind.Unspecified).AddTicks(7893), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Routes",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 698, DateTimeKind.Unspecified).AddTicks(7894), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "TaskLists",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 9, 18, 15, 37, 8, 198, DateTimeKind.Unspecified).AddTicks(3771), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 699, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Trips",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 691, DateTimeKind.Unspecified).AddTicks(7890), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
-            migrationBuilder.InsertData(
+            migrationBuilder.UpdateData(
                 table: "Users",
-                columns: new[] { "Id", "AboutMe", "BirthDate", "DateCreated", "Email", "FirstName", "Gender", "LastName", "PasswordHash" },
-                values: new object[,]
-                {
-                    { new Guid("fa7f47a6-71f0-416b-bb87-c43af5308a34"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)), "sample3.email@mail.com", "Stas", 1, "Lazarev", "hash_hash" },
-                    { new Guid("3fa2d55f-77b0-49bd-acfe-476470972ea1"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)), "sample2.email@mail.com", "Andrew", 1, "Veremiy", "some_other_hash" },
-                    { new Guid("a4384744-04a0-47d8-87f8-ae3ec555f52b"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 701, DateTimeKind.Unspecified).AddTicks(7896), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 16, 48, 45, 700, DateTimeKind.Unspecified).AddTicks(7895), new TimeSpan(0, 3, 0, 0, 0)), "sample1.email@mail.com", "Andrew", 1, "Kravchuk", "some_hash" }
-                });
+                keyColumn: "Id",
+                keyValue: new Guid("8f03d642-e4b1-4d34-a3bd-4467ecdfd01b"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: new Guid("e7cd790b-7dfb-4fb2-bba8-d01a65b39621"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: new Guid("f755f10f-85ad-4fa2-9bfe-8d43c8d94aa5"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.CreateIndex(
                 name: "IX_RouteSubscribers_RouteId",
@@ -279,177 +275,173 @@ namespace TripFlip.DataAccess.Migrations
             migrationBuilder.DropTable(
                 name: "RouteSubscribers");
 
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("3fa2d55f-77b0-49bd-acfe-476470972ea1"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("a4384744-04a0-47d8-87f8-ae3ec555f52b"));
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: new Guid("fa7f47a6-71f0-416b-bb87-c43af5308a34"));
-
             migrationBuilder.UpdateData(
                 table: "ItemLists",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(9741), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "ItemLists",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(407), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(6461), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7139), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7172), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7182), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7188), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7195), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7201), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7208), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7214), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "RoutePoints",
                 keyColumn: "Id",
                 keyValue: 10,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(7220), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Routes",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(2296), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Routes",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 263, DateTimeKind.Unspecified).AddTicks(3031), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "TaskLists",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(5239), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 9, 18, 14, 25, 38, 433, DateTimeKind.Unspecified).AddTicks(6213), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(7472), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8700), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8739), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8746), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Tasks",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 264, DateTimeKind.Unspecified).AddTicks(8752), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
             migrationBuilder.UpdateData(
                 table: "Trips",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 259, DateTimeKind.Unspecified).AddTicks(6140), new TimeSpan(0, 3, 0, 0, 0)));
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
 
-            migrationBuilder.InsertData(
+            migrationBuilder.UpdateData(
                 table: "Users",
-                columns: new[] { "Id", "AboutMe", "BirthDate", "DateCreated", "Email", "FirstName", "Gender", "LastName", "PasswordHash" },
-                values: new object[,]
-                {
-                    { new Guid("c26aeac0-b50c-42e2-8642-7040960eba0c"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(5054), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(5045), new TimeSpan(0, 3, 0, 0, 0)), "sample3.email@mail.com", "Stas", 1, "Lazarev", "hash_hash" },
-                    { new Guid("be725055-2cc1-48b2-b2ac-5a482e44cb40"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4963), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4905), new TimeSpan(0, 3, 0, 0, 0)), "sample2.email@mail.com", "Andrew", 1, "Veremiy", "some_other_hash" },
-                    { new Guid("15ad6d18-958d-4e94-b086-b0507209659e"), "About me", new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(4254), new TimeSpan(0, 3, 0, 0, 0)), new DateTimeOffset(new DateTime(2020, 9, 17, 15, 48, 21, 265, DateTimeKind.Unspecified).AddTicks(1082), new TimeSpan(0, 3, 0, 0, 0)), "sample1.email@mail.com", "Andrew", 1, "Kravchuk", "some_hash" }
-                });
+                keyColumn: "Id",
+                keyValue: new Guid("8f03d642-e4b1-4d34-a3bd-4467ecdfd01b"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: new Guid("e7cd790b-7dfb-4fb2-bba8-d01a65b39621"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: new Guid("f755f10f-85ad-4fa2-9bfe-8d43c8d94aa5"),
+                column: "DateCreated",
+                value: new DateTimeOffset(new DateTime(2020, 8, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)));
         }
     }
 }
