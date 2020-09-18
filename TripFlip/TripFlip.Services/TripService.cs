@@ -136,8 +136,9 @@ namespace TripFlip.Services
 
             ValidateTripEntityNotNull(tripEntity);
 
-            _tripFlipDbContext.Remove(tripEntity);
             _tripFlipDbContext.RemoveRange(tripEntity.Routes);
+            _tripFlipDbContext.Remove(tripEntity);
+            
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

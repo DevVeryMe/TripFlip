@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TripFlip.DataAccess;
 
 namespace TripFlip.DataAccess.Migrations
 {
     [DbContext(typeof(TripFlipDbContext))]
-    partial class TripFlipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200918112048_ChangeSeedDataToConstants")]
+    partial class ChangeSeedDataToConstants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,77 +354,6 @@ namespace TripFlip.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteRoleEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RouteRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Editor"
-                        });
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTimeOffset>("DateSubscribed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.Property<int>("RouteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripSubscriberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RouteId");
-
-                    b.HasIndex("TripSubscriberId");
-
-                    b.ToTable("RouteSubscribers");
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberRoleEntity", b =>
-                {
-                    b.Property<int>("RouteSubscriberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RouteRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RouteSubscriberId", "RouteRoleId");
-
-                    b.HasIndex("RouteRoleId");
-
-                    b.ToTable("RouteSubscribersRoles");
-                });
-
             modelBuilder.Entity("TripFlip.Domain.Entities.TaskEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -537,7 +468,7 @@ namespace TripFlip.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 18, 15, 37, 8, 198, DateTimeKind.Unspecified).AddTicks(3771), new TimeSpan(0, 3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2020, 9, 18, 14, 20, 47, 731, DateTimeKind.Unspecified).AddTicks(3150), new TimeSpan(0, 3, 0, 0, 0)),
                             RouteId = 1,
                             Title = "Tasks"
                         });
@@ -810,7 +741,7 @@ namespace TripFlip.DataAccess.Migrations
                     b.HasOne("TripFlip.Domain.Entities.TripEntity", "Trip")
                         .WithMany("Routes")
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -819,36 +750,6 @@ namespace TripFlip.DataAccess.Migrations
                     b.HasOne("TripFlip.Domain.Entities.RouteEntity", "Route")
                         .WithMany("RoutePoints")
                         .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberEntity", b =>
-                {
-                    b.HasOne("TripFlip.Domain.Entities.RouteEntity", "Route")
-                        .WithMany("RouteSubscribers")
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TripFlip.Domain.Entities.TripSubscriberEntity", "TripSubscriber")
-                        .WithMany("RouteSubscriptions")
-                        .HasForeignKey("TripSubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TripFlip.Domain.Entities.RouteSubscriberRoleEntity", b =>
-                {
-                    b.HasOne("TripFlip.Domain.Entities.RouteRoleEntity", "RouteRole")
-                        .WithMany("RouteSubscribers")
-                        .HasForeignKey("RouteRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TripFlip.Domain.Entities.RouteSubscriberEntity", "RouteSubscriber")
-                        .WithMany("RouteRoles")
-                        .HasForeignKey("RouteSubscriberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
