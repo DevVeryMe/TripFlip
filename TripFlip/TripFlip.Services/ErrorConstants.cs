@@ -49,5 +49,8 @@
 
         public static readonly string SingleAdminTryToUnsubscribeTrip =
             "Current user is the only one admin of this trip, he cannot unsubscribe it.";
+        public static readonly string RouteSubscribersNotFound = "At least one of given route subscribers' ids is not found.";
+
+        public static readonly string NotRouteEditor = "Current user is not granted with route editor role.";
     }
 }

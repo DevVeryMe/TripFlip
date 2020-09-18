@@ -61,5 +61,13 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="id">Task id.</param>
         Task DeleteByIdAsync(int id);
+
+        /// <summary>
+        /// Sets route subscribers as task assignees,
+        /// if the current user is granted with route editor role.
+        /// </summary>
+        /// <param name="taskAssigneesDto">Data with task id
+        /// and route subscribers' ids to assign task to.</param>
+        Task SetTaskAssignees(TaskAssigneesDto taskAssigneesDto);
     }
 }

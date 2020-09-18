@@ -94,5 +94,42 @@ namespace TripFlip.Services.Helpers
                 throw new ArgumentException(ErrorConstants.NotSuperAdmin);
             }
         }
+
+        /// <summary>
+        /// Validates whether current user has route editor role.
+        /// </summary>
+        /// <param name="currentUserService">Instance of service class that provides access 
+        /// to properties of the current user.</param>
+        /// <param name="tripFlipDbContext">Instance of database context.</param>
+        /// <param name="routeId">Route id.</param>
+        public static async Task ValidateCurrentUserIsRouteEditorAsync(
+            ICurrentUserService currentUserService,
+            TripFlipDbContext tripFlipDbContext,
+            int routeId)
+        {
+            var currentUserId = currentUserService.UserId;
+
+            var routeSubscriberEntity = await tripFlipDbContext
+                .RouteSubscribers
+                .AsNoTracking()
+                .Include(routeSubscriber => routeSubscriber.RouteRoles)
+                .Include(routeSubscriber => routeSubscriber.TripSubscriber)
+                .SingleOrDefaultAsync(routeSubscriber =>
+                    routeSubscriber.TripSubscriber.UserId == currentUserId
+                    && routeSubscriber.RouteId == routeId);
+
+            ValidateEntityNotNull(routeSubscriberEntity,
+                ErrorConstants.RouteSubscribersNotFound);
+
+            var routeSubscriberIsEditor = routeSubscriberEntity
+                .RouteRoles
+                .Any(routeRole =>
+                routeRole.RouteRoleId == (int)RouteRoles.Editor);
+
+            if (!routeSubscriberIsEditor)
+            {
+                throw new ArgumentException(ErrorConstants.NotRouteEditor);
+            }
+        }
     }
 }
