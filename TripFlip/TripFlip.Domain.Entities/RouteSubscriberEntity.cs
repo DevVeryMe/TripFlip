@@ -17,8 +17,8 @@ namespace TripFlip.Domain.Entities
 
         public ICollection<RouteSubscriberRoleEntity> RouteRoles { get; set; }
 
-        // todo: add navigational property for ItemAssigneeEntity that is still to-be-implemented
+        public ICollection<TaskAssigneeEntity> TaskAssignments { get; set; }
 
-        // todo: add navigational property for TaskAssigneeEntity that is still to-be-implemented
+        // todo: add navigational property for ItemAssigneeEntity that is still to-be-implemented
     }
 }

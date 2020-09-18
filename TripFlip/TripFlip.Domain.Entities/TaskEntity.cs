@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TripFlip.Domain.Entities.Enums;
 
 namespace TripFlip.Domain.Entities
@@ -18,5 +19,7 @@ namespace TripFlip.Domain.Entities
         public int TaskListId { get; set; }
 
         public TaskListEntity TaskList { get; set; }
+
+        public ICollection<TaskAssigneeEntity> TaskAssignees { get; set; }
     }
 }

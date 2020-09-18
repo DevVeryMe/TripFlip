@@ -41,6 +41,8 @@ namespace TripFlip.DataAccess
 
         public DbSet<ApplicationUserRoleEntity> ApplicationUsersRoles { get; set; }
 
+        public DbSet<TaskAssigneeEntity> TaskAssignees { get; set; }
+
         public TripFlipDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -62,6 +64,7 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new RouteSubscriberRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationRoleEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ApplicationUserRoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskAssigneeEntityConfiguration());
 
             modelBuilder.Seed();
         }

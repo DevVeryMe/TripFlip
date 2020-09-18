@@ -189,6 +189,32 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Sets task assignees for a specified task.
+        /// </summary>
+        /// <param name="taskAssigneesViewModel">Data with task id
+        /// and route subscribers' ids.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /tasks/set-task-assignees
+        ///     {
+        ///         "taskId": 1,
+        ///         "routeSubscriberIds": [1, 2, 3]
+        ///     }
+        /// </remarks>
+        [HttpPut("set-task-assignees")]
+        public async Task<IActionResult> SetTaskAssignees(
+            [FromBody] TaskAssigneesViewModel taskAssigneesViewModel)
+        {
+            var taskAssigneesDto =
+                _mapper.Map<TaskAssigneesDto>(taskAssigneesViewModel);
+
+            await _taskService.SetTaskAssignees(taskAssigneesDto);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Deletes Task.
         /// </summary>
         /// <param name="id">Task to delete id.</param>
