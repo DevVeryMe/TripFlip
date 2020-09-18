@@ -15,7 +15,8 @@ namespace TripFlip.DataAccess.Extensions
                 Id = 1,
                 Title = "Our first trip",
                 Description = "We wanna visit several different cities of Ukraine",
-                DateCreated = DateTimeOffset.Now,
+                DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                 StartsAt = DateTimeOffset.Parse("17/08/2020 14:00:00", 
                     CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                 EndsAt = DateTimeOffset.Parse("20/08/2020 19:00:00",
@@ -28,7 +29,8 @@ namespace TripFlip.DataAccess.Extensions
                     Id = 1,
                     TripId = 1,
                     Title = "First route",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 },
 
                 new RouteEntity()
@@ -36,20 +38,41 @@ namespace TripFlip.DataAccess.Extensions
                     Id = 2,
                     TripId = 1,
                     Title = "Second route",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 });
 
             modelBuilder.Entity<RoutePointEntity>().HasData(
-                new RoutePointEntity() {Id = 1, RouteId = 1, Longitude = 14.333, Latitude = 56.642, Order = 1, DateCreated = DateTimeOffset.Now},
-                new RoutePointEntity() {Id = 2, RouteId = 1, Longitude = 17.332, Latitude = 60.341, Order = 2, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() {Id = 3, RouteId = 1, Longitude = 18.199, Latitude = 62.622, Order = 3, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() {Id = 4, RouteId = 1, Longitude = 22.144, Latitude = 70.849, Order = 4, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() {Id = 5, RouteId = 1, Longitude = 31.122, Latitude = 97.787, Order = 5, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() { Id = 6, RouteId = 2, Longitude = 49.523, Latitude = 118.782, Order = 1, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() { Id = 7, RouteId = 2, Longitude = 54.321, Latitude = 145.899, Order = 2, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() { Id = 8, RouteId = 2, Longitude = 69.213, Latitude = 160.998, Order = 3, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() { Id = 9, RouteId = 2, Longitude = 71.294, Latitude = 180.111, Order = 4, DateCreated = DateTimeOffset.Now },
-                new RoutePointEntity() { Id = 10, RouteId = 2, Longitude = 73.225, Latitude = 185.235, Order = 5, DateCreated = DateTimeOffset.Now });
+                new RoutePointEntity() {Id = 1, RouteId = 1, Longitude = 14.333, Latitude = 56.642, Order = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() {Id = 2, RouteId = 1, Longitude = 17.332, Latitude = 60.341, Order = 2, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() {Id = 3, RouteId = 1, Longitude = 18.199, Latitude = 62.622, Order = 3, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() {Id = 4, RouteId = 1, Longitude = 22.144, Latitude = 70.849, Order = 4, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() {Id = 5, RouteId = 1, Longitude = 31.122, Latitude = 97.787, Order = 5, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() { Id = 6, RouteId = 2, Longitude = 49.523, Latitude = 118.782, Order = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() { Id = 7, RouteId = 2, Longitude = 54.321, Latitude = 145.899, Order = 2, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() { Id = 8, RouteId = 2, Longitude = 69.213, Latitude = 160.998, Order = 3, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() { Id = 9, RouteId = 2, Longitude = 71.294, Latitude = 180.111, Order = 4, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                },
+                new RoutePointEntity() { Id = 10, RouteId = 2, Longitude = 73.225, Latitude = 185.235, Order = 5, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+                });
 
             modelBuilder.Entity<ItemListEntity>().HasData(
                 new ItemListEntity()
@@ -57,14 +80,16 @@ namespace TripFlip.DataAccess.Extensions
                     Id = 1,
                     RouteId = 1,
                     Title = "Most needed items",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 },
                 new ItemListEntity()
                 {
                     Id = 2,
                     RouteId = 1,
                     Title = "Not needed, but you can take",
-                    DateCreated = DateTimeOffset.Now,
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 });
 
             modelBuilder.Entity<ItemEntity>().HasData(
@@ -85,48 +110,59 @@ namespace TripFlip.DataAccess.Extensions
                 });
 
             modelBuilder.Entity<TaskEntity>().HasData(
-                new TaskEntity() { Id = 1, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy food." },
-                new TaskEntity() { Id = 2, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy train tickets" },
-                new TaskEntity() { Id = 3, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy tent" },
-                new TaskEntity() { Id = 4, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy drugs" },
-                new TaskEntity() { Id = 5, TaskListId = 1, DateCreated = DateTimeOffset.Now, Description = "Buy chips" });
+                new TaskEntity() { Id = 1, TaskListId = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat), Description = "Buy food." },
+                new TaskEntity() { Id = 2, TaskListId = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat), Description = "Buy train tickets" },
+                new TaskEntity() { Id = 3, TaskListId = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat), Description = "Buy tent" },
+                new TaskEntity() { Id = 4, TaskListId = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat), Description = "Buy drugs" },
+                new TaskEntity() { Id = 5, TaskListId = 1, DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                    CultureInfo.GetCultureInfo("en-GB").DateTimeFormat), Description = "Buy chips" });
 
             modelBuilder.Entity<UserEntity>().HasData(
                 new UserEntity()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("e7cd790b-7dfb-4fb2-bba8-d01a65b39621"),
                     Email = "sample1.email@mail.com",
                     PasswordHash = "some_hash",
-                    DateCreated = DateTimeOffset.Now,
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                     FirstName = "Andrew",
                     LastName = "Kravchuk",
                     AboutMe = "About me",
                     Gender = UserGender.Male,
-                    BirthDate = DateTimeOffset.Now
+                    BirthDate = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 },
                 new UserEntity()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("f755f10f-85ad-4fa2-9bfe-8d43c8d94aa5"),
                     Email = "sample2.email@mail.com",
                     PasswordHash = "some_other_hash",
-                    DateCreated = DateTimeOffset.Now,
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                     FirstName = "Andrew",
                     LastName = "Veremiy",
                     AboutMe = "About me",
                     Gender = UserGender.Male,
-                    BirthDate = DateTimeOffset.Now
+                    BirthDate = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 },
                 new UserEntity()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("8f03d642-e4b1-4d34-a3bd-4467ecdfd01b"),
                     Email = "sample3.email@mail.com",
                     PasswordHash = "hash_hash",
-                    DateCreated = DateTimeOffset.Now,
+                    DateCreated = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                     FirstName = "Stas",
                     LastName = "Lazarev",
                     AboutMe = "About me",
                     Gender = UserGender.Male,
-                    BirthDate = DateTimeOffset.Now
+                    BirthDate = DateTimeOffset.Parse("17/08/2020 14:00:00",
+                        CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
                 });
 
             modelBuilder.Entity<TripRoleEntity>().HasData(
