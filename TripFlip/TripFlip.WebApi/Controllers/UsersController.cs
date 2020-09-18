@@ -195,10 +195,11 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Grants roles to a route subscriber.
+        /// Grants roles of selected route to a trip subscriber.
+        /// If the user is not subscriber of this route, automatically subscribes.
         /// </summary>
         /// <param name="grantRouteRolesViewModel">Data with route id,
-        /// user id and role ids.</param>
+        /// user id and role ids to grant.</param>
         /// <remarks>
         /// Sample request:
         /// 
