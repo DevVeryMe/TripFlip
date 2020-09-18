@@ -214,8 +214,7 @@ namespace TripFlip.WebApi.Controllers
         public async Task<IActionResult> GrantRouteRolesAsync(
             [FromBody] GrantRouteRolesViewModel grantRouteRolesViewModel)
         {
-            var grantSubscriberRoleDto =
-                _mapper.Map<GrantRouteRolesDto>(grantRouteRolesViewModel);
+            var grantSubscriberRoleDto = _mapper.Map<GrantRouteRolesDto>(grantRouteRolesViewModel);
 
             await _userService.GrantRouteRoleAsync(grantSubscriberRoleDto);
 
