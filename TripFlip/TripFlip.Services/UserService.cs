@@ -635,9 +635,9 @@ namespace TripFlip.Services
 
         /// <summary>
         /// Validates whether there is more than one admin
-        /// between trip subscribers.
+        /// among trip subscribers.
         /// </summary>
-        /// <param name="tripSubscriberEntitiesWithRoles">Collection with trip subscribers
+        /// <param name="tripSubscriberEntitiesWithRoles">Collection of trip subscribers
         /// including their roles.</param>
         private void ValidateNotSingleTripAdminWhenUnsubscribe(
             ICollection<TripSubscriberEntity> tripSubscriberEntitiesWithRoles)
@@ -650,7 +650,7 @@ namespace TripFlip.Services
                 // If there is the only one admin trip, no permission to delete trip.
                 if (tripAdminsCount == 1)
                 {
-                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeTrip);
+                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeFromTrip);
                 }
         }
     }
