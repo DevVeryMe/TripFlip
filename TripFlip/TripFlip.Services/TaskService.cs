@@ -119,8 +119,10 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
@@ -145,8 +147,10 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskPriorityDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskPriorityDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
@@ -170,8 +174,10 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskCompletenessDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskCompletenessDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);

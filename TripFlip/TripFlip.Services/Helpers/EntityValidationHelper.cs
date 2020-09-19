@@ -124,7 +124,7 @@ namespace TripFlip.Services.Helpers
                     && routeSubscriber.RouteId == routeId);
 
             ValidateEntityNotNull(routeSubscriberEntity,
-                ErrorConstants.RouteSubscribersNotFound);
+                ErrorConstants.NotRouteSubscriber);
 
             var routeSubscriberHasSpecifiedRole = routeSubscriberEntity
                 .RouteRoles

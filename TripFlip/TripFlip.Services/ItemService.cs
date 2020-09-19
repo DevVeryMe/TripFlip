@@ -102,8 +102,10 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateAsync(UpdateItemDto updateItemDto)
         {
-            var itemEntity = await _tripFlipDbContext.Items
-                .FindAsync(updateItemDto.Id);
+            var itemEntity = await _tripFlipDbContext
+                .Items
+                .Include(item => item.ItemList)
+                .SingleOrDefaultAsync(item => item.Id == updateItemDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
@@ -129,8 +131,10 @@ namespace TripFlip.Services
 
         public async Task<ItemDto> UpdateCompletenessAsync(UpdateItemCompletenessDto updateItemCompletenessDto)
         {
-            var itemEntity = await _tripFlipDbContext.Items
-                .FindAsync(updateItemCompletenessDto.Id);
+            var itemEntity = await _tripFlipDbContext
+                .Items
+                .Include(item => item.ItemList)
+                .SingleOrDefaultAsync(item => item.Id == updateItemCompletenessDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
@@ -166,7 +170,10 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            var itemEntity = await _tripFlipDbContext.Items.FindAsync(id);
+            var itemEntity = await _tripFlipDbContext
+                .Items
+                .Include(item => item.ItemList)
+                .SingleOrDefaultAsync(item => item.Id == id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
