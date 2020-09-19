@@ -48,7 +48,7 @@
         public static readonly string GrantingSuperAdminRole = "Trying to grant application super admin role.";
 
         public static readonly string SingleAdminTryToUnsubscribeFromTrip =
-            "Current user is the only one admin of this trip, he cannot unsubscribe it.";
+            "Current user is the only one admin of this trip, he cannot unsubscribe from it.";
 
         public static readonly string RouteSubscribersNotFound = "At least one of given route subscribers' ids is not found.";
 
