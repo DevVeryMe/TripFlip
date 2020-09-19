@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -8,6 +7,8 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TaskListDtos;
+using TripFlip.Services.Enums;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -21,20 +22,34 @@ namespace TripFlip.Services
 
         private readonly IMapper _mapper;
 
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public TaskListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="currentUserService">ICurrentUserService instance.</param>
+        public TaskListService(TripFlipDbContext tripFlipDbContext,
+            IMapper mapper,
+            ICurrentUserService currentUserService)
         {
             _tripFlipDbContext = tripFlipDbContext;
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         public async Task<TaskListDto> CreateAsync(CreateTaskListDto createTaskListDto)
         {
             await ValidateRouteExistsAsync(createTaskListDto.RouteId);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: createTaskListDto.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             var taskListEntity = _mapper.Map<TaskListEntity>(createTaskListDto);
 
@@ -88,7 +103,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTaskListEntityNotNull(taskListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskListEntity, ErrorConstants.TaskListNotFound);
 
             var taskListDto = _mapper.Map<TaskListDto>(taskListEntity);
 
@@ -100,7 +116,16 @@ namespace TripFlip.Services
             var taskListEntity = await _tripFlipDbContext.TaskLists
                 .FindAsync(updateTaskListDto.Id);
 
-            ValidateTaskListEntityNotNull(taskListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskListEntity, ErrorConstants.TaskListNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             taskListEntity.Title = updateTaskListDto.Title;
 
@@ -116,7 +141,16 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTaskListEntityNotNull(taskListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskListEntity, ErrorConstants.TaskListNotFound);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             _tripFlipDbContext.TaskLists.Remove(taskListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
