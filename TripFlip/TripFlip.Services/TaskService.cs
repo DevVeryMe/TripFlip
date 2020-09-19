@@ -8,6 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TaskDtos;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -188,8 +189,12 @@ namespace TripFlip.Services
             var currentTaskRoute = taskToSetAssignees.TaskList.Route;
 
             // Validate current user has route editor role.
-            await EntityValidationHelper.ValidateCurrentUserIsRouteEditorAsync(
-                _currentUserService, _tripFlipDbContext, currentTaskRoute.Id);
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: currentTaskRoute.Id,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             // Validate route subscribers exist and has same route id as task.
             var currentRouteSubscriberIds = currentTaskRoute
