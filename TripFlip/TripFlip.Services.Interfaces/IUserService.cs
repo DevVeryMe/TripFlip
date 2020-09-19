@@ -94,6 +94,12 @@ namespace TripFlip.Services.Interfaces
         Task GrantRouteRoleAsync(GrantRouteRolesDto grantRouteRolesDto);
 
         /// <summary>
+        /// Subscribes current user to a certain route.
+        /// </summary>
+        /// <param name="routeId">Id of the route to subscribe to.</param>
+        Task SubscribeToRouteAsync(int routeId);
+
+        /// <summary>
         /// Subscribes current user to a certain trip.
         /// </summary>
         /// <param name="tripId">Id of the trip to subscribe.</param>
