@@ -8,6 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemDtos;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -47,10 +48,16 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(itemList => createItemDto.ItemListId == itemList.Id);
 
-            if (itemListEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.ItemListNotFound);
-            }
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             var itemEntity = _mapper.Map<ItemEntity>(createItemDto);
 
@@ -98,7 +105,16 @@ namespace TripFlip.Services
             var itemEntity = await _tripFlipDbContext.Items
                 .FindAsync(updateItemDto.Id);
 
-            ValidateItemEntityIsNotNull(itemEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemEntity.ItemList.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             itemEntity.Title = updateItemDto.Title;
             itemEntity.Comment = updateItemDto.Comment;
@@ -116,7 +132,16 @@ namespace TripFlip.Services
             var itemEntity = await _tripFlipDbContext.Items
                 .FindAsync(updateItemCompletenessDto.Id);
 
-            ValidateItemEntityIsNotNull(itemEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemEntity.ItemList.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             itemEntity.IsCompleted = updateItemCompletenessDto.IsCompleted;
             
@@ -131,7 +156,8 @@ namespace TripFlip.Services
             var itemEntity = await _tripFlipDbContext.Items.AsNoTracking()
                 .SingleOrDefaultAsync(i => i.Id == id);
 
-            ValidateItemEntityIsNotNull(itemEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
 
             var itemDto = _mapper.Map<ItemDto>(itemEntity);
 
@@ -142,7 +168,16 @@ namespace TripFlip.Services
         {
             var itemEntity = await _tripFlipDbContext.Items.FindAsync(id);
 
-            ValidateItemEntityIsNotNull(itemEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemEntity, ErrorConstants.ItemNotFound);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemEntity.ItemList.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             _tripFlipDbContext.Remove(itemEntity);
             await _tripFlipDbContext.SaveChangesAsync();
@@ -164,8 +199,12 @@ namespace TripFlip.Services
             var currentItemRoute = itemToAssignSubs.ItemList.Route;
 
             // Validate current user has route 'Editor' role.
-            await EntityValidationHelper.ValidateCurrentUserIsRouteEditorAsync(
-                _currentUserService, _tripFlipDbContext, currentItemRoute.Id);
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: currentItemRoute.Id,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             // Validate all route subscribers requested for assign exist, and have same route id as item.
             var currentRouteSubscriberIds = currentItemRoute
@@ -206,16 +245,6 @@ namespace TripFlip.Services
             _tripFlipDbContext.ItemAssignees.AddRange(assigneesToAdd);
 
             await _tripFlipDbContext.SaveChangesAsync();
-        }
-
-        private void ValidateItemEntityIsNotNull(ItemEntity itemEntity)
-        {
-
-            if (itemEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.ItemNotFound);
-            }
-
         }
     }
 }
