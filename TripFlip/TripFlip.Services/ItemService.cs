@@ -8,6 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemDtos;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -21,15 +22,23 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public ItemService(IMapper mapper, TripFlipDbContext tripFlipDbContext)
+        /// <param name="currentUserService">Instance of service that describes 
+        /// accessible properties of the current user.</param>
+        public ItemService(
+            IMapper mapper, 
+            TripFlipDbContext tripFlipDbContext,
+            ICurrentUserService currentUserService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
+            _currentUserService = currentUserService;
         }
 
         public async Task<ItemDto> CreateAsync(CreateItemDto createItemDto)
@@ -136,6 +145,66 @@ namespace TripFlip.Services
             ValidateItemEntityIsNotNull(itemEntity);
 
             _tripFlipDbContext.Remove(itemEntity);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task SetItemAssigneesAsync(ItemAssigneesDto itemAssigneesDto)
+        {
+            var itemToAssignSubs = await _tripFlipDbContext
+                .Items
+                .Include(item => item.ItemAssignees)
+                .Include(item => item.ItemList)
+                .ThenInclude(itemList => itemList.Route)
+                .ThenInclude(route => route.RouteSubscribers)
+                .SingleOrDefaultAsync(item => item.Id == itemAssigneesDto.ItemId);
+
+            // Validate item to assign to exists.
+            EntityValidationHelper.ValidateEntityNotNull(itemToAssignSubs, ErrorConstants.ItemNotFound);
+
+            var currentItemRoute = itemToAssignSubs.ItemList.Route;
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserIsRouteEditorAsync(
+                _currentUserService, _tripFlipDbContext, currentItemRoute.Id);
+
+            // Validate all route subscribers requested for assign exist, and have same route id as item.
+            var currentRouteSubscriberIds = currentItemRoute
+                .RouteSubscribers
+                .Select(subscriber => subscriber.Id);
+            bool allGivenRouteSubsAreValid = itemAssigneesDto
+                .RouteSubscriberIds
+                .All(id => currentRouteSubscriberIds.Contains(id));
+            if (!allGivenRouteSubsAreValid)
+            {
+                throw new ArgumentException(ErrorConstants.RouteSubscribersNotFound);
+            }
+
+            // Validate requested item assignees are not already assigned to this item.
+            var currentItemAssigneesIds = itemToAssignSubs
+                .ItemAssignees
+                .Select(assignee => assignee.RouteSubscriberId);
+            bool currentItemHasSameAssignees = itemAssigneesDto
+                .RouteSubscriberIds
+                .All(id => currentItemAssigneesIds.Contains(id));
+            if (currentItemHasSameAssignees)
+            {
+                return;
+            }
+
+            // Remove item's current set of assignees.
+            _tripFlipDbContext.ItemAssignees.RemoveRange(
+                itemToAssignSubs.ItemAssignees);
+
+            // Add requested set of assignees to item.
+            var assigneesToAdd = itemAssigneesDto
+                .RouteSubscriberIds
+                .Select(subscriberId => new ItemAssigneeEntity()
+                {
+                    ItemId = itemToAssignSubs.Id,
+                    RouteSubscriberId = subscriberId
+                });
+            _tripFlipDbContext.ItemAssignees.AddRange(assigneesToAdd);
+
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

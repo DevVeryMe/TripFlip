@@ -175,15 +175,15 @@ namespace TripFlip.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users/grant-trip-roles
+        ///     PUT /users/grant-trip-role
         ///     {
         ///         "tripId": 1,
         ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
         ///         "tripRoleIds": [1, 2, 3]
         ///     }
         /// </remarks>
-        [HttpPut("grant-trip-roles")]
-        public async Task<IActionResult> GrantTripRolesAsync(
+        [HttpPut("grant-trip-role")]
+        public async Task<IActionResult> GrantTripRoleAsync(
             [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
         {
             var grantSubscriberRoleDto =

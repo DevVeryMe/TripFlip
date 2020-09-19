@@ -1,4 +1,6 @@
-﻿namespace TripFlip.Domain.Entities
+﻿using System.Collections.Generic;
+
+namespace TripFlip.Domain.Entities
 {
     public class ItemEntity
     {
@@ -13,7 +15,8 @@
         public bool IsCompleted { get; set; }
 
         public int ItemListId { get; set; }
-
         public ItemListEntity ItemList { get; set; }
+
+        public ICollection<ItemAssigneeEntity> ItemAssignees { get; set; }
     }
 }
