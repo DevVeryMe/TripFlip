@@ -9,6 +9,6 @@ namespace TripFlip.Services.Dto.TaskListDtos
 
         public string Title { get; set; }
 
-        public ICollection<TaskWithoutListIdDto> Tasks { get; set; }
+        public ICollection<TaskWithAssigneesDto> Tasks { get; set; }
     }
 }
