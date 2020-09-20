@@ -186,26 +186,25 @@ namespace TripFlip.Services
             bool currentItemHasSameAssignees = itemAssigneesDto
                 .RouteSubscriberIds
                 .All(id => currentItemAssigneesIds.Contains(id));
-            if (currentItemHasSameAssignees)
+
+            if (!currentItemHasSameAssignees)
             {
-                return;
+                // Remove item's current set of assignees.
+                _tripFlipDbContext.ItemAssignees.RemoveRange(
+                    itemToAssignSubs.ItemAssignees);
+
+                // Add requested set of assignees to item.
+                var assigneesToAdd = itemAssigneesDto
+                    .RouteSubscriberIds
+                    .Select(subscriberId => new ItemAssigneeEntity()
+                    {
+                        ItemId = itemToAssignSubs.Id,
+                        RouteSubscriberId = subscriberId
+                    });
+                _tripFlipDbContext.ItemAssignees.AddRange(assigneesToAdd);
+
+                await _tripFlipDbContext.SaveChangesAsync();
             }
-
-            // Remove item's current set of assignees.
-            _tripFlipDbContext.ItemAssignees.RemoveRange(
-                itemToAssignSubs.ItemAssignees);
-
-            // Add requested set of assignees to item.
-            var assigneesToAdd = itemAssigneesDto
-                .RouteSubscriberIds
-                .Select(subscriberId => new ItemAssigneeEntity()
-                {
-                    ItemId = itemToAssignSubs.Id,
-                    RouteSubscriberId = subscriberId
-                });
-            _tripFlipDbContext.ItemAssignees.AddRange(assigneesToAdd);
-
-            await _tripFlipDbContext.SaveChangesAsync();
         }
 
         private void ValidateItemEntityIsNotNull(ItemEntity itemEntity)
