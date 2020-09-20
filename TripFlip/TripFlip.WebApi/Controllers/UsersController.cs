@@ -168,22 +168,22 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Grants role to trip subscriber.
+        /// Grants roles to trip subscriber.
         /// </summary>
         /// <param name="grantSubscriberRoleViewModel">Data with trip id,
         /// user id and role ids.</param>
         /// <remarks>
         /// Sample request:
         /// 
-        ///     PUT /users/grant-trip-role
+        ///     PUT /users/grant-trip-roles
         ///     {
         ///         "tripId": 1,
         ///         "userId": "8BCC1E77-D183-41C9-8210-038D00AB12E4",
         ///         "tripRoleIds": [1, 2, 3]
         ///     }
         /// </remarks>
-        [HttpPut("grant-trip-role")]
-        public async Task<IActionResult> GrantTripRoleAsync(
+        [HttpPut("grant-trip-roles")]
+        public async Task<IActionResult> GrantTripRolesAsync(
             [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
         {
             var grantSubscriberRoleDto =
