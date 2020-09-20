@@ -248,6 +248,32 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Unsubscribes current user from the trip.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to unsubscribe from.</param>
+        [HttpPut("unsubscribe-trip/{tripId}")]
+        public async Task<IActionResult> UnsubscribeFromTripAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
+        {
+            await _userService.UnsubscribeFromTripAsync(tripId);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Unsubscribes current user from the route.
+        /// </summary>
+        /// <param name="routeId">Id of a route to unsubscribe from.</param>
+        [HttpPut("unsubscribe-route/{routeId}")]
+        public async Task<IActionResult> UnsubscribeFromRouteAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId)
+        {
+            await _userService.UnsubscribeFromRouteAsync(routeId);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Gets all trips, which are subscribed by current user, with included routes,
         /// including route points, task, item lists with tasks and items and roles of
         /// current user in these trips.
