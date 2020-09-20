@@ -236,7 +236,7 @@ namespace TripFlip.WebApi.Controllers
 
         /// <summary>
         /// Gets all trips, which are subscribed by current user, with included routes,
-        /// including route points, task, item lists with tasks and items and roles of
+        /// including route points, task, item lists with tasks and items with assignees and roles of
         /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]

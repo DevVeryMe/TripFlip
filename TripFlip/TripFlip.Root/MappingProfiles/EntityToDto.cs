@@ -5,6 +5,7 @@ using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.RoutePointDtos;
+using TripFlip.Services.Dto.RouteSubscriberDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
@@ -26,9 +27,23 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TaskEntity, TaskDto>();
 
-            CreateMap<ItemEntity, ItemWithAssigneesDto>();
+            CreateMap<RouteSubscriberEntity, RouteSubscriberDto>();
 
-            CreateMap<TaskEntity, TaskWithAssigneesDto>();
+            CreateMap<ItemEntity, ItemWithAssigneesDto>()
+                .ForMember(destination => destination.ItemAssignees,
+                    configurationExpression =>
+                        configurationExpression.MapFrom(
+                            itemEntity => itemEntity
+                            .ItemAssignees
+                            .Select(itemAssignee => itemAssignee.RouteSubscriber)));
+
+            CreateMap<TaskEntity, TaskWithAssigneesDto>()
+                .ForMember(destination => destination.TaskAssignees,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(
+                                taskEntity => taskEntity
+                                .TaskAssignees
+                                .Select(taskAssignee => taskAssignee.RouteSubscriber)));
 
             CreateMap<TaskListEntity, TaskListDto>();
 
