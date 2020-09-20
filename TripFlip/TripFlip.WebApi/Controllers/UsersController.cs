@@ -168,7 +168,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Grants role to trip subscriber.
+        /// Grants roles to trip subscriber.
         /// </summary>
         /// <param name="grantSubscriberRoleViewModel">Data with trip id,
         /// user id and role ids.</param>

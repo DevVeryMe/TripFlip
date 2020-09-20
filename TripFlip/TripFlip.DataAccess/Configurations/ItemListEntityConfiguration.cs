@@ -15,7 +15,8 @@ namespace TripFlip.DataAccess.Configurations
 
             builder.HasOne<RouteEntity>(i => i.Route)
                 .WithMany(r => r.ItemLists)
-                .HasForeignKey(i => i.RouteId);
+                .HasForeignKey(i => i.RouteId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

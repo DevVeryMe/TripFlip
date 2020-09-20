@@ -172,5 +172,30 @@ namespace TripFlip.WebApi.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Sets item assignees for a specified item.
+        /// </summary>
+        /// <param name="itemAssigneesViewModel">Object that contains item id 
+        /// and route subscribers' ids.</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /items/set-item-assignees
+        ///     {
+        ///         "itemId": 1,
+        ///         "routeSubscriberIds": [1, 2, 3]
+        ///     }
+        /// </remarks>
+        [HttpPut("set-item-assignees")]
+        public async Task<IActionResult> SetItemAssigneesAsync(
+            [FromBody] ItemAssigneesViewModel itemAssigneesViewModel)
+        {
+            var itemAssigneesDto = _mapper.Map<ItemAssigneesDto>(itemAssigneesViewModel);
+
+            await _itemService.SetItemAssigneesAsync(itemAssigneesDto);
+
+            return Ok();
+        }
     }
 }
