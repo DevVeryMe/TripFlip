@@ -28,6 +28,8 @@
 
         public static readonly string NotSubscriberOfTheTrip = "User is not a subscriber of this trip.";
 
+        public static readonly string NotSubscriberOfTheRoute = "User is not a subscriber of this route.";
+
         public static readonly string NoGrantAdminRolePermission = "You have no permission to " +
                                                                    "grant admin role to other users.";
 
@@ -35,7 +37,9 @@
 
         public static readonly string NotAuthorized = "Not authorized access.";
 
-        public static readonly string IsAlreadySubscriber = "You already subscribed this trip.";
+        public static readonly string IsAlreadyTripSubscriber = "You already subscribed to this trip.";
+
+        public static readonly string IsAlreadyRouteSubscriber = "You already subscribed to this route.";
 
         public static readonly string TripSubscriberNotFound = "Trip subscriber is not found.";
 
@@ -44,6 +48,9 @@
         public static readonly string NotSuperAdmin = "Current user is not application super admin.";
 
         public static readonly string GrantingSuperAdminRole = "Trying to grant application super admin role.";
+
+        public static readonly string SingleAdminTryToUnsubscribeFromTrip =
+            "Current user is the only one admin of this trip, he cannot unsubscribe from it.";
 
         public static readonly string RouteSubscribersNotFound = "At least one of given route subscribers' ids is not found.";
 
