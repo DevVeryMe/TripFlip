@@ -222,10 +222,23 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Subscribes current user to the route.
+        /// </summary>
+        /// <param name="routeId">Id of route to subscribe current user to.</param>
+        [HttpPut("subscribe-to-route/{routeId}")]
+        public async Task<IActionResult> SubscribeToRouteAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId)
+        {
+            await _userService.SubscribeToRouteAsync(routeId);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Subscribes current user to the trip.
         /// </summary>
-        /// <param name="tripId">Id of trip to subscribe.</param>
-        [HttpPut("subscribe-trip/{tripId}")]
+        /// <param name="tripId">Id of trip to subscribe current user to.</param>
+        [HttpPut("subscribe-to-trip/{tripId}")]
         public async Task<IActionResult> SubscribeToTripAsync([FromRoute] 
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
         {

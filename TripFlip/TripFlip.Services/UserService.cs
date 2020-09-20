@@ -459,6 +459,57 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
+        public async Task SubscribeToRouteAsync(int routeId)
+        {
+            Guid currentUserId = _currentUserService.UserId;
+
+            bool userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.NotAuthorized);
+            }
+
+            var routeToSubscribeTo = await _tripFlipDbContext
+                .Routes
+                .Include(route => route.RouteSubscribers)
+                .Include(route => route.Trip)
+                .ThenInclude(trip => trip.TripSubscribers)
+                .FirstOrDefaultAsync(route => route.Id == routeId);
+
+            // Validate route with a given id exists.
+            EntityValidationHelper.ValidateEntityNotNull(
+                routeToSubscribeTo, ErrorConstants.RouteNotFound);
+
+            var currentUserAsTripSubscriber = routeToSubscribeTo
+                .Trip
+                .TripSubscribers
+                .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == currentUserId);
+
+            // Validate current user is subscribed to a trip given route belongs to.
+            if (currentUserAsTripSubscriber is null)
+            {
+                throw new ArgumentException(ErrorConstants.NotSubscriberOfTheTrip);
+            }
+
+            // Validate current user is not already subscribed to a given route.
+            bool currentUserIsRouteSubscriber = currentUserAsTripSubscriber
+                .RouteSubscriptions
+                ?.Any(routeSubscriber => routeSubscriber.RouteId == routeId)
+                ?? false;
+
+            if (!currentUserIsRouteSubscriber)
+            {
+                routeToSubscribeTo.RouteSubscribers.Add(new RouteSubscriberEntity()
+                {
+                    RouteId = routeId,
+                    TripSubscriberId = currentUserAsTripSubscriber.Id
+                });
+
+                await _tripFlipDbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task SubscribeToTripAsync(int tripId)
         {
             var currentUserId = _currentUserService.UserId;
@@ -482,7 +533,7 @@ namespace TripFlip.Services
 
             if (isAlreadySubscriber)
             {
-                throw new ArgumentException(ErrorConstants.IsAlreadySubscriber);
+                throw new ArgumentException(ErrorConstants.IsAlreadyTripSubscriber);
             }
 
             var subscriberRole = new TripSubscriberRoleEntity()

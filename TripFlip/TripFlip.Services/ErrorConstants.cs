@@ -35,7 +35,9 @@
 
         public static readonly string NotAuthorized = "Not authorized access.";
 
-        public static readonly string IsAlreadySubscriber = "You already subscribed this trip.";
+        public static readonly string IsAlreadyTripSubscriber = "You already subscribed to this trip.";
+
+        public static readonly string IsAlreadyRouteSubscriber = "You already subscribed to this route.";
 
         public static readonly string TripSubscriberNotFound = "Trip subscriber is not found.";
 
