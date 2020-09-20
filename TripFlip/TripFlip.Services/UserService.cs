@@ -494,7 +494,7 @@ namespace TripFlip.Services
 
             // Validate current user is not already subscribed to a given route.
             bool currentUserIsRouteSubscriber = currentUserAsTripSubscriber
-                ?.RouteSubscriptions
+                .RouteSubscriptions
                 ?.Any(routeSubscriber => routeSubscriber.RouteId == routeId)
                 ?? false;
 
