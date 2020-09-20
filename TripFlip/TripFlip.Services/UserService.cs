@@ -497,18 +497,17 @@ namespace TripFlip.Services
                 ?.RouteSubscriptions
                 ?.Any(routeSubscriber => routeSubscriber.RouteId == routeId)
                 ?? false;
-            if (currentUserIsRouteSubscriber)
-            {
-                throw new ArgumentException(ErrorConstants.IsAlreadyRouteSubscriber);
-            }
 
-            routeToSubscribeTo.RouteSubscribers.Add(new RouteSubscriberEntity()
+            if (!currentUserIsRouteSubscriber)
+            {
+                routeToSubscribeTo.RouteSubscribers.Add(new RouteSubscriberEntity()
                 {
                     RouteId = routeId,
                     TripSubscriberId = currentUserAsTripSubscriber.Id
                 });
 
-            await _tripFlipDbContext.SaveChangesAsync();
+                await _tripFlipDbContext.SaveChangesAsync();
+            }
         }
 
         public async Task SubscribeToTripAsync(int tripId)
