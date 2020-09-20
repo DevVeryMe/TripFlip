@@ -648,7 +648,7 @@ namespace TripFlip.Services
                         roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
 
                 // If there is the only one admin trip, no permission to delete trip.
-                if (tripAdminsCount == 1)
+                if (tripAdminsCount == Constants.MinimumTripAdminCount)
                 {
                     throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeFromTrip);
                 }
