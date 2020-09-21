@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.UserViewModels;
 
@@ -9,11 +10,14 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
     [TestClass]
     public class GrantRouteRolesViewModelNegativeTests
     {
+        private static readonly IEnumerable<int> _routeRoleIdsDefaultValue = new List<int>() {1, 2};
+
         [TestMethod]
         public void Create_ChangeUserPasswordViewModel_Given_Not_valid_RouteId_equals_0_Validation_should_be_failed()
         {
             // Arrange
-            var updateItemViewModel = GetGrantRouteRolesViewModel(routeId: 0);
+            var updateItemViewModel = GetGrantRouteRolesViewModel(routeId: 0,
+                routeRoleIds: new List<int>(){1, 2});
 
             // Act
             var result = Validator.TryValidateObject(updateItemViewModel,
@@ -25,7 +29,8 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             Assert.IsFalse(result);
         }
 
-        public void Create_ChangeUserPasswordViewModel_Given_Not_valid_RouteRoleIds__equals_nullValidation_should_be_failed()
+        [TestMethod]
+        public void Create_ChangeUserPasswordViewModel_Given_Not_valid_RouteRoleIds__equals_null_Validation_should_be_failed()
         {
             // Arrange
             var updateItemViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
@@ -40,15 +45,10 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             Assert.IsFalse(result);
         }
 
-        private static GrantRouteRolesViewModel GetGrantRouteRolesViewModel(int routeId = 1, 
-            Guid userId = default(Guid), 
-            IEnumerable<int> routeRoleIds = null)
+        private static GrantRouteRolesViewModel GetGrantRouteRolesViewModel(IEnumerable<int> routeRoleIds,
+            int routeId = 1, 
+            Guid userId = default(Guid))
         {
-            routeRoleIds ??= new List<int>()
-            {
-                1, 2
-            };
-
             return new GrantRouteRolesViewModel()
             {
                 RouteId = routeId,

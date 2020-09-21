@@ -100,7 +100,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             {
                 "Test case 2: Create_GrantRouteRolesViewModel_Given_Valid_UserId_average_value_" +
                 "_Validation_should_be_successful",
-                int.MaxValue
+                Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e")
             };
         }
 
