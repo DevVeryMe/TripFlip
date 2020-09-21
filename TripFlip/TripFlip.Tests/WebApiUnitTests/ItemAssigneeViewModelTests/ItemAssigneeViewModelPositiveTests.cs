@@ -14,10 +14,10 @@ namespace WebApiUnitTests.ItemAssigneeViewModelTests
             int validItemId)
         {
             // Arrange.
-            var validRouteSubscriberIds = new int[] { };
-
             var itemAssigneesViewModel =
-                BuildItemAssigneesViewModel(validRouteSubscriberIds, validItemId);
+                BuildItemAssigneesViewModel(
+                    routeSubscriberIds: DefaultValidRouteSubscriberIds,
+                    itemId: validItemId);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(itemAssigneesViewModel);
