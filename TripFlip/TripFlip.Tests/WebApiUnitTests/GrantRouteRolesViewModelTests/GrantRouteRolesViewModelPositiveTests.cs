@@ -7,6 +7,7 @@ using TripFlip.ViewModels.UserViewModels;
 
 namespace WebApiUnitTests.GrantRouteRolesViewModelTests
 {
+    [TestClass]
     public class GrantRouteRolesViewModelPositiveTests
     {
         [DataTestMethod]
@@ -15,11 +16,11 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             int routeId)
         {
             // Arrange
-            var updateItemViewModel = GetGrantRouteRolesViewModel(routeId: routeId);
+            var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeId: routeId);
 
             // Act
-            var result = Validator.TryValidateObject(updateItemViewModel,
-                new ValidationContext(updateItemViewModel),
+            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
+                new ValidationContext(grantRouteRolesViewModel),
                 null,
                 true);
 
@@ -33,11 +34,11 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             Guid userId)
         {
             // Arrange
-            var updateItemViewModel = GetGrantRouteRolesViewModel(userId: userId);
+            var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(userId: userId);
 
             // Act
-            var result = Validator.TryValidateObject(updateItemViewModel,
-                new ValidationContext(updateItemViewModel),
+            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
+                new ValidationContext(grantRouteRolesViewModel),
                 null,
                 true);
 
@@ -46,16 +47,16 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(GetTestUserIdData), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(GetTestRouteRoleIdsData), DynamicDataSourceType.Method)]
         public void TestGrantRouteRolesRouteRoleIdsValidation(string displayName,
             IEnumerable<int> routeRoleIds)
         {
             // Arrange
-            var updateItemViewModel = GetGrantRouteRolesViewModel(routeRoleIds: routeRoleIds);
+            var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: routeRoleIds);
 
             // Act
-            var result = Validator.TryValidateObject(updateItemViewModel,
-                new ValidationContext(updateItemViewModel),
+            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
+                new ValidationContext(grantRouteRolesViewModel),
                 null,
                 true);
 
