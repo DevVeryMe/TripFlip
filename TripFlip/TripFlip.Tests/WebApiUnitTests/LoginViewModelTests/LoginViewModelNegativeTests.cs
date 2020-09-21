@@ -5,6 +5,7 @@ using TripFlip.ViewModels.UserViewModels;
 
 namespace WebApiUnitTests.LoginViewModelTests
 {
+    [TestClass]
     public class LoginViewModelNegativeTests
     {
         [DataTestMethod]
@@ -12,11 +13,11 @@ namespace WebApiUnitTests.LoginViewModelTests
         public void TestLoginEmailValidation(string displayName, string email)
         {
             // Arrange
-            var createItemViewModel = GetLoginViewModel(email: email);
+            var loginViewModel = GetLoginViewModel(email: email);
 
             // Act
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
+            var result = Validator.TryValidateObject(loginViewModel,
+                new ValidationContext(loginViewModel),
                 null,
                 true);
 
@@ -29,11 +30,11 @@ namespace WebApiUnitTests.LoginViewModelTests
         public void TestLoginPasswordValidation(string displayName, string password)
         {
             // Arrange
-            var createItemViewModel = GetLoginViewModel(password: password);
+            var loginViewModel = GetLoginViewModel(password: password);
 
             // Act
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
+            var result = Validator.TryValidateObject(loginViewModel,
+                new ValidationContext(loginViewModel),
                 null,
                 true);
 
@@ -70,7 +71,7 @@ namespace WebApiUnitTests.LoginViewModelTests
 
             yield return new object[]
             {
-                "Test case 3: Create_LoginViewModel_Given_Not_valid_Email_not_correct_format_" +
+                "Test case 4: Create_LoginViewModel_Given_Not_valid_Email_not_correct_format_" +
                 "Validation_should_be_failed",
                 new string('*', 20)
             };
@@ -96,22 +97,14 @@ namespace WebApiUnitTests.LoginViewModelTests
             {
                 "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_too_long_length_" +
                 "Validation_should_be_failed",
-                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                new string('*', 101)
             };
 
             yield return new object[]
             {
-                "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_too_short_length_" +
+                "Test case 4: Create_LoginViewModel_Given_Not_valid_Password_too_short_length_" +
                 "Validation_should_be_failed",
-                "A1@aaaa"
-            };
-
-            yield return new object[]
-            {
-                "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_not_correct_format_" +
-                "Validation_should_be_failed",
-                new string('*', 20)
+                new string('*', 7)
             };
         }
 

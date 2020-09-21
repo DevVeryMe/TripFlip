@@ -5,6 +5,7 @@ using TripFlip.ViewModels.UserViewModels;
 
 namespace WebApiUnitTests.LoginViewModelTests
 {
+    [TestClass]
     public class LoginViewModelPositiveTests
     {
         [DataTestMethod]
@@ -12,11 +13,11 @@ namespace WebApiUnitTests.LoginViewModelTests
         public void TestLoginEmailValidation(string displayName, string email)
         {
             // Arrange
-            var createItemViewModel = GetLoginViewModel(email: email);
+            var loginViewModel = GetLoginViewModel(email: email);
 
             // Act
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
+            var result = Validator.TryValidateObject(loginViewModel,
+                new ValidationContext(loginViewModel),
                 null,
                 true);
 
@@ -29,11 +30,11 @@ namespace WebApiUnitTests.LoginViewModelTests
         public void TestLoginPasswordValidation(string displayName, string password)
         {
             // Arrange
-            var createItemViewModel = GetLoginViewModel(password: password);
+            var loginViewModel = GetLoginViewModel(password: password);
 
             // Act
-            var result = Validator.TryValidateObject(createItemViewModel,
-                new ValidationContext(createItemViewModel),
+            var result = Validator.TryValidateObject(loginViewModel,
+                new ValidationContext(loginViewModel),
                 null,
                 true);
 
@@ -70,7 +71,7 @@ namespace WebApiUnitTests.LoginViewModelTests
 
             yield return new object[]
             {
-                "Test case 3: Create_LoginViewModel_Given_Valid_Email_average_length_and" +
+                "Test case 4: Create_LoginViewModel_Given_Valid_Email_average_length_and" +
                 "_match_format_Validation_should_be_successful",
                 "aaaaaaaaaaaaaaaaaaa@a.aa"
             };
@@ -80,24 +81,23 @@ namespace WebApiUnitTests.LoginViewModelTests
         {
             yield return new object[]
             {
-                "Test case 1: Create_LoginViewModel_Given_Valid_Password_min_length_and" +
-                "match_format_Validation_should_be_failed",
-                "Aaaaaa1@"
+                "Test case 1: Create_LoginViewModel_Given_Valid_Password_min_length_" +
+                "Validation_should_be_successful",
+                new string('*', 8)
             };
 
             yield return new object[]
             {
-                "Test case 2: Create_LoginViewModel_Given_Not_valid_Password_max_length_and" +
-                "match_format_Validation_should_be_failed",
-                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "Test case 2: Create_LoginViewModel_Given_Not_valid_Password_max_length_" +
+                "Validation_should_be_successful",
+                new string('*', 100)
             };
 
             yield return new object[]
             {
-                "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_average_length_and" +
-                "match_format_Validation_should_be_failed",
-                "A1@aaaaaaaaaaa"
+                "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_average_length_" +
+                "Validation_should_be_successful",
+                new string('*', 20)
             };
         }
 
