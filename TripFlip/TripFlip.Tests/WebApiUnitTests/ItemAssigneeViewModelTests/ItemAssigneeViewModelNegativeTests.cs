@@ -14,7 +14,7 @@ namespace WebApiUnitTests.ItemAssigneeViewModelTests
             int notValidItemId)
         {
             // Arrange.
-            var validRouteSubscriberIds = new int[] { 1, 2, 3 };
+            var validRouteSubscriberIds = new int[] { };
 
             var itemAssigneesViewModel =
                 BuildItemAssigneesViewModel(validRouteSubscriberIds, notValidItemId);
