@@ -48,14 +48,16 @@ namespace WebApiUnitTests.GrantApplicationRolesViewModelTests
             yield return new object[]
             {
                 "Test case 1: Build GrantApplicationRolesViewModel object" +
-                " and set UserId field with MIN allowed valid value.",
+                " and set UserId field with MIN allowed valid value." +
+                " Validation successful.",
                 Guid.Empty
             };
 
             yield return new object[]
             {
                 "Test case 2: Build GrantApplicationRolesViewModel object" +
-                " and set UserId field with average valid value.",
+                " and set UserId field with average valid value." +
+                " Validation successful.",
                 Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e")
             };
         }
@@ -65,14 +67,16 @@ namespace WebApiUnitTests.GrantApplicationRolesViewModelTests
             yield return new object[]
             {
                 "Test case 1: Build GrantApplicationRolesViewModel object" +
-                " and make ApplicationRoleIds array is empty.",
+                " and make ApplicationRoleIds array is empty." +
+                " Validation successful.",
                 new int[] { }
         };
 
             yield return new object[]
             {
                 "Test case 2: Build GrantApplicationRolesViewModel object" +
-                " and set ApplicationRoleIds array with average valid values.",
+                " and set ApplicationRoleIds array with average valid values." +
+                " Validation successful.",
                 new int[] { 1, 2, 3 }
             };
         }
