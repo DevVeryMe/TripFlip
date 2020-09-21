@@ -47,21 +47,24 @@ namespace WebApiUnitTests.ItemAssigneeViewModelTests
             yield return new object[]
             {
                 "Test case 1: Build ItemAssigneeViewModel object" +
-                " and set ItemId field with MAX allowed valid value.",
+                " and set ItemId field with MAX allowed valid value." +
+                " Validation successful.",
                 int.MaxValue
             };
 
             yield return new object[]
             {
                 "Test case 2: Build ItemAssigneeViewModel object" +
-                " and set ItemId field with MIN allowed valid value.",
+                " and set ItemId field with MIN allowed valid value." +
+                " Validation successful.",
                 1
             };
 
             yield return new object[]
             {
                 "Test case 3: Build ItemAssigneeViewModel object" +
-                " and set ItemId field with simple valid value.",
+                " and set ItemId field with simple valid value." +
+                " Validation successful.",
                 100
             };
         }
@@ -71,28 +74,32 @@ namespace WebApiUnitTests.ItemAssigneeViewModelTests
             yield return new object[]
             {
                 "Test case 1: Build ItemAssigneeViewModel object" +
-                " and add to RouteSubscriberIds array MAX allowed valid value.",
+                " and add to RouteSubscriberIds array MAX allowed valid value." +
+                " Validation successful.",
                 new int[] { int.MaxValue }
             };
 
             yield return new object[]
             {
                 "Test case 2: Build ItemAssigneeViewModel object" +
-                " and add to RouteSubscriberIds array MIN allowed valid value.",
+                " and add to RouteSubscriberIds array MIN allowed valid value." +
+                " Validation successful.",
                 new int[] { 1 }
             };
 
             yield return new object[]
             {
                 "Test case 3: Build ItemAssigneeViewModel object" +
-                " and fill RouteSubscriberIds array with simple valid value.",
+                " and fill RouteSubscriberIds array with average valid value." +
+                " Validation successful.",
                 new int[] { 2, 3, 4 }
             };
 
             yield return new object[]
             {
                 "Test case 4: Build ItemAssigneeViewModel object" +
-                " and make RouteSubscriberIds array empty.",
+                " and make RouteSubscriberIds array empty." +
+                " Validation successful.",
                 new int[] { }
             };
         }
