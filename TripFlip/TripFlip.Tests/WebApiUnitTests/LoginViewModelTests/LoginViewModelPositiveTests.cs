@@ -89,7 +89,8 @@ namespace WebApiUnitTests.LoginViewModelTests
             {
                 "Test case 2: Create_LoginViewModel_Given_Not_valid_Password_max_length_and" +
                 "match_format_Validation_should_be_failed",
-                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             };
 
             yield return new object[]

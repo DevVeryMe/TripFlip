@@ -96,7 +96,8 @@ namespace WebApiUnitTests.LoginViewModelTests
             {
                 "Test case 3: Create_LoginViewModel_Given_Not_valid_Password_too_long_length_" +
                 "Validation_should_be_failed",
-                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                "A1@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             };
 
             yield return new object[]
