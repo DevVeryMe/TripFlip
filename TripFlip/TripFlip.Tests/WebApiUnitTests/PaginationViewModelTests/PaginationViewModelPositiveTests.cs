@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels;
 
 namespace WebApiUnitTests.PaginationViewModelTests
