@@ -17,7 +17,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
         {
             // Arrange
             var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeId: 0,
-                routeRoleIds: new List<int>(){1, 2});
+                routeRoleIds: _routeRoleIdsDefaultValue);
 
             // Act
             var result = Validator.TryValidateObject(grantRouteRolesViewModel,
