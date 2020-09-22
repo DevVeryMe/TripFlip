@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TripFlip.ViewModels.UserViewModels;
 using WebApiUnitTests.Helpers;
 
-
 namespace WebApiUnitTests.GrantRouteRolesViewModelTests
 {
     [TestClass]
@@ -33,7 +32,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
                                  "Given_Not_valid_RouteRoleIds_equals_null_Validation_should_be_failed";
 
             // Arrange
-        var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
+            var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
 
             // Act
             var result = ModelValidator.IsValid(grantRouteRolesViewModel);
