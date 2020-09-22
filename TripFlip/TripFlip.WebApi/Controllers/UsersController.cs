@@ -170,7 +170,7 @@ namespace TripFlip.WebApi.Controllers
         /// <summary>
         /// Grants roles to trip subscriber.
         /// </summary>
-        /// <param name="grantSubscriberRoleViewModel">Data with trip id,
+        /// <param name="grantTripRolesViewModel">Data with trip id,
         /// user id and role ids.</param>
         /// <remarks>
         /// Sample request:
@@ -184,12 +184,12 @@ namespace TripFlip.WebApi.Controllers
         /// </remarks>
         [HttpPut("grant-trip-roles")]
         public async Task<IActionResult> GrantTripRolesAsync(
-            [FromBody] GrantSubscriberRoleViewModel grantSubscriberRoleViewModel)
+            [FromBody] GrantTripRolesViewModel grantTripRolesViewModel)
         {
-            var grantSubscriberRoleDto =
-                _mapper.Map<GrantSubscriberRoleDto>(grantSubscriberRoleViewModel);
+            var grantTripRolesDto =
+                _mapper.Map<GrantTripRolesDto>(grantTripRolesViewModel);
 
-            await _userService.GrantTripRoleAsync(grantSubscriberRoleDto);
+            await _userService.GrantTripRoleAsync(grantTripRolesDto);
 
             return Ok();
         }
@@ -275,7 +275,7 @@ namespace TripFlip.WebApi.Controllers
 
         /// <summary>
         /// Gets all trips, which are subscribed by current user, with included routes,
-        /// including route points, task, item lists with tasks and items and roles of
+        /// including route points, task, item lists with tasks and items with assignees and roles of
         /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]

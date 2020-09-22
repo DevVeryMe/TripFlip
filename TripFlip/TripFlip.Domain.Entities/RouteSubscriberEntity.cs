@@ -17,7 +17,7 @@ namespace TripFlip.Domain.Entities
 
         public ICollection<RouteSubscriberRoleEntity> RouteRoles { get; set; }
 
-        public ICollection<TaskAssigneeEntity> TaskAssignments { get; set; }
+        public ICollection<TaskAssigneeEntity> AssignedTasks { get; set; }
 
         public ICollection<ItemAssigneeEntity> AssignedItems { get; set; }
     }

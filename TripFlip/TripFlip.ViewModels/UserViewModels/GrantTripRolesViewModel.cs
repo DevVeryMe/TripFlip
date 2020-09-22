@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TripFlip.ViewModels.UserViewModels
 {
-    public class GrantSubscriberRoleViewModel
+    public class GrantTripRolesViewModel
     {
         [Required(ErrorMessage = ErrorConstants.EmptyIdFieldError)]
         [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.TripIdLessThanOneError)]

@@ -10,6 +10,6 @@ namespace TripFlip.ViewModels.ItemListViewModels
 
         public string Title { get; set; }
 
-        public ICollection<ItemWithoutListIdViewModel> Items { get; set; }
+        public ICollection<ItemWithAssigneesViewModel> Items { get; set; }
     }
 }

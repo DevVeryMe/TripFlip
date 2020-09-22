@@ -9,6 +9,6 @@ namespace TripFlip.Services.Dto.ItemListDtos
 
         public string Title { get; set; }
 
-        public ICollection<ItemWithoutListIdDto> Items { get; set; }
+        public ICollection<ItemWithAssigneesDto> Items { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace TripFlip.ViewModels.TaskListViewModels
 
         public string Title { get; set; }
 
-        public ICollection<TaskWithoutListIdViewModel> Tasks { get; set; }
+        public ICollection<TaskWithAssigneesViewModel> Tasks { get; set; }
     }
 }
