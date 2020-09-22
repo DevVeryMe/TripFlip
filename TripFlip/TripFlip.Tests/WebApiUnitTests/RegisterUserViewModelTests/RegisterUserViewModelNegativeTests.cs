@@ -128,11 +128,11 @@ namespace WebApiUnitTests.RegisterUserViewModelTests
         [DataTestMethod]
         [DynamicData(nameof(GetInvalidGenderData), DynamicDataSourceType.Method)]
         public void Gender_IsNotValid_ExceptionThrown(string displayName,
-            int gender)
+            int invalidGender)
         {
             // Arrange.
             var registerUserViewModel =
-                BuildRegisterUserViewModel(gender: gender);
+                BuildRegisterUserViewModel(gender: invalidGender);
 
             // Act.
             bool modelIsValid = ModelValidator.IsValid(registerUserViewModel);
@@ -300,7 +300,7 @@ namespace WebApiUnitTests.RegisterUserViewModelTests
 
             yield return new object[]
             {
-                "Test case 2: Test UpdateTaskViewModel validation" +
+                "Test case 2: Test RegisterUserViewModel validation" +
                 " if Gender value is more than allowed." +
                 " Validation should fail.",
                 3
