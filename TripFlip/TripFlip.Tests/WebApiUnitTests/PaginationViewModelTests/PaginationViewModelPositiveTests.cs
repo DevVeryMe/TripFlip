@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels;
+using WebApiUnitTests.Helpers;
 
 namespace WebApiUnitTests.PaginationViewModelTests
 {
@@ -16,10 +16,7 @@ namespace WebApiUnitTests.PaginationViewModelTests
             var paginationViewModel = GetPaginationViewModel(pageNumber: pageNumber);
 
             // Act
-            var result = Validator.TryValidateObject(paginationViewModel,
-                new ValidationContext(paginationViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(paginationViewModel);
 
             // Assert
             Assert.IsTrue(result);
@@ -33,10 +30,7 @@ namespace WebApiUnitTests.PaginationViewModelTests
             var paginationViewModel = GetPaginationViewModel(pageSize: pageSize);
 
             // Act
-            var result = Validator.TryValidateObject(paginationViewModel,
-                new ValidationContext(paginationViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(paginationViewModel);
 
             // Assert
             Assert.IsTrue(result);
