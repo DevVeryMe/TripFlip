@@ -50,6 +50,8 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<UpdateItemViewModel, UpdateItemDto>();
 
+            CreateMap<ItemAssigneesViewModel, ItemAssigneesDto>();
+
             CreateMap<CreateRouteViewModel, CreateRouteDto>();
 
             CreateMap<UpdateRouteViewModel, UpdateRouteDto>();

@@ -11,6 +11,8 @@ namespace TripFlip.DataAccess
 
         public DbSet<ItemListEntity> ItemLists { get; set; }
 
+        public DbSet<ItemAssigneeEntity> ItemAssignees { get; set; }
+
         public DbSet<RouteEntity> Routes { get; set; }
 
         public DbSet<RoutePointEntity> RoutePoints { get; set; }
@@ -51,6 +53,7 @@ namespace TripFlip.DataAccess
             modelBuilder.ApplyConfiguration(new RoutePointEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ItemEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemAssigneeEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TaskEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TaskListEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TripEntityConfiguration());

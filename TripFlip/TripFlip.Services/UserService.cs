@@ -459,6 +459,57 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
+        public async Task SubscribeToRouteAsync(int routeId)
+        {
+            Guid currentUserId = _currentUserService.UserId;
+
+            bool userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+            if (!userExists)
+            {
+                throw new ArgumentException(ErrorConstants.NotAuthorized);
+            }
+
+            var routeToSubscribeTo = await _tripFlipDbContext
+                .Routes
+                .Include(route => route.RouteSubscribers)
+                .Include(route => route.Trip)
+                .ThenInclude(trip => trip.TripSubscribers)
+                .FirstOrDefaultAsync(route => route.Id == routeId);
+
+            // Validate route with a given id exists.
+            EntityValidationHelper.ValidateEntityNotNull(
+                routeToSubscribeTo, ErrorConstants.RouteNotFound);
+
+            var currentUserAsTripSubscriber = routeToSubscribeTo
+                .Trip
+                .TripSubscribers
+                .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == currentUserId);
+
+            // Validate current user is subscribed to a trip given route belongs to.
+            if (currentUserAsTripSubscriber is null)
+            {
+                throw new ArgumentException(ErrorConstants.NotSubscriberOfTheTrip);
+            }
+
+            // Validate current user is not already subscribed to a given route.
+            bool currentUserIsRouteSubscriber = currentUserAsTripSubscriber
+                .RouteSubscriptions
+                ?.Any(routeSubscriber => routeSubscriber.RouteId == routeId)
+                ?? false;
+
+            if (!currentUserIsRouteSubscriber)
+            {
+                routeToSubscribeTo.RouteSubscribers.Add(new RouteSubscriberEntity()
+                {
+                    RouteId = routeId,
+                    TripSubscriberId = currentUserAsTripSubscriber.Id
+                });
+
+                await _tripFlipDbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task SubscribeToTripAsync(int tripId)
         {
             var currentUserId = _currentUserService.UserId;
@@ -482,7 +533,7 @@ namespace TripFlip.Services
 
             if (isAlreadySubscriber)
             {
-                throw new ArgumentException(ErrorConstants.IsAlreadySubscriber);
+                throw new ArgumentException(ErrorConstants.IsAlreadyTripSubscriber);
             }
 
             var subscriberRole = new TripSubscriberRoleEntity()
@@ -497,6 +548,64 @@ namespace TripFlip.Services
             };
 
             await _tripFlipDbContext.TripSubscribersRoles.AddAsync(subscriberRole);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task UnsubscribeFromTripAsync(int tripId)
+        {
+            var currentUserId = _currentUserService.UserId;
+
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
+            }
+
+            var tripSubscriberEntities = await _tripFlipDbContext.TripSubscribers
+                .Include(tripSubscriber => tripSubscriber.TripRoles)
+                .Where(tripSubscriber => tripSubscriber.TripId == tripId)
+                .ToListAsync();
+
+            var currentUserTripSubscriber = tripSubscriberEntities
+                .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == currentUserId);
+
+            EntityValidationHelper.ValidateEntityNotNull(currentUserTripSubscriber, ErrorConstants.NotSubscriberOfTheTrip);
+
+            var isCurrentUserTripAdmin = currentUserTripSubscriber.TripRoles
+                .Any(tripSubscriberRole => tripSubscriberRole.TripRoleId == (int) TripRoles.Admin);
+
+            if (isCurrentUserTripAdmin)
+            {
+                ValidateNotSingleTripAdminWhenUnsubscribe(tripSubscriberEntities);
+            }
+
+            _tripFlipDbContext.TripSubscribers.Remove(currentUserTripSubscriber);
+            await _tripFlipDbContext.SaveChangesAsync();
+        }
+
+        public async Task UnsubscribeFromRouteAsync(int routeId)
+        {
+            var currentUserId = _currentUserService.UserId;
+
+            var userExists = await _tripFlipDbContext.Users
+                .AnyAsync(user => user.Id == currentUserId);
+
+            if (!userExists)
+            {
+                throw new NotFoundException(ErrorConstants.NotAuthorized);
+            }
+
+            var routeSubscriberEntity = await _tripFlipDbContext.RouteSubscribers
+                .FirstOrDefaultAsync(routeSubscriber => 
+                    routeSubscriber.TripSubscriber.UserId == currentUserId && 
+                    routeSubscriber.RouteId == routeId);
+
+            EntityValidationHelper.ValidateEntityNotNull(routeSubscriberEntity, 
+                ErrorConstants.NotSubscriberOfTheRoute);
+
+            _tripFlipDbContext.RouteSubscribers.Remove(routeSubscriberEntity);
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
@@ -573,6 +682,27 @@ namespace TripFlip.Services
             string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return encodedJwt;
+        }
+
+        /// <summary>
+        /// Validates whether there is more than one admin
+        /// among trip subscribers.
+        /// </summary>
+        /// <param name="tripSubscriberEntitiesWithRoles">Collection of trip subscribers
+        /// including their roles.</param>
+        private void ValidateNotSingleTripAdminWhenUnsubscribe(
+            ICollection<TripSubscriberEntity> tripSubscriberEntitiesWithRoles)
+        {
+            var tripAdminsCount = tripSubscriberEntitiesWithRoles
+                    .Select(tripSubscriber => tripSubscriber.TripRoles)
+                    .Count(roles =>
+                        roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
+
+                // If there is the only one admin trip, no permission to delete trip.
+                if (tripAdminsCount == Constants.MinimumTripAdminCount)
+                {
+                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeFromTrip);
+                }
         }
     }
 }

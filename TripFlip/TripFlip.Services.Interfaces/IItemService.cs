@@ -55,5 +55,13 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="id">Item id.</param>
         Task DeleteByIdAsync(int id);
+
+        /// <summary>
+        /// If current user owns 'Editor' role,
+        /// assigns given route subscribers to given item.
+        /// </summary>
+        /// <param name="itemAssigneesDto">DTO that contains 
+        /// route subscribers IDs and item ID to assign them to.</param>
+        Task SetItemAssigneesAsync(ItemAssigneesDto itemAssigneesDto);
     }
 }

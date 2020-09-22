@@ -56,6 +56,8 @@ namespace TripFlip.ViewModels
 
         public const string RequiredTripIdError = "Id of the trip is required.";
 
+        public const string RequiredItemIdError = "Item id is required.";
+
         public const string RequiredUserIdError = "Id of the user is required.";
 
         public const string TripIdLessThanOneError = "Id of the trip cannot be" +

@@ -168,7 +168,7 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Grants role to trip subscriber.
+        /// Grants roles to trip subscriber.
         /// </summary>
         /// <param name="grantSubscriberRoleViewModel">Data with trip id,
         /// user id and role ids.</param>
@@ -222,14 +222,53 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
+        /// Subscribes current user to the route.
+        /// </summary>
+        /// <param name="routeId">Id of route to subscribe current user to.</param>
+        [HttpPut("subscribe-to-route/{routeId}")]
+        public async Task<IActionResult> SubscribeToRouteAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId)
+        {
+            await _userService.SubscribeToRouteAsync(routeId);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Subscribes current user to the trip.
         /// </summary>
-        /// <param name="tripId">Id of trip to subscribe.</param>
-        [HttpPut("subscribe-trip/{tripId}")]
+        /// <param name="tripId">Id of trip to subscribe current user to.</param>
+        [HttpPut("subscribe-to-trip/{tripId}")]
         public async Task<IActionResult> SubscribeToTripAsync([FromRoute] 
             [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
         {
             await _userService.SubscribeToTripAsync(tripId);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Unsubscribes current user from the trip.
+        /// </summary>
+        /// <param name="tripId">Id of a trip to unsubscribe from.</param>
+        [HttpPut("unsubscribe-trip/{tripId}")]
+        public async Task<IActionResult> UnsubscribeFromTripAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int tripId)
+        {
+            await _userService.UnsubscribeFromTripAsync(tripId);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Unsubscribes current user from the route.
+        /// </summary>
+        /// <param name="routeId">Id of a route to unsubscribe from.</param>
+        [HttpPut("unsubscribe-route/{routeId}")]
+        public async Task<IActionResult> UnsubscribeFromRouteAsync([FromRoute]
+            [Range(1, int.MaxValue, ErrorMessage = ErrorConstants.IdLessThanOneError)] int routeId)
+        {
+            await _userService.UnsubscribeFromRouteAsync(routeId);
 
             return Ok();
         }

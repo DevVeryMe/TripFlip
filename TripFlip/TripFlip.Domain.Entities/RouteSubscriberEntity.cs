@@ -19,6 +19,6 @@ namespace TripFlip.Domain.Entities
 
         public ICollection<TaskAssigneeEntity> TaskAssignments { get; set; }
 
-        // todo: add navigational property for ItemAssigneeEntity that is still to-be-implemented
+        public ICollection<ItemAssigneeEntity> AssignedItems { get; set; }
     }
 }
