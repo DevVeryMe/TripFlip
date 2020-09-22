@@ -50,22 +50,21 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 1: Test_ChangeUserPassword_Validation_Given_valid_OldPassword_equals" +
                 "_minimum_value_8_and_correct_format_Validation_should_be_successful.",
-                "Aaaaaa1@"
+                new string('a', 5) + "1A@"
             };
 
             yield return new object[]
             {
                 "Test case 2: Test_ChangeUserPassword_Validation_Given_valid_OldPassword_" +
                 "equals_maximum_value_100_and_correct_format_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa"
+                new string('a', 97) + "A1@"
             };
 
             yield return new object[]
             {
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_valid_OldPassword_" +
                 "equals_average_value_50_and_correct_format_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
+                new string('a', 20) + "A1@"
             };
         }
 
@@ -76,8 +75,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 "Test case 1: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_equals" +
                 "_minimum_value_8_and_correct_format_and_NewPasswordConfirmation_equals_" +
                 "NewPassword_Validation_should_be_successful.",
-                "Aaaaaa1@",
-                "Aaaaaa1@"
+                new string('a', 5) + "1A@",
+                new string('a', 5) + "1A@"
             };
 
             yield return new object[]
@@ -85,10 +84,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 "Test case 2: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_" +
                 "equals_maximum_value_100_and_correct_format_and_NewPasswordConfirmation_" +
                 "equals_NewPassword_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa"
+                new string('a', 97) + "1A@",
+                new string('a', 97) + "1A@"
             };
 
             yield return new object[]
@@ -96,8 +93,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_" +
                 "equals_average_value_50_and_correct_format_and_NewPasswordConfirmation_" +
                 "equals_NewPassword_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA",
-                "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
+                new string('a', 20) + "1A@",
+                new string('a', 20) + "1A@"
             };
         }
 

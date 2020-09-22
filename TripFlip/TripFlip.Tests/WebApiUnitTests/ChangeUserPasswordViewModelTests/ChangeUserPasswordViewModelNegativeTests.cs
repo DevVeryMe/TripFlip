@@ -81,15 +81,14 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_invalid_OldPassword_" +
                 "too_long_length_Validation_should_be_failed.",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
+                new string('a', 100) + "A1@"
             };
 
             yield return new object[]
             {
                 "Test case 4: Test_ChangeUserPassword_Validation_Given_invalid_OldPassword_" +
                 "too_short_length_Validation_should_be_failed.",
-                "Aaaaa1@"
+                new string('a', 4) + "A1@"
             };
 
             yield return new object[]
@@ -120,15 +119,14 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_" +
                 "too_long_length_Validation_should_be_failed.",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
+                new string('a', 100) + "A1@"
             };
 
             yield return new object[]
             {
                 "Test case 4: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_" +
                 "too_short_length_Validation_should_be_failed.",
-                "Aaaaa1@"
+                new string('a', 4) + "A1@"
             };
 
             yield return new object[]
@@ -145,7 +143,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 1: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPasswordConfirmation_equals_null_Validation_should_be_failed.",
-                "Aaaaa1@a",
+                new string('a', 5) + "1A@",
                 null
             };
 
@@ -153,7 +151,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 2: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPasswordConfirmation_equals_empty_string_Validation_should_be_failed.",
-                "Aaaaa1@a",
+                new string('a', 5) + "1A@",
                 string.Empty,
             };
 
@@ -161,7 +159,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPasswordConfirmation_too_long_length_Validation_should_be_failed.",
-                "Aaaaa1@a",
+                new string('a', 5) + "1A@",
                 new string('*', 101)
             };
 
@@ -169,7 +167,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 4: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPasswordConfirmation_too_short_length_Validation_should_be_failed.",
-                "Aaaaa1@a",
+                new string('a', 5) + "1A@",
                 new string('*', 7)
             };
 
@@ -177,7 +175,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 5: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPasswordConfirmation_missmatch_with_NewPassword_Validation_should_be_failed.",
-                "Aaaaa1@a",
+                new string('a', 5) + "1A@",
                 new string('*', 8)
             };
         }
