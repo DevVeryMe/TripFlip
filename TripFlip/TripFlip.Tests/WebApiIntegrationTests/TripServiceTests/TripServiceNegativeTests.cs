@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.TripDtos;
@@ -9,11 +9,14 @@ using TripFlip.Services.Dto.TripDtos;
 namespace WebApiIntegrationTests.TripServiceTests
 {
     [TestClass]
-    public class CreateAsyncNegativeTests : TestTripServiceBase
+    public class TripServiceNegativeTests : TestTripServiceBase
     {
         [TestMethod]
         public async Task Test_CreateAsync_Given_Not_valid_CurrentUser_Data_Validation_should_be_failed()
         {
+            Seed(UserEntityToSeed);
+            Seed(TripRolesToSeed);
+
             var createTripDto = GetCreateTripDtoData();
 
             // Reset CurrentUserService and TripService with non existent user.

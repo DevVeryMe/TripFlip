@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using TripFlip.DataAccess;
-using TripFlip.Domain.Entities;
 using TripFlip.Root.MappingProfiles;
 
 namespace WebApiIntegrationTests
@@ -15,17 +14,12 @@ namespace WebApiIntegrationTests
 
         protected IMapper Mapper;
 
-        protected static bool IsSeeded = false;
+        protected List<string> Logs = new List<string>();
 
         protected TestServiceBase()
         {
-            TripFlipDbContext = CreateDbContext();
             Mapper = CreateMapper();
-
-            if (!IsSeeded)
-            {
-                Seed();
-            }
+            TripFlipDbContext = CreateDbContext();
         }
 
         private IMapper CreateMapper()
@@ -44,47 +38,33 @@ namespace WebApiIntegrationTests
             return mapper;
         }
 
-        private TripFlipDbContext CreateDbContext()
+        protected TripFlipDbContext CreateDbContext()
         {
-            var options = new DbContextOptionsBuilder<TripFlipDbContext>()
-                .UseInMemoryDatabase(databaseName: "TripFlipInMemoryDatabase")
-                .Options;
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
 
-            var context = new TripFlipDbContext(options);
+            var builder = new DbContextOptionsBuilder<TripFlipDbContext>();
+            builder.UseInMemoryDatabase("In memory test database")
+                .UseInternalServiceProvider(serviceProvider);
+
+            var context = new TripFlipDbContext(builder.Options);
 
             return context;
         }
 
-        private void Seed()
+        protected void Seed<TEntity>(TEntity entity)
+        where TEntity: class
         {
-            TripFlipDbContext.Users.Add(new UserEntity()
-            {
-                Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
-                Email = "string@mail.com"
-            });
-
-            TripFlipDbContext.TripRoles.AddRange(new List<TripRoleEntity>()
-            {
-                new TripRoleEntity()
-                {
-                    Id = 1,
-                    Name = "Admin"
-                },
-                new TripRoleEntity()
-                {
-                    Id = 2,
-                    Name = "Editor"
-                },
-                new TripRoleEntity()
-                {
-                    Id = 3,
-                    Name = "Guest"
-                }
-            });
-
+            TripFlipDbContext.Add(entity);
             TripFlipDbContext.SaveChanges();
+        }
 
-            IsSeeded = true;
+        protected void Seed<TEntity>(IEnumerable<TEntity> entities)
+        where TEntity: class
+        {
+            TripFlipDbContext.AddRange(entities);
+            TripFlipDbContext.SaveChanges();
         }
     }
 }

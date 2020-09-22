@@ -2,24 +2,29 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using TripFlip.Services;
 using TripFlip.Services.Dto.TripDtos;
 
 namespace WebApiIntegrationTests.TripServiceTests
 {
     [TestClass]
-    public class CreateAsyncPositiveTests : TestTripServiceBase
+    public class TripServicePositiveTests : TestTripServiceBase
     {
-        
         [TestMethod]
         public async Task Test_CreateAsync_Given_Valid_Data_validation_should_be_successful()
         {
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            Seed(UserEntityToSeed);
+            Seed(TripRolesToSeed);
+
             var createTripDto = GetCreateTripDtoData();
             var resultTripDto = await TripService.CreateAsync(createTripDto);
 
             var result = CompareOutputData(createTripDto, resultTripDto);
 
             Assert.IsTrue(result);
-        }
+    }
 
         private bool CompareOutputData(CreateTripDto input, TripDto output)
         {
