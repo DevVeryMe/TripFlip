@@ -8,6 +8,8 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemListDtos;
+using TripFlip.Services.Enums;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -21,15 +23,21 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
         /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public ItemListService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="currentUserService">ICurrentUserService instance.</param>
+        public ItemListService(TripFlipDbContext tripFlipDbContext,
+            IMapper mapper,
+            ICurrentUserService currentUserService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
+            _currentUserService = currentUserService;
         }
 
         public async Task<ItemListDto> GetByIdAsync(int id)
@@ -39,7 +47,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
 
-            ValidateItemListEntityIsNotNull(itemListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
 
             var itemListDto = _mapper.Map<ItemListDto>(itemListEntity);
 
@@ -83,6 +92,14 @@ namespace TripFlip.Services
 
             var itemListEntity = _mapper.Map<ItemListEntity>(createItemListDto);
 
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
+
             var entityEntry = _tripFlipDbContext.ItemLists.Add(itemListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
@@ -97,7 +114,16 @@ namespace TripFlip.Services
                 .ItemLists
                 .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
 
-            ValidateItemListEntityIsNotNull(itemListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             itemListEntity.Title = updateItemListDto.Title;
 
@@ -114,25 +140,19 @@ namespace TripFlip.Services
                 .ItemLists
                 .SingleOrDefaultAsync(entity => entity.Id == id);
 
-            ValidateItemListEntityIsNotNull(itemListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: itemListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             _tripFlipDbContext.ItemLists.Remove(itemListEntity);
             await _tripFlipDbContext.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Checks if the given <see cref="ItemListEntity"/> is not null. If null,
-        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="itemListEntity">Object that should be checked.</param>
-        void ValidateItemListEntityIsNotNull(ItemListEntity itemListEntity)
-        {
-
-            if (itemListEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.ItemListNotFound);
-            }
-
         }
 
         /// <summary>

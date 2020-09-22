@@ -96,16 +96,21 @@ namespace TripFlip.Services.Helpers
         }
 
         /// <summary>
-        /// Validates whether current user has route editor role.
+        /// Validates whether current user has a specified route role.
         /// </summary>
         /// <param name="currentUserService">Instance of service class that provides access 
         /// to properties of the current user.</param>
         /// <param name="tripFlipDbContext">Instance of database context.</param>
         /// <param name="routeId">Route id.</param>
-        public static async Task ValidateCurrentUserIsRouteEditorAsync(
+        /// <param name="routeRoleToValidate">Route role to validate.</param>
+        /// <param name="errorMessage">Error message to show,
+        /// if validation is not successful.</param>
+        public static async Task ValidateCurrentUserRouteRoleAsync(
             ICurrentUserService currentUserService,
             TripFlipDbContext tripFlipDbContext,
-            int routeId)
+            int routeId,
+            RouteRoles routeRoleToValidate,
+            string errorMessage)
         {
             var currentUserId = currentUserService.UserId;
 
@@ -119,16 +124,16 @@ namespace TripFlip.Services.Helpers
                     && routeSubscriber.RouteId == routeId);
 
             ValidateEntityNotNull(routeSubscriberEntity,
-                ErrorConstants.RouteSubscribersNotFound);
+                ErrorConstants.NotRouteSubscriber);
 
-            var routeSubscriberIsEditor = routeSubscriberEntity
+            var routeSubscriberHasSpecifiedRole = routeSubscriberEntity
                 .RouteRoles
                 .Any(routeRole =>
-                routeRole.RouteRoleId == (int)RouteRoles.Editor);
+                routeRole.RouteRoleId == (int)routeRoleToValidate);
 
-            if (!routeSubscriberIsEditor)
+            if (!routeSubscriberHasSpecifiedRole)
             {
-                throw new ArgumentException(ErrorConstants.NotRouteEditor);
+                throw new ArgumentException(errorMessage);
             }
         }
     }

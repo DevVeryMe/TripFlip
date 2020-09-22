@@ -55,5 +55,9 @@
         public static readonly string RouteSubscribersNotFound = "At least one of given route subscribers' ids is not found.";
 
         public static readonly string NotRouteEditor = "Current user is not granted with route editor role.";
+
+        public static readonly string NotRouteAdmin = "Current user is not granted with route admin role.";
+
+        public static readonly string NotRouteSubscriber = "Current user is not a subscriber of a specified route.";
     }
 }

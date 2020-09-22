@@ -8,6 +8,7 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TaskDtos;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
@@ -45,7 +46,16 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == createTaskDto.TaskListId);
 
-            ValidateTaskListEntityNotNull(taskListEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskListEntity, ErrorConstants.TaskListNotFound);
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskListEntity.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             var taskEntity = _mapper.Map<TaskEntity>(createTaskDto);
 
@@ -99,7 +109,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTaskEntityNotNull(taskEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
 
             var taskDto = _mapper.Map<TaskDto>(taskEntity);
 
@@ -108,10 +119,21 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateAsync(UpdateTaskDto updateTaskDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskDto.Id);
 
-            ValidateTaskEntityNotNull(taskEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskEntity.TaskList.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             taskEntity.Description = updateTaskDto.Description;
             taskEntity.PriorityLevel = _mapper.Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskDto.PriorityLevel);
@@ -125,10 +147,21 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdatePriorityAsync(UpdateTaskPriorityDto updateTaskPriorityDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskPriorityDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskPriorityDto.Id);
 
-            ValidateTaskEntityNotNull(taskEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskEntity.TaskList.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             taskEntity.PriorityLevel = _mapper
                 .Map<Domain.Entities.Enums.TaskPriorityLevel>(updateTaskPriorityDto.PriorityLevel);
@@ -141,10 +174,21 @@ namespace TripFlip.Services
 
         public async Task<TaskDto> UpdateCompletenessAsync(UpdateTaskCompletenessDto updateTaskCompletenessDto)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .FindAsync(updateTaskCompletenessDto.Id);
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == updateTaskCompletenessDto.Id);
 
-            ValidateTaskEntityNotNull(taskEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
+
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskEntity.TaskList.RouteId,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             taskEntity.IsCompleted = updateTaskCompletenessDto.IsCompleted;
 
@@ -158,12 +202,21 @@ namespace TripFlip.Services
         {
             var taskEntity = await _tripFlipDbContext.Tasks
                 .AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == id);
+                .Include(task => task.TaskList)
+                .SingleOrDefaultAsync(task => task.Id == id);
 
             if (taskEntity is null)
             {
                 throw new NotFoundException(ErrorConstants.TaskNotFound);
             }
+
+            // Validate current user has route 'Admin' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: taskEntity.TaskList.RouteId,
+                routeRoleToValidate: RouteRoles.Admin,
+                errorMessage: ErrorConstants.NotRouteAdmin);
 
             _tripFlipDbContext.Tasks.Remove(taskEntity);
             await _tripFlipDbContext.SaveChangesAsync();
@@ -187,9 +240,13 @@ namespace TripFlip.Services
             // Get current task route.
             var currentTaskRoute = taskToSetAssignees.TaskList.Route;
 
-            // Validate current user has route editor role.
-            await EntityValidationHelper.ValidateCurrentUserIsRouteEditorAsync(
-                _currentUserService, _tripFlipDbContext, currentTaskRoute.Id);
+            // Validate current user has route 'Editor' role.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                currentUserService: _currentUserService,
+                tripFlipDbContext: _tripFlipDbContext,
+                routeId: currentTaskRoute.Id,
+                routeRoleToValidate: RouteRoles.Editor,
+                errorMessage: ErrorConstants.NotRouteEditor);
 
             // Validate route subscribers exist and has same route id as task.
             var currentRouteSubscriberIds = currentTaskRoute
@@ -235,26 +292,6 @@ namespace TripFlip.Services
             _tripFlipDbContext.TaskAssignees.AddRange(assigneesToAdd);
 
             await _tripFlipDbContext.SaveChangesAsync();
-        }
-
-        private void ValidateTaskEntityNotNull(TaskEntity taskEntity)
-        {
-
-            if (taskEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.TaskNotFound);
-            }
-
-        }
-
-        private void ValidateTaskListEntityNotNull(TaskListEntity taskListEntity)
-        {
-
-            if (taskListEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.TaskListNotFound);
-            }
-
         }
     }
 }

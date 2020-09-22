@@ -326,13 +326,13 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task GrantTripRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto)
+        public async Task GrantTripRoleAsync(GrantTripRolesDto grantTripRolesDto)
         {
             var currentUserId = _currentUserService.UserId;
 
             // Validate user-to-grant-role-to exists.
             var userToGrantRole = await _tripFlipDbContext.Users
-                .SingleOrDefaultAsync(user => user.Id == grantSubscriberRoleDto.UserId);
+                .SingleOrDefaultAsync(user => user.Id == grantTripRolesDto.UserId);
             EntityValidationHelper.ValidateEntityNotNull(
                 userToGrantRole, ErrorConstants.UserNotFound);
 
@@ -340,31 +340,31 @@ namespace TripFlip.Services
             var trip = await _tripFlipDbContext.Trips
                 .Include(t => t.TripSubscribers)
                 .ThenInclude(subscribers => subscribers.TripRoles)
-                .FirstOrDefaultAsync(t => t.Id == grantSubscriberRoleDto.TripId);
+                .FirstOrDefaultAsync(t => t.Id == grantTripRolesDto.TripId);
             EntityValidationHelper.
                 ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
 
             // Validate current user is trip admin.
             await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
-                _currentUserService, _tripFlipDbContext, grantSubscriberRoleDto.TripId);
+                _currentUserService, _tripFlipDbContext, grantTripRolesDto.TripId);
 
             // Remove invalid values from requested role id collection.
             var realTripRolesIds = (IEnumerable<int>) Enum.GetValues(typeof(TripRoles));
-            grantSubscriberRoleDto.TripRoleIds = grantSubscriberRoleDto
+            grantTripRolesDto.TripRoleIds = grantTripRolesDto
                 .TripRoleIds
                 .Distinct()
                 .Where(requestedId => realTripRolesIds.Contains(requestedId));
 
             var tripSubscriber = trip.TripSubscribers
-                .FirstOrDefault(subscribers => subscribers.UserId == grantSubscriberRoleDto.UserId);
+                .FirstOrDefault(subscribers => subscribers.UserId == grantTripRolesDto.UserId);
 
             // Subscribe given user to trip if he's not subscribed.
             if (tripSubscriber is null)
             {
                 tripSubscriber = new TripSubscriberEntity()
                 {
-                    TripId = grantSubscriberRoleDto.TripId,
-                    UserId = grantSubscriberRoleDto.UserId
+                    TripId = grantTripRolesDto.TripId,
+                    UserId = grantTripRolesDto.UserId
                 };
             }
 
@@ -376,12 +376,12 @@ namespace TripFlip.Services
             }
 
             // Add requested set of roles to subscriber.
-            bool collectionHasRolesToAdd = grantSubscriberRoleDto.TripRoleIds.Count() > 0;
+            bool collectionHasRolesToAdd = grantTripRolesDto.TripRoleIds.Count() > 0;
             if (collectionHasRolesToAdd)
             {
                 var rolesToAdd = new List<TripSubscriberRoleEntity>();
 
-                foreach (int requestedRoleId in grantSubscriberRoleDto.TripRoleIds)
+                foreach (int requestedRoleId in grantTripRolesDto.TripRoleIds)
                 {
                     rolesToAdd.Add(new TripSubscriberRoleEntity()
                     {
@@ -626,10 +626,14 @@ namespace TripFlip.Services
                     .ThenInclude(tripEntity => tripEntity.Routes)
                         .ThenInclude(routeEntity => routeEntity.TaskLists)
                             .ThenInclude(taskListEntity => taskListEntity.Tasks)
+                                .ThenInclude(taskEntity => taskEntity.TaskAssignees)
+                                    .ThenInclude(taskAssigneeEntity => taskAssigneeEntity.RouteSubscriber)
                 .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
                     .ThenInclude(tripEntity => tripEntity.Routes)
                         .ThenInclude(routeEntity => routeEntity.ItemLists)
                             .ThenInclude(itemListEntity => itemListEntity.Items)
+                                .ThenInclude(itemEntity => itemEntity.ItemAssignees)
+                                    .ThenInclude(ItemAssigneeEntity => ItemAssigneeEntity.RouteSubscriber)
                 .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
                     .ThenInclude(tripEntity => tripEntity.Routes)
                         .ThenInclude(routeEntity => routeEntity.RoutePoints)

@@ -77,11 +77,13 @@ namespace TripFlip.Services
             var routeEntity = await _tripFlipDbContext
                 .Routes
                 .Include(route => route.ItemLists)
+                .Include(route => route.TaskLists)
                 .SingleOrDefaultAsync(entity => entity.Id == id);
 
             ValidateRouteEntityIsNotNull(routeEntity);
 
             _tripFlipDbContext.ItemLists.RemoveRange(routeEntity.ItemLists);
+            _tripFlipDbContext.TaskLists.RemoveRange(routeEntity.TaskLists);
 
             _tripFlipDbContext.Routes.Remove(routeEntity);
             await _tripFlipDbContext.SaveChangesAsync();

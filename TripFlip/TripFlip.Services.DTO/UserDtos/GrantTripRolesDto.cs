@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TripFlip.Services.Dto.UserDtos
 {
-    public class GrantSubscriberRoleDto
+    public class GrantTripRolesDto
     {
         public int TripId { get; set; }
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using TripFlip.ViewModels.Enums;
+using TripFlip.ViewModels.RouteSubscriberViewModels;
 
 namespace TripFlip.ViewModels.TaskViewModels
 {
-    public class TaskWithoutListIdViewModel
+    public class TaskWithAssigneesViewModel
     {
         public int Id { get; set; }
 
@@ -14,5 +16,7 @@ namespace TripFlip.ViewModels.TaskViewModels
         public DateTimeOffset DateCreated { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public ICollection<RouteSubscriberViewModel> TaskAssignees { get; set; }
     }
 }
