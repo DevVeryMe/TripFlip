@@ -20,7 +20,7 @@ namespace TripFlip.DataAccess.Configurations
                 .HasForeignKey(taksAssignee => taksAssignee.TaskId);
 
             builder.HasOne(taksAssignee => taksAssignee.RouteSubscriber)
-                .WithMany(routeSubscriber => routeSubscriber.TaskAssignments)
+                .WithMany(routeSubscriber => routeSubscriber.AssignedTasks)
                 .HasForeignKey(taksAssignee => taksAssignee.RouteSubscriberId);
         }
     }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using TripFlip.Services.Dto.Enums;
+using TripFlip.Services.Dto.RouteSubscriberDtos;
 
 namespace TripFlip.Services.Dto.TaskDtos
 {
-    public class TaskWithoutListIdDto
+    public class TaskWithAssigneesDto
     {
         public int Id { get; set; }
 
@@ -14,5 +16,7 @@ namespace TripFlip.Services.Dto.TaskDtos
         public DateTimeOffset DateCreated { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public ICollection<RouteSubscriberDto> TaskAssignees { get; set; }
     }
 }

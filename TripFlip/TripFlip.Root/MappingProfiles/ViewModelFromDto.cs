@@ -3,6 +3,7 @@ using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Dto.RoutePointDtos;
+using TripFlip.Services.Dto.RouteSubscriberDtos;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Dto.TaskListDtos;
 using TripFlip.Services.Dto.TripDtos;
@@ -12,6 +13,7 @@ using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels.ItemListViewModels;
 using TripFlip.ViewModels.ItemViewModels;
 using TripFlip.ViewModels.RoutePointViewModels;
+using TripFlip.ViewModels.RouteSubscriberViewModels;
 using TripFlip.ViewModels.RouteViewModels;
 using TripFlip.ViewModels.TaskListViewModels;
 using TripFlip.ViewModels.TaskViewModels;
@@ -71,11 +73,13 @@ namespace TripFlip.Root.MappingProfiles
 
             CreateMap<TripWithRoutesAndUserRolesDto, TripWithRoutesAndUserRolesViewModel>();
 
-            CreateMap<ItemWithoutListIdDto, ItemWithoutListIdViewModel>();
+            CreateMap<ItemWithAssigneesDto, ItemWithAssigneesViewModel>();
 
-            CreateMap<TaskWithoutListIdDto, TaskWithoutListIdViewModel>();
+            CreateMap<TaskWithAssigneesDto, TaskWithAssigneesViewModel>();
 
             CreateMap<UsersByTripAndCategorizedByRoleDto, UsersByTripAndCategorizedByRoleViewModel>();
+
+            CreateMap<RouteSubscriberDto, RouteSubscriberViewModel>();
         }
     }
 }
