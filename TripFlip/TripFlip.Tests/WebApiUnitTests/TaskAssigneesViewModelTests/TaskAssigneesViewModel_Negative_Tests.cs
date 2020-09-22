@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.TaskViewModels;
+using WebApiUnitTests.Helpers;
 
 namespace WebApiUnitTests.TaskAssigneesViewModelTests
 {
@@ -23,10 +24,7 @@ namespace WebApiUnitTests.TaskAssigneesViewModelTests
                     routeSubscriberIds: _defaultRouteSubscriberIds);
 
             // Act
-            bool result = Validator.TryValidateObject(taskAssigneesViewModel,
-                new ValidationContext(taskAssigneesViewModel, null, null),
-                null,
-                true);
+            bool result = ModelValidator.IsValid(taskAssigneesViewModel);
 
             // Assert
             Assert.IsFalse(result, testCaseDisplayName);
@@ -43,10 +41,7 @@ namespace WebApiUnitTests.TaskAssigneesViewModelTests
                 Get_TaskAssigneesViewModel(routeSubscriberIds: invalidRouteSubscriberIds);
 
             // Act
-            bool result = Validator.TryValidateObject(taskAssigneesViewModel,
-                new ValidationContext(taskAssigneesViewModel, null, null),
-                null,
-                true);
+            bool result = ModelValidator.IsValid(taskAssigneesViewModel);
 
             // Assert
             Assert.IsFalse(result, testCaseDisplayName);
