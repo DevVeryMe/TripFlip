@@ -6,7 +6,7 @@ using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TripServiceTests
 {
-    public class TestTripServiceBase : TestServiceBase
+    public abstract class TestTripServiceBase : TestServiceBase
     {
         protected static UserEntity UserEntityToSeed = new UserEntity()
         {
