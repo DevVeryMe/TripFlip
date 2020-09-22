@@ -32,13 +32,11 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
         [DynamicData(nameof(GetTestNewPasswordData), DynamicDataSourceType.Method)]
         public void TestNewPasswordValidation(
             string testCaseDisplayName,
-            string newPassword,
-            string newPasswordConfirmation)
+            string newPassword)
         {
             // Arrange
             var changeUserPasswordViewModel =
-                GetChangeUserPasswordViewModel(newPassword: newPassword, 
-                    newPasswordConfirmation: newPasswordConfirmation);
+                GetChangeUserPasswordViewModel(newPassword: newPassword);
 
             // Act
             var result = Validator.TryValidateObject(changeUserPasswordViewModel,
@@ -117,16 +115,14 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 1: Test_ChangeUserPassword_Validation_Given_invalid_" +
                 "NewPassword_equals_null_Validation_should_be_failed.",
-                null,
-                new string('*', 10)
+                null
             };
 
             yield return new object[]
             {
                 "Test case 2: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_equals" +
                 "_empty_string_Validation_should_be_failed.",
-                string.Empty,
-                new string('*', 10),
+                string.Empty
             };
 
             yield return new object[]
@@ -134,16 +130,13 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_" +
                 "too_long_length_Validation_should_be_failed.",
                 "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa"
+                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
             };
 
             yield return new object[]
             {
                 "Test case 4: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_" +
                 "too_short_length_Validation_should_be_failed.",
-                "Aaaaa1@",
                 "Aaaaa1@"
             };
 
@@ -151,7 +144,6 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             {
                 "Test case 5: Test_ChangeUserPassword_Validation_Given_invalid_NewPassword_" +
                 "incorrect_format_Validation_should_be_failed.",
-                new string('*', 10),
                 new string('*', 10)
             };
         }
