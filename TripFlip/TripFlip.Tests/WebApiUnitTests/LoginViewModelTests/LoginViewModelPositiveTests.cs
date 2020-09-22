@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using TripFlip.ViewModels.UserViewModels;
+using WebApiUnitTests.Helpers;
 
 namespace WebApiUnitTests.LoginViewModelTests
 {
@@ -16,10 +16,7 @@ namespace WebApiUnitTests.LoginViewModelTests
             var loginViewModel = GetLoginViewModel(email: email);
 
             // Act
-            var result = Validator.TryValidateObject(loginViewModel,
-                new ValidationContext(loginViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(loginViewModel);
 
             // Assert
             Assert.IsTrue(result);
@@ -33,10 +30,7 @@ namespace WebApiUnitTests.LoginViewModelTests
             var loginViewModel = GetLoginViewModel(password: password);
 
             // Act
-            var result = Validator.TryValidateObject(loginViewModel,
-                new ValidationContext(loginViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(loginViewModel);
 
             // Assert
             Assert.IsTrue(result);
