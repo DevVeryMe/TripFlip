@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.UserViewModels;
+using WebApiUnitTests.Helpers;
 
 namespace WebApiUnitTests.GrantRouteRolesViewModelTests
 {
@@ -19,10 +20,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeId: routeId);
 
             // Act
-            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
-                new ValidationContext(grantRouteRolesViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(grantRouteRolesViewModel);
 
             // Assert
             Assert.IsTrue(result);
@@ -37,10 +35,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(userId: userId);
 
             // Act
-            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
-                new ValidationContext(grantRouteRolesViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(grantRouteRolesViewModel);
 
             // Assert
             Assert.IsTrue(result);
@@ -55,10 +50,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
             var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: routeRoleIds);
 
             // Act
-            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
-                new ValidationContext(grantRouteRolesViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(grantRouteRolesViewModel);
 
             // Assert
             Assert.IsTrue(result);

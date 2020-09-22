@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.UserViewModels;
+using WebApiUnitTests.Helpers;
+
 
 namespace WebApiUnitTests.GrantRouteRolesViewModelTests
 {
@@ -20,10 +20,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
                 routeRoleIds: _routeRoleIdsDefaultValue);
 
             // Act
-            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
-                new ValidationContext(grantRouteRolesViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(grantRouteRolesViewModel);
 
             // Assert
             Assert.IsFalse(result);
@@ -39,10 +36,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
         var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
 
             // Act
-            var result = Validator.TryValidateObject(grantRouteRolesViewModel,
-                new ValidationContext(grantRouteRolesViewModel),
-                null,
-                true);
+            var result = ModelValidator.IsValid(grantRouteRolesViewModel);
 
             // Assert
             Assert.IsFalse(result, displayName);
