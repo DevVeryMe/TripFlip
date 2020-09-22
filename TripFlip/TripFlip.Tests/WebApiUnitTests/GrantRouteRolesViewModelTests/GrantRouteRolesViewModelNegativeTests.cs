@@ -30,10 +30,13 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
         }
 
         [TestMethod]
-        public void Create_ChangeUserPasswordViewModel_Given_Not_valid_RouteRoleIds__equals_null_Validation_should_be_failed()
+        public void TestRouteRoleIdsValidation()
         {
+            var displayName = "Create_ChangeUserPasswordViewModel_" +
+                                 "Given_Not_valid_RouteRoleIds_equals_null_Validation_should_be_failed";
+
             // Arrange
-            var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
+        var grantRouteRolesViewModel = GetGrantRouteRolesViewModel(routeRoleIds: null);
 
             // Act
             var result = Validator.TryValidateObject(grantRouteRolesViewModel,
@@ -42,7 +45,7 @@ namespace WebApiUnitTests.GrantRouteRolesViewModelTests
                 true);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result, displayName);
         }
 
         private static GrantRouteRolesViewModel GetGrantRouteRolesViewModel(IEnumerable<int> routeRoleIds,
