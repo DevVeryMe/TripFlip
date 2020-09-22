@@ -37,11 +37,6 @@ namespace WebApiIntegrationTests.TripServiceTests
 
         protected ITripService TripService;
 
-        public TestTripServiceBase()
-        {
-            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
-        }
-
         protected ICurrentUserService CreateCurrentUserServiceWithExistentUser()
         {
             var correctEmail = "string@string.com";

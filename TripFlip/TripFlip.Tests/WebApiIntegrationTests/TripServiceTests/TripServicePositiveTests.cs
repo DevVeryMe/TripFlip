@@ -13,6 +13,7 @@ namespace WebApiIntegrationTests.TripServiceTests
         [TestMethod]
         public async Task Test_CreateAsync_Given_Valid_Data_validation_should_be_successful()
         {
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
             TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
 
             Seed(UserEntityToSeed);

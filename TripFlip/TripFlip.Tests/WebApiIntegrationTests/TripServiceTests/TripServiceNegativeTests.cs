@@ -27,19 +27,6 @@ namespace WebApiIntegrationTests.TripServiceTests
                 () => TripService.CreateAsync(createTripDto));
         }
 
-        private bool CompareOutputData(CreateTripDto input, TripDto output)
-        {
-            var isEqual = !(output == null ||
-                            input == null ||
-                            output.Id == default ||
-                            input.Description != output.Description ||
-                            input.Title != output.Title ||
-                            input.EndsAt != output.EndsAt ||
-                            input.StartsAt != output.StartsAt);
-
-            return isEqual;
-        }
-
         private static CreateTripDto GetCreateTripDtoData()
         {
             return new CreateTripDto()

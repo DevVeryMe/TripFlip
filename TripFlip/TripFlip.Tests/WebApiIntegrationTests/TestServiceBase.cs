@@ -1,8 +1,7 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using TripFlip.DataAccess;
 using TripFlip.Root.MappingProfiles;
 
@@ -53,15 +52,15 @@ namespace WebApiIntegrationTests
             return context;
         }
 
-        protected void Seed<TEntity>(TEntity entity)
-        where TEntity: class
+        protected void Seed<TEntity>(TEntity entity) 
+            where TEntity: class
         {
             TripFlipDbContext.Add(entity);
             TripFlipDbContext.SaveChanges();
         }
 
-        protected void Seed<TEntity>(IEnumerable<TEntity> entities)
-        where TEntity: class
+        protected void Seed<TEntity>(IEnumerable<TEntity> entities) 
+            where TEntity: class
         {
             TripFlipDbContext.AddRange(entities);
             TripFlipDbContext.SaveChanges();
