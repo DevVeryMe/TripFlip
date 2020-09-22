@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.ViewModels.UserViewModels;
 
 namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
@@ -29,8 +29,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(GetTestNewPasswordData), DynamicDataSourceType.Method)]
-        public void TestNewPasswordValidation(
+        [DynamicData(nameof(GetTestNewPasswordAndNewPasswordConfirmationData), DynamicDataSourceType.Method)]
+        public void TestNewPasswordAndNewPasswordConfirmationValidation(
             string testCaseDisplayName,
             string newPassword,
             string newPasswordConfirmation)
@@ -38,28 +38,6 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             // Arrange
             var changeUserPasswordViewModel =
                 GetChangeUserPasswordViewModel(newPassword: newPassword, 
-                    newPasswordConfirmation: newPasswordConfirmation);
-
-            // Act
-            var result = Validator.TryValidateObject(changeUserPasswordViewModel,
-                new ValidationContext(changeUserPasswordViewModel, null, null),
-                null,
-                true);
-
-            // Assert
-            Assert.IsTrue(result, testCaseDisplayName);
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(GetTestNewPasswordConfirmationData), DynamicDataSourceType.Method)]
-        public void TestNewPasswordConfirmationValidation(
-            string testCaseDisplayName,
-            string newPassword,
-            string newPasswordConfirmation)
-        {
-            // Arrange
-            var changeUserPasswordViewModel =
-                GetChangeUserPasswordViewModel(newPassword: newPassword,
                     newPasswordConfirmation: newPasswordConfirmation);
 
             // Act
@@ -97,12 +75,13 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             };
         }
 
-        static IEnumerable<object[]> GetTestNewPasswordData()
+        static IEnumerable<object[]> GetTestNewPasswordAndNewPasswordConfirmationData()
         {
             yield return new object[]
             {
                 "Test case 1: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_equals" +
-                "_minimum_value_8_and_correct_format_Validation_should_be_successful.",
+                "_minimum_value_8_and_correct_format_and_NewPasswordConfirmation_equals_" +
+                "NewPassword_Validation_should_be_successful.",
                 "Aaaaaa1@",
                 "Aaaaaa1@"
             };
@@ -110,7 +89,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             yield return new object[]
             {
                 "Test case 2: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_" +
-                "equals_maximum_value_100_and_correct_format_Validation_should_be_successful.",
+                "equals_maximum_value_100_and_correct_format_and_NewPasswordConfirmation_" +
+                "equals_NewPassword_Validation_should_be_successful.",
                 "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
                 "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa",
                 "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
@@ -120,36 +100,8 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
             yield return new object[]
             {
                 "Test case 3: Test_ChangeUserPassword_Validation_Given_valid_NewPassword_" +
-                "equals_average_value_50_and_correct_format_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA",
-                "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
-            };
-        }
-
-        static IEnumerable<object[]> GetTestNewPasswordConfirmationData()
-        {
-            yield return new object[]
-            {
-                "Test case 1: Test_ChangeUserPassword_Validation_Given_valid_NewPasswordConfirmation_equals" +
-                "_minimum_value_8_and_matches_NewPassword_Validation_should_be_successful.",
-                "Aaaaaa1@",
-                "Aaaaaa1@"
-            };
-
-            yield return new object[]
-            {
-                "Test case 2: Test_ChangeUserPassword_Validation_Given_valid_NewPasswordConfirmation_" +
-                "equals_maximum_value_100_and_and_matches_NewPassword_Validation_should_be_successful.",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa",
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaaaaAaaaaaaa1@" +
-                "AaaaaaaaaaAaaaaaaaaaAaaaaaaaaa"
-            };
-
-            yield return new object[]
-            {
-                "Test case 3: Test_ChangeUserPassword_Validation_Given_valid_NewPasswordConfirmation_" +
-                "equals_average_value_50_and_matches_NewPassword_Validation_should_be_successful.",
+                "equals_average_value_50_and_correct_format_and_NewPasswordConfirmation_" +
+                "equals_NewPassword_Validation_should_be_successful.",
                 "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA",
                 "AaaaaaaaaaAaaaaaaa1@AaaaaaaaaaAaaaaaaaaaAaaaaaaaaaA"
             };
