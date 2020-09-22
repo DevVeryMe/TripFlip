@@ -49,25 +49,14 @@ namespace WebApiUnitTests.LoginViewModelTests
             {
                 "Test case 2: Create_LoginViewModel_Given_Valid_Email_average_length_and" +
                 "_match_format_Validation_should_be_failed",
-                "aaaaaaaa@aaaaa.aaa"
+                new string('a', 30) + "@mail.com"
             };
 
             yield return new object[]
             {
                 "Test case 3: Create_LoginViewModel_Given_Valid_Email_max_length_and" +
                 "_match_format_Validation_should_be_successful",
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaa@a.aa"
-            };
-
-            yield return new object[]
-            {
-                "Test case 4: Create_LoginViewModel_Given_Valid_Email_average_length_and" +
-                "_match_format_Validation_should_be_successful",
-                "aaaaaaaaaaaaaaaaaaa@a.aa"
+                new string('a', 311) + "@mail.com"
             };
         }
 
