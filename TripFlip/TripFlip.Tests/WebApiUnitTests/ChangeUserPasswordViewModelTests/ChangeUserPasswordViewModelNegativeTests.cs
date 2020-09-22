@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using TripFlip.ViewModels.UserViewModels;
+using WebApiUnitTests.Helpers;
 
 namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
 {
@@ -19,10 +19,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 GetChangeUserPasswordViewModel(oldPassword: oldPassword);
 
             // Act
-            var result = Validator.TryValidateObject(changeUserPasswordViewModel,
-                new ValidationContext(changeUserPasswordViewModel, null, null),
-                null,
-                true);
+            var result = ModelValidator.IsValid(changeUserPasswordViewModel);
 
             // Assert
             Assert.IsFalse(result, testCaseDisplayName);
@@ -39,10 +36,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                 GetChangeUserPasswordViewModel(newPassword: newPassword);
 
             // Act
-            var result = Validator.TryValidateObject(changeUserPasswordViewModel,
-                new ValidationContext(changeUserPasswordViewModel, null, null),
-                null,
-                true);
+            var result = ModelValidator.IsValid(changeUserPasswordViewModel);
 
             // Assert
             Assert.IsFalse(result, testCaseDisplayName);
@@ -61,10 +55,7 @@ namespace WebApiUnitTests.ChangeUserPasswordViewModelTests
                     newPasswordConfirmation: newPasswordConfirmation);
 
             // Act
-            var result = Validator.TryValidateObject(changeUserPasswordViewModel,
-                new ValidationContext(changeUserPasswordViewModel, null, null),
-                null,
-                true);
+            var result = ModelValidator.IsValid(changeUserPasswordViewModel);
 
             // Assert
             Assert.IsFalse(result, testCaseDisplayName);
