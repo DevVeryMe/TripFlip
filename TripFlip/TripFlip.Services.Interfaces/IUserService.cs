@@ -83,8 +83,8 @@ namespace TripFlip.Services.Interfaces
         /// Grants a role to any user, who is subscriber of a trip,
         /// if the current one is granted with the admin role.
         /// </summary>
-        /// <param name="grantSubscriberRoleDto">Data to with user id and role to grant.</param>
-        Task GrantTripRoleAsync(GrantSubscriberRoleDto grantSubscriberRoleDto);
+        /// <param name="grantTripRolesDto">Data to with user id and role to grant.</param>
+        Task GrantTripRoleAsync(GrantTripRolesDto grantTripRolesDto);
 
         /// <summary>
         /// Grants a route role to any user, who is the subscriber of a route,
