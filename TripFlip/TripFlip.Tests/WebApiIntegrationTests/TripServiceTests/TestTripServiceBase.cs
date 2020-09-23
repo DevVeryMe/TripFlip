@@ -14,7 +14,7 @@ namespace WebApiIntegrationTests.TripServiceTests
             Email = "string@string.com"
         };
 
-        protected static IEnumerable<TripRoleEntity> TripRolesToSeed = new List<TripRoleEntity>()
+        protected static TripRoleEntity[] TripRolesToSeed = 
         {
             new TripRoleEntity()
             {

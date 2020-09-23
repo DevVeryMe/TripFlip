@@ -14,14 +14,16 @@ namespace WebApiIntegrationTests.TripServiceTests
         [TestMethod]
         public async Task Test_CreateAsync_Given_Not_valid_CurrentUser_Data_Validation_should_be_failed()
         {
-            Seed(UserEntityToSeed);
-            Seed(TripRolesToSeed);
+            var tripFlipDbContext = CreateDbContext();
+
+            Seed(tripFlipDbContext, UserEntityToSeed);
+            Seed(tripFlipDbContext, TripRolesToSeed);
 
             var createTripDto = GetCreateTripDtoData();
 
             // Reset CurrentUserService and TripService with non existent user.
             CurrentUserService = CreateCurrentUserServiceWithNonExistentUser();
-            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+            TripService = new TripService(tripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(
                 () => TripService.CreateAsync(createTripDto));

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -9,16 +10,11 @@ namespace WebApiIntegrationTests
 {
     public abstract class TestServiceBase
     {
-        protected TripFlipDbContext TripFlipDbContext;
-
         protected IMapper Mapper;
-
-        protected List<string> Logs = new List<string>();
 
         protected TestServiceBase()
         {
             Mapper = CreateMapper();
-            TripFlipDbContext = CreateDbContext();
         }
 
         private IMapper CreateMapper()
@@ -39,12 +35,14 @@ namespace WebApiIntegrationTests
 
         protected TripFlipDbContext CreateDbContext()
         {
+            var dbName = Guid.NewGuid().ToString();
+            
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkInMemoryDatabase()
                 .BuildServiceProvider();
 
             var builder = new DbContextOptionsBuilder<TripFlipDbContext>();
-            builder.UseInMemoryDatabase("In memory test database")
+            builder.UseInMemoryDatabase(dbName)
                 .UseInternalServiceProvider(serviceProvider);
 
             var context = new TripFlipDbContext(builder.Options);
@@ -52,18 +50,15 @@ namespace WebApiIntegrationTests
             return context;
         }
 
-        protected void Seed<TEntity>(TEntity entity) 
-            where TEntity: class
+        protected void Seed<TEntity>(TripFlipDbContext context, params TEntity[] entities)
+            where TEntity : class
         {
-            TripFlipDbContext.Add(entity);
-            TripFlipDbContext.SaveChanges();
-        }
-
-        protected void Seed<TEntity>(IEnumerable<TEntity> entities) 
-            where TEntity: class
-        {
-            TripFlipDbContext.AddRange(entities);
-            TripFlipDbContext.SaveChanges();
+            foreach (var entity in entities)
+            {
+                context.Add(entity);
+                context.SaveChanges();
+                context.Entry(entity).State = EntityState.Detached;
+            }
         }
     }
 }
