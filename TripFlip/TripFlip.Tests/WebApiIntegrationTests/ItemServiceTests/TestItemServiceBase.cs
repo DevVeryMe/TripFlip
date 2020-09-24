@@ -34,6 +34,16 @@ namespace WebApiIntegrationTests.ItemServiceTests
             RouteId = 1
         };
 
+        protected ItemEntity ItemEntityToSeed => new ItemEntity()
+        {
+            Id = 1,
+            Title = "Item",
+            Comment = "Comment",
+            Quantity = "Quantity",
+            IsCompleted = false,
+            ItemListId = 1,
+        };
+
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
             new List<TripSubscriberEntity>()
             {
