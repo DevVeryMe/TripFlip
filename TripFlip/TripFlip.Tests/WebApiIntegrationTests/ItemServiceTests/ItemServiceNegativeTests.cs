@@ -45,7 +45,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItemList_Given_CurrentUser_Not_Route_Admin_should_be_failed()
+        public async Task Test_CreateItem_Given_CurrentUser_Not_Route_Admin_should_be_failed()
         {
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
@@ -67,7 +67,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
         [DataTestMethod]
         [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
-        public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
+        public async Task Test_CreateItem_Given_Not_valid_CurrentUser_should_be_failed(
             string displayName, ICurrentUserService currentUserService)
         {
             Seed(TripFlipDbContext, NonExistentUser);
