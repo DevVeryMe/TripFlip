@@ -32,7 +32,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItem_Valid_Data_should_be_successful()
+        public async Task CreateItem_ValidData_Successful()
         {
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
