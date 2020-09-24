@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.Dto.ItemListDtos;
 using WebApiIntegrationTests.CustomComparers;
@@ -15,24 +15,34 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Title = "Title"
         };
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            TripFlipDbContext = CreateDbContext();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            TripFlipDbContext.Dispose();
+        }
+
         [TestMethod]
         public async Task Test_CreateItemList_Valid_Data_should_be_successful()
         {
-            var tripFlipDbContext = CreateDbContext();
-
-            Seed(tripFlipDbContext, CorrectUser);
-            Seed(tripFlipDbContext, TripEntityToSeed);
-            Seed(tripFlipDbContext, RouteEntityToSeed);
-            Seed(tripFlipDbContext, TripSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteRoleEntityToSeed);
-            Seed(tripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, CorrectUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(CorrectUser.Id,
                 CorrectUser.Email);
 
             var createItemListDto = GetCreateItemListDto();
-            var itemListService = new ItemListService(tripFlipDbContext, Mapper, 
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, 
                 CurrentUserService);
             var resultItemListDto = await itemListService.CreateAsync(createItemListDto);
             var comparer = new ItemListDtoComparer();

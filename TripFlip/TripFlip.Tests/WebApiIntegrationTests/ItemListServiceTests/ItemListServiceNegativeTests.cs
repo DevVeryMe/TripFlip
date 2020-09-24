@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.Services;
@@ -12,17 +13,28 @@ namespace WebApiIntegrationTests.ItemListServiceTests
     [TestClass]
     public class ItemListServiceNegativeTests : TestItemListServiceBase
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            TripFlipDbContext = CreateDbContext();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            TripFlipDbContext.Dispose();
+        }
+
         [TestMethod]
         public async Task Test_CreateItemList_Given_Non_existent_RouteId_should_be_failed()
         {
-            var tripFlipDbContext = CreateDbContext();
-            Seed(tripFlipDbContext, CorrectUser);
-            Seed(tripFlipDbContext, TripEntityToSeed);
-            Seed(tripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, CorrectUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
 
             CurrentUserService = CreateCurrentUserServiceWithExistentUser();
             var createItemListDto = GetCreateItemListDto(routeId: 2);
-            var itemListService = new ItemListService(tripFlipDbContext, Mapper, CurrentUserService);
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemListService.CreateAsync(createItemListDto));
@@ -31,20 +43,18 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         [TestMethod]
         public async Task Test_CreateItemList_Given_CurrentUser_Not_Route_Admin_should_be_failed()
         {
-            var tripFlipDbContext = CreateDbContext();
-
-            Seed(tripFlipDbContext, NotRouteAdminRoleUser);
-            Seed(tripFlipDbContext, TripEntityToSeed);
-            Seed(tripFlipDbContext, RouteEntityToSeed);
-            Seed(tripFlipDbContext, TripSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteRoleEntityToSeed);
-            Seed(tripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, NotRouteAdminRoleUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
                 NotRouteSubscriberUser.Email);
             var createItemListDto = GetCreateItemListDto();
-            var itemListService = new ItemListService(tripFlipDbContext, Mapper, CurrentUserService);
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await itemListService.CreateAsync(createItemListDto));
@@ -55,20 +65,18 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
             string displayName, ICurrentUserService currentUserService)
         {
-            var tripFlipDbContext = CreateDbContext();
-
-            Seed(tripFlipDbContext, NonExistentUser, 
+            Seed(TripFlipDbContext, NonExistentUser, 
                 NotRouteSubscriberUser, 
                 NotTripSubscriberUser);
-            Seed(tripFlipDbContext, TripEntityToSeed);
-            Seed(tripFlipDbContext, RouteEntityToSeed);
-            Seed(tripFlipDbContext, TripSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(tripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
 
             CurrentUserService = CreateCurrentUserServiceWithExistentUser();
             var createItemListDto = GetCreateItemListDto();
-            var itemListService = new ItemListService(tripFlipDbContext, Mapper, currentUserService);
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, currentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemListService.CreateAsync(createItemListDto));

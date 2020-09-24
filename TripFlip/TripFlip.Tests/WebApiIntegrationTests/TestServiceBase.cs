@@ -12,6 +12,8 @@ namespace WebApiIntegrationTests
     {
         protected IMapper Mapper;
 
+        protected TripFlipDbContext TripFlipDbContext;
+
         protected TestServiceBase()
         {
             Mapper = CreateMapper();

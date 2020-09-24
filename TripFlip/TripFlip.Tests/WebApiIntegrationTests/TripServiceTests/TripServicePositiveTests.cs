@@ -22,16 +22,26 @@ namespace WebApiIntegrationTests.TripServiceTests
                 CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
         };
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            TripFlipDbContext = CreateDbContext();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            TripFlipDbContext.Dispose();
+        }
+
         [TestMethod]
         public async Task Test_CreateAsync_Given_Valid_Data_validation_should_be_successful()
         {
-            var tripFlipDbContext = CreateDbContext();
-
             CurrentUserService = CreateCurrentUserServiceWithExistentUser();
-            TripService = new TripService(tripFlipDbContext, Mapper, CurrentUserService);
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
 
-            Seed(tripFlipDbContext, UserEntityToSeed);
-            Seed(tripFlipDbContext, TripRolesToSeed);
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripRolesToSeed);
 
             var createTripDto = GetCreateTripDtoData();
             var resultTripDto = await TripService.CreateAsync(createTripDto);
