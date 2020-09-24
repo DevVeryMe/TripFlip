@@ -9,6 +9,12 @@ namespace WebApiIntegrationTests.TaskServiceTests
 {
     public class TestTaskServiceBase : TestServiceBase
     {
+        protected static UserEntity ValidUser => new UserEntity()
+        {
+            Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
+            Email = "correct@mail.com"
+        };
+
         protected static TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
