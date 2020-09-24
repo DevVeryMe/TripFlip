@@ -25,6 +25,18 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
+        public async Task UpdateAsync_NonExistentItemListId_ExceptionThrown()
+        {
+            // Arrange.
+            var updateItemListDto = GetUpdateItemListDto();
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemListService.UpdateAsync(updateItemListDto));
+        }
+
+        [TestMethod]
         public async Task GetById_NonExistentItemListId_ExceptionThrown()
         {
             // Arrange.

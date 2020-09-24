@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.ItemListServiceTests
@@ -129,6 +130,16 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected UpdateItemListDto GetUpdateItemListDto(int id = 1,
+            string title = "Title")
+        {
+            return new UpdateItemListDto()
+            {
+                Id = id,
+                Title = title
+            };
         }
     }
 }
