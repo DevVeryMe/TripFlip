@@ -28,8 +28,4 @@
     <ProjectReference Include="..\..\TripFlip.Services.Interfaces\TripFlip.Services.Interfaces.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ItemServiceTests\" />
-  </ItemGroup>
-
 </Project>
