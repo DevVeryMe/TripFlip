@@ -35,7 +35,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var createItemListDto = GetCreateItemListDto(routeId: 2);
+            var nonExistentRouteId = 2;
+            var createItemListDto = GetCreateItemListDto(routeId: nonExistentRouteId);
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
