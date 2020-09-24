@@ -25,7 +25,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task GetById_NonExistentItemListId_ExceptionThrown()
+        public async Task GetByIdAsync_NonExistentItemListId_ExceptionThrown()
         {
             // Arrange.
             // There is no ItemList entries in database, so any id will be non-existent.
