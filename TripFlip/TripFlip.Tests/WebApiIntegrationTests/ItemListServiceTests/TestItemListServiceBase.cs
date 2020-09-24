@@ -128,7 +128,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Email = "notsubofroute@mail.com"
         };
 
-        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
+        protected static UserEntity UserWithoutRouteRoles => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"

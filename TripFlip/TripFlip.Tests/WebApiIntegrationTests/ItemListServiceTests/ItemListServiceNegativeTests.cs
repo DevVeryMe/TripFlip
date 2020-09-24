@@ -36,6 +36,52 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 await itemListService.UpdateAsync(updateItemListDto));
         }
 
+
+        [TestMethod]
+        public async Task UpdateAsync_CurrentUserNotRouteEditor_ExceptionThrown()
+        {
+            Seed(TripFlipDbContext, UserWithoutRouteRoles);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(UserWithoutRouteRoles.Id,
+                UserWithoutRouteRoles.Email);
+
+            var updateItemListDto = GetUpdateItemListDto();
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await itemListService.UpdateAsync(updateItemListDto));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
+        public async Task UpdateAsync_InvalidCurrentUser_ExceptionThrown(
+            string displayName, ICurrentUserService currentUserService)
+        {
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
+
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+
+            CurrentUserService = currentUserService;
+            var updateItemListDto = GetUpdateItemListDto();
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemListService.UpdateAsync(updateItemListDto), displayName);
+        }
+
         [TestMethod]
         public async Task GetByIdAsync_NonExistentItemListId_ExceptionThrown()
         {
@@ -70,7 +116,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         [TestMethod]
         public async Task Test_CreateItemList_Given_CurrentUser_Not_Route_Admin_should_be_failed()
         {
-            Seed(TripFlipDbContext, NotRouteAdminRoleUser);
+            Seed(TripFlipDbContext, UserWithoutRouteRoles);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
@@ -78,8 +124,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
-                NotRouteAdminRoleUser.Email);
+            CurrentUserService = CreateCurrentUserService(UserWithoutRouteRoles.Id,
+                UserWithoutRouteRoles.Email);
             var createItemListDto = GetCreateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
