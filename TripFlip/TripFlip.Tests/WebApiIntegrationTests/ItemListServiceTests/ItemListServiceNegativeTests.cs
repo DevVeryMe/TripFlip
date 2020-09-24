@@ -38,7 +38,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItemList_Given_Non_existent_RouteId_should_be_failed()
+        public async Task CreateAsync_GivenNonExistentRouteId_ExceptionThrown()
         {
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
@@ -56,7 +56,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItemList_Given_CurrentUser_Not_Route_Admin_should_be_failed()
+        public async Task CreateAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
         {
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
@@ -77,7 +77,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
 
         [DataTestMethod]
         [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
-        public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
+        public async Task CreateAsync_GivenNotValidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
             Seed(TripFlipDbContext, NonExistentUser);
@@ -102,23 +102,23 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         {
             yield return new object[]
             {
-                "Test case 1: Test_CreateItemList_Given_Not_existent_CurrentUser_should_be_failed",
+                "Test case 1: CreateAsync_GivenNotExistentCurrentUser_ExceptionThrown",
                 CreateCurrentUserService(NonExistentUser.Id,
                     NonExistentUser.Email)
             };
 
             yield return new object[]
             {
-                "Test case 2: Test_CreateItemList_Given__CurrentUser" +
-                "_Not_subscribed_to_trip_should_be_failed",
+                "Test case 2: CreateAsync_GivenCurrentUser" +
+                "NotSubscribedToTrip_ExceptionThrown",
                 CreateCurrentUserService(NotTripSubscriberUser.Id,
                     NotTripSubscriberUser.Email)
             };
 
             yield return new object[]
             {
-                "Test case 3: Test_CreateItemList_Given__CurrentUser" +
-                "_Not_subscribed_to_route_should_be_failed",
+                "Test case 3: CreateAsync_GivenCurrentUser" +
+                "NotSubscribedToRoute_ExceptionThrown",
                 CreateCurrentUserService(NotRouteSubscriberUser.Id,
                     NotRouteSubscriberUser.Email)
             };
