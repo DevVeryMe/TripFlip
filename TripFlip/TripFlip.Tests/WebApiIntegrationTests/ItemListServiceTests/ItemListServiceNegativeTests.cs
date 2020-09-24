@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.ItemListDtos;
@@ -65,9 +64,10 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
             string displayName, ICurrentUserService currentUserService)
         {
-            Seed(TripFlipDbContext, NonExistentUser, 
-                NotRouteSubscriberUser, 
-                NotTripSubscriberUser);
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
+
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
