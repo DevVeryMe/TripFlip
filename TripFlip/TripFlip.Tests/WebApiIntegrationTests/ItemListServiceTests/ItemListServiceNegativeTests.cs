@@ -54,7 +54,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
-                NotRouteSubscriberUser.Email);
+                NotRouteAdminRoleUser.Email);
             var createItemListDto = GetCreateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
@@ -77,10 +77,9 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
-                ValidUser.Email);
+            CurrentUserService = currentUserService;
             var createItemListDto = GetCreateItemListDto();
-            var itemListService = new ItemListService(TripFlipDbContext, Mapper, currentUserService);
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemListService.CreateAsync(createItemListDto));
