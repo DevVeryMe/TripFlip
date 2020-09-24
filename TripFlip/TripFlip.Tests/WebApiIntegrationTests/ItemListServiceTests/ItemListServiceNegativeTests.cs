@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
@@ -27,11 +28,13 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         [TestMethod]
         public async Task Test_CreateItemList_Given_Non_existent_RouteId_should_be_failed()
         {
-            Seed(TripFlipDbContext, CorrectUser);
+            Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
             var createItemListDto = GetCreateItemListDto(routeId: 2);
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
@@ -74,7 +77,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
             var createItemListDto = GetCreateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, currentUserService);
 

@@ -12,7 +12,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         private readonly ItemListDto _expectedReturnItemListDto = new ItemListDto()
         {
             Id = 1,
-            Title = "Title"
+            Title = "Title",
+            RouteId = 1
         };
 
         [TestInitialize]
@@ -30,7 +31,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         [TestMethod]
         public async Task Test_CreateItemList_Valid_Data_should_be_successful()
         {
-            Seed(TripFlipDbContext, CorrectUser);
+            Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
@@ -38,8 +39,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
-            CurrentUserService = CreateCurrentUserService(CorrectUser.Id,
-                CorrectUser.Email);
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
 
             var createItemListDto = GetCreateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, 

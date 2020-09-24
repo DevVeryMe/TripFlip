@@ -9,7 +9,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
 {
     public class TestItemListServiceBase : TestServiceBase
     {
-        protected static TripEntity TripEntityToSeed => new TripEntity()
+        protected static TripEntity TripEntityToSeed => new TripEntity() 
         {
             Id = 1,
             Title = "Trip",
@@ -29,7 +29,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed => 
-            new List<TripSubscriberEntity>()
+            new List<TripSubscriberEntity>() 
             {
                 new TripSubscriberEntity()
                 {
@@ -81,7 +81,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 RouteSubscriberId = 1
             };
 
-        protected static UserEntity CorrectUser => new UserEntity()
+        protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "correct@mail.com"
@@ -112,18 +112,6 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         };
 
         protected ICurrentUserService CurrentUserService;
-
-        protected static ICurrentUserService CreateCurrentUserServiceWithExistentUser()
-        {
-            var correctEmail = "string@string.com";
-            var correctGuid = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e");
-
-            var mock = new Mock<ICurrentUserService>();
-            mock.Setup(a => a.UserEmail).Returns(correctEmail);
-            mock.Setup(a => a.UserId).Returns(correctGuid);
-
-            return mock.Object;
-        }
 
         protected static ICurrentUserService CreateCurrentUserService(Guid id, string email)
         {
