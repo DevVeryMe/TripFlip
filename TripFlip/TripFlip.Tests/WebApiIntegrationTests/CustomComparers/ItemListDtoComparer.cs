@@ -30,7 +30,7 @@ namespace WebApiIntegrationTests.CustomComparers
 
             if (x.RouteId.CompareTo(y.RouteId) != 0)
             {
-                return x.Id.CompareTo(y.Id);
+                return x.RouteId.CompareTo(y.RouteId);
             }
 
             if (string.Compare(x.Title, y.Title, StringComparison.Ordinal) != 0)
