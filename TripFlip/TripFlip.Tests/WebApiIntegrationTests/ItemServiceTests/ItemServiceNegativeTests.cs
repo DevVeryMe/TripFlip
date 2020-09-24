@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TripFlip.DataAccess;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.ItemDtos;
@@ -82,8 +81,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
-                ValidUser.Email);
+            CurrentUserService = currentUserService;
             var createItemDto = GetCreateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
