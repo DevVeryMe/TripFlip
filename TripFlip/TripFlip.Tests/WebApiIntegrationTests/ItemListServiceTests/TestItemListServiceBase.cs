@@ -25,7 +25,6 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Id = 1,
             Title = "Route",
             TripId = 1,
-
         };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed => 

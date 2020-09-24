@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
@@ -35,7 +34,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var createItemListDto = GetCreateItemListDto(routeId: 2);
+            var nonExistentRouteId = 2;
+            var createItemListDto = GetCreateItemListDto(routeId: nonExistentRouteId);
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
@@ -54,7 +54,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
-                NotRouteSubscriberUser.Email);
+                NotRouteAdminRoleUser.Email);
             var createItemListDto = GetCreateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
@@ -63,7 +63,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(GetCurrentUserData), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
         public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
             string displayName, ICurrentUserService currentUserService)
         {
@@ -77,16 +77,15 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
 
-            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
-                ValidUser.Email);
+            CurrentUserService = currentUserService;
             var createItemListDto = GetCreateItemListDto();
-            var itemListService = new ItemListService(TripFlipDbContext, Mapper, currentUserService);
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemListService.CreateAsync(createItemListDto));
         }
 
-        private static IEnumerable<object[]> GetCurrentUserData()
+        private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
         {
             yield return new object[]
             {
