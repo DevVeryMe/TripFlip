@@ -29,13 +29,11 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task GetById_ExistingItemListId_Successful()
+        public async Task GetByIdAsync_ExistingItemListId_Successful()
         {
             // Arrange.
             var itemListEntityToSeed = ItemListEntityToSeed;
 
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, itemListEntityToSeed);
 
             var existingItemListId = itemListEntityToSeed.Id;
