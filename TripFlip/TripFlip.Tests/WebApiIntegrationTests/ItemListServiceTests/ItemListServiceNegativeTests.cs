@@ -25,6 +25,19 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
+        public async Task GetById_NonExistentItemListId_ExceptionThrown()
+        {
+            // Arrange.
+            // There is no ItemList entries in database, so any id will be non-existent.
+            var nonExistentItemListId = 1;
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemListService.GetByIdAsync(nonExistentItemListId));
+        }
+
+        [TestMethod]
         public async Task Test_CreateItemList_Given_Non_existent_RouteId_should_be_failed()
         {
             Seed(TripFlipDbContext, ValidUser);
