@@ -25,7 +25,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItem_Given_Non_existent_ItemListId_should_be_failed()
+        public async Task CreateAsync_GivenNonExistentItemListId_ExceptionThrown()
         {
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
@@ -46,7 +46,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [TestMethod]
-        public async Task Test_CreateItem_Given_CurrentUser_Not_Route_Admin_should_be_failed()
+        public async Task CreateAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
         {
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
@@ -68,7 +68,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
         [DataTestMethod]
         [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
-        public async Task Test_CreateItem_Given_Not_valid_CurrentUser_should_be_failed(
+        public async Task CreateAsync_GivenNotValidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
             Seed(TripFlipDbContext, NonExistentUser);
@@ -161,14 +161,14 @@ namespace WebApiIntegrationTests.ItemServiceTests
         {
             yield return new object[]
             {
-                "Test case 1: UpdateAsync_GivenNotExistentCurrentUser_ExceptionThrown",
+                "Test case 1: CreateAsync_GivenNotExistentCurrentUser_ExceptionThrown",
                 CreateCurrentUserService(NonExistentUser.Id,
                     NonExistentUser.Email)
             };
 
             yield return new object[]
             {
-                "Test case 2: UpdateAsync_GivenCurrentUser" +
+                "Test case 2: CreateAsync_GivenCurrentUser" +
                 "NotSubscribedToTrip_ExceptionThrown",
                 CreateCurrentUserService(NotTripSubscriberUser.Id,
                     NotTripSubscriberUser.Email)
@@ -176,7 +176,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
             yield return new object[]
             {
-                "Test case 3: UpdateAsync_GivenCurrentUser" +
+                "Test case 3: CreateAsync_GivenCurrentUser" +
                 "NotSubscribedToRoute_ExceptionThrown",
                 CreateCurrentUserService(NotRouteSubscriberUser.Id,
                     NotRouteSubscriberUser.Email)
