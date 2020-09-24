@@ -75,16 +75,32 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 }
             };
 
-        protected RouteRoleEntity RouteRoleEntityToSeed => new RouteRoleEntity()
-        {
-            Id = 1,
-            Name = "Admin"
-        };
+        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed =>
+            new List<RouteRoleEntity>()
+            {
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
+                }
+            };
 
-        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntitiesToSeed =>
+        protected RouteSubscriberRoleEntity RouteSubscriberAdminRoleEntityToSeed =>
             new RouteSubscriberRoleEntity()
             {
                 RouteRoleId = 1,
+                RouteSubscriberId = 1
+            };
+
+        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 2,
                 RouteSubscriberId = 1
             };
 

@@ -25,7 +25,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task UpdateAsync_NonExistentItemListId_ExceptionThrown()
+        public async Task UpdateAsync_NonExistentItemList_ExceptionThrown()
         {
             // Arrange.
             var updateItemListDto = GetUpdateItemListDto();
@@ -75,8 +75,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
-            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
                 NotRouteAdminRoleUser.Email);
@@ -100,7 +100,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
 
             CurrentUserService = currentUserService;
             var createItemListDto = GetCreateItemListDto();

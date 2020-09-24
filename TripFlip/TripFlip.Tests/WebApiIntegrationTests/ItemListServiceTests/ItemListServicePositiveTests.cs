@@ -29,6 +29,35 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
+        public async Task UpdateAsync_ExistingItemList_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEditorRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var updateItemListDto = GetUpdateItemListDto();
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updatedItemListDto =
+                await itemListService.UpdateAsync(updateItemListDto);
+
+            var comparer = new ItemListDtoComparer();
+
+            // Act + Assert.
+            Assert.AreEqual(0,
+                comparer.CompareUpdated(updatedItemListDto, updateItemListDto));
+        }
+
+        [TestMethod]
         public async Task GetByIdAsync_ExistingItemListId_Successful()
         {
             // Arrange.
@@ -62,8 +91,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
-            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
