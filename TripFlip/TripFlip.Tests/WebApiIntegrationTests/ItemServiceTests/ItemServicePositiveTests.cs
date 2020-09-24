@@ -9,7 +9,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
     [TestClass]
     public class ItemServicePositiveTests : TestItemServiceBase
     {
-        private readonly ItemDto _expectedReturnItemDto = new ItemDto()
+        private readonly ItemDto _expectedCreatedItemDto = new ItemDto()
         {
             Id = 1,
             Title = "Title",
@@ -17,6 +17,16 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Quantity = "Quantity",
             IsCompleted = false,
             Comment = "Comment"
+        };
+
+        private readonly ItemDto _expectedUpdatedItemDto = new ItemDto()
+        {
+            Id = 1,
+            Title = "Updated title",
+            ItemListId = 1,
+            Quantity = "Updated quantity",
+            IsCompleted = true,
+            Comment = "Updated comment"
         };
 
         [TestInitialize]
@@ -38,22 +48,23 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var createItemDto = GetCreateItemDto();
+            var updateItemDto = GetUpdateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext,
                 CurrentUserService);
-            var resultItemDto = await itemService.CreateAsync(createItemDto);
+            var resultItemDto = await itemService.UpdateAsync(updateItemDto);
             var comparer = new ItemDtoComparer();
 
             Assert.AreEqual(0,
-                comparer.Compare(_expectedReturnItemDto, resultItemDto));
+                comparer.Compare(_expectedUpdatedItemDto, resultItemDto));
         }
 
         private CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title",
@@ -64,6 +75,20 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 ItemListId = itemListId,
                 Title = title,
                 Comment = comment,
+                Quantity = quantity
+            };
+        }
+
+        private UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
+            string title = "Updated title", string comment = "Updated comment",
+            string quantity = "Updated quantity")
+        {
+            return new UpdateItemDto()
+            {
+                Id = itemId,
+                IsCompleted = isCompleted,
+                Comment = comment,
+                Title = title,
                 Quantity = quantity
             };
         }

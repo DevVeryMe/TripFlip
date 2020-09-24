@@ -54,7 +54,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, ItemListEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
@@ -81,7 +81,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, ItemEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
 
             CurrentUserService = currentUserService;
             var createItemDto = GetCreateItemDto();
@@ -121,7 +121,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, ItemEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
@@ -147,7 +147,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, ItemListEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
 
             CurrentUserService = currentUserService;
             var updateItemDto = GetUpdateItemDto();
@@ -195,13 +195,17 @@ namespace WebApiIntegrationTests.ItemServiceTests
             };
         }
 
-        private UpdateItemDto GetUpdateItemDto(int itemId = 1,
-            bool isCompleted = true)
+        private UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
+            string title = "Updated title", string comment = "Updated comment",
+            string quantity = "Updated quantity")
         {
             return new UpdateItemDto()
             {
                 Id = itemId,
-                IsCompleted = isCompleted
+                IsCompleted = isCompleted,
+                Comment = comment,
+                Title = title,
+                Quantity = quantity
             };
         }
     }
