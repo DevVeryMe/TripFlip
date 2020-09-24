@@ -21,7 +21,7 @@ namespace WebApiIntegrationTests.RouteServiceTests
         }
 
         [TestMethod]
-        public async Task Test_GetByIdAsync_GivenNotValidId_ExceptionThrown()
+        public async Task GetByIdAsync_GivenNotValidId_ExceptionThrown()
         {
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
