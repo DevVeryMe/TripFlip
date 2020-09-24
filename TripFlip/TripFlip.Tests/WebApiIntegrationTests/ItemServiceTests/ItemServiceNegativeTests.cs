@@ -66,7 +66,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(GetCurrentUserData), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
         public async Task Test_CreateItemList_Given_Not_valid_CurrentUser_should_be_failed(
             string displayName, ICurrentUserService currentUserService)
         {
@@ -89,7 +89,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 await itemService.CreateAsync(createItemDto));
         }
 
-        private static IEnumerable<object[]> GetCurrentUserData()
+        private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
         {
             yield return new object[]
             {
