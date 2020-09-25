@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using AutoMapper.Configuration.Annotations;
 using TripFlip.Services;
 using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TaskDtos;
@@ -38,7 +40,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TaskListEntityToSeed);
             Seed(TripFlipDbContext, TaskEntityToSeed);
-
+            
             var validTaskId = 1;
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
@@ -50,7 +52,36 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
             var compaper = new TaskDtoComparer();
 
-            Assert.AreEqual(0, compaper.Compare(_expectedGotByIdTaskDto, resultTaskDto));
+            Assert.AreEqual(0, compaper
+                .Compare(_expectedGotByIdTaskDto, resultTaskDto));
+        }
+
+        [TestMethod]
+        public async Task DeleteById_GivenValidId_Successful()
+        {
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, ValidUser);
+
+            var validTaskId = 1;
+            var tasks = TripFlipDbContext.Tasks.ToList();
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var taskService = new TaskService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            await taskService.DeleteByIdAsync(validTaskId);
+
+            var taskEntity = await TripFlipDbContext.Tasks.FindAsync(validTaskId);
+
+            Assert.IsNull(taskEntity);
         }
     }
 }
