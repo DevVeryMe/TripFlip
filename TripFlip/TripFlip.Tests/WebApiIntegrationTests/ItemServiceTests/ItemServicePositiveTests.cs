@@ -55,17 +55,5 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Assert.AreEqual(0,
                 comparer.Compare(_expectedReturnItemDto, resultItemDto));
         }
-
-        private CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title",
-            string comment = "Comment", string quantity = "Quantity")
-        {
-            return new CreateItemDto()
-            {
-                ItemListId = itemListId,
-                Title = title,
-                Comment = comment,
-                Quantity = quantity
-            };
-        }
     }
 }
