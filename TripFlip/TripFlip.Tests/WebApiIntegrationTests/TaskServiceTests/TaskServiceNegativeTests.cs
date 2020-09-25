@@ -33,5 +33,19 @@ namespace WebApiIntegrationTests.TaskServiceTests
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskService.GetByIdAsync(invalidId));
         }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_GivenNotValidId_ExceptionThrown()
+        {
+            var invalidId = 2;
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+            var taskService = new TaskService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.DeleteByIdAsync(invalidId));
+        }
     }
 }
