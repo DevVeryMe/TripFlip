@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TaskListServiceTests
@@ -68,6 +69,16 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected PaginationDto GetPaginationDto(int? pageNumber = null,
+            int? pageSize = null)
+        {
+            return new PaginationDto()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
     }
 }

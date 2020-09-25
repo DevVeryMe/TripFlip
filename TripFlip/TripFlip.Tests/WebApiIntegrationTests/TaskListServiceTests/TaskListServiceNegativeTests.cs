@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
-using TripFlip.Services.Dto;
 
 namespace WebApiIntegrationTests.TaskListServiceTests
 {
@@ -39,16 +38,6 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskListService.GetAllByRouteIdAsync(invalidRouteId, 
                     searchString, paginationDto));
-        }
-
-        private PaginationDto GetPaginationDto(int? pageNumber = null,
-            int? pageSize = null)
-        {
-            return new PaginationDto()
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
         }
     }
 }
