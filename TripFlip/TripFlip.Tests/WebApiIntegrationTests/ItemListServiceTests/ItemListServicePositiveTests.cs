@@ -50,11 +50,19 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             var updatedItemListDto =
                 await itemListService.UpdateAsync(updateItemListDto);
 
+            var expectedItemListDto = new ItemListDto()
+            {
+                Id = updateItemListDto.Id,
+                Title = updateItemListDto.Title,
+                RouteId = updatedItemListDto.RouteId,
+                DateCreated = updatedItemListDto.DateCreated
+            };
+
             var comparer = new ItemListDtoComparer();
 
             // Act + Assert.
             Assert.AreEqual(0,
-                comparer.CompareUpdated(updatedItemListDto, updateItemListDto));
+                comparer.Compare(updatedItemListDto, expectedItemListDto));
         }
 
         [TestMethod]
