@@ -157,5 +157,15 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 Title = title
             };
         }
+
+        protected CreateItemListDto GetCreateItemListDto(int routeId = 1,
+            string title = "Title")
+        {
+            return new CreateItemListDto()
+            {
+                RouteId = routeId,
+                Title = title
+            };
+        }
     }
 }

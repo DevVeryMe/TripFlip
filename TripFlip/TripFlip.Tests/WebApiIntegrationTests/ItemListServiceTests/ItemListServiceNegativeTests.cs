@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
-using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.ItemListServiceTests
@@ -147,6 +146,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
 
             CurrentUserService = currentUserService;
             var createItemListDto = GetCreateItemListDto();
@@ -179,16 +179,6 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 "NotSubscribedToRoute_ExceptionThrown",
                 CreateCurrentUserService(NotRouteSubscriberUser.Id,
                     NotRouteSubscriberUser.Email)
-            };
-        }
-
-        private CreateItemListDto GetCreateItemListDto(int routeId = 1,
-            string title = "Title")
-        {
-            return new CreateItemListDto()
-            {
-                RouteId = routeId,
-                Title = title
             };
         }
     }
