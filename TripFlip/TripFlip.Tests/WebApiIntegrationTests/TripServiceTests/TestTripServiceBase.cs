@@ -33,6 +33,35 @@ namespace WebApiIntegrationTests.TripServiceTests
             }
         };
 
+        protected IEnumerable<TripEntity> TripEntitiesToSeed =>
+            new List<TripEntity>()
+            {
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                }
+            };
+
         protected ICurrentUserService CurrentUserService;
 
         protected ITripService TripService;

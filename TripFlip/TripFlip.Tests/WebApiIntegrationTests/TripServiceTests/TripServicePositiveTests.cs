@@ -1,8 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using WebApiIntegrationTests.CustomComparers;
 
@@ -35,6 +38,37 @@ namespace WebApiIntegrationTests.TripServiceTests
         }
 
         [TestMethod]
+        public async Task GetAllTripsAsync_SeededValidData_RecievedDataMatchesSeeded()
+        {
+            // Arrange.
+            var tripEntitiesToSeed = TripEntitiesToSeed;
+
+            Seed(TripFlipDbContext, tripEntitiesToSeed);
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var paginationDto = GetPaginationDto();
+
+            var returnedTripDtosPagedList =
+                await TripService.GetAllTripsAsync(
+                    searchString: null,
+                    paginationDto: paginationDto);
+
+            var returnedTripDtosList = returnedTripDtosPagedList.Items.ToList();
+            var expectedTripDtosList = Mapper.Map<List<TripDto>>(tripEntitiesToSeed);
+
+            var tripDtoComparer = new TripDtoComparer();
+
+            // Act + Assert.
+            Assert.AreEqual(expectedTripDtosList.Count, returnedTripDtosList.Count);
+
+            for (int i = 0; i < expectedTripDtosList.Count; i++)
+            {
+                Assert.AreEqual(0,
+                    tripDtoComparer.Compare(expectedTripDtosList[i], returnedTripDtosList[i]));
+            }
+        }
+
+        [TestMethod]
         public async Task Test_CreateAsync_Given_Valid_Data_validation_should_be_successful()
         {
             CurrentUserService = CreateCurrentUserServiceWithExistentUser();
@@ -60,6 +94,16 @@ namespace WebApiIntegrationTests.TripServiceTests
                         CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
                     EndsAt = DateTimeOffset.Parse("30/11/2030 19:00:00",
                         CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+            };
+        }
+
+        protected PaginationDto GetPaginationDto(int? pageNumber = null,
+            int? pageSize = null)
+        {
+            return new PaginationDto()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
         }
     }
