@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper.Configuration.Annotations;
 using TripFlip.Services;
 using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TaskDtos;
