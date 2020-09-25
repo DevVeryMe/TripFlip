@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Moq;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.ItemServiceTests
@@ -155,6 +156,18 @@ namespace WebApiIntegrationTests.ItemServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title",
+            string comment = "Comment", string quantity = "Quantity")
+        {
+            return new CreateItemDto()
+            {
+                ItemListId = itemListId,
+                Title = title,
+                Comment = comment,
+                Quantity = quantity
+            };
         }
     }
 }

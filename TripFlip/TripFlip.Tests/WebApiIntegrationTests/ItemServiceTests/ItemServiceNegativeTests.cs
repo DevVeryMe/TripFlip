@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
-using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.ItemServiceTests
@@ -31,7 +30,6 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, ItemListEntityToSeed);
-            Seed(TripFlipDbContext, ItemEntityToSeed);
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
@@ -78,7 +76,6 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, ItemListEntityToSeed);
-            Seed(TripFlipDbContext, ItemEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
@@ -182,19 +179,6 @@ namespace WebApiIntegrationTests.ItemServiceTests
                     NotRouteSubscriberUser.Email)
             };
         }
-
-        private CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title", 
-            string comment = "Comment", string quantity = "Quantity")
-        {
-            return new CreateItemDto()
-            {
-                ItemListId = itemListId,
-                Title = title,
-                Comment = comment,
-                Quantity = quantity
-            };
-        }
-
         private UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
             string title = "Updated title", string comment = "Updated comment",
             string quantity = "Updated quantity")
