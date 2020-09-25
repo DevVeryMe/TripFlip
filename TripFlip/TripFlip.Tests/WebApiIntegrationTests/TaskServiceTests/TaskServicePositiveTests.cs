@@ -10,7 +10,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
     [TestClass]
     public class TaskServicePositiveTests : TestTaskServiceBase
     {
-        private readonly TaskDto _expectedGotByIdRouteDto = new TaskDto()
+        private readonly TaskDto _expectedGotByIdTaskDto = new TaskDto()
         {
             Id = 1,
             Description = "Task",
@@ -50,7 +50,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
             var compaper = new TaskDtoComparer();
 
-            Assert.AreEqual(0, compaper.Compare(_expectedGotByIdRouteDto, resultTaskDto));
+            Assert.AreEqual(0, compaper.Compare(_expectedGotByIdTaskDto, resultTaskDto));
         }
     }
 }
