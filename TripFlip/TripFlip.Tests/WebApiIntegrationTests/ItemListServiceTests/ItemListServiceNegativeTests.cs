@@ -75,6 +75,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteRoleEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
 
             CurrentUserService = currentUserService;
             var createItemListDto = GetCreateItemListDto();
