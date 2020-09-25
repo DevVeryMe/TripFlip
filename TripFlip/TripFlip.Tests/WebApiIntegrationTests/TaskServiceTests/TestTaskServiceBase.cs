@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Globalization;
-using Moq;
 using TripFlip.Domain.Entities;
 using TripFlip.Domain.Entities.Enums;
 using TripFlip.Services.Interfaces;
