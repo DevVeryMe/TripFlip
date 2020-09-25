@@ -8,13 +8,13 @@ namespace WebApiIntegrationTests.TripServiceTests
 {
     public abstract class TestTripServiceBase : TestServiceBase
     {
-        protected static UserEntity UserEntityToSeed = new UserEntity()
+        protected UserEntity UserEntityToSeed = new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "string@string.com"
         };
 
-        protected static IEnumerable<TripRoleEntity> TripRolesToSeed = new List<TripRoleEntity>()
+        protected IEnumerable<TripRoleEntity> TripRolesToSeed = new List<TripRoleEntity>()
         {
             new TripRoleEntity()
             {

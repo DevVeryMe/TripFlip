@@ -11,11 +11,23 @@ namespace WebApiIntegrationTests.TripServiceTests
     [TestClass]
     public class TripServiceNegativeTests : TestTripServiceBase
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            TripFlipDbContext = CreateDbContext();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            TripFlipDbContext.Dispose();
+        }
+
         [TestMethod]
         public async Task Test_CreateAsync_Given_Not_valid_CurrentUser_Data_Validation_should_be_failed()
         {
-            Seed(UserEntityToSeed);
-            Seed(TripRolesToSeed);
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripRolesToSeed);
 
             var createTripDto = GetCreateTripDtoData();
 
