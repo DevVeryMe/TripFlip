@@ -91,31 +91,5 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Assert.AreEqual(0,
                 comparer.Compare(_expectedUpdatedItemDto, resultItemDto));
         }
-
-        private CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title",
-            string comment = "Comment", string quantity = "Quantity")
-        {
-            return new CreateItemDto()
-            {
-                ItemListId = itemListId,
-                Title = title,
-                Comment = comment,
-                Quantity = quantity
-            };
-        }
-
-        private UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
-            string title = "Updated title", string comment = "Updated comment",
-            string quantity = "Updated quantity")
-        {
-            return new UpdateItemDto()
-            {
-                Id = itemId,
-                IsCompleted = isCompleted,
-                Comment = comment,
-                Title = title,
-                Quantity = quantity
-            };
-        }
     }
 }

@@ -169,5 +169,19 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 Quantity = quantity
             };
         }
+
+        protected UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
+            string title = "Updated title", string comment = "Updated comment",
+            string quantity = "Updated quantity")
+        {
+            return new UpdateItemDto()
+            {
+                Id = itemId,
+                IsCompleted = isCompleted,
+                Comment = comment,
+                Title = title,
+                Quantity = quantity
+            };
+        }
     }
 }
