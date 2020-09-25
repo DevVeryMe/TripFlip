@@ -51,15 +51,5 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Assert.AreEqual(0, 
                 comparer.Compare(_expectedReturnItemListDto, resultItemListDto));
         }
-
-        private CreateItemListDto GetCreateItemListDto(int routeId = 1,
-            string title = "Title")
-        {
-            return new CreateItemListDto()
-            {
-                RouteId = routeId,
-                Title = title
-            };
-        }
     }
 }
