@@ -57,6 +57,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task DeleteById_GivenValidId_Successful()
         {
+            // Arrange
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TaskListEntityToSeed);
@@ -74,10 +75,13 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
 
+            // act
             await taskService.DeleteByIdAsync(validTaskId);
 
+            // Assert
             var taskEntity = await TripFlipDbContext.Tasks.FindAsync(validTaskId);
 
+           
             Assert.IsNull(taskEntity);
         }
     }
