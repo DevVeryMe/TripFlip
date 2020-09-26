@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.Dto.Enums;
@@ -36,7 +37,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         {
             // Arrange.
             Seed(TripFlipDbContext, TaskEntityToSeed);
-
+            
             var validTaskId = 1;
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
@@ -92,6 +93,36 @@ namespace WebApiIntegrationTests.TaskServiceTests
             // Assert.
             Assert.AreEqual(0,
                 taskDtoComparer.Compare(expectedTaskDto, resultTaskDto));
+        }
+
+        [TestMethod]
+        public async Task DeleteById_GivenValidId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+            Seed(TripFlipDbContext, ValidUser);
+
+            var validTaskId = 1;
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var taskService = new TaskService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act
+            await taskService.DeleteByIdAsync(validTaskId);
+
+            // Assert
+            var taskEntity = await TripFlipDbContext.Tasks.FindAsync(validTaskId);
+
+            Assert.IsNull(taskEntity);
         }
     }
 }
