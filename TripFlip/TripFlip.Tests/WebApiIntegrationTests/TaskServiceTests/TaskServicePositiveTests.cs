@@ -44,13 +44,13 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
-            var compaper = new TaskDtoComparer();
+            var comparer = new TaskDtoComparer();
 
             // Act
             var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
             
             // Assert
-            Assert.AreEqual(0, compaper.Compare(_expectedGotByIdTaskDto, resultTaskDto));
+            Assert.AreEqual(0, comparer.Compare(_expectedGotByIdTaskDto, resultTaskDto));
         }
     }
 }
