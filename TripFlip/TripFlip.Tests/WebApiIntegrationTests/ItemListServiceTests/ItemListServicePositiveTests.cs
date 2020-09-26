@@ -29,6 +29,69 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEditorRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var updateItemListDto = GetUpdateItemListDto();
+            var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act. 
+            var resultItemListDto =
+                await itemListService.UpdateAsync(updateItemListDto);
+
+            var expectedItemListDto = new ItemListDto()
+            {
+                Id = updateItemListDto.Id,
+                Title = updateItemListDto.Title,
+                RouteId = resultItemListDto.RouteId // UpdateItemListDto doesn't contain this field, so it initialized like that.
+            };
+
+            var comparer = new ItemListDtoComparer();
+
+            // Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(resultItemListDto, expectedItemListDto));
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ExistingItemListId_Successful()
+        {
+            // Arrange.
+            var itemListEntityToSeed = ItemListEntityToSeed;
+
+            Seed(TripFlipDbContext, itemListEntityToSeed);
+
+            var existingItemListId = itemListEntityToSeed.Id;
+
+            var itemListService = new ItemListService(TripFlipDbContext,
+                Mapper,
+                CurrentUserService);
+
+            var recievedItemListDto =
+                await itemListService.GetByIdAsync(existingItemListId);
+
+            var seededItemListDto = Mapper.Map<ItemListDto>(itemListEntityToSeed);
+
+            var comparer = new ItemListDtoComparer();
+
+            // Act + Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(recievedItemListDto, seededItemListDto));
+        }
+
+        [TestMethod]
         public async Task CreateAsync_ValidData_Successful()
         {
             Seed(TripFlipDbContext, ValidUser);
@@ -36,8 +99,8 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
             Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
-            Seed(TripFlipDbContext, RouteRoleEntityToSeed);
-            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
@@ -50,16 +113,6 @@ namespace WebApiIntegrationTests.ItemListServiceTests
 
             Assert.AreEqual(0, 
                 comparer.Compare(_expectedReturnItemListDto, resultItemListDto));
-        }
-
-        private CreateItemListDto GetCreateItemListDto(int routeId = 1,
-            string title = "Title")
-        {
-            return new CreateItemListDto()
-            {
-                RouteId = routeId,
-                Title = title
-            };
         }
     }
 }

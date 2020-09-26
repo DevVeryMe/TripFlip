@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.Enums;
+using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TripServiceTests
@@ -16,7 +16,33 @@ namespace WebApiIntegrationTests.TripServiceTests
             Email = "string@string.com"
         };
 
-        protected IEnumerable<TripRoleEntity> TripRolesToSeed => new List<TripRoleEntity>()
+        protected TripEntity TripEntityToSeed = new TripEntity()
+        {
+            Id = 1,
+            Title = "Title",
+            Description = "Description",
+            StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+            EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+            DateCreated = new DateTimeOffset(DateTime.Now)
+        };
+
+        protected TripSubscriberEntity TripSubscriberEntityToSeed =
+            new TripSubscriberEntity()
+            {
+                Id = 1,
+                UserId = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
+                TripId = 1,
+                DateSubscribed = new DateTimeOffset(DateTime.Now)
+            };
+
+        protected TripSubscriberRoleEntity TripSubscriberAdminRoleEntityToSeed =
+            new TripSubscriberRoleEntity()
+            {
+                TripRoleId = 1,
+                TripSubscriberId = 1
+            };
+
+        protected IEnumerable<TripRoleEntity> TripRolesToSeed = new List<TripRoleEntity>()
         {
             new TripRoleEntity()
             {
@@ -35,28 +61,34 @@ namespace WebApiIntegrationTests.TripServiceTests
             }
         };
 
-        protected TripEntity TripEntityToSeed => new TripEntity()
-        {
-            Title = "Trip title",
-            Description = "Trip description",
-            StartsAt = DateTimeOffset.Parse("28/08/2030 14:00:00",
-                CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
-            EndsAt = DateTimeOffset.Parse("30/11/2030 19:00:00",
-                CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
-        };
-
-        protected TripSubscriberEntity TripSubscriberEntityToSeed => new TripSubscriberEntity()
-        {
-            TripId = 1,
-            UserId = UserEntityToSeed.Id
-        };
-
-        protected TripSubscriberRoleEntity TripSubscriberRoleEntityToSeed 
-            => new TripSubscriberRoleEntity()
-        {
-            TripSubscriberId = 1,
-            TripRoleId = (int)TripRoles.Admin
-        };
+        protected IEnumerable<TripEntity> TripEntitiesToSeed =>
+            new List<TripEntity>()
+            {
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                }
+            };
 
         protected ICurrentUserService CurrentUserService;
 
@@ -84,6 +116,18 @@ namespace WebApiIntegrationTests.TripServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected static UpdateTripDto GetUpdateTripDto(int id = 1)
+        {
+            return new UpdateTripDto()
+            {
+                Id = id,
+                Title = "New Title",
+                Description = "New Description",
+                StartsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                EndsAt = new DateTimeOffset(DateTime.Now.AddDays(15))
+            };
         }
     }
 }
