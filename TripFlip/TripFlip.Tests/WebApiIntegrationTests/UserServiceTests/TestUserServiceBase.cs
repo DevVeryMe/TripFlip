@@ -13,6 +13,14 @@ namespace WebApiIntegrationTests.UserServiceTests
         protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
+            Email = "correct@mail.com",
+            PasswordHash = "AQAAAAEAACcQAAAAEC5xRaJ3jHVV9NthGohTbm" +
+                           "0wURGSB7OqYnLQkM42Y7ydc452Fqav1EnS5u7+MVdxsA=="
+        };
+
+        protected static UserEntity InvalidUser => new UserEntity()
+        {
+            Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "correct@mail.com"
         };
 
@@ -56,6 +64,16 @@ namespace WebApiIntegrationTests.UserServiceTests
                 LastName = lastName,
                 BirthDate = birthDate,
                 Gender = gender
+            };
+        }
+
+        protected ChangeUserPasswordDto GetChangeUserPasswordDto(
+            string oldPassword = "Correctpass1@", string newPassword = "Correctnewpass1@")
+        {
+            return new ChangeUserPasswordDto()
+            {
+                OldPassword = oldPassword,
+                NewPassword = newPassword
             };
         }
     }
