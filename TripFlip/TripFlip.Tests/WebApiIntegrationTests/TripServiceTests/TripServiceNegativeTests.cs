@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.TripDtos;
-using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TripServiceTests
 {
