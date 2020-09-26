@@ -24,20 +24,18 @@ namespace WebApiIntegrationTests.UserServiceTests
             _expectedUsersByTripAndCategorizedByRoleDto = new UsersByTripAndCategorizedByRoleDto() 
             {
                 TripId = 1,
-                TripAdmins = new List<UserDto>()
-                {
-                    new UserDto()
-                    {
-                        Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
-                        Email = "firstuser@mail.com"
-                    }
-                },
+                TripAdmins = new List<UserDto>(),
                 TripEditors = new List<UserDto>()
                 {
                     new UserDto()
                     {
                         Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
                         Email = "seconduser@mail.com"
+                    },
+                    new UserDto()
+                    {
+                        Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
+                        Email = "firstuser@mail.com"
                     }
                 },
                 TripGuests = new List<UserDto>()

@@ -181,8 +181,6 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
-            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
-                userId: ValidUser.Id);
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
@@ -202,8 +200,6 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
-            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
-                userId: ValidUser.Id);
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
@@ -226,12 +222,48 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
-            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
-                userId: ValidUser.Id);
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await userService.SubscribeToRouteAsync(RouteEntityToSeed.Id));
+        }
+
+        [TestMethod]
+        public async Task UnsubscribeFromTripAsync_GivenNonExistentCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(InvalidUser.Id, InvalidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id));
+        }
+
+        [TestMethod]
+        public async Task UnsubscribeFromTripAsync_GivenCurrentUserSingleTripAdmin_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id));
         }
     }
 }

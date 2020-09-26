@@ -149,7 +149,7 @@ namespace WebApiIntegrationTests.UserServiceTests
             {
                 new TripSubscriberRoleEntity()
                 {
-                    TripRoleId = 1,
+                    TripRoleId = 2,
                     TripSubscriberId = 1
                 },
                 new TripSubscriberRoleEntity()
