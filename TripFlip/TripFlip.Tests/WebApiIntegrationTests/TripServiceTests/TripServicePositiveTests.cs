@@ -119,6 +119,61 @@ namespace WebApiIntegrationTests.TripServiceTests
             Assert.AreEqual(0, tripDtoComparer.Compare(resultTripDto, _expectedReturnTripDto));
         }
 
+        [TestMethod]
+        public async Task GetByIdAsync_ValidTripId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            int validTripId = 1;
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var expectedTripDto = Mapper.Map<TripDto>(TripEntityToSeed);
+            expectedTripDto.Id = validTripId;
+
+            // Act
+            var resultTripDto = await TripService.GetByIdAsync(validTripId);
+
+            // Assert
+            var tripDtoComparer = new TripDtoComparer();
+            Assert.AreEqual(0, tripDtoComparer.Compare(resultTripDto, expectedTripDto));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_ValidUserAndTripId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+
+            Seed(TripFlipDbContext, TripRolesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberAdminRoleEntityToSeed);
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            int validTripId = 1;
+
+            // Act
+            await TripService.DeleteByIdAsync(validTripId);
+
+            // Assert
+            bool tripIsDeleted = TripFlipDbContext
+                .Trips
+                .Any(trip => trip.Id == validTripId) == false;
+            Assert.IsTrue(tripIsDeleted);
+        }
+
         private static CreateTripDto GetCreateTripDtoData()
         {
             return new CreateTripDto()

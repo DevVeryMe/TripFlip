@@ -94,6 +94,87 @@ namespace WebApiIntegrationTests.TripServiceTests
                 () => TripService.CreateAsync(createTripDto));
         }
 
+        [TestMethod]
+        public async Task GetByIdAsync_GivenNonExistentTripId_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            int nonExistentTripId = 2;
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(
+                () => TripService.GetByIdAsync(nonExistentTripId));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_CurrentUserNotTripSubscriber_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            int validTripId = 1;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(
+                () => TripService.DeleteByIdAsync(validTripId));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_CurrentUserNotAdmin_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            int validTripId = 1;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                () => TripService.DeleteByIdAsync(validTripId));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_GivenNonExistentTripId_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+
+            TripService = new TripService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            int invalidTripId = 2;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(
+                () => TripService.DeleteByIdAsync(invalidTripId));
+        }
+
         private static CreateTripDto GetCreateTripDtoData()
         {
             return new CreateTripDto()
