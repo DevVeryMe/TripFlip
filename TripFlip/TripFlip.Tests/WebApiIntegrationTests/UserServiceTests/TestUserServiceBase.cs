@@ -12,6 +12,8 @@ namespace WebApiIntegrationTests.UserServiceTests
 {
     public class TestUserServiceBase : TestServiceBase
     {
+        protected IEnumerable<int> ValidTripRoleIds = new []{1, 2, 3};
+
         protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -24,6 +26,12 @@ namespace WebApiIntegrationTests.UserServiceTests
         {
             Id = Guid.Parse("d03bba28-88ac-452b-a3e0-19fa2921a99d"),
             Email = "incorrect@mail.com"
+        };
+
+        protected static UserEntity NotTripAdminUser => new UserEntity()
+        {
+            Id = Guid.Parse("1a5104ab-b479-4547-9c00-7dd930b31267"),
+            Email = "nottripadmin@mail.com"
         };
 
         protected static TripEntity TripEntityToSeed => new TripEntity()
@@ -63,6 +71,18 @@ namespace WebApiIntegrationTests.UserServiceTests
                     Id = 4,
                     TripId = 1,
                     UserId = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846")
+                },
+                new TripSubscriberEntity()
+                {
+                    Id = 5,
+                    TripId = 1,
+                    UserId = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e")
+                },
+                new TripSubscriberEntity()
+                {
+                    Id = 6,
+                    TripId = 1,
+                    UserId = Guid.Parse("1a5104ab-b479-4547-9c00-7dd930b31267")
                 }
             };
 
@@ -133,7 +153,12 @@ namespace WebApiIntegrationTests.UserServiceTests
                 {
                     TripRoleId = 3,
                     TripSubscriberId = 4
-                }
+                },
+                new TripSubscriberRoleEntity()
+                {
+                    TripRoleId = 1,
+                    TripSubscriberId = 5
+                },
             };
 
         protected ICurrentUserService CurrentUserService;
@@ -186,6 +211,17 @@ namespace WebApiIntegrationTests.UserServiceTests
             {
                 OldPassword = oldPassword,
                 NewPassword = newPassword
+            };
+        }
+
+        protected GrantTripRolesDto GetGrantTripRolesDto(IEnumerable<int> tripRoleIds, 
+            Guid userId, int tripId = 1)
+        {
+            return new GrantTripRolesDto()
+            {
+                TripId = tripId,
+                TripRoleIds = tripRoleIds,
+                UserId = userId
             };
         }
     }

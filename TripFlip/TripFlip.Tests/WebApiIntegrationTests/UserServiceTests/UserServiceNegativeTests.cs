@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
+using TripFlip.Services.Dto.UserDtos;
 
 namespace WebApiIntegrationTests.UserServiceTests
 {
@@ -80,6 +81,92 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await userService.GetAllByTripIdAndCategorizeByRoleAsync(nonExistentTripId));
+        }
+
+        [TestMethod]
+        public async Task GrantTripRoleAsync_GivenNonExistentUserToGrantRolesId_Exception_Thrown()
+        {
+            // Arrange
+            var nonExistentUserId = InvalidUser.Id;
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
+                userId: nonExistentUserId);
+            
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GrantTripRoleAsync(grantTripRolesDto));
+        }
+
+        [TestMethod]
+        public async Task GrantTripRoleAsync_GivenNonExistentTripId_Exception_Thrown()
+        {
+            // Arrange
+            var jwtConfiguration = CreateJwtConfiguration();
+            var invalidTripId = 1000;
+
+            Seed(TripFlipDbContext, ValidUser);
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
+                userId: ValidUser.Id, tripId: invalidTripId);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GrantTripRoleAsync(grantTripRolesDto));
+        }
+
+        [TestMethod]
+        public async Task GrantTripRoleAsync_GivenNonExistentCurrentUser_Exception_Thrown()
+        {
+            // Arrange
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(InvalidUser.Id, InvalidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
+                userId: ValidUser.Id);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GrantTripRoleAsync(grantTripRolesDto));
+        }
+
+        [TestMethod]
+        public async Task GrantTripRoleAsync_GivenCurrentUserNotTripAdmin_Exception_Thrown()
+        {
+            // Arrange
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, NotTripAdminUser);
+            Seed(TripFlipDbContext, UserEntitiesToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(NotTripAdminUser.Id, 
+                NotTripAdminUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
+                userId: ValidUser.Id);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GrantTripRoleAsync(grantTripRolesDto));
         }
     }
 }
