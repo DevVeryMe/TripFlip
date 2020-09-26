@@ -34,7 +34,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task GetById_GivenValidId_Successful()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, TaskEntityToSeed);
 
             var validTaskId = 1;
@@ -46,11 +46,49 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 CurrentUserService);
             var comparer = new TaskDtoComparer();
 
-            // Act
+            // Act.
             var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
             
-            // Assert
+            // Assert.
             Assert.AreEqual(0, comparer.Compare(_expectedGotByIdTaskDto, resultTaskDto));
+        }
+
+        [TestMethod]
+        public async Task CreateAsync_ValidData_Successful()
+        {
+            var taskListEntityToSeed = TaskListEntityToSeed;
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, taskListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var createTaskDto = GetCreateTaskDto();
+            var taskService = new TaskService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            var expectedTaskDto = new TaskDto()
+            {
+                Id = 1,
+                IsCompleted = false,
+                Description = createTaskDto.Description,
+                PriorityLevel = createTaskDto.PriorityLevel,
+                TaskListId = createTaskDto.TaskListId
+            };
+
+            var resultTaskDto = await taskService.CreateAsync(createTaskDto);
+
+            var taskDtoComparer = new TaskDtoComparer();
+
+            Assert.AreEqual(0,
+                taskDtoComparer.Compare(expectedTaskDto, resultTaskDto));
         }
     }
 }
