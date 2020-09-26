@@ -29,7 +29,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
-        public async Task UpdateAsync_ExistingItemList_Successful()
+        public async Task UpdateAsync_ValidData_Successful()
         {
             // Arrange.
             Seed(TripFlipDbContext, ValidUser);
