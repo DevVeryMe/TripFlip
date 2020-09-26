@@ -1,16 +1,16 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Moq;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.Dto.ItemListDtos;
+using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Interfaces;
 
-namespace WebApiIntegrationTests.ItemListServiceTests
+namespace WebApiIntegrationTests.ItemServiceTests
 {
-    public class TestItemListServiceBase : TestServiceBase
+    public class TestItemServiceBase : TestServiceBase
     {
-        protected static TripEntity TripEntityToSeed => new TripEntity() 
+        protected static TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
             Title = "Trip",
@@ -31,12 +31,12 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         protected ItemListEntity ItemListEntityToSeed => new ItemListEntity()
         {
             Id = 1,
-            Title = "ItemList",
+            Title = "Item list",
             RouteId = 1
         };
 
-        protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed => 
-            new List<TripSubscriberEntity>() 
+        protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
+            new List<TripSubscriberEntity>()
             {
                 new TripSubscriberEntity()
                 {
@@ -75,32 +75,16 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 }
             };
 
-        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed =>
-            new List<RouteRoleEntity>()
-            {
-                new RouteRoleEntity()
-                {
-                    Id = 1,
-                    Name = "Admin"
-                },
-                new RouteRoleEntity()
-                {
-                    Id = 2,
-                    Name = "Editor"
-                }
-            };
+        protected RouteRoleEntity RouteRoleEntityToSeed => new RouteRoleEntity()
+        {
+            Id = 1,
+            Name = "Admin"
+        };
 
-        protected RouteSubscriberRoleEntity RouteSubscriberAdminRoleEntityToSeed =>
+        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntitiesToSeed =>
             new RouteSubscriberRoleEntity()
             {
                 RouteRoleId = 1,
-                RouteSubscriberId = 1
-            };
-
-        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
-            new RouteSubscriberRoleEntity()
-            {
-                RouteRoleId = 2,
                 RouteSubscriberId = 1
             };
 
@@ -128,7 +112,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Email = "notsubofroute@mail.com"
         };
 
-        protected static UserEntity UserWithoutRouteRoles => new UserEntity()
+        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
@@ -148,23 +132,15 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             return mock.Object;
         }
 
-        protected UpdateItemListDto GetUpdateItemListDto(int id = 1,
-            string title = "Title")
+        protected CreateItemDto GetCreateItemDto(int itemListId = 1, string title = "Title",
+            string comment = "Comment", string quantity = "Quantity")
         {
-            return new UpdateItemListDto()
+            return new CreateItemDto()
             {
-                Id = id,
-                Title = title
-            };
-        }
-
-        protected CreateItemListDto GetCreateItemListDto(int routeId = 1,
-            string title = "Title")
-        {
-            return new CreateItemListDto()
-            {
-                RouteId = routeId,
-                Title = title
+                ItemListId = itemListId,
+                Title = title,
+                Comment = comment,
+                Quantity = quantity
             };
         }
     }

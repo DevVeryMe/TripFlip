@@ -48,6 +48,7 @@ namespace WebApiIntegrationTests.TripServiceTests
 
             var paginationDto = GetPaginationDto();
 
+            // Act.
             var returnedTripDtosPagedList =
                 await TripService.GetAllTripsAsync(
                     searchString: null,
@@ -58,7 +59,7 @@ namespace WebApiIntegrationTests.TripServiceTests
 
             var tripDtoComparer = new TripDtoComparer();
 
-            // Act + Assert.
+            // Assert.
             Assert.AreEqual(expectedTripDtosList.Count, returnedTripDtosList.Count);
 
             for (int i = 0; i < expectedTripDtosList.Count; i++)
@@ -66,6 +67,40 @@ namespace WebApiIntegrationTests.TripServiceTests
                 Assert.AreEqual(0,
                     tripDtoComparer.Compare(expectedTripDtosList[i], returnedTripDtosList[i]));
             }
+
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act.
+            var resultTripDto = await TripService.UpdateAsync(updateTripDto);
+
+            var expectedTripDto = new TripDto()
+            {
+                Id = updateTripDto.Id,
+                Title = updateTripDto.Title,
+                Description = updateTripDto.Description,
+                StartsAt = updateTripDto.StartsAt,
+                EndsAt = updateTripDto.EndsAt
+            };
+
+            var tripDtoComparer = new TripDtoComparer();
+
+            // Assert.
+            Assert.AreEqual(0,
+                tripDtoComparer.Compare(expectedTripDto, resultTripDto));
         }
 
         [TestMethod]

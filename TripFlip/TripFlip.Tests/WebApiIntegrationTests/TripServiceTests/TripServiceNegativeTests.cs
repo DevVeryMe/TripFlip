@@ -24,6 +24,61 @@ namespace WebApiIntegrationTests.TripServiceTests
         }
 
         [TestMethod]
+        public async Task UpdateAsync_NonExistentTrip_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var invalidTripId = 2;
+            var updateTripDto = GetUpdateTripDto(invalidTripId);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_CurrentUserNotTripAdmin_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_CurrentUserNotTripSubsriber_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
+        }
+
+        [TestMethod]
         public async Task Test_CreateAsync_Given_Not_valid_CurrentUser_Data_Validation_should_be_failed()
         {
             Seed(TripFlipDbContext, UserEntityToSeed);
