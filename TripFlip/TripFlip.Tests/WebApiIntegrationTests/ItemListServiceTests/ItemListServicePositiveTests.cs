@@ -47,6 +47,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             var updateItemListDto = GetUpdateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
+            // Act. 
             var updatedItemListDto =
                 await itemListService.UpdateAsync(updateItemListDto);
 
@@ -60,7 +61,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
 
             var comparer = new ItemListDtoComparer();
 
-            // Act + Assert.
+            // Assert.
             Assert.AreEqual(0,
                 comparer.Compare(updatedItemListDto, expectedItemListDto));
         }

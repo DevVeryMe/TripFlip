@@ -39,6 +39,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         [TestMethod]
         public async Task UpdateAsync_CurrentUserNotRouteEditor_ExceptionThrown()
         {
+            // Arrange.
             Seed(TripFlipDbContext, UserWithoutRouteRoles);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -53,6 +54,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             var updateItemListDto = GetUpdateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await itemListService.UpdateAsync(updateItemListDto));
         }
@@ -62,6 +64,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         public async Task UpdateAsync_InvalidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
+            // Arrange.
             Seed(TripFlipDbContext, NonExistentUser);
             Seed(TripFlipDbContext, NotRouteSubscriberUser);
             Seed(TripFlipDbContext, NotTripSubscriberUser);
@@ -77,6 +80,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             var updateItemListDto = GetUpdateItemListDto();
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemListService.UpdateAsync(updateItemListDto), displayName);
         }
