@@ -48,22 +48,21 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             var itemListService = new ItemListService(TripFlipDbContext, Mapper, CurrentUserService);
 
             // Act. 
-            var updatedItemListDto =
+            var resultItemListDto =
                 await itemListService.UpdateAsync(updateItemListDto);
 
             var expectedItemListDto = new ItemListDto()
             {
                 Id = updateItemListDto.Id,
                 Title = updateItemListDto.Title,
-                RouteId = updatedItemListDto.RouteId,
-                DateCreated = updatedItemListDto.DateCreated
+                RouteId = resultItemListDto.RouteId // UpdateItemListDto doesn't contain this field, so it initialized like that.
             };
 
             var comparer = new ItemListDtoComparer();
 
             // Assert.
             Assert.AreEqual(0,
-                comparer.Compare(updatedItemListDto, expectedItemListDto));
+                comparer.Compare(resultItemListDto, expectedItemListDto));
         }
 
         [TestMethod]
