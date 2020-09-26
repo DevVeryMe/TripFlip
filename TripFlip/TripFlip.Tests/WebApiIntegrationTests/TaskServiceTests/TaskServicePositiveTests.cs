@@ -56,6 +56,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task CreateAsync_ValidData_Successful()
         {
+            // Arrange.
             var taskListEntityToSeed = TaskListEntityToSeed;
 
             Seed(TripFlipDbContext, ValidUser);
@@ -83,10 +84,12 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 TaskListId = createTaskDto.TaskListId
             };
 
+            // Act.
             var resultTaskDto = await taskService.CreateAsync(createTaskDto);
 
             var taskDtoComparer = new TaskDtoComparer();
 
+            // Assert.
             Assert.AreEqual(0,
                 taskDtoComparer.Compare(expectedTaskDto, resultTaskDto));
         }
