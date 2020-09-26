@@ -23,8 +23,7 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         [TestMethod]
         public async Task GetAllByRouteIdAsync_GivenInvalidRouteId_ExceptionThrown()
         {
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
+            // Arrange
             Seed(TripFlipDbContext, TaskListEntitiesToSeed);
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
@@ -35,6 +34,7 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             var paginationDto = GetPaginationDto();
             string searchString = null;
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskListService.GetAllByRouteIdAsync(invalidRouteId, 
                     searchString, paginationDto));

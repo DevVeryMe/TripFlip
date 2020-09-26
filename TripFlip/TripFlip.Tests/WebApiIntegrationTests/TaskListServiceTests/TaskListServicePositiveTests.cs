@@ -49,7 +49,7 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         [TestMethod]
         public async Task GetAllByRouteIdAsync_GivenValidRouteId_Successful()
         {
-            Seed(TripFlipDbContext, TripEntityToSeed);
+            // Arrange
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, TaskListEntitiesToSeed);
 
@@ -60,7 +60,9 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             var validRouteId = 1;
             var paginationDto = GetPaginationDto();
             string searchString = null;
+            var comparer = new TaskListDtoComparer();
 
+            // Act
             var result = await taskListService.GetAllByRouteIdAsync(1,
                 searchString, paginationDto);
 
@@ -68,9 +70,8 @@ namespace WebApiIntegrationTests.TaskListServiceTests
 
             var expectedTaskListCount = _expectedGotAllTaskListDtos.Count();
 
+            // Assert
             Assert.AreEqual(expectedTaskListCount, result.TotalCount);
-
-            var comparer = new TaskListDtoComparer();
 
             for (var i = 0; i < expectedTaskListCount; i++)
             {
