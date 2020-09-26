@@ -35,6 +35,39 @@ namespace WebApiIntegrationTests.TripServiceTests
         }
 
         [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act.
+            var resultTripDto = await TripService.UpdateAsync(updateTripDto);
+
+            var expectedTripDto = new TripDto()
+            {
+                Id = updateTripDto.Id,
+                Title = updateTripDto.Title,
+                Description = updateTripDto.Description,
+                StartsAt = updateTripDto.StartsAt,
+                EndsAt = updateTripDto.EndsAt
+            };
+
+            var tripDtoComparer = new TripDtoComparer();
+
+            // Assert.
+            Assert.AreEqual(0,
+                tripDtoComparer.Compare(expectedTripDto, resultTripDto));
+        }
+
+        [TestMethod]
         public async Task Test_CreateAsync_Given_Valid_Data_validation_should_be_successful()
         {
             CurrentUserService = CreateCurrentUserServiceWithExistentUser();
