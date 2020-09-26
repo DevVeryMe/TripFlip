@@ -73,6 +73,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task UpdateAsync_ValidData_Successful()
         {
+            // Arrange
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -89,9 +90,12 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var updateItemDto = GetUpdateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext,
                 CurrentUserService);
-            var resultItemDto = await itemService.UpdateAsync(updateItemDto);
             var comparer = new ItemDtoComparer();
 
+            // Act
+            var resultItemDto = await itemService.UpdateAsync(updateItemDto);
+            
+            // Assert
             Assert.AreEqual(0,
                 comparer.Compare(_expectedUpdatedItemDto, resultItemDto));
         }

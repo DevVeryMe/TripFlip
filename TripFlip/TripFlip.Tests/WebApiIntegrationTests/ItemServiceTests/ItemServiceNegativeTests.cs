@@ -90,6 +90,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task UpdateAsync_GivenNonExistentItemListId_ExceptionThrown()
         {
+            // Arrange
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -103,6 +104,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var updateItemDto = GetUpdateItemDto(itemId: nonExistentItemId);
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemService.UpdateAsync(updateItemDto));
         }
@@ -110,6 +112,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task UpdateAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
         {
+            // Arrange
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -125,6 +128,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var updateItemDto = GetUpdateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await itemService.UpdateAsync(updateItemDto));
         }
@@ -134,6 +138,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         public async Task UpdateAsync_GivenNotValidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
+            // Arrange
             Seed(TripFlipDbContext, NonExistentUser);
             Seed(TripFlipDbContext, NotRouteSubscriberUser);
             Seed(TripFlipDbContext, NotTripSubscriberUser);
@@ -149,6 +154,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var updateItemDto = GetUpdateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemService.UpdateAsync(updateItemDto));
         }
