@@ -32,16 +32,18 @@ namespace WebApiIntegrationTests.RouteServiceTests
         [TestMethod]
         public async Task GetById_GivenValidId_Successful()
         {
-            Seed(TripFlipDbContext, TripEntityToSeed);
+            // Arrange
             Seed(TripFlipDbContext, RouteEntityToSeed);
 
             var validId = 1;
 
             var routeService = new RouteService(TripFlipDbContext, Mapper);
-
-            var resultRouteDto = await routeService.GetByIdAsync(validId);
             var compaper = new RouteDtoComparer();
 
+            // Act
+            var resultRouteDto = await routeService.GetByIdAsync(validId);
+
+            // Assert
             Assert.AreEqual(0, compaper.Compare(_expectedGotByIdRouteDto, resultRouteDto));
         }
     }
