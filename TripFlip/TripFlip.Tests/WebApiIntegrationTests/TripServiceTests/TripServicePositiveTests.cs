@@ -48,7 +48,8 @@ namespace WebApiIntegrationTests.TripServiceTests
 
             var updateTripDto = GetUpdateTripDto();
 
-            var updatedTripDto = await TripService.UpdateAsync(updateTripDto);
+            // Act.
+            var resultTripDto = await TripService.UpdateAsync(updateTripDto);
 
             var expectedTripDto = new TripDto()
             {
@@ -61,9 +62,9 @@ namespace WebApiIntegrationTests.TripServiceTests
 
             var tripDtoComparer = new TripDtoComparer();
 
-            // Act + Assert.
+            // Assert.
             Assert.AreEqual(0,
-                tripDtoComparer.Compare(expectedTripDto, updatedTripDto));
+                tripDtoComparer.Compare(expectedTripDto, resultTripDto));
         }
 
         [TestMethod]
