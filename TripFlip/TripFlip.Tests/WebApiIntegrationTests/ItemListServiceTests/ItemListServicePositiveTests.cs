@@ -29,6 +29,32 @@ namespace WebApiIntegrationTests.ItemListServiceTests
         }
 
         [TestMethod]
+        public async Task GetByIdAsync_ExistingItemListId_Successful()
+        {
+            // Arrange.
+            var itemListEntityToSeed = ItemListEntityToSeed;
+
+            Seed(TripFlipDbContext, itemListEntityToSeed);
+
+            var existingItemListId = itemListEntityToSeed.Id;
+
+            var itemListService = new ItemListService(TripFlipDbContext,
+                Mapper,
+                CurrentUserService);
+
+            var recievedItemListDto =
+                await itemListService.GetByIdAsync(existingItemListId);
+
+            var seededItemListDto = Mapper.Map<ItemListDto>(itemListEntityToSeed);
+
+            var comparer = new ItemListDtoComparer();
+
+            // Act + Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(recievedItemListDto, seededItemListDto));
+        }
+
+        [TestMethod]
         public async Task CreateAsync_ValidData_Successful()
         {
             Seed(TripFlipDbContext, ValidUser);
