@@ -64,7 +64,7 @@ namespace WebApiIntegrationTests.TripServiceTests
 
         protected ITripService TripService;
 
-        protected static ICurrentUserService CreateCurrentUserServiceWithExistentUser()
+        protected ICurrentUserService CreateCurrentUserServiceWithExistentUser()
         {
             var correctEmail = "string@string.com";
             var correctGuid = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e");
@@ -76,7 +76,7 @@ namespace WebApiIntegrationTests.TripServiceTests
             return mock.Object;
         }
 
-        protected static ICurrentUserService CreateCurrentUserServiceWithNonExistentUser()
+        protected ICurrentUserService CreateCurrentUserServiceWithNonExistentUser()
         {
             var correctEmail = "string@mail.com";
             var correctGuid = Guid.Parse("7c9e6679-7425-40de-944b-e07fc1f90ae7");
