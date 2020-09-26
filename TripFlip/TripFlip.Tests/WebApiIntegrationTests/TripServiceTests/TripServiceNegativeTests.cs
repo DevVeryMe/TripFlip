@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TripServiceTests
 {
@@ -21,6 +22,61 @@ namespace WebApiIntegrationTests.TripServiceTests
         public void Cleanup()
         {
             TripFlipDbContext.Dispose();
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_NonExistentTrip_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var invalidTripId = 2;
+            var updateTripDto = GetUpdateTripDto(invalidTripId);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_CurrentUserNotTripAdmin_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_CurrentUserNotTripSubsriber_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, UserEntityToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserServiceWithExistentUser();
+            TripService = new TripService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var updateTripDto = GetUpdateTripDto();
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await TripService.UpdateAsync(updateTripDto));
         }
 
         [TestMethod]
