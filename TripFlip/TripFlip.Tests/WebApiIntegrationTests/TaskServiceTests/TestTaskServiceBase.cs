@@ -33,6 +33,8 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Id = 1,
             RouteId = 1,
             Title = "Task list"
+        };
+
         protected TaskEntity TaskEntityToSeed => new TaskEntity()
         {
             Id = 1,
