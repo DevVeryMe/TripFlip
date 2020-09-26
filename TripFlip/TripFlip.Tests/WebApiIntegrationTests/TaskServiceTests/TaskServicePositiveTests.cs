@@ -34,9 +34,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task GetById_GivenValidId_Successful()
         {
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
-            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            // Arrange
             Seed(TripFlipDbContext, TaskEntityToSeed);
 
             var validTaskId = 1;
@@ -46,10 +44,12 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
-
-            var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
             var compaper = new TaskDtoComparer();
 
+            // Act
+            var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
+            
+            // Assert
             Assert.AreEqual(0, compaper.Compare(_expectedGotByIdTaskDto, resultTaskDto));
         }
     }

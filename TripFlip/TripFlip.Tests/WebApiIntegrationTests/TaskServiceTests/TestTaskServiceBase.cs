@@ -15,31 +15,6 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Email = "correct@mail.com"
         };
 
-        protected static TripEntity TripEntityToSeed => new TripEntity()
-        {
-            Id = 1,
-            Title = "Trip",
-            Description = "Description",
-            StartsAt = DateTimeOffset.Parse("28/08/2030 14:00:00",
-                CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
-            EndsAt = DateTimeOffset.Parse("30/11/2030 19:00:00",
-                CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
-        };
-
-        protected RouteEntity RouteEntityToSeed => new RouteEntity()
-        {
-            Id = 1,
-            Title = "Route",
-            TripId = 1,
-        };
-
-        protected TaskListEntity TaskListEntityToSeed => new TaskListEntity()
-        {
-            Id = 1,
-            Title = "Task list",
-            RouteId = 1
-        };
-
         protected TaskEntity TaskEntityToSeed => new TaskEntity()
         {
             Id = 1,

@@ -23,6 +23,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task GetByIdAsync_GivenNotValidId_ExceptionThrown()
         {
+            // Arrange
             var invalidId = 2;
 
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
@@ -30,6 +31,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskService.GetByIdAsync(invalidId));
         }
