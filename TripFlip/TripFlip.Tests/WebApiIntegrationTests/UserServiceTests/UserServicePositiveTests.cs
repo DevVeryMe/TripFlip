@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using TripFlip.Domain.Entities;
 using TripFlip.Services;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Helpers;
@@ -203,6 +202,34 @@ namespace WebApiIntegrationTests.UserServiceTests
                 .FirstOrDefault(subscriber => subscriber.TripSubscriber.UserId == ValidUser.Id);
 
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public async Task UnsubscribeFromTripAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, NotTripAdminUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(NotTripAdminUser.Id,
+                NotTripAdminUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id);
+
+            // Assert.
+            var result = TripFlipDbContext.TripSubscribers
+                .FirstOrDefault(subscriber => subscriber.UserId == NotTripAdminUser.Id);
+
+            Assert.IsNull(result);
         }
     }
 }

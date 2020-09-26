@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
-using TripFlip.Services.Dto.UserDtos;
 
 namespace WebApiIntegrationTests.UserServiceTests
 {
