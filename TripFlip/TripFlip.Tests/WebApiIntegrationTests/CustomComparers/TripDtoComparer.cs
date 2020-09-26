@@ -48,7 +48,8 @@ namespace WebApiIntegrationTests.CustomComparers
                 return 1;
             }
 
-            if (DateTimeOffset.Compare((DateTimeOffset) x.StartsAt, (DateTimeOffset) y.StartsAt) != 0)
+            if (x.StartsAt != null && y.StartsAt != null &&
+                DateTimeOffset.Compare((DateTimeOffset) x.StartsAt, (DateTimeOffset) y.StartsAt) != 0)
             {
                 return DateTimeOffset.Compare((DateTimeOffset) x.StartsAt, (DateTimeOffset) y.StartsAt);
             }
@@ -63,7 +64,8 @@ namespace WebApiIntegrationTests.CustomComparers
                 return 1;
             }
 
-            if (DateTimeOffset.Compare((DateTimeOffset)x.EndsAt, (DateTimeOffset)y.EndsAt) != 0)
+            if (x.EndsAt != null && y.EndsAt != null &&
+                DateTimeOffset.Compare((DateTimeOffset)x.EndsAt, (DateTimeOffset)y.EndsAt) != 0)
             {
                 return DateTimeOffset.Compare((DateTimeOffset)x.EndsAt, (DateTimeOffset)y.EndsAt);
             }
