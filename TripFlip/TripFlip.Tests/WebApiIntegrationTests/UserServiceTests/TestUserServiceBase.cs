@@ -2,6 +2,8 @@
 using Moq;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
+using TripFlip.Services.Dto.Enums;
+using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.UserServiceTests
@@ -39,6 +41,22 @@ namespace WebApiIntegrationTests.UserServiceTests
             };
 
             return jwtConfiguration;
+        }
+
+        protected RegisterUserDto GetRegisterUserDto(string email = "correct@mail.com",
+            string password = "Correctpass1@", string aboutMe = null, string firstName = null,
+            string lastName = null, DateTimeOffset? birthDate = null, UserGender? gender = null)
+        {
+            return new RegisterUserDto()
+            {
+                Email = email,
+                Password = password,
+                AboutMe = aboutMe,
+                FirstName = firstName,
+                LastName = lastName,
+                BirthDate = birthDate,
+                Gender = gender
+            };
         }
     }
 }

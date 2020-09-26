@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Threading.Tasks;
 using TripFlip.Services;
-using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.UserDtos;
 using WebApiIntegrationTests.CustomComparers;
 
@@ -43,22 +41,6 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             // Assert
             Assert.AreEqual(0, comparer.Compare(_expectedRegisteredUser, result));
-        }
-
-        private RegisterUserDto GetRegisterUserDto(string email = "correct@mail.com",
-            string password = "Correctpass1@", string aboutMe = null, string firstName = null,
-            string lastName = null, DateTimeOffset? birthDate = null, UserGender? gender = null)
-        {
-            return new RegisterUserDto()
-            {
-                Email = email,
-                Password = password,
-                AboutMe = aboutMe,
-                FirstName = firstName,
-                LastName = lastName,
-                BirthDate = birthDate,
-                Gender = gender
-            };
         }
     }
 }

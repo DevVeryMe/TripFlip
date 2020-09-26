@@ -24,11 +24,6 @@ namespace WebApiIntegrationTests.CustomComparers
                 return 1;
             }
 
-            if (x.Id.CompareTo(y.Id) != 0)
-            {
-                return x.Id.CompareTo(y.Id);
-            }
-
             if (string.Compare(x.Email, y.Email, StringComparison.Ordinal) != 0)
             {
                 return string.Compare(x.Email, y.Email, StringComparison.Ordinal);
@@ -59,7 +54,8 @@ namespace WebApiIntegrationTests.CustomComparers
                 return 1;
             }
 
-            if (DateTimeOffset.Compare((DateTimeOffset)x.BirthDate, (DateTimeOffset)y.BirthDate) != 0)
+            if (x.BirthDate != null && y.BirthDate != null &&
+                DateTimeOffset.Compare((DateTimeOffset)x.BirthDate, (DateTimeOffset)y.BirthDate) != 0)
             {
                 return DateTimeOffset.Compare((DateTimeOffset)x.BirthDate, (DateTimeOffset)y.BirthDate);
             }
@@ -74,7 +70,8 @@ namespace WebApiIntegrationTests.CustomComparers
                 return 1;
             }
 
-            if (((UserGender)x.Gender).CompareTo((UserGender)y.Gender) != 0)
+            if (x.Gender != null && y.Gender != null &&
+                ((UserGender)x.Gender).CompareTo((UserGender)y.Gender) != 0)
             {
                 return ((UserGender)x.Gender).CompareTo((UserGender)y.Gender);
             }
