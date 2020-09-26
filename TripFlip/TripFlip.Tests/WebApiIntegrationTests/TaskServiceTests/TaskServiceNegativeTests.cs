@@ -158,6 +158,69 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 await taskService.DeleteByIdAsync(validTaskId));
         }
 
+        [TestMethod]
+        public async Task UpdatePriorityAsync_NonExistentTask_ExceptionThrown()
+        {
+            // Arrange
+            var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
+            var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.UpdatePriorityAsync(updateTaskPriorityDto));
+        }
+
+        [TestMethod]
+        public async Task UpdatePriorityAsync_CurrentUserNotRouteAdmin_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, NotRouteAdminRoleUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(NotRouteAdminRoleUser.Id,
+                NotRouteAdminRoleUser.Email);
+
+            var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
+            var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await taskService.UpdatePriorityAsync(updateTaskPriorityDto));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
+        public async Task UpdatePriorityAsync_InvalidCurrentUser_ExceptionThrown(
+            string displayName, ICurrentUserService currentUserService)
+        {
+            // Arrange
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
+
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+
+            CurrentUserService = currentUserService;
+
+            var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
+            var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.UpdatePriorityAsync(updateTaskPriorityDto), displayName);
+        }
+
         private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
         {
             yield return new object[]

@@ -162,5 +162,15 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 PriorityLevel = priorityLevel
             };
         }
+
+        protected UpdateTaskPriorityDto GetUpdateTaskPriorityDto(int taskId = 1,
+            TaskPriorityLevel priorityLevel = TaskPriorityLevel.Low)
+        {
+            return new UpdateTaskPriorityDto()
+            {
+                Id = taskId,
+                PriorityLevel = priorityLevel
+            };
+        }
     }
 }
