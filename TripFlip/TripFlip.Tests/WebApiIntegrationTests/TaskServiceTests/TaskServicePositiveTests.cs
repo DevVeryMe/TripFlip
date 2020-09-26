@@ -75,7 +75,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
 
-            // act
+            // Act
             await taskService.DeleteByIdAsync(validTaskId);
 
             // Assert
