@@ -200,8 +200,8 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            var taskEntity = await _tripFlipDbContext.Tasks
-                .AsNoTracking()
+            var taskEntity = await _tripFlipDbContext
+                .Tasks
                 .Include(task => task.TaskList)
                 .SingleOrDefaultAsync(task => task.Id == id);
 

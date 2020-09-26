@@ -26,11 +26,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task CreateAsync_GivenNonExistentItemListId_ExceptionThrown()
         {
-            Seed(TripFlipDbContext, ValidUser);
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
-            Seed(TripFlipDbContext, ItemListEntityToSeed);
-
+            // Arrange
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
@@ -39,6 +35,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var createItemDto = GetCreateItemDto(itemListId: nonExistentItemListId);
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await itemService.CreateAsync(createItemDto));
         }
@@ -46,6 +43,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task CreateAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
         {
+            // Arrange
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -60,6 +58,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var createItemDto = GetCreateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await itemService.CreateAsync(createItemDto));
         }

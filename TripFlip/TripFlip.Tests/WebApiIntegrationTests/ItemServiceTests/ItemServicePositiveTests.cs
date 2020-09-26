@@ -44,6 +44,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task CreateAsync_ValidData_Successful()
         {
+            // Arrange
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -59,9 +60,12 @@ namespace WebApiIntegrationTests.ItemServiceTests
             var createItemDto = GetCreateItemDto();
             var itemService = new ItemService(Mapper, TripFlipDbContext,
                 CurrentUserService);
-            var resultItemDto = await itemService.CreateAsync(createItemDto);
             var comparer = new ItemDtoComparer();
 
+            //Act
+            var resultItemDto = await itemService.CreateAsync(createItemDto);
+
+            // Assert
             Assert.AreEqual(0,
                 comparer.Compare(_expectedCreatedItemDto, resultItemDto));
         }

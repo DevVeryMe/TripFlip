@@ -28,6 +28,13 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             TripId = 1,
         };
 
+        protected ItemListEntity ItemListEntityToSeed => new ItemListEntity()
+        {
+            Id = 1,
+            Title = "ItemList",
+            RouteId = 1
+        };
+
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed => 
             new List<TripSubscriberEntity>() 
             {
@@ -68,16 +75,32 @@ namespace WebApiIntegrationTests.ItemListServiceTests
                 }
             };
 
-        protected RouteRoleEntity RouteRoleEntityToSeed => new RouteRoleEntity()
-        {
-            Id = 1,
-            Name = "Admin"
-        };
+        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed =>
+            new List<RouteRoleEntity>()
+            {
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
+                }
+            };
 
-        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntitiesToSeed =>
+        protected RouteSubscriberRoleEntity RouteSubscriberAdminRoleEntityToSeed =>
             new RouteSubscriberRoleEntity()
             {
                 RouteRoleId = 1,
+                RouteSubscriberId = 1
+            };
+
+        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 2,
                 RouteSubscriberId = 1
             };
 
@@ -105,7 +128,7 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             Email = "notsubofroute@mail.com"
         };
 
-        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
+        protected static UserEntity UserWithoutRouteRoles => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
@@ -123,6 +146,16 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected UpdateItemListDto GetUpdateItemListDto(int id = 1,
+            string title = "Title")
+        {
+            return new UpdateItemListDto()
+            {
+                Id = id,
+                Title = title
+            };
         }
 
         protected CreateItemListDto GetCreateItemListDto(int routeId = 1,
