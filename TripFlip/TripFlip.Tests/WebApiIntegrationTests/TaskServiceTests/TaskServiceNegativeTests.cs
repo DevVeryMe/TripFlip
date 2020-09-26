@@ -58,6 +58,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task DeleteByIdAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
         {
+            // Arrange
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -73,6 +74,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var validTaskId = 1;
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await taskService.DeleteByIdAsync(validTaskId));
         }
@@ -82,6 +84,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         public async Task DeleteByIdAsync_GivenNotValidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
+            // Arrange
             Seed(TripFlipDbContext, NonExistentUser);
             Seed(TripFlipDbContext, NotRouteSubscriberUser);
             Seed(TripFlipDbContext, NotTripSubscriberUser);
@@ -99,6 +102,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var validTaskId = 1;
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskService.DeleteByIdAsync(validTaskId));
         }
