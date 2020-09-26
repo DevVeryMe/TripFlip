@@ -165,7 +165,7 @@ namespace WebApiIntegrationTests.UserServiceTests
                 userId: ValidUser.Id);
 
             // Act + Assert
-            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await userService.GrantTripRoleAsync(grantTripRolesDto));
         }
     }

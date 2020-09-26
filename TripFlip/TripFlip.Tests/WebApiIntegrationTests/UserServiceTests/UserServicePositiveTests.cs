@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TripFlip.Domain.Entities;
 using TripFlip.Services;
 using TripFlip.Services.Dto.UserDtos;
@@ -130,6 +132,53 @@ namespace WebApiIntegrationTests.UserServiceTests
             Assert.AreEqual(0, usersByTripAndCategorizedByRoleDtoComparer
                 .Compare(_expectedUsersByTripAndCategorizedByRoleDto, 
                     usersByTripAndCategorizedByRoleDto));
+        }
+
+        [TestMethod]
+        public async Task GrantTripRoleAsync_GivenValidData_Successful()
+        {
+            // Arrange
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, NotTripAdminUser);
+            Seed(TripFlipDbContext, UserEntitiesToSeed);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var userToGrantRoles = UserEntitiesToSeed.ToList()[2];
+
+            var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
+                userId: userToGrantRoles.Id);
+
+            // Act
+            await userService.GrantTripRoleAsync(grantTripRolesDto);
+
+            var usersRolesToCheck = TripFlipDbContext.TripSubscribers
+                .Include(subscriber => subscriber.TripRoles)
+                .FirstOrDefault(subscriber => subscriber.UserId == userToGrantRoles.Id);
+
+            // Assert
+            Assert.IsNotNull(usersRolesToCheck);
+            Assert.AreEqual(3, usersRolesToCheck.TripRoles.Count);
+
+            var validTripRoleIdList = ValidTripRoleIds.ToList();
+            var containsAllRoles = usersRolesToCheck.TripRoles
+                .Any(role => role.TripRoleId == validTripRoleIdList[0]) && 
+                                   usersRolesToCheck.TripRoles
+                                       .Any(role => role.TripRoleId == validTripRoleIdList[1]) && 
+                                   usersRolesToCheck.TripRoles
+                                       .Any(role => role.TripRoleId == validTripRoleIdList[2]);
+
+            Assert.IsTrue(containsAllRoles);
         }
     }
 }
