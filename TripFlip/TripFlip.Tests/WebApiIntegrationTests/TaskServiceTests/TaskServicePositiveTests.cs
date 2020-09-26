@@ -35,9 +35,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task GetById_GivenValidId_Successful()
         {
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
-            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            // Arrange
             Seed(TripFlipDbContext, TaskEntityToSeed);
             
             var validTaskId = 1;
@@ -47,12 +45,13 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
+            var comparer = new TaskDtoComparer();
 
+            // Act
             var resultTaskDto = await taskService.GetByIdAsync(validTaskId);
-            var compaper = new TaskDtoComparer();
-
-            Assert.AreEqual(0, compaper
-                .Compare(_expectedGotByIdTaskDto, resultTaskDto));
+            
+            // Assert
+            Assert.AreEqual(0, comparer.Compare(_expectedGotByIdTaskDto, resultTaskDto));
         }
 
         [TestMethod]
@@ -69,7 +68,6 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Seed(TripFlipDbContext, ValidUser);
 
             var validTaskId = 1;
-            var tasks = TripFlipDbContext.Tasks.ToList();
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 

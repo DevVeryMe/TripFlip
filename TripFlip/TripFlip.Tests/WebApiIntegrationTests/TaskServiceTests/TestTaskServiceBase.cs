@@ -31,8 +31,8 @@ namespace WebApiIntegrationTests.TaskServiceTests
         protected TaskListEntity TaskListEntityToSeed => new TaskListEntity()
         {
             Id = 1,
-            Title = "Task list",
-            RouteId = 1
+            RouteId = 1,
+            Title = "Task list"
         };
 
         protected TaskEntity TaskEntityToSeed => new TaskEntity()
