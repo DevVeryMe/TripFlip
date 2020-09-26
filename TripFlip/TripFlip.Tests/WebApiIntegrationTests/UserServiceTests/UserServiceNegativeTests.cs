@@ -57,7 +57,7 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Arrange
             Seed(TripFlipDbContext, ValidUser);
             var jwtConfiguration = CreateJwtConfiguration();
-            CurrentUserService = CreateCurrentUserService(InvalidUser.Id, InvalidUser.Email);
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
             var incorrectPassword = "Incorrect@1pass";
@@ -69,15 +69,15 @@ namespace WebApiIntegrationTests.UserServiceTests
         }
 
         [TestMethod]
-        public async Task GetAllByTripIdAndCategorizeByRoleAsync_GivenIncorrectTripId_ExceptionThrow()
+        public async Task GetAllByTripIdAndCategorizeByRoleAsync_GivenIncorrectTripId_ExceptionThrown()
         {
-            // Arrange.
+            // Arrange
             var nonExistentTripId = 1;
             var jwtConfiguration = CreateJwtConfiguration();
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
 
-            // Act + Assert.
+            // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await userService.GetAllByTripIdAndCategorizeByRoleAsync(nonExistentTripId));
         }

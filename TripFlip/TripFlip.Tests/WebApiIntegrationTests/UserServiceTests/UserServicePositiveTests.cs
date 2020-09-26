@@ -1,5 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using TripFlip.Domain.Entities;
 using TripFlip.Services;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Helpers;
@@ -14,6 +17,41 @@ namespace WebApiIntegrationTests.UserServiceTests
         {
             Email = "correct@mail.com"
         };
+
+        private readonly UsersByTripAndCategorizedByRoleDto 
+            _expectedUsersByTripAndCategorizedByRoleDto = new UsersByTripAndCategorizedByRoleDto() 
+            {
+                TripId = 1,
+                TripAdmins = new List<UserDto>()
+                {
+                    new UserDto()
+                    {
+                        Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
+                        Email = "firstuser@mail.com"
+                    }
+                },
+                TripEditors = new List<UserDto>()
+                {
+                    new UserDto()
+                    {
+                        Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
+                        Email = "seconduser@mail.com"
+                    }
+                },
+                TripGuests = new List<UserDto>()
+                {
+                    new UserDto()
+                    {
+                        Id = Guid.Parse("816fe98f-515c-407a-bf66-cc9a908644c1"),
+                        Email = "thirduser@mail.com"
+                    },
+                    new UserDto()
+                    {
+                        Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
+                        Email = "fourthuser@mail.com"
+                    }
+                }
+            };
 
         [TestInitialize]
         public void Initialize()
@@ -65,6 +103,33 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             // Assert
             Assert.IsTrue(passwordVerified);
+        }
+
+        [TestMethod]
+        public async Task GetAllByTripIdAndCategorizeByRoleAsync_GivenCorrectTripId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, UserEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            var existentTripId = 1;
+            var jwtConfiguration = CreateJwtConfiguration();
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+            var usersByTripAndCategorizedByRoleDtoComparer = 
+                new UsersByTripAndCategorizedByRoleDtoComparer();
+
+            // Act
+            var usersByTripAndCategorizedByRoleDto = 
+                await userService.GetAllByTripIdAndCategorizeByRoleAsync(existentTripId);
+
+            // Assert
+            Assert.AreEqual(0, usersByTripAndCategorizedByRoleDtoComparer
+                .Compare(_expectedUsersByTripAndCategorizedByRoleDto, 
+                    usersByTripAndCategorizedByRoleDto));
         }
     }
 }
