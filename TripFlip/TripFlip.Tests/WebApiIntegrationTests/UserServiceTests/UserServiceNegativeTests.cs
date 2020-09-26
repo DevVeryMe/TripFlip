@@ -67,5 +67,19 @@ namespace WebApiIntegrationTests.UserServiceTests
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await userService.ChangePasswordAsync(changePasswordDto));
         }
+
+        [TestMethod]
+        public async Task GetAllByTripIdAndCategorizeByRoleAsync_GivenIncorrectTripId_ExceptionThrow()
+        {
+            // Arrange.
+            var nonExistentTripId = 1;
+            var jwtConfiguration = CreateJwtConfiguration();
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GetAllByTripIdAndCategorizeByRoleAsync(nonExistentTripId));
+        }
     }
 }
