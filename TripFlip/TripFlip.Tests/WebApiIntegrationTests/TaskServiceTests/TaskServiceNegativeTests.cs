@@ -43,16 +43,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         public async Task CreateAsync_GivenNonExistentTaskListId_ExceptionThrown()
         {
             // Arrange.
-            Seed(TripFlipDbContext, ValidUser);
-            Seed(TripFlipDbContext, TripEntityToSeed);
-            Seed(TripFlipDbContext, RouteEntityToSeed);
-            Seed(TripFlipDbContext, TaskListEntityToSeed);
-
-            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
-                ValidUser.Email);
-
-            var nonExistentTaskListId = 2;
-            var createTaskDto = GetCreateTaskDto(taskListId: nonExistentTaskListId);
+            var createTaskDto = GetCreateTaskDto();
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
             // Act + Assert.
