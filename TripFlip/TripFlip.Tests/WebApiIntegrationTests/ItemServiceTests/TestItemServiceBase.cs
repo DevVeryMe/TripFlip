@@ -35,6 +35,16 @@ namespace WebApiIntegrationTests.ItemServiceTests
             RouteId = 1
         };
 
+        protected ItemEntity ItemEntityToSeed => new ItemEntity()
+        {
+            Id = 1,
+            Title = "Item",
+            Comment = "Comment",
+            Quantity = "Quantity",
+            IsCompleted = false,
+            ItemListId = 1,
+        };
+
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
             new List<TripSubscriberEntity>()
             {
@@ -75,17 +85,33 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 }
             };
 
-        protected RouteRoleEntity RouteRoleEntityToSeed => new RouteRoleEntity()
+        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed => new List<RouteRoleEntity>()
         {
-            Id = 1,
-            Name = "Admin"
+            new RouteRoleEntity()
+            {
+                Id = 1,
+                Name = "Admin"
+            },
+            new RouteRoleEntity()
+            {
+                Id = 2,
+                Name = "Editor"
+            }
         };
 
-        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntitiesToSeed =>
-            new RouteSubscriberRoleEntity()
+        protected IEnumerable<RouteSubscriberRoleEntity> RouteSubscriberRoleEntitiesToSeed =>
+            new List<RouteSubscriberRoleEntity>()
             {
-                RouteRoleId = 1,
-                RouteSubscriberId = 1
+                new RouteSubscriberRoleEntity()
+                {
+                    RouteRoleId = 1,
+                    RouteSubscriberId = 1
+                },
+                new RouteSubscriberRoleEntity()
+                {
+                    RouteRoleId = 2,
+                    RouteSubscriberId = 1
+                }
             };
 
         protected static UserEntity ValidUser => new UserEntity()
@@ -140,6 +166,20 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 ItemListId = itemListId,
                 Title = title,
                 Comment = comment,
+                Quantity = quantity
+            };
+        }
+
+        protected UpdateItemDto GetUpdateItemDto(int itemId = 1, bool isCompleted = true,
+            string title = "Updated title", string comment = "Updated comment",
+            string quantity = "Updated quantity")
+        {
+            return new UpdateItemDto()
+            {
+                Id = itemId,
+                IsCompleted = isCompleted,
+                Comment = comment,
+                Title = title,
                 Quantity = quantity
             };
         }

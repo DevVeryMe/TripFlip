@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Interfaces;
@@ -9,7 +10,7 @@ namespace WebApiIntegrationTests.TripServiceTests
 {
     public abstract class TestTripServiceBase : TestServiceBase
     {
-        protected UserEntity UserEntityToSeed = new UserEntity()
+        protected UserEntity UserEntityToSeed => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "string@string.com"
@@ -60,14 +61,43 @@ namespace WebApiIntegrationTests.TripServiceTests
             }
         };
 
+        protected IEnumerable<TripEntity> TripEntitiesToSeed =>
+            new List<TripEntity>()
+            {
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                },
+                new TripEntity()
+                {
+                    Title = "Title",
+                    Description = "Description",
+                    StartsAt = new DateTimeOffset(DateTime.Now.AddDays(5)),
+                    EndsAt = new DateTimeOffset(DateTime.Now.AddDays(10)),
+                    DateCreated = new DateTimeOffset(DateTime.Now)
+                }
+            };
+
         protected ICurrentUserService CurrentUserService;
 
         protected ITripService TripService;
 
         protected ICurrentUserService CreateCurrentUserServiceWithExistentUser()
         {
-            var correctEmail = "string@string.com";
-            var correctGuid = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e");
+            var correctEmail = UserEntityToSeed.Email;
+            var correctGuid = UserEntityToSeed.Id;
             
             var mock = new Mock<ICurrentUserService>();
             mock.Setup(a => a.UserEmail).Returns(correctEmail);
