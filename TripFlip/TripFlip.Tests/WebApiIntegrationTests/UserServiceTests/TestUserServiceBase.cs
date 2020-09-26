@@ -14,7 +14,7 @@ namespace WebApiIntegrationTests.UserServiceTests
     {
         protected IEnumerable<int> ValidTripRoleIds = new []{1, 2, 3};
 
-        protected static UserEntity ValidUser => new UserEntity()
+        protected UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "correct@mail.com",
@@ -22,19 +22,25 @@ namespace WebApiIntegrationTests.UserServiceTests
                            "0wURGSB7OqYnLQkM42Y7ydc452Fqav1EnS5u7+MVdxsA=="
         };
 
-        protected static UserEntity InvalidUser => new UserEntity()
+        protected UserEntity InvalidUser => new UserEntity()
         {
             Id = Guid.Parse("d03bba28-88ac-452b-a3e0-19fa2921a99d"),
             Email = "incorrect@mail.com"
         };
 
-        protected static UserEntity NotTripAdminUser => new UserEntity()
+        protected UserEntity NotTripAdminUser => new UserEntity()
         {
             Id = Guid.Parse("1a5104ab-b479-4547-9c00-7dd930b31267"),
             Email = "nottripadmin@mail.com"
         };
 
-        protected static TripEntity TripEntityToSeed => new TripEntity()
+        protected UserEntity ExistentButNotSubscribedToTripUser = new UserEntity()
+        {
+            Id = Guid.Parse("7d6ac0ab-575f-444b-a813-d56f9d6ba0e5"),
+            Email = "nottripsubscribed@mail.com"
+        };
+
+        protected TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
             Title = "Trip",
@@ -43,6 +49,13 @@ namespace WebApiIntegrationTests.UserServiceTests
                 CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
             EndsAt = DateTimeOffset.Parse("30/11/2030 19:00:00",
                 CultureInfo.GetCultureInfo("en-GB").DateTimeFormat)
+        };
+
+        protected RouteEntity RouteEntityToSeed => new RouteEntity()
+        {
+            Id = 1,
+            TripId = 1,
+            Title = "Route"
         };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
