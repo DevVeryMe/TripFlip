@@ -219,10 +219,10 @@ namespace WebApiIntegrationTests.UserServiceTests
             Seed(TripFlipDbContext, ExistentButNotSubscribedToTripUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
-            var routes = TripFlipDbContext.Routes.ToList();
 
-            CurrentUserService = CreateCurrentUserService(ExistentButNotSubscribedToTripUser.Id,
-                ExistentButNotSubscribedToTripUser.Email);
+            // Trip subscribers are not seeded, so ValidUser can be used in this test.
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
 
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);

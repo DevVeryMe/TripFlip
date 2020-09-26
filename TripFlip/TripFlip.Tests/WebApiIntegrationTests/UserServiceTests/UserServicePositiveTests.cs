@@ -141,7 +141,6 @@ namespace WebApiIntegrationTests.UserServiceTests
             var jwtConfiguration = CreateJwtConfiguration();
 
             Seed(TripFlipDbContext, ValidUser);
-            Seed(TripFlipDbContext, NotTripAdminUser);
             Seed(TripFlipDbContext, UserEntitiesToSeed);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
@@ -179,6 +178,33 @@ namespace WebApiIntegrationTests.UserServiceTests
                                        .Any(role => role.TripRoleId == validTripRoleIdList[2]);
 
             Assert.IsTrue(containsAllRoles);
+        }
+
+        [TestMethod]
+        public async Task SubscribeToRouteAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.SubscribeToRouteAsync(RouteEntityToSeed.Id);
+
+            // Assert.
+            var result = TripFlipDbContext.RouteSubscribers
+                .FirstOrDefault(subscriber => subscriber.TripSubscriber.UserId == ValidUser.Id);
+
+            Assert.IsNotNull(result);
         }
     }
 }
