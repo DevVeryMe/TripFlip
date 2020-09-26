@@ -70,24 +70,24 @@ namespace WebApiIntegrationTests.UserServiceTests
         [TestMethod]
         public async Task RegisterAsync_GivenValidUserData_Successful()
         {
-            // Arrange
+            // Arrange.
             var jwtConfiguration = CreateJwtConfiguration();
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
             var registerUserDto = GetRegisterUserDto();
             var comparer = new UserDtoComparer();
 
-            // Act
+            // Act.
             var result = await userService.RegisterAsync(registerUserDto);
 
-            // Assert
+            // Assert.
             Assert.AreEqual(0, comparer.Compare(_expectedRegisteredUser, result));
         }
 
         [TestMethod]
         public async Task ChangePasswordAsync_GivenValidData_Successful()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, ValidUser);
             CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
             var jwtConfiguration = CreateJwtConfiguration();
@@ -97,20 +97,20 @@ namespace WebApiIntegrationTests.UserServiceTests
             var changePasswordDto = GetChangeUserPasswordDto(oldPassword: correctOldPassword);
             var correctNewPassword = "Correctnewpass1@";
 
-            // Act
+            // Act.
             await userService.ChangePasswordAsync(changePasswordDto);
             var user = await TripFlipDbContext.Users.FindAsync(ValidUser.Id);
             var passwordVerified = 
                 PasswordHasherHelper.VerifyPassword(correctNewPassword, user.PasswordHash);
 
-            // Assert
+            // Assert.
             Assert.IsTrue(passwordVerified);
         }
 
         [TestMethod]
         public async Task GetAllByTripIdAndCategorizeByRoleAsync_GivenCorrectTripId_Successful()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, UserEntitiesToSeed);
             Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
@@ -124,11 +124,11 @@ namespace WebApiIntegrationTests.UserServiceTests
             var usersByTripAndCategorizedByRoleDtoComparer = 
                 new UsersByTripAndCategorizedByRoleDtoComparer();
 
-            // Act
+            // Act.
             var usersByTripAndCategorizedByRoleDto = 
                 await userService.GetAllByTripIdAndCategorizeByRoleAsync(existentTripId);
 
-            // Assert
+            // Assert.
             Assert.AreEqual(0, usersByTripAndCategorizedByRoleDtoComparer
                 .Compare(_expectedUsersByTripAndCategorizedByRoleDto, 
                     usersByTripAndCategorizedByRoleDto));
@@ -137,7 +137,7 @@ namespace WebApiIntegrationTests.UserServiceTests
         [TestMethod]
         public async Task GrantTripRoleAsync_GivenValidData_Successful()
         {
-            // Arrange
+            // Arrange.
             var jwtConfiguration = CreateJwtConfiguration();
 
             Seed(TripFlipDbContext, ValidUser);
@@ -159,14 +159,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             var grantTripRolesDto = GetGrantTripRolesDto(tripRoleIds: ValidTripRoleIds,
                 userId: userToGrantRoles.Id);
 
-            // Act
+            // Act.
             await userService.GrantTripRoleAsync(grantTripRolesDto);
 
             var usersRolesToCheck = TripFlipDbContext.TripSubscribers
                 .Include(subscriber => subscriber.TripRoles)
                 .FirstOrDefault(subscriber => subscriber.UserId == userToGrantRoles.Id);
 
-            // Assert
+            // Assert.
             Assert.IsNotNull(usersRolesToCheck);
             Assert.AreEqual(3, usersRolesToCheck.TripRoles.Count);
 
