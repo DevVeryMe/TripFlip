@@ -13,7 +13,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
     {
         protected IEnumerable<int> ValidRouteSubscribersToAssignToTask = new List<int>()
         {
-            1
+            2
         };
 
         protected static TripEntity TripEntityToSeed => new TripEntity()
