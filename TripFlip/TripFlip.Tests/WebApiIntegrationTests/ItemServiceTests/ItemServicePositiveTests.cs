@@ -134,5 +134,37 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Assert.IsNotNull(item);
             Assert.AreEqual(1, item.ItemAssignees.Count);
         }
+
+        [TestMethod]
+        public async Task DeleteById_ExistentItemId_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, ValidUser);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var existentItemId = 1;
+            var itemService = new ItemService(Mapper, TripFlipDbContext,
+                CurrentUserService);
+
+            // Act.
+            await itemService.DeleteByIdAsync(existentItemId);
+
+            // Assert.
+            var taskEntity = await TripFlipDbContext
+                .Items
+                .FindAsync(existentItemId);
+
+            Assert.IsNull(taskEntity);
+        }
     }
 }
