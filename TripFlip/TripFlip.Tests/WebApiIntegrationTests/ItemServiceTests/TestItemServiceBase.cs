@@ -10,6 +10,11 @@ namespace WebApiIntegrationTests.ItemServiceTests
 {
     public class TestItemServiceBase : TestServiceBase
     {
+        protected IEnumerable<int> ValidRouteSubscribersToAssignToItem = new List<int>()
+        {
+            2
+        };
+
         protected static TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
@@ -138,11 +143,25 @@ namespace WebApiIntegrationTests.ItemServiceTests
             Email = "notsubofroute@mail.com"
         };
 
-        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
+        protected static UserEntity RouteSubscriberWithoutRolesUser => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
         };
+
+        protected RouteSubscriberRoleEntity RouteSubscriberAdminRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 1,
+                RouteSubscriberId = 1
+            };
+
+        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 2,
+                RouteSubscriberId = 1
+            };
 
         protected ICurrentUserService CurrentUserService;
 
@@ -181,6 +200,16 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 Comment = comment,
                 Title = title,
                 Quantity = quantity
+            };
+        }
+
+        protected ItemAssigneesDto GetItemAssigneesDto(IEnumerable<int> routeSubscriberIds,
+            int taskId = 1)
+        {
+            return new ItemAssigneesDto()
+            {
+                RouteSubscriberIds = routeSubscriberIds,
+                ItemId = taskId
             };
         }
     }
