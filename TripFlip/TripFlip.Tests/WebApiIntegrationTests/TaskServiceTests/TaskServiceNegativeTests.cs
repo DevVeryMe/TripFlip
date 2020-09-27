@@ -161,11 +161,11 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task UpdatePriorityAsync_NonExistentTask_ExceptionThrown()
         {
-            // Arrange
+            // Arrange.
             var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
-            // Act + Assert
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskService.UpdatePriorityAsync(updateTaskPriorityDto));
         }
@@ -173,7 +173,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         [TestMethod]
         public async Task UpdatePriorityAsync_CurrentUserNotRouteEditor_ExceptionThrown()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -189,7 +189,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
-            // Act + Assert
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await taskService.UpdatePriorityAsync(updateTaskPriorityDto));
         }
@@ -199,7 +199,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         public async Task UpdatePriorityAsync_InvalidCurrentUser_ExceptionThrown(
             string displayName, ICurrentUserService currentUserService)
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, NonExistentUser);
             Seed(TripFlipDbContext, NotRouteSubscriberUser);
             Seed(TripFlipDbContext, NotTripSubscriberUser);
@@ -216,7 +216,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             var updateTaskPriorityDto = GetUpdateTaskPriorityDto();
             var taskService = new TaskService(TripFlipDbContext, Mapper, CurrentUserService);
 
-            // Act + Assert
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await taskService.UpdatePriorityAsync(updateTaskPriorityDto), displayName);
         }
