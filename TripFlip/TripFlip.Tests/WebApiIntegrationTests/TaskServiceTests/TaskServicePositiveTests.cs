@@ -186,13 +186,13 @@ namespace WebApiIntegrationTests.TaskServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var taskAssignessDto = GetTaskAssigneesDto(routeSubscriberIds:
+            var taskAssigneesDto = GetTaskAssigneesDto(routeSubscriberIds:
                 ValidRouteSubscribersToAssignToTask);
             var taskService = new TaskService(TripFlipDbContext, Mapper,
                 CurrentUserService);
 
             // Act.
-            await taskService.SetTaskAssignees(taskAssignessDto);
+            await taskService.SetTaskAssignees(taskAssigneesDto);
 
             // Assert.
 
