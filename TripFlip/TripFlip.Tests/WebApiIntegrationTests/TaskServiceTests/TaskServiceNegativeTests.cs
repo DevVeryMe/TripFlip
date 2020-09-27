@@ -171,7 +171,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
         }
 
         [TestMethod]
-        public async Task UpdatePriorityAsync_CurrentUserNotRouteAdmin_ExceptionThrown()
+        public async Task UpdatePriorityAsync_CurrentUserNotRouteEditor_ExceptionThrown()
         {
             // Arrange
             Seed(TripFlipDbContext, NotRouteAdminRoleUser);
