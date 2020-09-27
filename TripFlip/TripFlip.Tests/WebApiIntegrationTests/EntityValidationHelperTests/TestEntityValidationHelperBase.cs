@@ -35,6 +35,8 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                 }
             };
 
+        protected ICurrentUserService CurrentUserService;
+
         protected static ICurrentUserService CreateCurrentUserService(Guid id, string email)
         {
             var correctEmail = email;
