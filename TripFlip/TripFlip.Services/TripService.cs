@@ -107,8 +107,12 @@ namespace TripFlip.Services
 
         public async Task<TripDto> UpdateAsync(UpdateTripDto updateTripDto)
         {
-            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
-                _currentUserService, _tripFlipDbContext, updateTripDto.Id);
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+                _currentUserService,
+                _tripFlipDbContext,
+                updateTripDto.Id,
+                TripRoles.Admin,
+                ErrorConstants.NotTripAdmin);
 
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
@@ -127,8 +131,12 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
-                _currentUserService, _tripFlipDbContext, id);
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+                _currentUserService,
+                _tripFlipDbContext,
+                id,
+                TripRoles.Admin,
+                ErrorConstants.NotTripAdmin);
 
             var tripEntity = await _tripFlipDbContext.Trips
                 .Include(trip => trip.Routes)

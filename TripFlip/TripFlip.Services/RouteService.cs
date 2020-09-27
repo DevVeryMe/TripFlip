@@ -8,6 +8,8 @@ using TripFlip.Domain.Entities;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Enums;
+using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
@@ -21,19 +23,32 @@ namespace TripFlip.Services
 
         private readonly TripFlipDbContext _tripFlipDbContext;
 
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
-        /// <param name="mapper">IMapper instance.</param>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public RouteService(TripFlipDbContext tripFlipDbContext, IMapper mapper)
+        /// <param name="mapper">IMapper instance.</param>
+        /// <param name="currentUserService">ICurrentUserService instance.</param>
+        public RouteService(TripFlipDbContext tripFlipDbContext,
+            IMapper mapper,
+            ICurrentUserService currentUserService)
         {
-            _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
+            _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         public async Task<RouteDto> CreateAsync(CreateRouteDto createRouteDto)
         {
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+               _currentUserService,
+               _tripFlipDbContext,
+               createRouteDto.TripId,
+               TripRoles.Admin,
+               ErrorConstants.NotTripAdmin);
+
             await ValidateTripExistsAsync(createRouteDto.TripId);
 
             var routeEntity = _mapper.Map<RouteEntity>(createRouteDto);
@@ -48,6 +63,13 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
         {
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+               _currentUserService,
+               _tripFlipDbContext,
+               updateRouteDto.TripId,
+               TripRoles.Editor,
+               ErrorConstants.NotTripEditor);
+
             var tripEntity = await _tripFlipDbContext
                 .Trips
                 .Where(tripEntity => tripEntity.Id == updateRouteDto.TripId)
@@ -81,6 +103,13 @@ namespace TripFlip.Services
                 .SingleOrDefaultAsync(entity => entity.Id == id);
 
             ValidateRouteEntityIsNotNull(routeEntity);
+
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+               _currentUserService,
+               _tripFlipDbContext,
+               routeEntity.TripId,
+               TripRoles.Admin,
+               ErrorConstants.NotTripAdmin);
 
             _tripFlipDbContext.ItemLists.RemoveRange(routeEntity.ItemLists);
             _tripFlipDbContext.TaskLists.RemoveRange(routeEntity.TaskLists);
