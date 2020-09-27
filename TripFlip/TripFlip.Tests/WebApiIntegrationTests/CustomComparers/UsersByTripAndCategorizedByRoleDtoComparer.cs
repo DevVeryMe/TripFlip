@@ -39,12 +39,15 @@ namespace WebApiIntegrationTests.CustomComparers
 
             if (x.TripAdmins != null && y.TripAdmins != null)
             {
-                if (x.TripAdmins.Count() < y.TripAdmins.Count())
+                var xTripAdminsCount = x.TripAdmins.Count();
+                var yTripAdminsCount = y.TripAdmins.Count();
+
+                if (xTripAdminsCount < yTripAdminsCount)
                 {
                     return -1;
                 }
 
-                if (x.TripAdmins.Count() > y.TripAdmins.Count())
+                if (xTripAdminsCount > yTripAdminsCount)
                 {
                     return 1;
                 }
@@ -63,12 +66,15 @@ namespace WebApiIntegrationTests.CustomComparers
 
             if (x.TripEditors != null && y.TripEditors != null)
             {
-                if (x.TripEditors.Count() < y.TripEditors.Count())
+                var xTripEditorsCount = x.TripEditors.Count();
+                var yTripEditorsCount = y.TripEditors.Count();
+
+                if (xTripEditorsCount < yTripEditorsCount)
                 {
                     return -1;
                 }
 
-                if (x.TripEditors.Count() > y.TripEditors.Count())
+                if (xTripEditorsCount > yTripEditorsCount)
                 {
                     return 1;
                 }
@@ -87,12 +93,15 @@ namespace WebApiIntegrationTests.CustomComparers
 
             if (x.TripGuests != null && y.TripGuests != null)
             {
-                if (x.TripGuests.Count() < y.TripGuests.Count())
+                var xTripGuestsCount = x.TripGuests.Count();
+                var yTripGuestsCount = y.TripGuests.Count();
+
+                if (xTripGuestsCount < yTripGuestsCount)
                 {
                     return -1;
                 }
 
-                if (x.TripGuests.Count() > y.TripGuests.Count())
+                if (xTripGuestsCount > yTripGuestsCount)
                 {
                     return 1;
                 }
