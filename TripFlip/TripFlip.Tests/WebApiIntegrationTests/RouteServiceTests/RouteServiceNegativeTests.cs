@@ -24,6 +24,25 @@ namespace WebApiIntegrationTests.RouteServiceTests
         }
 
         [TestMethod]
+        public async Task GetAllByTripIdAsync_NonExistentTripId_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, RouteEntitiesToSeed);
+
+            var routeService = new RouteService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            var nonExistentTripId = 1;
+            var paginationDto = GetPaginationDto();
+            string searchString = null;
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await routeService.GetAllByTripIdAsync(nonExistentTripId,
+                    searchString, paginationDto));
+        }
+
+        [TestMethod]
         public async Task GetByIdAsync_GivenNotValidId_ExceptionThrown()
         {
             // Arrange
