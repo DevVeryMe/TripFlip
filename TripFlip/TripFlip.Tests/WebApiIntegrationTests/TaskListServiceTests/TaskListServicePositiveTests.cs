@@ -139,5 +139,36 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             Assert.AreEqual(0,
                 comparer.Compare(resultTaskListDto, _expectedReturnTaskListDto));
         }
+
+        [TestMethod]
+        public async Task DeleteById_ExistentTaskListId_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var existentTaskListId = 1;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act.
+            await taskListService.DeleteByIdAsync(existentTaskListId);
+
+            var taskListEntity = await TripFlipDbContext
+                .TaskLists
+                .FindAsync(existentTaskListId);
+
+            // Assert.
+            Assert.IsNull(taskListEntity);
+        }
     }
 }
