@@ -71,7 +71,7 @@ namespace TripFlip.Services
 
             if (!routeExists)
             {
-                throw new NotFoundException(ErrorConstants.TaskListNotFound);
+                throw new NotFoundException(ErrorConstants.RouteNotFound);
             }
 
             var taskListEntitiesQuery = _tripFlipDbContext
