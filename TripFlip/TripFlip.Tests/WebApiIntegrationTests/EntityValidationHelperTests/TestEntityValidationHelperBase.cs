@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
-using Moq;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Interfaces;
 
@@ -33,6 +33,13 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                     Id = 2,
                     Name = "Admin"
                 }
+            };
+
+        protected ApplicationUserRoleEntity ApplicationUserRoleEntityToSeed =
+            new ApplicationUserRoleEntity()
+            {
+                ApplicationRoleId = 1, 
+                UserId = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e")
             };
 
         protected ICurrentUserService CurrentUserService;
