@@ -42,14 +42,14 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> CreateAsync(CreateRouteDto createRouteDto)
         {
+            await ValidateTripExistsAsync(createRouteDto.TripId);
+
             await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
                _currentUserService,
                _tripFlipDbContext,
                createRouteDto.TripId,
                TripRoles.Admin,
                ErrorConstants.NotTripAdmin);
-
-            await ValidateTripExistsAsync(createRouteDto.TripId);
 
             var routeEntity = _mapper.Map<RouteEntity>(createRouteDto);
 
@@ -63,13 +63,6 @@ namespace TripFlip.Services
 
         public async Task<RouteDto> UpdateAsync(UpdateRouteDto updateRouteDto)
         {
-            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
-               _currentUserService,
-               _tripFlipDbContext,
-               updateRouteDto.TripId,
-               TripRoles.Editor,
-               ErrorConstants.NotTripEditor);
-
             var tripEntity = await _tripFlipDbContext
                 .Trips
                 .Where(tripEntity => tripEntity.Id == updateRouteDto.TripId)
@@ -77,6 +70,13 @@ namespace TripFlip.Services
                 .FirstOrDefaultAsync();
 
             ValidateTripEntityIsNotNull(tripEntity);
+
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+               _currentUserService,
+               _tripFlipDbContext,
+               updateRouteDto.TripId,
+               TripRoles.Editor,
+               ErrorConstants.NotTripEditor);
 
             var routeEntity = tripEntity
                 .Routes
