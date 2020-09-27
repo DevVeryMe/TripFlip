@@ -51,6 +51,38 @@ namespace WebApiIntegrationTests.ItemServiceTests
             ItemListId = 1,
         };
 
+        protected IEnumerable<ItemEntity> ItemEntitiesToSeed =>
+            new List<ItemEntity>()
+            {
+                new ItemEntity()
+                {
+                    Id = 1,
+                    Title = "Item1 1",
+                    Comment = "Comment",
+                    Quantity = "Quantity",
+                    IsCompleted = false,
+                    ItemListId = 1,
+                },
+                new ItemEntity()
+                {
+                    Id = 2,
+                    Title = "Item 2",
+                    Comment = "Comment",
+                    Quantity = "Quantity",
+                    IsCompleted = false,
+                    ItemListId = 1,
+                },
+                new ItemEntity()
+                {
+                    Id = 3,
+                    Title = "Item 3",
+                    Comment = "Comment",
+                    Quantity = "Quantity",
+                    IsCompleted = false,
+                    ItemListId = 1,
+                }
+            };
+
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
             new List<TripSubscriberEntity>()
             {
