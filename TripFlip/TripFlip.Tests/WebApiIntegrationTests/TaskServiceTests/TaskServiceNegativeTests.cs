@@ -74,6 +74,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 await taskService.CreateAsync(createTaskDto));
         }
 
+        [TestMethod]
         public async Task DeleteByIdAsync_GivenNotValidId_ExceptionThrown()
         {
             // Arrange
