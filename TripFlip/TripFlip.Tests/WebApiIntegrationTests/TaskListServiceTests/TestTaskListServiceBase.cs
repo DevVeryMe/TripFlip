@@ -176,7 +176,7 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         }
 
         protected UpdateTaskListDto GetUpdateTaskListDto(int id = 1,
-            string title = "Title")
+            string title = "Updated title")
         {
             return new UpdateTaskListDto()
             {
