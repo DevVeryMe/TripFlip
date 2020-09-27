@@ -24,6 +24,20 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         }
 
         [TestMethod]
+        public async Task GetByIdAsync_NonExistentTaskListId_ExceptionThrown()
+        {
+            // Arrange.
+            var nonExistentTaskListId = 1;
+
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskListService.GetByIdAsync(nonExistentTaskListId));
+        }
+
+        [TestMethod]
         public async Task GetAllByRouteIdAsync_GivenInvalidRouteId_ExceptionThrown()
         {
             // Arrange

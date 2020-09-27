@@ -29,6 +29,13 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             TripId = 1,
         };
 
+        protected TaskListEntity TaskListEntityToSeed => new TaskListEntity()
+        {
+            Id = 1,
+            RouteId = 1,
+            Title = "Task list"
+        };
+
         protected IEnumerable<TaskListEntity> TaskListEntitiesToSeed =>
             new List<TaskListEntity>()
             {
