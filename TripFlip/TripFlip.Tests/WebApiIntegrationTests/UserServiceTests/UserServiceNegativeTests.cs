@@ -243,6 +243,26 @@ namespace WebApiIntegrationTests.UserServiceTests
         }
 
         [TestMethod]
+        public async Task UnsubscribeFromTripAsync_GivenNotTripSubscriberCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ExistentButNotSubscribedToTripUser);
+
+            CurrentUserService = CreateCurrentUserService(
+                ExistentButNotSubscribedToTripUser.Id, 
+                ExistentButNotSubscribedToTripUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id));
+        }
+
+        [TestMethod]
         public async Task UnsubscribeFromTripAsync_GivenCurrentUserSingleTripAdmin_ExceptionThrown()
         {
             // Arrange.
