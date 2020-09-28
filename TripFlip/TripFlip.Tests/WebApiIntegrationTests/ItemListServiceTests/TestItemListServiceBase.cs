@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.ItemListDtos;
 using TripFlip.Services.Interfaces;
 
@@ -165,6 +166,16 @@ namespace WebApiIntegrationTests.ItemListServiceTests
             {
                 RouteId = routeId,
                 Title = title
+            };
+        }
+
+        protected PaginationDto GetPaginationDto(int? pageNumber = null,
+            int? pageSize = null)
+        {
+            return new PaginationDto()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
         }
     }
