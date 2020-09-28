@@ -283,5 +283,40 @@ namespace WebApiIntegrationTests.UserServiceTests
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id));
         }
+
+        [TestMethod]
+        public async Task AuthorizeAsync_NonExistentUserEmail_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var loginDto = GetLoginDto();
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.AuthorizeAsync(loginDto));
+        }
+
+        [TestMethod]
+        public async Task AuthorizeAsync_WrongPassword_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var wrongPassword = "incorrect";
+            var loginDto = GetLoginDto(password: wrongPassword);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.AuthorizeAsync(loginDto));
+        }
     }
 }
