@@ -11,6 +11,11 @@ namespace WebApiIntegrationTests.TaskServiceTests
 {
     public class TestTaskServiceBase : TestServiceBase
     {
+        protected IEnumerable<int> ValidRouteSubscribersToAssignToTask = new List<int>()
+        {
+            2
+        };
+
         protected static TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
@@ -125,13 +130,20 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 RouteSubscriberId = 1
             };
 
+        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 2,
+                RouteSubscriberId = 1
+            };
+
         protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "correct@mail.com"
         };
 
-        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
+        protected static UserEntity RouteSubscriberWithoutRolesUser => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
@@ -160,6 +172,26 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 TaskListId = taskListId,
                 Description = description,
                 PriorityLevel = priorityLevel
+            };
+        }
+
+        protected UpdateTaskPriorityDto GetUpdateTaskPriorityDto(int taskId = 1,
+            TaskPriorityLevel priorityLevel = TaskPriorityLevel.Low)
+        {
+            return new UpdateTaskPriorityDto()
+            {
+                Id = taskId,
+                PriorityLevel = priorityLevel
+            };
+        }
+
+        protected TaskAssigneesDto GetTaskAssigneesDto(IEnumerable<int> routeSubscriberIds,
+            int taskId = 1)
+        {
+            return new TaskAssigneesDto()
+            {
+                RouteSubscriberIds = routeSubscriberIds,
+                TaskId = taskId
             };
         }
     }
