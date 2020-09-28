@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
-using TripFlip.Domain.Entities.Enums;
+using TripFlip.Services.Dto.Enums;
+using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.TaskServiceTests
@@ -35,12 +36,30 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Title = "Task list"
         };
 
+        protected static UserEntity NonExistentUser => new UserEntity()
+        {
+            Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
+            Email = "nonexistent@mail.com"
+        };
+
+        protected static UserEntity NotTripSubscriberUser => new UserEntity()
+        {
+            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
+            Email = "notsuboftrip@mail.com"
+        };
+
+        protected static UserEntity NotRouteSubscriberUser => new UserEntity()
+        {
+            Id = Guid.Parse("816fe98f-515c-407a-bf66-cc9a908644c1"),
+            Email = "notsubofroute@mail.com"
+        };
+
         protected TaskEntity TaskEntityToSeed => new TaskEntity()
         {
             Id = 1,
             Description = "Task",
             IsCompleted = false,
-            PriorityLevel = TaskPriorityLevel.Low,
+            PriorityLevel = TripFlip.Domain.Entities.Enums.TaskPriorityLevel.Low,
             TaskListId = 1
         };
 
@@ -84,13 +103,22 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 }
             };
 
-        protected RouteRoleEntity RouteRoleEntityToSeed => new RouteRoleEntity()
-        {
-            Id = 1,
-            Name = "Admin"
-        };
+        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed =>
+            new List<RouteRoleEntity>()
+            {
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
+                }
+            };
 
-        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntitiesToSeed =>
+        protected RouteSubscriberRoleEntity RouteSubscriberAdminRoleEntityToSeed =>
             new RouteSubscriberRoleEntity()
             {
                 RouteRoleId = 1,
@@ -101,24 +129,6 @@ namespace WebApiIntegrationTests.TaskServiceTests
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
             Email = "correct@mail.com"
-        };
-
-        protected static UserEntity NonExistentUser => new UserEntity()
-        {
-            Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
-            Email = "nonexistent@mail.com"
-        };
-
-        protected static UserEntity NotTripSubscriberUser => new UserEntity()
-        {
-            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
-            Email = "notsuboftrip@mail.com"
-        };
-
-        protected static UserEntity NotRouteSubscriberUser => new UserEntity()
-        {
-            Id = Guid.Parse("816fe98f-515c-407a-bf66-cc9a908644c1"),
-            Email = "notsubofroute@mail.com"
         };
 
         protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
@@ -139,6 +149,18 @@ namespace WebApiIntegrationTests.TaskServiceTests
             mock.Setup(a => a.UserId).Returns(correctGuid);
 
             return mock.Object;
+        }
+
+        protected CreateTaskDto GetCreateTaskDto(int taskListId = 1,
+            string description = "Description",
+            TaskPriorityLevel priorityLevel = TaskPriorityLevel.Low)
+        {
+            return new CreateTaskDto()
+            {
+                TaskListId = taskListId,
+                Description = description,
+                PriorityLevel = priorityLevel
+            };
         }
     }
 }
