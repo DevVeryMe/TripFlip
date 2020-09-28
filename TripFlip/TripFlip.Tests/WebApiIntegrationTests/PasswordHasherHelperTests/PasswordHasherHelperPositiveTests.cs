@@ -22,6 +22,20 @@ namespace WebApiIntegrationTests.PasswordHasherHelperTests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void HashPassword_GivenValidData_Successful()
+        {
+            // Arrange
+            string password = "ValidPass1@";
+
+            // Act
+            string resultPasswordHash = PasswordHasherHelper.HashPassword(password);
+
+            // Assert
+            Assert.IsFalse( string.IsNullOrWhiteSpace(resultPasswordHash) );
+            
+        }
+
         private string GetPasswordHash(string password = "ValidPass1@")
         {
             var passwordHasher = new PasswordHasher<UserEntity>();
