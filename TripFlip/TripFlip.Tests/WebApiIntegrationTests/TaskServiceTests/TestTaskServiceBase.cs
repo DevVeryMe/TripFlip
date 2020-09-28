@@ -125,6 +125,13 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 RouteSubscriberId = 1
             };
 
+        protected RouteSubscriberRoleEntity RouteSubscriberEditorRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = 2,
+                RouteSubscriberId = 1
+            };
+
         protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -159,6 +166,16 @@ namespace WebApiIntegrationTests.TaskServiceTests
             {
                 TaskListId = taskListId,
                 Description = description,
+                PriorityLevel = priorityLevel
+            };
+        }
+
+        protected UpdateTaskPriorityDto GetUpdateTaskPriorityDto(int taskId = 1,
+            TaskPriorityLevel priorityLevel = TaskPriorityLevel.Low)
+        {
+            return new UpdateTaskPriorityDto()
+            {
+                Id = taskId,
                 PriorityLevel = priorityLevel
             };
         }
