@@ -54,6 +54,29 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         }
 
         [TestMethod]
+        public async Task GetByIdAsync_ExistentTaskListId_Successful()
+        {
+            // Arrange.
+            var taskListEntityToSeed = TaskListEntityToSeed;
+
+            Seed(TripFlipDbContext, taskListEntityToSeed);
+
+            var existentTaskListId = taskListEntityToSeed.Id;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            var expectedTaskListDto = Mapper.Map<TaskListDto>(taskListEntityToSeed);
+            var taskListDtoComparer = new TaskListDtoComparer();
+
+            // Act.
+            var resultTaskListDto = await taskListService.GetByIdAsync(existentTaskListId);
+
+            // Act + Assert.
+            Assert.AreEqual(0,
+                taskListDtoComparer.Compare(expectedTaskListDto, resultTaskListDto));
+        }
+
+        [TestMethod]
         public async Task GetAllByRouteIdAsync_GivenValidRouteId_Successful()
         {
             // Arrange
