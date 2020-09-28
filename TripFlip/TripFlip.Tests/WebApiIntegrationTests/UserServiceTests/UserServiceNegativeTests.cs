@@ -322,7 +322,7 @@ namespace WebApiIntegrationTests.UserServiceTests
         [TestMethod]
         public async Task GetByIdAsync_NonExistentUserId_ExceptionThrown()
         {
-            // Arrange
+            // Arrange.
             var nonExistentUserId = InvalidUser.Id;
 
             var jwtConfiguration = CreateJwtConfiguration();
@@ -330,7 +330,7 @@ namespace WebApiIntegrationTests.UserServiceTests
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
 
-            // Act + Assert
+            // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await userService.GetByIdAsync(nonExistentUserId));
         }
