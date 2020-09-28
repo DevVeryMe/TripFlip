@@ -11,6 +11,11 @@ namespace WebApiIntegrationTests.TaskServiceTests
 {
     public class TestTaskServiceBase : TestServiceBase
     {
+        protected IEnumerable<int> ValidRouteSubscribersToAssignToTask = new List<int>()
+        {
+            2
+        };
+
         protected static TripEntity TripEntityToSeed => new TripEntity()
         {
             Id = 1,
@@ -138,7 +143,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Email = "correct@mail.com"
         };
 
-        protected static UserEntity NotRouteAdminRoleUser => new UserEntity()
+        protected static UserEntity RouteSubscriberWithoutRolesUser => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
@@ -177,6 +182,16 @@ namespace WebApiIntegrationTests.TaskServiceTests
             {
                 Id = taskId,
                 PriorityLevel = priorityLevel
+            };
+        }
+
+        protected TaskAssigneesDto GetTaskAssigneesDto(IEnumerable<int> routeSubscriberIds,
+            int taskId = 1)
+        {
+            return new TaskAssigneesDto()
+            {
+                RouteSubscriberIds = routeSubscriberIds,
+                TaskId = taskId
             };
         }
     }
