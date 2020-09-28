@@ -231,5 +231,27 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public async Task AuthorizeAsync_ValidUserData_Successful()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var loginDto = GetLoginDto();
+            
+            // Act.
+            var authenticatedUserDto = await userService.AuthorizeAsync(loginDto);
+
+            bool isAuthenticated = loginDto.Email == authenticatedUserDto.Email;
+
+            // Assert.
+            Assert.IsTrue(isAuthenticated);
+        }
     }
 }
