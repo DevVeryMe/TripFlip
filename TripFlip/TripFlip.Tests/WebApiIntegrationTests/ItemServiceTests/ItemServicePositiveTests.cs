@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.Dto.ItemDtos;
@@ -98,6 +100,39 @@ namespace WebApiIntegrationTests.ItemServiceTests
             // Assert
             Assert.AreEqual(0,
                 comparer.Compare(_expectedUpdatedItemDto, resultItemDto));
+        }
+
+        [TestMethod]
+        public async Task SetItemAssigneesAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEditorRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var itemAssigneesDto = GetItemAssigneesDto(routeSubscriberIds:
+                ValidRouteSubscribersToAssignToItem);
+            var itemService = new ItemService(Mapper, TripFlipDbContext,
+                CurrentUserService);
+
+            // Act.
+            await itemService.SetItemAssigneesAsync(itemAssigneesDto);
+            
+            // Assert.
+            var item = TripFlipDbContext.Items
+                .Include(item => item.ItemAssignees)
+                .FirstOrDefault(item => item.Id == ItemEntityToSeed.Id);
+            Assert.IsNotNull(item);
+            Assert.AreEqual(1, item.ItemAssignees.Count);
         }
     }
 }
