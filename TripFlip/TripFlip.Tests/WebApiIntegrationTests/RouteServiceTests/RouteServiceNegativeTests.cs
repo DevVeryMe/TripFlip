@@ -26,7 +26,7 @@ namespace WebApiIntegrationTests.RouteServiceTests
             // Arrange
             var invalidId = 2;
 
-            var routeService = new RouteService(TripFlipDbContext, Mapper);
+            var routeService = new RouteService(TripFlipDbContext, Mapper, CurrentUserService);
 
             // Act + Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
