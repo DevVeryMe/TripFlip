@@ -34,11 +34,15 @@ namespace TripFlip.Services.Helpers
         /// to properties of the current user.</param>
         /// <param name="tripFlipDbContext">Instance of database context.</param>
         /// <param name="tripId">Trip id.</param>
-        /// <returns></returns>
-        public static async Task ValidateCurrentUserIsTripAdminAsync(
+        /// <param name="tripRoleToValidate">Trip role to validate.</param>
+        /// <param name="errorMessage">Error message to show,
+        /// if validation is not successful.</param>
+        public static async Task ValidateCurrentUserTripRoleAsync(
             ICurrentUserService currentUserService,
             TripFlipDbContext tripFlipDbContext,
-            int tripId)
+            int tripId,
+            TripRoles tripRoleToValidate,
+            string errorMessage)
         {
             var currentUserId = currentUserService.UserId;
 
@@ -53,14 +57,14 @@ namespace TripFlip.Services.Helpers
             ValidateEntityNotNull(tripSubscriberEntity, 
                 ErrorConstants.TripSubscriberNotFound);
 
-            var tripSubscriberIsAdmin = tripSubscriberEntity
+            var tripSubscriberHasSpecifiedRole = tripSubscriberEntity
                 .TripRoles
                 .Any(tripRole =>
-                tripRole.TripRoleId == (int)TripRoles.Admin);
+                tripRole.TripRoleId == (int)tripRoleToValidate);
 
-            if (!tripSubscriberIsAdmin)
+            if (!tripSubscriberHasSpecifiedRole)
             {
-                throw new ArgumentException(ErrorConstants.NotTripAdmin);
+                throw new ArgumentException(errorMessage);
             }
         }
 

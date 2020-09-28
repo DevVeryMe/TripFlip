@@ -345,8 +345,12 @@ namespace TripFlip.Services
                 ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
 
             // Validate current user is trip admin.
-            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
-                _currentUserService, _tripFlipDbContext, grantTripRolesDto.TripId);
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+                _currentUserService,
+                _tripFlipDbContext,
+                grantTripRolesDto.TripId,
+                TripRoles.Admin,
+                ErrorConstants.NotTripAdmin);
 
             // Remove invalid values from requested role id collection.
             var realTripRolesIds = (IEnumerable<int>) Enum.GetValues(typeof(TripRoles));
@@ -411,8 +415,12 @@ namespace TripFlip.Services
             EntityValidationHelper.ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
 
             // Validate current user is trip admin.
-            await EntityValidationHelper.ValidateCurrentUserIsTripAdminAsync(
-                _currentUserService, _tripFlipDbContext, routeEntity.Trip.Id);
+            await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
+               _currentUserService,
+               _tripFlipDbContext,
+               routeEntity.Trip.Id,
+               TripRoles.Admin,
+               ErrorConstants.NotTripAdmin);
 
             var tripSubscriberToGrant = routeEntity.Trip.TripSubscribers
                 .FirstOrDefault(tripSubscriber => tripSubscriber.UserId == grantRouteRolesDto.UserId);
