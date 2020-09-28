@@ -11,6 +11,13 @@ namespace WebApiIntegrationTests.TaskListServiceTests
     [TestClass]
     public class TaskListServicePositiveTests : TestTaskListServiceBase
     {
+        private readonly TaskListDto _expectedReturnTaskListDto = new TaskListDto()
+        {
+            Id = 1,
+            Title = "Updated title",
+            RouteId = 1
+        };
+
         private List<TaskListDto> _expectedGotAllTaskListDtos =
             new List<TaskListDto>()
             {
@@ -78,6 +85,36 @@ namespace WebApiIntegrationTests.TaskListServiceTests
                 Assert.AreEqual(0, 
                     comparer.Compare(returnedTaskListDtos[i], _expectedGotAllTaskListDtos[i]));
             }
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEditorRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var updateTaskListDto = GetUpdateTaskListDto();
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act. 
+            var resultTaskListDto =
+                await taskListService.UpdateAsync(updateTaskListDto);
+
+            var comparer = new TaskListDtoComparer();
+
+            // Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(resultTaskListDto, _expectedReturnTaskListDto));
         }
     }
 }

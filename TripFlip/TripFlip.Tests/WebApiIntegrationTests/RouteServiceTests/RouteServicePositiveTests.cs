@@ -37,7 +37,7 @@ namespace WebApiIntegrationTests.RouteServiceTests
 
             var validId = 1;
 
-            var routeService = new RouteService(TripFlipDbContext, Mapper);
+            var routeService = new RouteService(TripFlipDbContext, Mapper, CurrentUserService);
             var compaper = new RouteDtoComparer();
 
             // Act
