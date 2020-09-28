@@ -202,5 +202,118 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Assert.IsNotNull(task);
             Assert.AreEqual(1, task.TaskAssignees.Count);
         }
+
+        [TestMethod]
+        public async Task GetAllByTaskListIdAsync_ValidTaskListId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+
+            int validTaskListId = 1;
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var comparer = new TaskDtoComparer();
+
+            var expectedPagedTaskDto = ExpectedPagedTaskDto;
+            var expectedTaskDtoList = expectedPagedTaskDto.Items.ToList();
+
+            // Act
+            var resultPagedTaskDto = await taskService.GetAllByTaskListIdAsync(
+                taskListId: validTaskListId,
+                searchString: null,
+                paginationDto: PaginationDto);
+
+            // Assert
+            var resultTaskDtoList = resultPagedTaskDto.Items.ToList();
+            int resultTaskDtoListCount = resultTaskDtoList.Count;
+
+            Assert.AreEqual(resultTaskDtoListCount, expectedTaskDtoList.Count);
+
+            for (int i = 0; i < resultTaskDtoListCount; i++)
+            {
+                Assert.AreEqual(0,
+                    comparer.Compare(resultTaskDtoList[i], expectedTaskDtoList[i]));
+            }
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_ValidUserAndTaskDto_Successful()
+        {
+            // Arrange
+            var validUserThatIsRouteEditor = ValidUserWithRouteEditorRole;
+            Seed(TripFlipDbContext, validUserThatIsRouteEditor);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(
+                id: validUserThatIsRouteEditor.Id, email: validUserThatIsRouteEditor.Email);
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            var validUpdateTaskDto = UpdateTaskDto;
+
+            var comparer = new TaskDtoComparer();
+            var expectedTaskDto = TaskDto;
+
+            // Act
+            var resultTaskDto = await taskService.UpdateAsync(validUpdateTaskDto);
+
+            // Assert
+            Assert.AreEqual(0, comparer.Compare(resultTaskDto, expectedTaskDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_ValidUserAndTaskDto_Successful()
+        {
+            // Arrange
+            var validUserThatIsRouteEditor = ValidUserWithRouteEditorRole;
+            Seed(TripFlipDbContext, validUserThatIsRouteEditor);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(
+                id: validUserThatIsRouteEditor.Id, email: validUserThatIsRouteEditor.Email);
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            var validUpdateTaskCompletenessDto = UpdateTaskCompletenessDto;
+
+            var comparer = new TaskDtoComparer();
+
+            var expectedTaskDto = TaskDto;
+            expectedTaskDto.IsCompleted = true;
+
+            // Act
+            var resultTaskDto = await taskService
+                .UpdateCompletenessAsync(validUpdateTaskCompletenessDto);
+
+            // Assert
+            Assert.AreEqual(0, comparer.Compare(resultTaskDto, expectedTaskDto));
+        }
     }
 }
