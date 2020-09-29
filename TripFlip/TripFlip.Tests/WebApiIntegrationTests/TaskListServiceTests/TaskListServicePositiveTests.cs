@@ -11,6 +11,13 @@ namespace WebApiIntegrationTests.TaskListServiceTests
     [TestClass]
     public class TaskListServicePositiveTests : TestTaskListServiceBase
     {
+        private readonly TaskListDto _expectedReturnTaskListDto = new TaskListDto()
+        {
+            Id = 1,
+            Title = "Updated title",
+            RouteId = 1
+        };
+
         private List<TaskListDto> _expectedGotAllTaskListDtos =
             new List<TaskListDto>()
             {
@@ -47,6 +54,29 @@ namespace WebApiIntegrationTests.TaskListServiceTests
         }
 
         [TestMethod]
+        public async Task GetByIdAsync_ExistentTaskListId_Successful()
+        {
+            // Arrange.
+            var taskListEntityToSeed = TaskListEntityToSeed;
+
+            Seed(TripFlipDbContext, taskListEntityToSeed);
+
+            var existentTaskListId = taskListEntityToSeed.Id;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            var expectedTaskListDto = Mapper.Map<TaskListDto>(taskListEntityToSeed);
+            var taskListDtoComparer = new TaskListDtoComparer();
+
+            // Act.
+            var resultTaskListDto = await taskListService.GetByIdAsync(existentTaskListId);
+
+            // Act + Assert.
+            Assert.AreEqual(0,
+                taskListDtoComparer.Compare(expectedTaskListDto, resultTaskListDto));
+        }
+
+        [TestMethod]
         public async Task GetAllByRouteIdAsync_GivenValidRouteId_Successful()
         {
             // Arrange
@@ -78,6 +108,67 @@ namespace WebApiIntegrationTests.TaskListServiceTests
                 Assert.AreEqual(0, 
                     comparer.Compare(returnedTaskListDtos[i], _expectedGotAllTaskListDtos[i]));
             }
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEditorRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var updateTaskListDto = GetUpdateTaskListDto();
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            // Act. 
+            var resultTaskListDto =
+                await taskListService.UpdateAsync(updateTaskListDto);
+
+            var comparer = new TaskListDtoComparer();
+
+            // Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(resultTaskListDto, _expectedReturnTaskListDto));
+        }
+
+        [TestMethod]
+        public async Task DeleteById_ExistentTaskListId_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var existentTaskListId = 1;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act.
+            await taskListService.DeleteByIdAsync(existentTaskListId);
+
+            var taskListEntity = await TripFlipDbContext
+                .TaskLists
+                .FindAsync(existentTaskListId);
+
+            // Assert.
+            Assert.IsNull(taskListEntity);
         }
     }
 }
