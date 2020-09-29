@@ -14,6 +14,8 @@ namespace WebApiIntegrationTests.UserServiceTests
     {
         protected IEnumerable<int> ValidTripRoleIds = new []{1, 2, 3};
 
+        protected IEnumerable<int> ValidRouteRoleIds = new[] { 1, 2 };
+
         protected UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -32,6 +34,18 @@ namespace WebApiIntegrationTests.UserServiceTests
         {
             Id = Guid.Parse("1a5104ab-b479-4547-9c00-7dd930b31267"),
             Email = "nottripadmin@mail.com"
+        };
+
+        protected static UserEntity NonExistentUser => new UserEntity()
+        {
+            Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
+            Email = "nonexistent@mail.com"
+        };
+
+        protected static UserEntity NotTripSubscriberUser => new UserEntity()
+        {
+            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f8"),
+            Email = "notsuboftrip@mail.com"
         };
 
         protected UserEntity ExistentButNotSubscribedToTripUser = new UserEntity()
@@ -245,6 +259,19 @@ namespace WebApiIntegrationTests.UserServiceTests
             {
                 Email = email,
                 Password = password
+            };
+        }
+
+        protected GrantRouteRolesDto GetGrantRouteRolesDto(
+            Guid userId,
+            IEnumerable<int> routeRoleIds,
+            int routeId = 1)
+        {
+            return new GrantRouteRolesDto()
+            {
+                UserId = userId,
+                RouteRoleIds = routeRoleIds,
+                RouteId = routeId
             };
         }
     }
