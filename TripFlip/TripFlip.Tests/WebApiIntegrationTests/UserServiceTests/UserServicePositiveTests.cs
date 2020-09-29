@@ -349,5 +349,36 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             Assert.IsTrue(containsAllRoles);
         }
+
+        [TestMethod]
+        public async Task UnsubscribeFromRouteAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+            var userEntityToSeed = ValidUser;
+            var routeEntityToSeed = RouteEntityToSeed;
+            var routeSubscriberEntityToSeed = RouteSubscriberEntityToSeed;
+
+            Seed(TripFlipDbContext, userEntityToSeed);
+            Seed(TripFlipDbContext, routeEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, routeSubscriberEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(userEntityToSeed.Id,
+                userEntityToSeed.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.UnsubscribeFromRouteAsync(routeEntityToSeed.Id);
+
+            // Assert.
+            var result = TripFlipDbContext.RouteSubscribers
+                .FirstOrDefault(subscriber =>
+                subscriber.TripSubscriberId == routeSubscriberEntityToSeed.TripSubscriberId);
+
+            Assert.IsNull(result);
+        }
     }
 }
