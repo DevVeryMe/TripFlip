@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TripFlip.Services.Helpers;
 
-namespace WebApiUnitTests.EntityValidationHelperTests
+namespace WebApiIntegrationTests.EntityValidationHelperTests
 {
     [TestClass]
     public class EntityValidationHelperPositiveTests : TestEntityValidationHelperBase
