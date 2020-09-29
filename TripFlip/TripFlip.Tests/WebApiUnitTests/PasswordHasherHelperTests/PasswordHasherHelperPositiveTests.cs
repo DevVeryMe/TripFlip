@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Helpers;
 
-namespace WebApiIntegrationTests.PasswordHasherHelperTests
+namespace WebApiUnitTests.PasswordHasherHelperTests
 {
     [TestClass]
     public class PasswordHasherHelperPositiveTests

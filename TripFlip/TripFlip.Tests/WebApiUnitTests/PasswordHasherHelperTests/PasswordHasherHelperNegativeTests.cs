@@ -2,7 +2,7 @@
 using System;
 using TripFlip.Services.Helpers;
 
-namespace WebApiIntegrationTests.PasswordHasherHelperTests
+namespace WebApiUnitTests.PasswordHasherHelperTests
 {
     [TestClass]
     public class PasswordHasherHelperNegativeTests
