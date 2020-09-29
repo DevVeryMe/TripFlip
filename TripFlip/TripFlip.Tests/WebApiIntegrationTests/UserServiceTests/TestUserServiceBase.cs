@@ -237,5 +237,15 @@ namespace WebApiIntegrationTests.UserServiceTests
                 UserId = userId
             };
         }
+
+        protected LoginDto GetLoginDto(string email = "correct@mail.com",
+            string password = "rel1able-Password")
+        {
+            return new LoginDto()
+            {
+                Email = email,
+                Password = password
+            };
+        }
     }
 }
