@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Interfaces;
 
@@ -43,8 +44,31 @@ namespace WebApiIntegrationTests.RouteServiceTests
         {
             Id = 1,
             Title = "Route",
-            TripId = 1,
+            TripId = 1
         };
+
+        protected IEnumerable<RouteEntity> RouteEntitiesToSeed =>
+            new List<RouteEntity>()
+            {
+                new RouteEntity()
+                {
+                    Id = 1,
+                    Title = "Route 1",
+                    TripId = 1
+                },
+                new RouteEntity()
+                {
+                    Id = 2,
+                    Title = "Route 2",
+                    TripId = 1
+                },
+                new RouteEntity()
+                {
+                    Id = 3,
+                    Title = "Route 3",
+                    TripId = 1
+                }
+            };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
             new List<TripSubscriberEntity>()
@@ -125,6 +149,16 @@ namespace WebApiIntegrationTests.RouteServiceTests
             {
                 Title = title,
                 TripId = tripId
+            };
+        }
+
+        protected PaginationDto GetPaginationDto(int? pageNumber = null,
+            int? pageSize = null)
+        {
+            return new PaginationDto()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
         }
     }
