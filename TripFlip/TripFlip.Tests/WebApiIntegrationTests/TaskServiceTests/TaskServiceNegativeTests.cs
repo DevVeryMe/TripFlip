@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Dto.TaskDtos;
 
 namespace WebApiIntegrationTests.TaskServiceTests
 {
@@ -320,6 +321,119 @@ namespace WebApiIntegrationTests.TaskServiceTests
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await taskService.SetTaskAssignees(taskAssigneesDto));
+        }
+
+        [TestMethod]
+        public async Task GetAllByTaskListIdAsync_GivenInvalidTaskListId_ExceptionThrown()
+        {
+            // Arrange
+            int invalidTaskListId = 1;
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.GetAllByTaskListIdAsync(
+                    taskListId: invalidTaskListId,
+                    searchString: null,
+                    paginationDto: null));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_GivenInvalidTaskId_ExceptionThrown()
+        {
+            // Arrange
+            int invalidTaskId = 1;
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var updateTaskDto = UpdateTaskDto;
+            updateTaskDto.Id = invalidTaskId;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.UpdateAsync(updateTaskDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_GivenInvalidCurrentUser_ExceptionThrown()
+        {
+            // Arrange
+            var userThatIsRouteSubButNotEditor = ValidUser;
+            Seed(TripFlipDbContext, userThatIsRouteSubButNotEditor);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(
+                id: userThatIsRouteSubButNotEditor.Id, email: userThatIsRouteSubButNotEditor.Email);
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            var validUpdateTaskDto = UpdateTaskDto;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await taskService.UpdateAsync(validUpdateTaskDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_GivenInvalidTaskId_ExceptionThrown()
+        {
+            // Arrange
+            int invalidTaskId = 1;
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var updateTaskCompletenessDto = UpdateTaskCompletenessDto;
+            updateTaskCompletenessDto.Id = invalidTaskId;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskService.UpdateCompletenessAsync(updateTaskCompletenessDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_GivenInvalidCurrentUser_ExceptionThrown()
+        {
+            // Arrange
+            var userThatIsRouteSubButNotEditor = ValidUser;
+            Seed(TripFlipDbContext, userThatIsRouteSubButNotEditor);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(
+                id: userThatIsRouteSubButNotEditor.Id, email: userThatIsRouteSubButNotEditor.Email);
+
+            var taskService = new TaskService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: CurrentUserService);
+
+            var validUpdateTaskCompletenessDto = UpdateTaskCompletenessDto;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await taskService.UpdateCompletenessAsync(validUpdateTaskCompletenessDto));
         }
 
         private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
