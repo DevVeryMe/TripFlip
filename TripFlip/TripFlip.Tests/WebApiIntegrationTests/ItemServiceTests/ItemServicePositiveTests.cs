@@ -166,5 +166,68 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
             Assert.IsNull(taskEntity);
         }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ExistentItemId_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+
+            var itemService = new ItemService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var expectedItemDto = Mapper.Map<ItemDto>(ItemEntityToSeed);
+
+            int existingItemId = ItemEntityToSeed.Id;
+
+            var comparer = new ItemDtoComparer();
+
+            // Act
+            var resultItemDto = await itemService.GetByIdAsync(existingItemId);
+
+            // Assert
+            Assert.AreEqual(0, comparer.Compare(expectedItemDto, resultItemDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_ValidData_Successful()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
+
+            var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(
+                itemId: ItemEntityToSeed.Id);
+
+            var expectedItemDto = Mapper.Map<ItemDto>(ItemEntityToSeed);
+            expectedItemDto.IsCompleted = updateItemCompletenessDto.IsCompleted;
+
+            var comparer = new ItemDtoComparer();
+
+            // Act
+            var resultItemDto = await itemService
+                .UpdateCompletenessAsync(updateItemCompletenessDto);
+
+            // Assert
+            Assert.AreEqual(0,
+                comparer.Compare(expectedItemDto, resultItemDto));
+        }
     }
 }
