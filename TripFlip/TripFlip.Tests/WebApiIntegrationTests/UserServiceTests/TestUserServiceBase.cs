@@ -42,13 +42,13 @@ namespace WebApiIntegrationTests.UserServiceTests
             Email = "nonexistent@mail.com"
         };
 
-        protected static UserEntity NotTripSubscriberUser => new UserEntity()
+        protected static UserEntity UserEntityToGrantRoles => new UserEntity()
         {
-            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f8"),
+            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
             Email = "notsuboftrip@mail.com"
         };
 
-        protected UserEntity ExistentButNotSubscribedToTripUser = new UserEntity()
+        protected UserEntity NotTripSubscriberUser = new UserEntity()
         {
             Id = Guid.Parse("7d6ac0ab-575f-444b-a813-d56f9d6ba0e5"),
             Email = "nottripsubscribed@mail.com"
@@ -155,6 +155,21 @@ namespace WebApiIntegrationTests.UserServiceTests
                 {
                     Id = 3,
                     Name = "Guest"
+                }
+            };
+
+        protected IEnumerable<RouteRoleEntity> RouteRolesEntitiesToSeed =>
+            new List<RouteRoleEntity>()
+            {
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
                 }
             };
 

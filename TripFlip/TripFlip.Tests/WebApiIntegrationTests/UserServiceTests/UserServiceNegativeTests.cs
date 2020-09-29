@@ -212,7 +212,7 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Arrange.
             var jwtConfiguration = CreateJwtConfiguration();
 
-            Seed(TripFlipDbContext, ExistentButNotSubscribedToTripUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
 
@@ -250,11 +250,11 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Arrange.
             var jwtConfiguration = CreateJwtConfiguration();
 
-            Seed(TripFlipDbContext, ExistentButNotSubscribedToTripUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
 
             CurrentUserService = CreateCurrentUserService(
-                ExistentButNotSubscribedToTripUser.Id, 
-                ExistentButNotSubscribedToTripUser.Email);
+                NotTripSubscriberUser.Id, 
+                NotTripSubscriberUser.Email);
 
             var userService = new UserService(Mapper, TripFlipDbContext,
                 jwtConfiguration, CurrentUserService);
