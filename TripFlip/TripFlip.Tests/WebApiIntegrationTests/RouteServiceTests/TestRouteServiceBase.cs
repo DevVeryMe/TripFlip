@@ -152,6 +152,19 @@ namespace WebApiIntegrationTests.RouteServiceTests
             };
         }
 
+        protected UpdateRouteDto Get_UpdateRouteDto(
+            int id = 1,
+            string title = "Updated route title.",
+            int tripId = 1)
+        {
+            return new UpdateRouteDto()
+            {
+                Id = id,
+                Title = title,
+                TripId = tripId
+            };
+        }
+
         protected PaginationDto GetPaginationDto(int? pageNumber = null,
             int? pageSize = null)
         {
