@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Interfaces;
 
-namespace WebApiIntegrationTests.EntityValidationHelperTests
+namespace WebApiUnitTests.EntityValidationHelperTests
 {
     public abstract class TestEntityValidationHelperBase : TestServiceBase
     {

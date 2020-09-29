@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Helpers;
 
-namespace WebApiIntegrationTests.EntityValidationHelperTests
+namespace WebApiUnitTests.EntityValidationHelperTests
 {
     [TestClass]
     public class EntityValidationHelperNegativeTests : TestEntityValidationHelperBase
