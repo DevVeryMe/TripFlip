@@ -170,7 +170,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task GetByIdAsync_ExistentItemId_Successful()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
             Seed(TripFlipDbContext, ItemListEntityToSeed);
@@ -187,17 +187,17 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
             var comparer = new ItemDtoComparer();
 
-            // Act
+            // Act.
             var resultItemDto = await itemService.GetByIdAsync(existingItemId);
 
-            // Assert
+            // Assert.
             Assert.AreEqual(0, comparer.Compare(expectedItemDto, resultItemDto));
         }
 
         [TestMethod]
         public async Task UpdateCompletenessAsync_ValidData_Successful()
         {
-            // Arrange
+            // Arrange.
             Seed(TripFlipDbContext, ValidUser);
             Seed(TripFlipDbContext, TripEntityToSeed);
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -221,11 +221,11 @@ namespace WebApiIntegrationTests.ItemServiceTests
 
             var comparer = new ItemDtoComparer();
 
-            // Act
+            // Act.
             var resultItemDto = await itemService
                 .UpdateCompletenessAsync(updateItemCompletenessDto);
 
-            // Assert
+            // Assert.
             Assert.AreEqual(0,
                 comparer.Compare(expectedItemDto, resultItemDto));
         }

@@ -331,7 +331,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task GetByIdAsync_GivenNonExistentItemId_ExceptionThrown()
         {
-            // Arrange
+            // Arrange.
             int nonExistenItemId = 1;
 
             var itemService = new ItemService(
@@ -347,7 +347,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
         [TestMethod]
         public async Task UpdateCompletenessAsync_GivenNonExistentItemId_ExceptionThrown()
         {
-            // Arrange
+            // Arrange.
             int nonExistenItemId = 1;
 
             var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(itemId: nonExistenItemId);
