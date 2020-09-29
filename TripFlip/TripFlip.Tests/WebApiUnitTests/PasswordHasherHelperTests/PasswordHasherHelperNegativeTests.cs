@@ -8,7 +8,7 @@ namespace WebApiUnitTests.PasswordHasherHelperTests
     public class PasswordHasherHelperNegativeTests
     {
         [TestMethod]
-        public void HashPassword_GivenNullParameter_Successful()
+        public void HashPassword_GivenNullParameter_ExceptionThrown()
         {
             // Arrange
             string password = null;
