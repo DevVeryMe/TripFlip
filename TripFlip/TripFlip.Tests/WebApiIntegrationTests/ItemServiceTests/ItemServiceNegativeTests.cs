@@ -25,6 +25,23 @@ namespace WebApiIntegrationTests.ItemServiceTests
         }
 
         [TestMethod]
+        public async Task GetAllByTaskListIdAsync_NonExistentItemListId_ExceptionThrown()
+        {
+            // Arrange.
+            var itemService = new ItemService(Mapper, TripFlipDbContext,
+                CurrentUserService);
+
+            var nonExistentItemListId = 1;
+            var paginationDto = GetPaginationDto();
+            string searchString = null;
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemService.GetAllByItemListIdAsync(nonExistentItemListId,
+                    searchString, paginationDto));
+        }
+
+        [TestMethod]
         public async Task DeleteByIdAsync_NonExistentItemId_ExceptionThrown()
         {
             // Arrange.

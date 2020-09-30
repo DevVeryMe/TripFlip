@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
@@ -41,6 +42,44 @@ namespace WebApiIntegrationTests.ItemServiceTests
         public void Cleanup()
         {
             TripFlipDbContext.Dispose();
+        }
+
+        [TestMethod]
+        public async Task GetAllByItemListIdAsync_ExistentItemListId_Successful()
+        {
+            // Arrange.
+            var itemEntitiesToSeed = ItemEntitiesToSeed;
+
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, itemEntitiesToSeed);
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext,
+                CurrentUserService);
+
+            string searchString = null;
+            var existentItemListId = 1;
+            var paginationDto = GetPaginationDto();
+
+            var expectedItemDtoList = Mapper.Map<List<ItemDto>>(itemEntitiesToSeed);
+
+            var itemDtoComparer = new ItemDtoComparer();
+
+            // Act.
+            var resultItemDtoPagedList = await itemService.GetAllByItemListIdAsync(existentItemListId,
+                searchString, paginationDto);
+
+            var resultItemDtoList = resultItemDtoPagedList.Items.ToList();
+
+            var expectedItemsCount = expectedItemDtoList.Count;
+
+            // Assert.
+            Assert.AreEqual(expectedItemsCount, resultItemDtoList.Count);
+
+            for (var i = 0; i < expectedItemsCount; i++)
+            {
+                Assert.AreEqual(0,
+                    itemDtoComparer.Compare(resultItemDtoList[i], expectedItemDtoList[i]));
+            }
         }
 
         [TestMethod]
