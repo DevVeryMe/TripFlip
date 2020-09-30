@@ -59,5 +59,30 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                     tripRoleToValidate: roleThatIsExpectedFromCurrentUser,
                     errorMessage: string.Empty);
         }
+
+        [TestMethod]
+        public async Task ValidateCurrentUserRouteRoleAsync_GivenValidCurrentUserAndRole_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRolesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntityToSeed);
+
+            int existingRouteId = 1;
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            RouteRoles roleThatIsExpectedFromCurrentUser = RouteRoles.Admin;
+
+            // Act.
+            await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                    currentUserService: CurrentUserService,
+                    tripFlipDbContext: TripFlipDbContext,
+                    routeId: existingRouteId,
+                    routeRoleToValidate: roleThatIsExpectedFromCurrentUser,
+                    errorMessage: string.Empty);
+        }
     }
 }
