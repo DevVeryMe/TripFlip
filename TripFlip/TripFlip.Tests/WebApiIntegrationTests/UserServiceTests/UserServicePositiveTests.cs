@@ -278,5 +278,28 @@ namespace WebApiIntegrationTests.UserServiceTests
             Assert.AreEqual(0,
                 userDtoComparer.Compare(expectedUserDto, resultUserDto));
         }
+
+        [TestMethod]
+        public async Task DeleteById_ExistentItemId_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+            var existentUserId = ValidUser.Id;
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+               jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.DeleteByIdAsync(existentUserId);
+
+            // Assert.
+            var userEntity = await TripFlipDbContext
+                .Users
+                .FindAsync(existentUserId);
+
+            Assert.IsNull(userEntity);
+        }
     }
 }
