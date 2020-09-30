@@ -118,6 +118,73 @@ namespace WebApiIntegrationTests.TaskListServiceTests
                 await taskListService.UpdateAsync(updateTaskListDto), displayName);
         }
 
+        [TestMethod]
+        public async Task DeleteByIdAsync_NonExistentTaskListId_ExceptionThrown()
+        {
+            // Arrange.
+            var nonExistentTaskListId = 1;
+
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskListService.DeleteByIdAsync(nonExistentTaskListId));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_GivenCurrentUserNotRouteAdmin_ExceptionThrown()
+        {
+            // Arrange
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var validTaskListId = 1;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act + Assert
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await taskListService.DeleteByIdAsync(validTaskListId));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
+        public async Task DeleteByIdAsync_GivenNotValidCurrentUser_ExceptionThrown(
+            string displayName, ICurrentUserService currentUserService)
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
+
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+
+            CurrentUserService = currentUserService;
+
+            var validTaskListId = 1;
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await taskListService.DeleteByIdAsync(validTaskListId), displayName);
+        }
+
         private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
         {
             yield return new object[]
