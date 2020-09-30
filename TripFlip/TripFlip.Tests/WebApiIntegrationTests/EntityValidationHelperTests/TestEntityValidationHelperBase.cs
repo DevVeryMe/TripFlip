@@ -25,7 +25,7 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
         {
             Id = 1,
             Title = "Route",
-            TripId = 1,
+            TripId = 1
         };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
@@ -36,6 +36,12 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                     Id = 1,
                     TripId = TripEntityToSeed.Id,
                     UserId = ValidUser.Id
+                },
+                new TripSubscriberEntity()
+                {
+                    Id = 2,
+                    TripId = TripEntityToSeed.Id,
+                    UserId = NotRouteSubscriberUser.Id
                 }
             };
 
@@ -47,6 +53,21 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                     TripRoleId = (int)TripRoles.Admin,
                     TripSubscriberId = 1
                 }
+            };
+
+        protected RouteSubscriberRoleEntity RouteSubscriberRoleEntityToSeed =>
+            new RouteSubscriberRoleEntity()
+            {
+                RouteRoleId = (int)RouteRoles.Admin,
+                RouteSubscriberId = 1
+            };
+
+        protected RouteSubscriberEntity RouteSubscriberEntityToSeed =>
+            new RouteSubscriberEntity()
+            {
+                Id = 1,
+                RouteId = 1,
+                TripSubscriberId = 1
             };
 
         protected IEnumerable<TripRoleEntity> TripRolesToSeed = new List<TripRoleEntity>()
@@ -68,6 +89,20 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
             }
         };
 
+        protected IEnumerable<RouteRoleEntity> RouteRolesToSeed = new List<RouteRoleEntity>()
+        {
+            new RouteRoleEntity()
+            {
+                Id = (int)RouteRoles.Admin,
+                Name = RouteRoles.Admin.ToString()
+            },
+            new RouteRoleEntity()
+            {
+                Id = (int)RouteRoles.Editor,
+                Name = RouteRoles.Editor.ToString()
+            }
+        };
+
         protected static UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -84,6 +119,12 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
         {
             Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
             Email = "notsuboftrip@mail.com"
+        };
+
+        protected static UserEntity NotRouteSubscriberUser => new UserEntity()
+        {
+            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f8"),
+            Email = "notsubofroute@mail.com"
         };
 
         protected IEnumerable<ApplicationRoleEntity> ApplicationRoleEntitiesToSeed = 
