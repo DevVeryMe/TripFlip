@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TripFlip.Domain.Entities;
+using TripFlip.Services.Dto;
+using TripFlip.Services.Enums;
 using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TaskDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace WebApiIntegrationTests.TaskServiceTests
 {
@@ -68,6 +71,32 @@ namespace WebApiIntegrationTests.TaskServiceTests
             TaskListId = 1
         };
 
+        protected TaskDto TaskDto => new TaskDto()
+        {
+            Id = 1,
+            Description = "Task",
+            IsCompleted = false,
+            PriorityLevel = (TripFlip.Services.Dto.Enums.TaskPriorityLevel) 
+                TaskPriorityLevel.Low,
+            TaskListId = 1
+        };
+
+        protected UpdateTaskDto UpdateTaskDto => new UpdateTaskDto()
+        {
+            Id = 1,
+            Description = "Task",
+            IsCompleted = false,
+            PriorityLevel = (TripFlip.Services.Dto.Enums.TaskPriorityLevel)
+                TaskPriorityLevel.Low
+        };
+
+        protected UpdateTaskCompletenessDto UpdateTaskCompletenessDto
+            => new UpdateTaskCompletenessDto()
+            {
+                Id = TaskEntityToSeed.Id,
+                IsCompleted = true
+            };
+
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
             new List<TripSubscriberEntity>()
             {
@@ -88,6 +117,12 @@ namespace WebApiIntegrationTests.TaskServiceTests
                     Id = 3,
                     TripId = 1,
                     UserId = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846")
+                },
+                new TripSubscriberEntity()
+                {
+                    Id = 4,
+                    TripId = 1,
+                    UserId = ValidUserWithRouteEditorRole.Id
                 }
             };
 
@@ -105,21 +140,41 @@ namespace WebApiIntegrationTests.TaskServiceTests
                     Id = 2,
                     RouteId = 1,
                     TripSubscriberId = 3
+                },
+                new RouteSubscriberEntity()
+                {
+                    Id = 3,
+                    RouteId = 1,
+                    TripSubscriberId = 4
                 }
             };
 
-        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed =>
-            new List<RouteRoleEntity>()
+        protected IEnumerable<RouteRoleEntity> RouteRoleEntitiesToSeed => new List<RouteRoleEntity>()
+        {
+            new RouteRoleEntity()
             {
-                new RouteRoleEntity()
+                Id = (int)RouteRoles.Admin,
+                Name = RouteRoles.Admin.ToString()
+            },
+            new RouteRoleEntity()
+            {
+                Id = (int)RouteRoles.Editor,
+                Name = RouteRoles.Editor.ToString()
+            }
+        };
+
+        protected IEnumerable<RouteSubscriberRoleEntity> RouteSubscriberRoleEntitiesToSeed =>
+            new List<RouteSubscriberRoleEntity>()
+            {
+                new RouteSubscriberRoleEntity()
                 {
-                    Id = 1,
-                    Name = "Admin"
+                    RouteRoleId = (int)RouteRoles.Admin,
+                    RouteSubscriberId = 1
                 },
-                new RouteRoleEntity()
+                new RouteSubscriberRoleEntity()
                 {
-                    Id = 2,
-                    Name = "Editor"
+                    RouteRoleId = (int)RouteRoles.Editor,
+                    RouteSubscriberId = 3
                 }
             };
 
@@ -143,10 +198,34 @@ namespace WebApiIntegrationTests.TaskServiceTests
             Email = "correct@mail.com"
         };
 
+        protected static UserEntity ValidUserWithRouteEditorRole => new UserEntity()
+        {
+            Id = Guid.Parse("6caedd15-5fbd-4c0a-a5ce-fe363c354123"),
+            Email = "correct@mail.com"
+        };
+
         protected static UserEntity RouteSubscriberWithoutRolesUser => new UserEntity()
         {
             Id = Guid.Parse("3ed64e6a-0b5c-423b-a1ec-f0d38c9f6846"),
             Email = "notadminroutrole@mail.com"
+        };
+
+        protected PaginationDto PaginationDto => new PaginationDto()
+        {
+            PageNumber = 1,
+            PageSize = 1
+        };
+
+        protected PagedList<TaskDto> ExpectedPagedTaskDto => new PagedList<TaskDto>()
+        {
+            CurrentPage = 1,
+            TotalPages = 1,
+            PageSize = 1,
+            TotalCount = 1,
+            Items = new List<TaskDto>()
+            {
+                TaskDto
+            }
         };
 
         protected ICurrentUserService CurrentUserService;

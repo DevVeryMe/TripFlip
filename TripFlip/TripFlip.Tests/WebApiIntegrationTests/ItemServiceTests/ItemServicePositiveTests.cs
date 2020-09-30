@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
@@ -41,6 +42,44 @@ namespace WebApiIntegrationTests.ItemServiceTests
         public void Cleanup()
         {
             TripFlipDbContext.Dispose();
+        }
+
+        [TestMethod]
+        public async Task GetAllByItemListIdAsync_ExistentItemListId_Successful()
+        {
+            // Arrange.
+            var itemEntitiesToSeed = ItemEntitiesToSeed;
+
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, itemEntitiesToSeed);
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext,
+                CurrentUserService);
+
+            string searchString = null;
+            var existentItemListId = 1;
+            var paginationDto = GetPaginationDto();
+
+            var expectedItemDtoList = Mapper.Map<List<ItemDto>>(itemEntitiesToSeed);
+
+            var itemDtoComparer = new ItemDtoComparer();
+
+            // Act.
+            var resultItemDtoPagedList = await itemService.GetAllByItemListIdAsync(existentItemListId,
+                searchString, paginationDto);
+
+            var resultItemDtoList = resultItemDtoPagedList.Items.ToList();
+
+            var expectedItemsCount = expectedItemDtoList.Count;
+
+            // Assert.
+            Assert.AreEqual(expectedItemsCount, resultItemDtoList.Count);
+
+            for (var i = 0; i < expectedItemsCount; i++)
+            {
+                Assert.AreEqual(0,
+                    itemDtoComparer.Compare(resultItemDtoList[i], expectedItemDtoList[i]));
+            }
         }
 
         [TestMethod]
@@ -165,6 +204,69 @@ namespace WebApiIntegrationTests.ItemServiceTests
                 .FindAsync(existentItemId);
 
             Assert.IsNull(taskEntity);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ExistentItemId_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+
+            var itemService = new ItemService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                currentUserService: null);
+
+            var expectedItemDto = Mapper.Map<ItemDto>(ItemEntityToSeed);
+
+            int existingItemId = ItemEntityToSeed.Id;
+
+            var comparer = new ItemDtoComparer();
+
+            // Act.
+            var resultItemDto = await itemService.GetByIdAsync(existingItemId);
+
+            // Assert.
+            Assert.AreEqual(0, comparer.Compare(expectedItemDto, resultItemDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
+
+            var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(
+                itemId: ItemEntityToSeed.Id);
+
+            var expectedItemDto = Mapper.Map<ItemDto>(ItemEntityToSeed);
+            expectedItemDto.IsCompleted = updateItemCompletenessDto.IsCompleted;
+
+            var comparer = new ItemDtoComparer();
+
+            // Act.
+            var resultItemDto = await itemService
+                .UpdateCompletenessAsync(updateItemCompletenessDto);
+
+            // Assert.
+            Assert.AreEqual(0,
+                comparer.Compare(expectedItemDto, resultItemDto));
         }
     }
 }
