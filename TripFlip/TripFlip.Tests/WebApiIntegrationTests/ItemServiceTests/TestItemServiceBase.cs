@@ -246,6 +246,7 @@ namespace WebApiIntegrationTests.ItemServiceTests
             };
         }
 
+
         protected PaginationDto GetPaginationDto(int? pageNumber = null,
             int? pageSize = null)
         {
@@ -253,6 +254,17 @@ namespace WebApiIntegrationTests.ItemServiceTests
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize
+            };
+        }
+
+        protected UpdateItemCompletenessDto Get_UpdateItemCompletenessDto(
+            int itemId = 1,
+            bool isCompleted = default)
+        {
+            return new UpdateItemCompletenessDto()
+            {
+                Id = itemId,
+                IsCompleted = isCompleted
             };
         }
     }

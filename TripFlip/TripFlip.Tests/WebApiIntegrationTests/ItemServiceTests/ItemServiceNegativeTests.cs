@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
+using TripFlip.Services.Dto.ItemDtos;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.ItemServiceTests
@@ -342,6 +343,98 @@ namespace WebApiIntegrationTests.ItemServiceTests
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
                 await itemService.SetItemAssigneesAsync(itemAssigneesDto));
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_GivenNonExistentItemId_ExceptionThrown()
+        {
+            // Arrange.
+            int nonExistenItemId = 1;
+
+            var itemService = new ItemService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: null,
+                currentUserService: null);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemService.GetByIdAsync(nonExistenItemId));
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_GivenNonExistentItemId_ExceptionThrown()
+        {
+            // Arrange.
+            int nonExistenItemId = 1;
+
+            var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(itemId: nonExistenItemId);
+
+            var itemService = new ItemService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: null,
+                currentUserService: null);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemService.UpdateCompletenessAsync(updateItemCompletenessDto));
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidData), DynamicDataSourceType.Method)]
+        public async Task UpdateCompletenessAsync_InvalidCurrentUser_ExceptionThrown(
+            string displayName, ICurrentUserService currentUserService)
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, NotTripSubscriberUser);
+
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+
+            CurrentUserService = currentUserService;
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
+
+            int existingItemId = ItemEntityToSeed.Id;
+
+            var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(itemId: existingItemId);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await itemService.UpdateCompletenessAsync(updateItemCompletenessDto), displayName);
+        }
+
+        [TestMethod]
+        public async Task UpdateCompletenessAsync_CurrentUserNotRouteEditor_ExceptionThrown()
+        {
+            // Arrange.
+            var userThatIsRouteSubButNotRouteEditor = RouteSubscriberWithoutRolesUser;
+            Seed(TripFlipDbContext, userThatIsRouteSubButNotRouteEditor);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(userThatIsRouteSubButNotRouteEditor.Id,
+                userThatIsRouteSubButNotRouteEditor.Email);
+
+            var itemService = new ItemService(Mapper, TripFlipDbContext, CurrentUserService);
+
+            int existingItemId = ItemEntityToSeed.Id;
+
+            var updateItemCompletenessDto = Get_UpdateItemCompletenessDto(itemId: existingItemId);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await itemService.UpdateCompletenessAsync(updateItemCompletenessDto));
         }
 
         private static IEnumerable<object[]> GetCurrentUserServiceInvalidData()

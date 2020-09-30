@@ -253,5 +253,30 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Assert.
             Assert.IsTrue(isAuthenticated);
         }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ExistentUserId_ExceptionThrown()
+        {
+            // Arrange.
+            var validUser = ValidUser;
+
+            Seed(TripFlipDbContext, validUser);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+            var existentUserId = validUser.Id;
+            var expectedUserDto = Mapper.Map<UserDto>(validUser);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var userDtoComparer = new UserDtoComparer();
+
+            // Act.
+            var resultUserDto = await userService.GetByIdAsync(existentUserId);
+
+            // Assert.
+            Assert.AreEqual(0,
+                userDtoComparer.Compare(expectedUserDto, resultUserDto));
+        }
     }
 }
