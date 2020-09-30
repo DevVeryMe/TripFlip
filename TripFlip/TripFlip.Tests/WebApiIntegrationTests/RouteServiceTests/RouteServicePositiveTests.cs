@@ -106,7 +106,7 @@ namespace WebApiIntegrationTests.RouteServiceTests
         }
 
         [TestMethod]
-        public async Task GetById_GivenValidId_Successful()
+        public async Task GetByIdAsync_GivenValidId_Successful()
         {
             // Arrange
             Seed(TripFlipDbContext, RouteEntityToSeed);
@@ -121,6 +121,63 @@ namespace WebApiIntegrationTests.RouteServiceTests
 
             // Assert
             Assert.AreEqual(0, compaper.Compare(_expectedGotByIdRouteDto, resultRouteDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+
+            var comparer = new RouteDtoComparer();
+
+            var updateRouteDto = Get_UpdateRouteDto(tripId: TripEntityToSeed.Id);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var routeService = new RouteService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            var expectedRouteDto = Mapper.Map<RouteDto>(
+                RouteEntitiesToSeed.First(route => route.Id == updateRouteDto.Id));
+            expectedRouteDto.Title = updateRouteDto.Title;
+            expectedRouteDto.TripId = updateRouteDto.TripId;
+
+            // Act.
+            var resultRouteDto = await routeService.UpdateAsync(updateRouteDto);
+
+            // Assert.
+            Assert.AreEqual(0, comparer.Compare(expectedRouteDto, resultRouteDto));
+        }
+
+        [TestMethod]
+        public async Task DeleteByIdAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var routeService = new RouteService(TripFlipDbContext, Mapper, CurrentUserService);
+
+            int validRouteId = RouteEntityToSeed.Id;
+
+            // Act.
+            await routeService.DeleteByIdAsync(validRouteId);
+
+            // Assert.
+            bool routeIsDeleted = TripFlipDbContext
+                .Routes
+                .Any(route => route.Id == validRouteId) == false;
+
+            Assert.IsTrue(routeIsDeleted);
         }
     }
 }
