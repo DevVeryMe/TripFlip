@@ -301,5 +301,53 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             Assert.IsNull(userEntity);
         }
+
+        [TestMethod]
+        public async Task GrantRouteRoleAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userEntityToGrantRoles = UserEntityToGrantRoles;
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, userEntityToGrantRoles);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, TripRolesEntitiesToSeed);
+            Seed(TripFlipDbContext, TripSubscriberRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRolesEntitiesToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id,
+                ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            var grantRouteRolesDto = GetGrantRouteRolesDto(routeRoleIds: ValidRouteRoleIds,
+                userId: userEntityToGrantRoles.Id);
+
+            // Act.
+            await userService.GrantRouteRoleAsync(grantRouteRolesDto);
+
+            var userRouteRolesToCheck = TripFlipDbContext
+                .TripSubscribers
+                .Include(s => s.RouteSubscriptions)
+                .ThenInclude(s => s.RouteRoles)
+                .FirstOrDefault(subscriber => subscriber.UserId == userEntityToGrantRoles.Id)
+                .RouteSubscriptions
+                .FirstOrDefault(s => s.RouteId == grantRouteRolesDto.RouteId)
+                .RouteRoles
+                .Select(r => r.RouteRoleId);
+
+            // Assert.
+            Assert.AreEqual(ValidRouteRoleIds.Count(), userRouteRolesToCheck.Count());
+
+            bool containsAllRoles = !userRouteRolesToCheck.Except(ValidRouteRoleIds).Any()
+                && !ValidRouteRoleIds.Except(userRouteRolesToCheck).Any();
+
+            Assert.IsTrue(containsAllRoles);
+        }
     }
 }

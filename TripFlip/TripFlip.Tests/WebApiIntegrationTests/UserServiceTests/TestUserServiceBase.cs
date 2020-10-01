@@ -14,6 +14,8 @@ namespace WebApiIntegrationTests.UserServiceTests
     {
         protected IEnumerable<int> ValidTripRoleIds = new []{1, 2, 3};
 
+        protected IEnumerable<int> ValidRouteRoleIds = new[] { 1, 2 };
+
         protected UserEntity ValidUser => new UserEntity()
         {
             Id = Guid.Parse("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -34,7 +36,19 @@ namespace WebApiIntegrationTests.UserServiceTests
             Email = "nottripadmin@mail.com"
         };
 
-        protected UserEntity ExistentButNotSubscribedToTripUser = new UserEntity()
+        protected static UserEntity NonExistentUser => new UserEntity()
+        {
+            Id = Guid.Parse("322967ec-9415-4778-99c6-7f566d1bb8d2"),
+            Email = "nonexistent@mail.com"
+        };
+
+        protected static UserEntity UserEntityToGrantRoles => new UserEntity()
+        {
+            Id = Guid.Parse("c44315ef-547e-4366-888a-46d2e057e6f7"),
+            Email = "notsuboftrip@mail.com"
+        };
+
+        protected UserEntity NotTripSubscriberUser = new UserEntity()
         {
             Id = Guid.Parse("7d6ac0ab-575f-444b-a813-d56f9d6ba0e5"),
             Email = "nottripsubscribed@mail.com"
@@ -144,6 +158,21 @@ namespace WebApiIntegrationTests.UserServiceTests
                 }
             };
 
+        protected IEnumerable<RouteRoleEntity> RouteRolesEntitiesToSeed =>
+            new List<RouteRoleEntity>()
+            {
+                new RouteRoleEntity()
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new RouteRoleEntity()
+                {
+                    Id = 2,
+                    Name = "Editor"
+                }
+            };
+
         protected IEnumerable<TripSubscriberRoleEntity> TripSubscriberRoleEntitiesToSeed =>
             new List<TripSubscriberRoleEntity>()
             {
@@ -245,6 +274,19 @@ namespace WebApiIntegrationTests.UserServiceTests
             {
                 Email = email,
                 Password = password
+            };
+        }
+
+        protected GrantRouteRolesDto GetGrantRouteRolesDto(
+            Guid userId,
+            IEnumerable<int> routeRoleIds,
+            int routeId = 1)
+        {
+            return new GrantRouteRolesDto()
+            {
+                UserId = userId,
+                RouteRoleIds = routeRoleIds,
+                RouteId = routeId
             };
         }
     }
