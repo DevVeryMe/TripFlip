@@ -104,6 +104,60 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                     errorMessage: string.Empty));
         }
 
+        [DataTestMethod]
+        [DynamicData(nameof(GetCurrentUserServiceInvalidDataForValidateRouteRole),
+            DynamicDataSourceType.Method)]
+        public async Task ValidateCurrentUserRouteRoleAsync_GivenNotValidCurrentUser_ExceptionThrown(
+           string displayName, ICurrentUserService currentUserService)
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, NonExistentUser);
+            Seed(TripFlipDbContext, NotRouteSubscriberUser);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntityToSeed);
+
+            CurrentUserService = currentUserService;
+
+            int existentRouteId = 1;
+
+            RouteRoles validRouteRole = RouteRoles.Editor;
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                    currentUserService: CurrentUserService,
+                    tripFlipDbContext: TripFlipDbContext,
+                    routeId: existentRouteId,
+                    routeRoleToValidate: validRouteRole,
+                    errorMessage: string.Empty), displayName);
+        }
+
+        [TestMethod]
+        public async Task ValidateCurrentUserRouteRoleAsync_GivenInvalidCurrentUserRole_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRolesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberRoleEntityToSeed);
+
+            int existingRouteId = 1;
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            RouteRoles roleThatIsExpectedFromCurrentUser = RouteRoles.Editor;
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
+                    currentUserService: CurrentUserService,
+                    tripFlipDbContext: TripFlipDbContext,
+                    routeId: existingRouteId,
+                    routeRoleToValidate: roleThatIsExpectedFromCurrentUser,
+                    errorMessage: string.Empty));
+        }
+
         static IEnumerable<object[]> GetCurrentUserServiceInvalidData()
         {
             yield return new object[]
@@ -119,6 +173,26 @@ namespace WebApiIntegrationTests.EntityValidationHelperTests
                 "NotSubscribedToTrip_ExceptionThrown",
                 CreateCurrentUserService(NotTripSubscriberUser.Id,
                     NotTripSubscriberUser.Email)
+            };
+        }
+
+        static IEnumerable<object[]> GetCurrentUserServiceInvalidDataForValidateRouteRole()
+        {
+            yield return new object[]
+            {
+                "Test case 1: ValidateCurrentUserRouteRoleAsync" +
+                "_GivenNotExistentCurrentUser_ExceptionThrown",
+                CreateCurrentUserService(NonExistentUser.Id,
+                    NonExistentUser.Email)
+            };
+
+            yield return new object[]
+            {
+                "Test case 2: ValidateCurrentUserRouteRoleAsync" +
+                "_GivenCurrentUser" +
+                "NotSubscribedToRoute_ExceptionThrown",
+                CreateCurrentUserService(NotRouteSubscriberUser.Id,
+                    NotRouteSubscriberUser.Email)
             };
         }
     }
