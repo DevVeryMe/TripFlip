@@ -87,7 +87,7 @@ namespace WebApiIntegrationTests.TaskListServiceTests
 
             var taskListService = new TaskListService(TripFlipDbContext,
                 Mapper, CurrentUserService);
-            var validRouteId = 1;
+
             var paginationDto = GetPaginationDto();
             string searchString = null;
             var comparer = new TaskListDtoComparer();
@@ -169,6 +169,39 @@ namespace WebApiIntegrationTests.TaskListServiceTests
 
             // Assert.
             Assert.IsNull(taskListEntity);
+        }
+
+        [TestMethod]
+        public async Task CreateAsync_ValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberAdminRoleEntityToSeed);
+
+            var comparer = new TaskListDtoComparer();
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var taskListService = new TaskListService(TripFlipDbContext, Mapper,
+                CurrentUserService);
+
+            var taskListEntity = TaskListEntityToSeed;
+            var expectedTaskListDto = Mapper.Map<TaskListDto>(taskListEntity);
+
+            var createTaskListDto = Get_CreateTaskListDto(
+                routeId: taskListEntity.Id,
+                title: taskListEntity.Title);
+
+            // Act.
+            var resultTaskListDto = await taskListService.CreateAsync(createTaskListDto);
+
+            // Arrange.
+            Assert.AreEqual(0, comparer.Compare(expectedTaskListDto, resultTaskListDto));
         }
     }
 }
