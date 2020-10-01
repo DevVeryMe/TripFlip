@@ -472,5 +472,42 @@ namespace WebApiIntegrationTests.UserServiceTests
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await userService.GrantRouteRoleAsync(grantRouteRolesDto));
         }
+
+        [TestMethod]
+        public async Task UnsubscribeFromRouteAsync_NonExistentCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(InvalidUser.Id, InvalidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.UnsubscribeFromRouteAsync(RouteEntityToSeed.Id));
+        }
+
+        [TestMethod]
+        public async Task UnsubscribeFromRouteAsync_CurrentUserIsNotRouteSubscriber_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(
+                ValidUser.Id,
+                ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.UnsubscribeFromRouteAsync(RouteEntityToSeed.Id));
+        }
     }
 }

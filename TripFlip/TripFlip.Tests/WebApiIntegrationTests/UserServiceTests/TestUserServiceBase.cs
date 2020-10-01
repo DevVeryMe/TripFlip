@@ -113,6 +113,14 @@ namespace WebApiIntegrationTests.UserServiceTests
                 }
             };
 
+        protected RouteSubscriberEntity RouteSubscriberEntityToSeed =>
+            new RouteSubscriberEntity()
+            {
+                Id = 1,
+                RouteId = 1,
+                TripSubscriberId = 5
+            };
+
         protected IEnumerable<UserEntity> UserEntitiesToSeed =>
             new List<UserEntity>()
             {
