@@ -182,6 +182,17 @@ namespace WebApiIntegrationTests.TaskListServiceTests
             };
         }
 
+        protected CreateTaskListDto Get_CreateTaskListDto(
+            int routeId = 1,
+            string title = "Task list")
+        {
+            return new CreateTaskListDto()
+            {
+                RouteId = routeId,
+                Title = title
+            };
+        }
+
         protected UpdateTaskListDto GetUpdateTaskListDto(int id = 1,
             string title = "Updated title")
         {
