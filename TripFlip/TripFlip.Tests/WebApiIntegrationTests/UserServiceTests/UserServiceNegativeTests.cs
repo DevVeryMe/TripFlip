@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
+using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.UserServiceTests
@@ -508,6 +509,183 @@ namespace WebApiIntegrationTests.UserServiceTests
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
                 await userService.UnsubscribeFromRouteAsync(RouteEntityToSeed.Id));
+        }
+
+        [TestMethod]
+        public async Task SubscribeToTripAsync_NonExistentCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(NonExistentUser.Id, NonExistentUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.SubscribeToTripAsync(TripEntityToSeed.Id));
+        }
+
+        [TestMethod]
+        public async Task SubscribeToTripAsync_GivenNonExistentTripId_ExceptionThrown()
+        {
+            // Arrange.
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            int nonExistentTripId = 1;
+
+            Seed(TripFlipDbContext, ValidUser);
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.SubscribeToTripAsync(nonExistentTripId));
+        }
+
+        [TestMethod]
+        public async Task SubscribeToTripAsync_CurrentUserIsAlreadyTripSubscriber_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            int existingTripId = TripEntityToSeed.Id;
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.SubscribeToTripAsync(existingTripId));
+        }
+
+        [TestMethod]
+        public async Task GrantApplicationRoleAsync_GivenSuperAdminRoleForGranting_ExceptionThrown()
+        {
+            // Arrange.
+            int[] applicationRoleIdsToGrant = new int[] { (int)ApplicationRole.SuperAdmin };
+
+            var grantApplicationRolesDto = Get_GrantApplicationRolesDto(
+                ValidUser.Id, applicationRoleIdsToGrant);
+
+            var userService = new UserService(
+                tripFlipDbContext: null,
+                mapper: null,
+                jwtConfiguration: null,
+                currentUserService: null);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.GrantApplicationRoleAsync(grantApplicationRolesDto));
+        }
+
+        [TestMethod]
+        public async Task GrantApplicationRoleAsync_CurrentUserIsNotApplicationSuperAdmin_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+
+            int[] applicationRoleIdsToGrant = new int[] { (int)ApplicationRole.Admin };
+
+            var grantApplicationRolesDto = Get_GrantApplicationRolesDto(
+                ValidUser.Id, applicationRoleIdsToGrant);
+            
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                tripFlipDbContext: TripFlipDbContext,
+                currentUserService: CurrentUserService,
+                mapper: null,
+                jwtConfiguration: jwtConfiguration);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.GrantApplicationRoleAsync(grantApplicationRolesDto));
+        }
+
+        [TestMethod]
+        public async Task GrantApplicationRoleAsync_GrantingAppRolesToNonExistentUser_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, ApplicationRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, ApplicationSuperAdminUserRoleToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            int[] applicationRoleIdsToGrant = new int[] { (int)ApplicationRole.Admin };
+
+            var userToGrantRolesTo = NonExistentUser;
+
+            var grantApplicationRolesDto = Get_GrantApplicationRolesDto(
+                userToGrantRolesTo.Id, applicationRoleIdsToGrant);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                tripFlipDbContext: TripFlipDbContext,
+                currentUserService: CurrentUserService,
+                mapper: null,
+                jwtConfiguration: jwtConfiguration);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GrantApplicationRoleAsync(grantApplicationRolesDto));
+        }
+
+        [TestMethod]
+        public async Task UpdateUserProfileAsync_NonExistentCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var nonExistentCurrentUser = NonExistentUser;
+
+            CurrentUserService = CreateCurrentUserService(
+                NonExistentUser.Id, NonExistentUser.Email);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                tripFlipDbContext: TripFlipDbContext,
+                currentUserService: CurrentUserService,
+                mapper: null,
+                jwtConfiguration: jwtConfiguration);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.UpdateUserProfileAsync(updateUserDto: null));
+        }
+
+        [TestMethod]
+        public async Task GetAllSubscribedTripsAsync_NonExistentCurrentUser_ExceptionThrown()
+        {
+            // Arrange.
+            var nonExistentCurrentUser = NonExistentUser;
+
+            CurrentUserService = CreateCurrentUserService(
+                NonExistentUser.Id, NonExistentUser.Email);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                tripFlipDbContext: TripFlipDbContext,
+                currentUserService: CurrentUserService,
+                mapper: null,
+                jwtConfiguration: jwtConfiguration);
+
+            // Act & Assert.
+            await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
+                await userService.GetAllSubscribedTripsAsync());
         }
     }
 }
