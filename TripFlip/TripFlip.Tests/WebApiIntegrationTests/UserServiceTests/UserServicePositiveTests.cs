@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
+using TripFlip.Services.Dto;
+using TripFlip.Services.Dto.Enums;
+using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Helpers;
 using WebApiIntegrationTests.CustomComparers;
@@ -379,6 +382,204 @@ namespace WebApiIntegrationTests.UserServiceTests
                 subscriber.TripSubscriberId == routeSubscriberEntityToSeed.TripSubscriberId);
 
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task SubscribeToTripAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var validUserThatIsNotTripSub = NotTripSubscriberUser;
+            var tripEntity = TripEntityToSeed;
+
+            Seed(TripFlipDbContext, validUserThatIsNotTripSub);
+            Seed(TripFlipDbContext, tripEntity);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            CurrentUserService = CreateCurrentUserService(
+                validUserThatIsNotTripSub.Id, validUserThatIsNotTripSub.Email);
+
+            var userService = new UserService(Mapper, TripFlipDbContext,
+                jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.SubscribeToTripAsync(tripEntity.Id);
+
+            // Assert.
+            bool userIsSubscribed = TripFlipDbContext
+                .TripSubscribers
+                .Any(subscriber =>
+                    subscriber.TripId == tripEntity.Id &&
+                    subscriber.UserId == validUserThatIsNotTripSub.Id);
+
+            Assert.IsTrue(userIsSubscribed);
+        }
+
+        [TestMethod]
+        public async Task GrantApplicationRoleAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var validUserToGrantRolesTo = NotTripSubscriberUser;
+
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, validUserToGrantRolesTo);
+            Seed(TripFlipDbContext, ApplicationRoleEntitiesToSeed);
+            Seed(TripFlipDbContext, ApplicationSuperAdminUserRoleToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            int[] applicationRoleIdsToGrant = new int[] { (int)ApplicationRole.Admin };
+
+            var grantApplicationRolesDto = Get_GrantApplicationRolesDto(
+                validUserToGrantRolesTo.Id, applicationRoleIdsToGrant);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+
+            // Act.
+            await userService.GrantApplicationRoleAsync(grantApplicationRolesDto);
+
+            // Assert.
+            var userAppRoleIds = validUserToGrantRolesTo
+                .ApplicationRoles
+                .Select(appUserRole => appUserRole.ApplicationRoleId);
+
+            bool containsAllRoles = ! userAppRoleIds.Except(applicationRoleIdsToGrant).Any();
+            bool allGivenRolesAreValid = userAppRoleIds.All(roleId => ValidApplicationRoleIds.Contains(roleId));
+
+            Assert.IsTrue(containsAllRoles);
+            Assert.IsTrue(allGivenRolesAreValid);
+        }
+
+        [TestMethod]
+        public async Task UpdateUserProfileAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var validUser = ValidUser;
+
+            Seed(TripFlipDbContext, validUser);
+
+            CurrentUserService = CreateCurrentUserService(validUser.Id, validUser.Email);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+
+            var updateUserProfileDto = Get_UpdateUserProfileDto();
+            var expectedUserDto = Mapper.Map<UserDto>(validUser);
+
+            expectedUserDto.AboutMe = updateUserProfileDto.AboutMe = "Updated user profile";
+
+            var comparer = new UserDtoComparer();
+
+            // Act.
+            var resultUserDto = await userService.UpdateUserProfileAsync(updateUserProfileDto);
+
+            // Arrange.
+            Assert.AreEqual(0, comparer.Compare(expectedUserDto, resultUserDto));
+        }
+
+        [TestMethod]
+        public async Task GetAllAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            var userEntities = UserEntitiesToSeed;
+
+            Seed(TripFlipDbContext, userEntities);
+
+            var comparer = new UserDtoComparer();
+
+            var userService = new UserService(
+                tripFlipDbContext: TripFlipDbContext,
+                mapper: Mapper,
+                jwtConfiguration: null,
+                currentUserService: null);
+
+            var expectedPagedUserDtos = Get_Expected_PagedUserDtos();
+            var expectedUserDtoList = expectedPagedUserDtos.Items.ToList();
+            int expectedUserDtoListLength = expectedUserDtoList.Count();
+
+            var paginationDto = new PaginationDto()
+            {
+                PageNumber = expectedPagedUserDtos.CurrentPage,
+                PageSize = expectedPagedUserDtos.PageSize
+            };
+
+            // Act.
+            var resultPagedUserDtos = await userService.GetAllAsync(
+                searchString: null, paginationDto: paginationDto);
+
+            // Assert.
+            bool pagedListPropertiesAreEqual =
+                expectedPagedUserDtos.CurrentPage == resultPagedUserDtos.CurrentPage &&
+                expectedPagedUserDtos.TotalPages == resultPagedUserDtos.TotalPages &&
+                expectedPagedUserDtos.PageSize == resultPagedUserDtos.PageSize &&
+                expectedPagedUserDtos.TotalCount == resultPagedUserDtos.TotalCount &&
+                expectedPagedUserDtos.HasPrevious == resultPagedUserDtos.HasPrevious &&
+                expectedPagedUserDtos.HasNext == resultPagedUserDtos.HasNext;
+            Assert.IsTrue(pagedListPropertiesAreEqual);
+
+            var resultUserDtoList = resultPagedUserDtos.Items.ToList();
+            int resultUserDtoListLength = resultUserDtoList.Count();
+
+            Assert.AreEqual(expectedUserDtoListLength, resultUserDtoListLength);
+
+            for (int i = 0; i < resultUserDtoListLength; i++)
+            {
+                Assert.AreEqual(0,
+                   comparer.Compare(expectedUserDtoList[i], resultUserDtoList[i]));
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAllSubscribedTripsAsync_GivenValidData_Successful()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, TripEntityToSeed);
+            Seed(TripFlipDbContext, RouteEntityToSeed);
+            Seed(TripFlipDbContext, TripSubscriberEntitiesToSeed);
+            Seed(TripFlipDbContext, RouteSubscriberEntityToSeed);
+            Seed(TripFlipDbContext, RoutePointEntityToSeed);
+            Seed(TripFlipDbContext, ItemListEntityToSeed);
+            Seed(TripFlipDbContext, ItemEntityToSeed);
+            Seed(TripFlipDbContext, TaskListEntityToSeed);
+            Seed(TripFlipDbContext, TaskEntityToSeed);
+            Seed(TripFlipDbContext, ItemAssigneeEntityToSeed);
+            Seed(TripFlipDbContext, TaskAssigneeEntityToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+
+            var expectedTripWithNestedObjectsDtoEnumerable = Get_Expected_TripWithRoutesAndUserRolesDto();
+
+            var comparer = new TripWithRoutesAndUserRolesDtoComparer();
+
+            // Act.
+            var resultTripWithNestedObjectsDtoEnumerable = await userService.GetAllSubscribedTripsAsync();
+
+            // Assert.
+            var expectedTripDtoList = expectedTripWithNestedObjectsDtoEnumerable.ToList();
+            var resultTripDtoList = resultTripWithNestedObjectsDtoEnumerable.ToList();
+
+            int expectedTripDtoListCount = expectedTripDtoList.Count();
+            int resultTripDtoListCount = resultTripDtoList.Count();
+
+            Assert.AreEqual(expectedTripDtoListCount, resultTripDtoListCount);
+
+            for (int i = 0; i < expectedTripDtoListCount; i++)
+            {
+                Assert.AreEqual(0,
+                    comparer.Compare(expectedTripDtoList[i], resultTripDtoList[i]));
+            }
         }
     }
 }

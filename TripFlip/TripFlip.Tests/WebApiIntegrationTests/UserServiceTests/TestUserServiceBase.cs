@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Moq;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto.Enums;
+using TripFlip.Services.Dto.ItemDtos;
+using TripFlip.Services.Dto.ItemListDtos;
+using TripFlip.Services.Dto.RouteDtos;
+using TripFlip.Services.Dto.RoutePointDtos;
+using TripFlip.Services.Dto.RouteSubscriberDtos;
+using TripFlip.Services.Dto.TaskDtos;
+using TripFlip.Services.Dto.TaskListDtos;
+using TripFlip.Services.Dto.TripDtos;
+using TripFlip.Services.Dto.TripRoleDtos;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
+using TripFlip.Services.Interfaces.Helpers;
 
 namespace WebApiIntegrationTests.UserServiceTests
 {
@@ -15,6 +26,12 @@ namespace WebApiIntegrationTests.UserServiceTests
         protected IEnumerable<int> ValidTripRoleIds = new []{1, 2, 3};
 
         protected IEnumerable<int> ValidRouteRoleIds = new[] { 1, 2 };
+
+        protected IEnumerable<int> ValidApplicationRoleIds = new int[]
+        {
+            (int) ApplicationRole.SuperAdmin,
+            (int) ApplicationRole.Admin
+        };
 
         protected UserEntity ValidUser => new UserEntity()
         {
@@ -68,8 +85,64 @@ namespace WebApiIntegrationTests.UserServiceTests
         protected RouteEntity RouteEntityToSeed => new RouteEntity()
         {
             Id = 1,
-            TripId = 1,
+            TripId = TripEntityToSeed.Id,
             Title = "Route"
+        };
+
+        protected RoutePointEntity RoutePointEntityToSeed => new RoutePointEntity()
+        {
+            Id = 1,
+            Longitude = default,
+            Latitude = default,
+            Order = default,
+            DateCreated = DateTimeOffset.Parse("28/08/2010 14:00:00",
+                CultureInfo.GetCultureInfo("en-GB").DateTimeFormat),
+            RouteId = RouteEntityToSeed.Id
+        };
+
+        protected ItemListEntity ItemListEntityToSeed => new ItemListEntity()
+        {
+            Id = 1,
+            Title = "ItemList",
+            RouteId = RouteEntityToSeed.Id
+        };
+
+        protected ItemEntity ItemEntityToSeed => new ItemEntity()
+        {
+            Id = 1,
+            Title = "Item",
+            Comment = "Comment",
+            Quantity = "Quantity",
+            IsCompleted = false,
+            ItemListId = ItemListEntityToSeed.Id,
+        };
+
+        protected ItemAssigneeEntity ItemAssigneeEntityToSeed => new ItemAssigneeEntity()
+        {
+            ItemId = ItemEntityToSeed.Id,
+            RouteSubscriberId = RouteSubscriberEntityToSeed.Id
+        };
+
+        protected TaskListEntity TaskListEntityToSeed => new TaskListEntity()
+        {
+            Id = 1,
+            RouteId = RouteEntityToSeed.Id,
+            Title = "Task list"
+        };
+
+        protected TaskEntity TaskEntityToSeed => new TaskEntity()
+        {
+            Id = 1,
+            Description = "Task",
+            IsCompleted = false,
+            PriorityLevel = TripFlip.Domain.Entities.Enums.TaskPriorityLevel.Low,
+            TaskListId = TaskListEntityToSeed.Id
+        };
+
+        protected TaskAssigneeEntity TaskAssigneeEntityToSeed => new TaskAssigneeEntity()
+        {
+            TaskId = TaskEntityToSeed.Id,
+            RouteSubscriberId = RouteSubscriberEntityToSeed.Id
         };
 
         protected IEnumerable<TripSubscriberEntity> TripSubscriberEntitiesToSeed =>
@@ -211,6 +284,28 @@ namespace WebApiIntegrationTests.UserServiceTests
                 },
             };
 
+        protected IEnumerable<ApplicationRoleEntity> ApplicationRoleEntitiesToSeed =>
+            new List<ApplicationRoleEntity>()
+            {
+                new ApplicationRoleEntity()
+                {
+                    Id = (int) ApplicationRole.SuperAdmin,
+                    Name = ApplicationRole.SuperAdmin.ToString()
+                },
+                new ApplicationRoleEntity()
+                {
+                    Id = (int) ApplicationRole.Admin,
+                    Name = ApplicationRole.Admin.ToString()
+                }
+            };
+
+        protected ApplicationUserRoleEntity ApplicationSuperAdminUserRoleToSeed =>
+            new ApplicationUserRoleEntity()
+            {
+                UserId = ValidUser.Id,
+                ApplicationRoleId = (int) ApplicationRole.SuperAdmin
+            };
+
         protected ICurrentUserService CurrentUserService;
 
         protected static ICurrentUserService CreateCurrentUserService(Guid id, string email)
@@ -295,6 +390,144 @@ namespace WebApiIntegrationTests.UserServiceTests
                 UserId = userId,
                 RouteRoleIds = routeRoleIds,
                 RouteId = routeId
+            };
+        }
+
+        protected GrantApplicationRolesDto Get_GrantApplicationRolesDto(
+            Guid userId,
+            IEnumerable<int> applicationRoleIds)
+        {
+            return new GrantApplicationRolesDto()
+            {
+                UserId = userId,
+                ApplicationRoleIds = applicationRoleIds
+            };
+        }
+
+        protected UpdateUserProfileDto Get_UpdateUserProfileDto()
+        {
+            UserEntity validUser = ValidUser;
+
+            return new UpdateUserProfileDto()
+            {
+                Email = validUser.Email,
+                FirstName = validUser.FirstName,
+                LastName = validUser.LastName,
+                AboutMe = validUser.AboutMe,
+                Gender = (UserGender?)validUser.Gender,
+                BirthDate = validUser.BirthDate
+            };
+        }
+
+        protected PagedList<UserDto> Get_Expected_PagedUserDtos()
+        {
+            var userDtos = Mapper.Map< IEnumerable<UserDto> >(UserEntitiesToSeed);
+
+            int userDtosLength = userDtos.Count();
+
+            return new PagedList<UserDto>(
+                pageNumber: 1,
+                pageSize: userDtosLength,
+                totalCount: userDtosLength,
+                items: userDtos);
+        }
+
+        protected IEnumerable<TripWithRoutesAndUserRolesDto> 
+            Get_Expected_TripWithRoutesAndUserRolesDto()
+        {
+            var tripEntity = TripEntityToSeed;
+            var routeEntity = RouteEntityToSeed;
+            var itemListEntity = ItemListEntityToSeed;
+            var itemEntity = ItemEntityToSeed;
+            var taskListEntity = TaskListEntityToSeed;
+            var taskEntity = TaskEntityToSeed;
+            var routeSubscriberEntity = RouteSubscriberEntityToSeed;
+            var routePointEntity = RoutePointEntityToSeed;
+
+            return new List<TripWithRoutesAndUserRolesDto>
+            {
+                new TripWithRoutesAndUserRolesDto()
+                {
+                    Id = tripEntity.Id,
+                    Title = tripEntity.Title,
+                    Description = tripEntity.Description,
+                    StartsAt = tripEntity.StartsAt,
+                    EndsAt = tripEntity.EndsAt,
+
+                    Routes = new List<RouteWithPointsItemAndTaskListsDto>
+                    {
+                        new RouteWithPointsItemAndTaskListsDto
+                        {
+                            Id = routeEntity.Id,
+                            Title = routeEntity.Title,
+                            ItemLists = new List<ItemListWithItemsDto>
+                            {
+                                new ItemListWithItemsDto
+                                {
+                                    Id = itemListEntity.Id,
+                                    Title = itemListEntity.Title,
+                                    Items = new List<ItemWithAssigneesDto>
+                                    {
+                                        new ItemWithAssigneesDto
+                                        {
+                                            Id = itemEntity.Id,
+                                            Title = itemEntity.Title,
+                                            Comment = itemEntity.Comment,
+                                            Quantity = itemEntity.Quantity,
+                                            IsCompleted = itemEntity.IsCompleted,
+                                            ItemAssignees = new List<RouteSubscriberDto>
+                                            {
+                                                new RouteSubscriberDto
+                                                {
+                                                    Id = routeSubscriberEntity.Id,
+                                                    TripSubscriberId = routeSubscriberEntity.TripSubscriberId
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            TaskLists = new List<TaskListWithTasksDto>
+                            {
+                                new TaskListWithTasksDto
+                                {
+                                    Id = taskListEntity.Id,
+                                    Title = taskListEntity.Title,
+                                    Tasks = new List<TaskWithAssigneesDto>
+                                    {
+                                        new TaskWithAssigneesDto
+                                        {
+                                            Id = taskEntity.Id,
+                                            Description = taskEntity.Description,
+                                            PriorityLevel = (TaskPriorityLevel)taskEntity.PriorityLevel,
+                                            DateCreated = taskEntity.DateCreated,
+                                            IsCompleted = taskEntity.IsCompleted,
+                                            TaskAssignees = new List<RouteSubscriberDto>
+                                            {
+                                                new RouteSubscriberDto
+                                                {
+                                                    Id = routeSubscriberEntity.Id,
+                                                    TripSubscriberId = routeSubscriberEntity.TripSubscriberId
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            RoutePoints = new List<RoutePointDto>
+                            {
+                                new RoutePointDto
+                                {
+                                    Id = routePointEntity.Id,
+                                    Latitude = routePointEntity.Latitude,
+                                    Longitude = routePointEntity.Longitude,
+                                    Order = routePointEntity.Order
+                                }
+                            }
+                        }
+                    },
+                    TripRoles = new List<TripRoleDto>{}
+                }
             };
         }
     }
