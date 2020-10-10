@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.Services.Interfaces", "GoogleAuthentication.Services.Interfaces\GoogleAuthentication.Services.Interfaces.csproj", "{5F4BA4FC-A284-41CC-B887-78823412B963}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534} = {4D80965C-6AD1-4D86-BFC5-B0AABF36B534}
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98} = {E0B92CA5-8A0C-48A1-A68C-0360780D8F98}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.Services.Dtos", "GoogleAuthentication.Services.Dto\GoogleAuthentication.Services.Dtos.csproj", "{E0B92CA5-8A0C-48A1-A68C-0360780D8F98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.ViewModels", "GoogleAuthentication.ViewModels\GoogleAuthentication.ViewModels.csproj", "{08BF62F2-1FC0-460D-A73D-4FDEA83E014C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.Root", "GoogleAuthentication.Root\GoogleAuthentication.Root.csproj", "{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BBACC912-086C-4396-8F78-6C8DB207AB05} = {BBACC912-086C-4396-8F78-6C8DB207AB05}
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534} = {4D80965C-6AD1-4D86-BFC5-B0AABF36B534}
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E} = {3A5A8B5D-96CA-42B4-8ABA-14843282453E}
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98} = {E0B92CA5-8A0C-48A1-A68C-0360780D8F98}
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C} = {08BF62F2-1FC0-460D-A73D-4FDEA83E014C}
+		{5F4BA4FC-A284-41CC-B887-78823412B963} = {5F4BA4FC-A284-41CC-B887-78823412B963}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.Domain.Entities", "GoogleAuthentication.Domain.Entities\GoogleAuthentication.Domain.Entities.csproj", "{4D80965C-6AD1-4D86-BFC5-B0AABF36B534}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.DataAccess", "GoogleAuthentication.DataAccess\GoogleAuthentication.DataAccess.csproj", "{3A5A8B5D-96CA-42B4-8ABA-14843282453E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534} = {4D80965C-6AD1-4D86-BFC5-B0AABF36B534}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleAuthentication.Services", "GoogleAuthentication.Services\GoogleAuthentication.Services.csproj", "{BBACC912-086C-4396-8F78-6C8DB207AB05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534} = {4D80965C-6AD1-4D86-BFC5-B0AABF36B534}
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E} = {3A5A8B5D-96CA-42B4-8ABA-14843282453E}
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98} = {E0B92CA5-8A0C-48A1-A68C-0360780D8F98}
+		{5F4BA4FC-A284-41CC-B887-78823412B963} = {5F4BA4FC-A284-41CC-B887-78823412B963}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAuthentication.WebApi", "GoogleAuthentication.WebApi\GoogleAuthentication.WebApi.csproj", "{8F697EB7-513A-45CD-93E4-F8900C988540}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA} = {81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C} = {08BF62F2-1FC0-460D-A73D-4FDEA83E014C}
+		{5F4BA4FC-A284-41CC-B887-78823412B963} = {5F4BA4FC-A284-41CC-B887-78823412B963}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F4BA4FC-A284-41CC-B887-78823412B963}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F4BA4FC-A284-41CC-B887-78823412B963}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F4BA4FC-A284-41CC-B887-78823412B963}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F4BA4FC-A284-41CC-B887-78823412B963}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B92CA5-8A0C-48A1-A68C-0360780D8F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BF62F2-1FC0-460D-A73D-4FDEA83E014C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81169C38-23C5-4B14-B7C8-B84DD8D2C6AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D80965C-6AD1-4D86-BFC5-B0AABF36B534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5A8B5D-96CA-42B4-8ABA-14843282453E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBACC912-086C-4396-8F78-6C8DB207AB05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBACC912-086C-4396-8F78-6C8DB207AB05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBACC912-086C-4396-8F78-6C8DB207AB05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBACC912-086C-4396-8F78-6C8DB207AB05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F697EB7-513A-45CD-93E4-F8900C988540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F697EB7-513A-45CD-93E4-F8900C988540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F697EB7-513A-45CD-93E4-F8900C988540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F697EB7-513A-45CD-93E4-F8900C988540}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B882D82-2A67-4D38-B7FD-E51BB654133F}
+	EndGlobalSection
+EndGlobal

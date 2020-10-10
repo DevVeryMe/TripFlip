@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>9956a631-b3ed-4d0d-959d-771689bf3e25</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleAuthentication.Root\GoogleAuthentication.Root.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services.Interfaces\GoogleAuthentication.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.ViewModels\GoogleAuthentication.ViewModels.csproj" />
+  </ItemGroup>
+
+
+</Project>

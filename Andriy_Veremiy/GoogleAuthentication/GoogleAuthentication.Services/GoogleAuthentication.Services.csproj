@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.49.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleAuthentication.DataAccess\GoogleAuthentication.DataAccess.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Domain.Entities\GoogleAuthentication.Domain.Entities.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services.Dto\GoogleAuthentication.Services.Dtos.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services.Interfaces\GoogleAuthentication.Services.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoogleAuthentication.DataAccess\GoogleAuthentication.DataAccess.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Domain.Entities\GoogleAuthentication.Domain.Entities.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services.Dto\GoogleAuthentication.Services.Dtos.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services.Interfaces\GoogleAuthentication.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.Services\GoogleAuthentication.Services.csproj" />
+    <ProjectReference Include="..\GoogleAuthentication.ViewModels\GoogleAuthentication.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
