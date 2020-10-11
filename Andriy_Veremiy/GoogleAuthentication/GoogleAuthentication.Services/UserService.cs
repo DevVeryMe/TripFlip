@@ -94,7 +94,7 @@ namespace GoogleAuthentication.Services
                 _googleConfiguration.Scopes,
                 _googleConfiguration.User,
                 CancellationToken.None,
-                new FileDataStore(_googleConfiguration.ResponseTokenDirPath));
+                new FileDataStore(_googleConfiguration.ResponseTokenDirPath, true));
 
             return userCredential;
         }
