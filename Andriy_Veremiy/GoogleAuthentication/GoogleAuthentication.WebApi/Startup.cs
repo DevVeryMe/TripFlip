@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using GoogleAuthentication.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoogleAuthentication.WebApi
 {
@@ -79,7 +81,10 @@ namespace GoogleAuthentication.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            GoogleAuthenticationDbContext googleAuthenticationDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -106,6 +111,8 @@ namespace GoogleAuthentication.WebApi
             app.UseSwaggerUI(
                 options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
             );
+
+            googleAuthenticationDbContext.Database.Migrate();
         }
     }
 }

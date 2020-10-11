@@ -1,8 +1,9 @@
-using GoogleAuthentication.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
-namespace GoogleAuthentication
+namespace GoogleAuthentication.WebApi
 {
     public class Program
     {
@@ -16,6 +17,12 @@ namespace GoogleAuthentication
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
+                })
+                .UseNLog();
     }
 }

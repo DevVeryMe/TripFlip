@@ -1,7 +1,12 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using AutoMapper;
+using Google.Apis.Auth.OAuth2;
+using GoogleAuthentication.DataAccess;
+using GoogleAuthentication.Domain.Entities;
 using GoogleAuthentication.Services.Configurations;
 using GoogleAuthentication.Services.Dtos;
 using GoogleAuthentication.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,11 +16,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using GoogleAuthentication.DataAccess;
-using GoogleAuthentication.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Google.Apis.Util.Store;
 
 namespace GoogleAuthentication.Services
 {
@@ -36,20 +37,11 @@ namespace GoogleAuthentication.Services
             _mapper = mapper;
         }
 
-        public async Task<AuthenticatedUserDto> SingInWithGoogle()
+        public async Task<AuthenticatedUserDto> SignInWithGoogle()
         {
-            var userCredential = await AuthorizeWithGoogle();
+            var userCredential = await GetUserGoogleCredential();
 
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var decodedToken = jwtHandler.ReadJwtToken(userCredential?.Token?.IdToken);
-
-            var claims = decodedToken.Claims.ToList();
-            var userEmail = claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;
-
-            if (string.IsNullOrEmpty(userEmail))
-            {
-                throw new ArgumentException(ErrorConstants.GoogleSignInFailed);
-            }
+            var userEmail = GetEmailFromUserCredential(userCredential);
 
             var userEntity = await _googleAuthenticationDbContext
                 .Users
@@ -73,8 +65,27 @@ namespace GoogleAuthentication.Services
             return authenticatedUserDto;
         }
 
-        private static async Task<UserCredential> AuthorizeWithGoogle()
+        public async Task<AuthenticatedUserDto> SwitchGoogleAccount()
         {
+            GoogleLogout();
+
+            return await SignInWithGoogle();
+        }
+
+        private static void GoogleLogout()
+        {
+            const string tokenResponseFilePath = "AppData/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user";
+
+            if (File.Exists(tokenResponseFilePath))
+            {
+                File.Delete(tokenResponseFilePath);
+            }
+        }
+
+        private static async Task<UserCredential> GetUserGoogleCredential()
+        {
+            const string pathToStoreResponseToken = "AppData";
+
             await using var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read);
 
             var userCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -86,9 +97,26 @@ namespace GoogleAuthentication.Services
                     "openid"
                 },
                 "user",
-                CancellationToken.None);
+                CancellationToken.None,
+                new FileDataStore(pathToStoreResponseToken));
 
             return userCredential;
+        }
+
+        private static string GetEmailFromUserCredential(UserCredential userCredential)
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var decodedToken = jwtHandler.ReadJwtToken(userCredential?.Token?.IdToken);
+
+            var claims = decodedToken.Claims.ToList();
+            var userEmail = claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                throw new ArgumentException(ErrorConstants.GoogleSignInFailed);
+            }
+
+            return userEmail;
         }
 
         private string GenerateJsonWebToken(UserEntity userEntity)
