@@ -74,7 +74,7 @@ namespace GoogleAuthentication.Services
 
         private static void GoogleLogout()
         {
-            const string tokenResponseFilePath = "AppData/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user";
+            const string tokenResponseFilePath = "/AppData/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user";
 
             if (File.Exists(tokenResponseFilePath))
             {
@@ -84,7 +84,7 @@ namespace GoogleAuthentication.Services
 
         private static async Task<UserCredential> GetUserGoogleCredential()
         {
-            const string pathToStoreResponseToken = "AppData";
+            const string pathToStoreResponseToken = "/AppData";
 
             await using var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read);
 

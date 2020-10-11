@@ -33,7 +33,6 @@ namespace GoogleAuthentication.WebApi.Controllers
             return Ok(authenticatedUserViewModel);
         }
 
-        [AllowAnonymous]
         [HttpPost("switch-google-account")]
         public async Task<IActionResult> SwitchGoogleAccount()
         {
