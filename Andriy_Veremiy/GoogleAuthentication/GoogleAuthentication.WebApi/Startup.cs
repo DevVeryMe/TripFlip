@@ -78,6 +78,8 @@ namespace GoogleAuthentication.WebApi
             services.ConfigureServices(Configuration);
 
             services.BindJwtConfiguration(Configuration);
+
+            services.BindGoogleConfiguration(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

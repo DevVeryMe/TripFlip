@@ -24,15 +24,19 @@ namespace GoogleAuthentication.Services
     {
         private readonly JwtConfiguration _jwtConfiguration;
 
+        private readonly GoogleAuthorizationConfiguration _googleConfiguration;
+
         private readonly GoogleAuthenticationDbContext _googleAuthenticationDbContext;
 
         private readonly IMapper _mapper;
 
         public UserService(JwtConfiguration jwtConfiguration,
+            GoogleAuthorizationConfiguration googleConfiguration,
             GoogleAuthenticationDbContext googleAuthenticationDbContext,
             IMapper mapper)
         {
             _jwtConfiguration = jwtConfiguration;
+            _googleConfiguration = googleConfiguration;
             _googleAuthenticationDbContext = googleAuthenticationDbContext;
             _mapper = mapper;
         }
@@ -72,33 +76,25 @@ namespace GoogleAuthentication.Services
             return await SignInWithGoogle();
         }
 
-        private static void GoogleLogout()
+        private void GoogleLogout()
         {
-            const string tokenResponseFilePath = "/AppData/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user";
-
-            if (File.Exists(tokenResponseFilePath))
+            if (File.Exists(_googleConfiguration.ResponseTokenFilePath))
             {
-                File.Delete(tokenResponseFilePath);
+                File.Delete(_googleConfiguration.ResponseTokenFilePath);
             }
         }
 
-        private static async Task<UserCredential> GetUserGoogleCredential()
+        private async Task<UserCredential> GetUserGoogleCredential()
         {
-            const string pathToStoreResponseToken = "/AppData";
-
-            await using var stream = new FileStream("client_secrets.json", FileMode.Open, FileAccess.Read);
+            await using var stream =
+                new FileStream(_googleConfiguration.ClientSecretsFilePath, FileMode.Open, FileAccess.Read);
 
             var userCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.Load(stream).Secrets,
-                new[]
-                {
-                    "https://www.googleapis.com/auth/userinfo.email",
-                    "https://www.googleapis.com/auth/userinfo.profile",
-                    "openid"
-                },
-                "user",
+                _googleConfiguration.Scopes,
+                _googleConfiguration.User,
                 CancellationToken.None,
-                new FileDataStore(pathToStoreResponseToken));
+                new FileDataStore(_googleConfiguration.ResponseTokenDirPath));
 
             return userCredential;
         }
