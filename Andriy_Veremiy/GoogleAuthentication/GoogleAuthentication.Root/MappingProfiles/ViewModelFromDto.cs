@@ -9,6 +9,8 @@ namespace GoogleAuthentication.Root.MappingProfiles
         public ViewModelFromDto()
         {
             CreateMap<AuthenticatedUserDto, AuthenticatedUserViewModel>();
+
+            CreateMap< UserDto, UserViewModel>();
         }
     }
 }

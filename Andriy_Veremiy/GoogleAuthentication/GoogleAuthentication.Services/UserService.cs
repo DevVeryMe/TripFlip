@@ -17,9 +17,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Util.Store;
+using GoogleAuthentication.Services.CustomExceptions;
 
 namespace GoogleAuthentication.Services
 {
+    /// <inheritdoc />
     public class UserService : IUserService
     {
         private readonly JwtConfiguration _jwtConfiguration;
@@ -30,6 +32,13 @@ namespace GoogleAuthentication.Services
 
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Initializes jwt configuration, google configuration, Db context and automapper.
+        /// </summary>
+        /// <param name="jwtConfiguration">JwtConfiguration instance.</param>
+        /// <param name="googleConfiguration">GoogleAuthorizationConfiguration instance.</param>
+        /// <param name="googleAuthenticationDbContext">GoogleAuthenticationDbContext instance.</param>
+        /// <param name="mapper">IMapper instance.</param>
         public UserService(JwtConfiguration jwtConfiguration,
             GoogleAuthorizationConfiguration googleConfiguration,
             GoogleAuthenticationDbContext googleAuthenticationDbContext,
@@ -67,6 +76,23 @@ namespace GoogleAuthentication.Services
             authenticatedUserDto.Token = GenerateJsonWebToken(userEntity);
 
             return authenticatedUserDto;
+        }
+
+        public async Task<UserDto> GetUserById(Guid id)
+        {
+            var userEntity = await _googleAuthenticationDbContext
+                .Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(user => user.Id == id);
+
+            if (userEntity is null)
+            {
+                throw new NotFoundException(ErrorConstants.UserNotFound);
+            }
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+
+            return userDto;
         }
 
         private async Task<UserCredential> GetUserGoogleCredential()

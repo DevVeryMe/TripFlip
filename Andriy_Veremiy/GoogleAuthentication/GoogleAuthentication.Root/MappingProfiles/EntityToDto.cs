@@ -9,6 +9,8 @@ namespace GoogleAuthentication.Root.MappingProfiles
         public EntityToDto()
         {
             CreateMap<UserEntity, AuthenticatedUserDto>();
+
+            CreateMap<UserEntity, UserDto>();
         }
     }
 }
