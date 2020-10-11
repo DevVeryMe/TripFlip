@@ -10,10 +10,6 @@ namespace GoogleAuthentication.Services.Configurations
 
         public string ResponseTokenDirPath { get; set; }
 
-        public string ResponseTokenFilePath { get; set; }
-
         public IEnumerable<string> Scopes { get; set; }
-
-        public string User { get; set; }
     }
 }

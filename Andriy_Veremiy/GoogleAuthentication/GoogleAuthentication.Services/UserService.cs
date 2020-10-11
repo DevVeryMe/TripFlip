@@ -69,21 +69,6 @@ namespace GoogleAuthentication.Services
             return authenticatedUserDto;
         }
 
-        public async Task<AuthenticatedUserDto> SwitchGoogleAccount()
-        {
-            GoogleLogout();
-
-            return await SignInWithGoogle();
-        }
-
-        private void GoogleLogout()
-        {
-            if (File.Exists(_googleConfiguration.ResponseTokenFilePath))
-            {
-                File.Delete(_googleConfiguration.ResponseTokenFilePath);
-            }
-        }
-
         private async Task<UserCredential> GetUserGoogleCredential()
         {
             await using var stream =
@@ -92,7 +77,7 @@ namespace GoogleAuthentication.Services
             var userCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.Load(stream).Secrets,
                 _googleConfiguration.Scopes,
-                _googleConfiguration.User,
+                Guid.NewGuid().ToString(), 
                 CancellationToken.None,
                 new FileDataStore(_googleConfiguration.ResponseTokenDirPath, true));
 

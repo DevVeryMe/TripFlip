@@ -32,15 +32,5 @@ namespace GoogleAuthentication.WebApi.Controllers
 
             return Ok(authenticatedUserViewModel);
         }
-
-        [HttpPost("switch-google-account")]
-        public async Task<IActionResult> SwitchGoogleAccount()
-        {
-            var authenticatedUserDto = await _userService.SwitchGoogleAccount();
-
-            var authenticatedUserViewModel = _mapper.Map<AuthenticatedUserViewModel>(authenticatedUserDto);
-
-            return Ok(authenticatedUserViewModel);
-        }
     }
 }
