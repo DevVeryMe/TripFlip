@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using GoogleAuthentication.Root.ConfigureServicesExtension;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -71,6 +73,25 @@ namespace GoogleAuthentication.WebApi
                         new string[] { }
                     }
                 });
+
+                options.AddSecurityDefinition("OAuth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri("https://localhost:44327/users/login"),
+                            TokenUrl = new Uri("https://localhost:44327/users/signin-google"),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                { Configuration["Jwt:Audience"] , "Server HTTP Api" }
+                            },
+                        }
+                    },
+                    Description = "Server OpenId Security Scheme"
+                });
             });
 
             services.ConfigureMapper();
@@ -114,9 +135,15 @@ namespace GoogleAuthentication.WebApi
             var swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
 
             app.UseSwagger();
-            app.UseSwaggerUI(
-                options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
-            );
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion);
+                options.OAuthClientId(Configuration["GoogleAuthorization:ClientId"]);
+                options.OAuthClientSecret(Configuration["GoogleAuthorization:ClientSecret"]);
+                options.OAuthAppName("Weather API");
+                options.OAuthScopeSeparator(" ");
+                options.OAuthUsePkce();
+            });
 
             googleAuthenticationDbContext.Database.Migrate();
         }
