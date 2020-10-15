@@ -83,7 +83,7 @@ namespace GoogleAuthentication.WebApi
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri("https://localhost:44327/users/login"),
-                            TokenUrl = new Uri("https://localhost:44327/users/signin-google"),
+                            TokenUrl = new Uri(Configuration["GoogleAuthorization:RedirectUri"]),
                             Scopes = new Dictionary<string, string>
                             {
                                 { Configuration["Jwt:Audience"] , "Server HTTP Api" }
