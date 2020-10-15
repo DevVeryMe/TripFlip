@@ -1,4 +1,4 @@
-﻿using GoogleAuthentication.Services.Configurations;
+﻿using GoogleAuthentication.Services.Poco;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 

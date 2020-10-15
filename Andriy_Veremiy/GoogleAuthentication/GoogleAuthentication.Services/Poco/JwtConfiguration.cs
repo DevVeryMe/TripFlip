@@ -1,4 +1,4 @@
-﻿namespace GoogleAuthentication.Services.Configurations
+﻿namespace GoogleAuthentication.Services.Poco
 {
     public class JwtConfiguration
     {

@@ -1,23 +1,22 @@
 ﻿using AutoMapper;
-using Google.Apis.Auth.OAuth2;
 using GoogleAuthentication.DataAccess;
 using GoogleAuthentication.Domain.Entities;
-using GoogleAuthentication.Services.Configurations;
+using GoogleAuthentication.Services.CustomExceptions;
 using GoogleAuthentication.Services.Dtos;
 using GoogleAuthentication.Services.Interfaces;
+using GoogleAuthentication.Services.Poco;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Google.Apis.Util.Store;
-using GoogleAuthentication.Services.CustomExceptions;
 
 namespace GoogleAuthentication.Services
 {
@@ -32,6 +31,10 @@ namespace GoogleAuthentication.Services
 
         private readonly IMapper _mapper;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private readonly IHttpClientFactory _httpClientFactory;
+
         /// <summary>
         /// Initializes jwt configuration, google configuration, Db context and automapper.
         /// </summary>
@@ -39,22 +42,28 @@ namespace GoogleAuthentication.Services
         /// <param name="googleConfiguration">GoogleAuthorizationConfiguration instance.</param>
         /// <param name="googleAuthenticationDbContext">GoogleAuthenticationDbContext instance.</param>
         /// <param name="mapper">IMapper instance.</param>
+        /// <param name="httpContextAccessor">IHttpContextAccessor instance.</param>
+        /// <param name="httpClientFactory">IHttpContextAccessor instance.</param>
         public UserService(JwtConfiguration jwtConfiguration,
             GoogleAuthorizationConfiguration googleConfiguration,
             GoogleAuthenticationDbContext googleAuthenticationDbContext,
-            IMapper mapper)
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
+            IHttpClientFactory httpClientFactory)
         {
             _jwtConfiguration = jwtConfiguration;
             _googleConfiguration = googleConfiguration;
             _googleAuthenticationDbContext = googleAuthenticationDbContext;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<AuthenticatedUserDto> SignInWithGoogle()
         {
-            var userCredential = await GetUserGoogleCredential();
+            var idToken = await GetUserGoogleIdToken();
 
-            var userEmail = GetEmailFromUserCredential(userCredential);
+            var userEmail = GetEmailFromToken(idToken);
 
             var userEntity = await _googleAuthenticationDbContext
                 .Users
@@ -95,25 +104,33 @@ namespace GoogleAuthentication.Services
             return userDto;
         }
 
-        private async Task<UserCredential> GetUserGoogleCredential()
+        private async Task<string> GetUserGoogleIdToken()
         {
-            await using var stream =
-                new FileStream(_googleConfiguration.ClientSecretsFilePath, FileMode.Open, FileAccess.Read);
+            var query = _httpContextAccessor.HttpContext.Request.Query;
+            var code = query["code"];
+            var postUrl = "https://oauth2.googleapis.com/token?" +
+                          $"client_id={_googleConfiguration.ClientId}" +
+                          $"&client_secret={_googleConfiguration.ClientSecret}" +
+                          $"&code={code}" +
+                          "&grant_type=authorization_code" +
+                          $"&redirect_uri={_googleConfiguration.RedirectUri}";
 
-            var userCredential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.Load(stream).Secrets,
-                _googleConfiguration.Scopes,
-                Guid.NewGuid().ToString(), 
-                CancellationToken.None,
-                new FileDataStore(_googleConfiguration.ResponseTokenDirPath, true));
+            var uri = new Uri(postUrl);
 
-            return userCredential;
+            var httpClient = _httpClientFactory.CreateClient();
+            var responseMessage = await httpClient.PostAsync(uri, null);
+
+            var stringToParse = await responseMessage.Content.ReadAsStringAsync();
+
+            var dictionaryWithTokens = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringToParse);
+
+            return dictionaryWithTokens["id_token"];
         }
 
-        private static string GetEmailFromUserCredential(UserCredential userCredential)
+        private static string GetEmailFromToken(string idToken)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
-            var decodedToken = jwtHandler.ReadJwtToken(userCredential?.Token?.IdToken);
+            var decodedToken = jwtHandler.ReadJwtToken(idToken);
 
             var claims = decodedToken.Claims.ToList();
             var userEmail = claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Email)?.Value;

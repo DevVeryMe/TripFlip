@@ -4,6 +4,7 @@ using GoogleAuthentication.Services.Interfaces;
 using GoogleAuthentication.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using GoogleAuthentication.Services.Poco;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GoogleAuthentication.WebApi.Controllers
@@ -17,15 +18,21 @@ namespace GoogleAuthentication.WebApi.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly GoogleAuthorizationConfiguration _googleConfiguration;
+
         /// <summary>
         /// Initializes user service and automapper.
         /// </summary>
         /// <param name="userService">IUserService instance.</param>
         /// <param name="mapper">IMapper instance.</param>
-        public UsersController(IUserService userService, IMapper mapper)
+        /// <param name="googleConfiguration">GoogleAuthorizationConfiguration instance.</param>
+        public UsersController(IUserService userService,
+            IMapper mapper,
+            GoogleAuthorizationConfiguration googleConfiguration)
         {
             _userService = userService;
             _mapper = mapper;
+            _googleConfiguration = googleConfiguration;
         }
 
         /// <summary>
@@ -33,7 +40,7 @@ namespace GoogleAuthentication.WebApi.Controllers
         /// </summary>
         /// <returns>Authenticated user view model containing user email and JWT.</returns>
         [AllowAnonymous]
-        [HttpPost("signin-google")]
+        [HttpGet("signin-google")]
         public async Task<IActionResult> SingInWithGoogle()
         {
             var authenticatedUserDto = await _userService.SignInWithGoogle();
@@ -41,6 +48,17 @@ namespace GoogleAuthentication.WebApi.Controllers
             var authenticatedUserViewModel = _mapper.Map<AuthenticatedUserViewModel>(authenticatedUserDto);
 
             return Ok(authenticatedUserViewModel);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("login")]
+        public IActionResult GetAuthorizationCode()
+        {
+            return Redirect("https://accounts.google.com/o/oauth2/v2/auth?" +
+                            $"client_id={_googleConfiguration.ClientId}" +
+                            "&response_type=code" +
+                            "&scope=email" +
+                            $"&redirect_uri={_googleConfiguration.RedirectUri}");
         }
 
         /// <summary>
