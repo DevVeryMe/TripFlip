@@ -124,7 +124,14 @@ namespace GoogleAuthentication.Services
 
             var dictionaryWithTokens = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringToParse);
 
-            return dictionaryWithTokens["id_token"];
+            var idToken = dictionaryWithTokens["id_token"];
+
+            if (string.IsNullOrEmpty(idToken))
+            {
+                throw new ArgumentException(ErrorConstants.FailedToFetchIdToken);
+            }
+
+            return idToken;
         }
 
         private static string GetEmailFromToken(string idToken)
@@ -137,7 +144,7 @@ namespace GoogleAuthentication.Services
 
             if (string.IsNullOrEmpty(userEmail))
             {
-                throw new ArgumentException(ErrorConstants.GoogleSignInFailed);
+                throw new ArgumentException(ErrorConstants.FailedToFetchEmailFromIdToken);
             }
 
             return userEmail;
