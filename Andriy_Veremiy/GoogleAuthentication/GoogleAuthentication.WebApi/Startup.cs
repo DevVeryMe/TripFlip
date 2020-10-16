@@ -1,17 +1,16 @@
-using System;
-using System.Collections.Generic;
+using GoogleAuthentication.DataAccess;
 using GoogleAuthentication.Root.ConfigureServicesExtension;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
-using GoogleAuthentication.DataAccess;
-using Microsoft.EntityFrameworkCore;
 
 namespace GoogleAuthentication.WebApi
 {
@@ -83,14 +82,10 @@ namespace GoogleAuthentication.WebApi
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri("https://localhost:44327/users/login"),
-                            TokenUrl = new Uri(Configuration["GoogleAuthorization:RedirectUri"]),
-                            Scopes = new Dictionary<string, string>
-                            {
-                                { Configuration["Jwt:Audience"] , "Server HTTP Api" }
-                            },
+                            TokenUrl = new Uri(Configuration["GoogleAuthorization:RedirectUri"])
                         }
                     },
-                    Description = "Server OpenId Security Scheme"
+                    Description = "VeryMe Server OpenId Security Scheme"
                 });
             });
 
