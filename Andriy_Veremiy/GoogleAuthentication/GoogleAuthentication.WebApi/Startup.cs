@@ -135,7 +135,7 @@ namespace GoogleAuthentication.WebApi
                 options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion);
                 options.OAuthClientId(Configuration["GoogleAuthorization:ClientId"]);
                 options.OAuthClientSecret(Configuration["GoogleAuthorization:ClientSecret"]);
-                options.OAuthAppName("Weather API");
+                options.OAuthAppName("VeryMe API");
                 options.OAuthScopeSeparator(" ");
                 options.OAuthUsePkce();
             });
