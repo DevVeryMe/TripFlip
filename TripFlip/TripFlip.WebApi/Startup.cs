@@ -1,15 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
-using System.Text;
 using System.Reflection;
-using Microsoft.OpenApi.Models;
+using System.Text;
 using TripFlip.DataAccess;
 using TripFlip.Root.ConfigureServicesExtension;
 using TripFlip.Root.ExceptionHandlingExtensions;
@@ -78,6 +78,20 @@ namespace TripFlip.WebApi
                         new string[] { }
                     }
                 });
+
+                options.AddSecurityDefinition("OAuth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri(Configuration["GoogleApi:AuthorizationUri"]),
+                            TokenUrl = new Uri(Configuration["GoogleApi:RedirectUri"])
+                        }
+                    }
+                });
             });
 
             services.ConfigureServices(Configuration);
@@ -100,12 +114,19 @@ namespace TripFlip.WebApi
                 endpoints.MapControllers();
             });
 
-            string swaggerEndpointUrl = Configuration.GetSection("OpenApiInfo")["url"];
-            string swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
+            var swaggerEndpointUrl = Configuration.GetSection("OpenApiInfo")["url"];
+            var swaggerApiVersion = Configuration.GetSection("OpenApiInfo")["version"];
+
             applicationBuilder.UseSwagger();
-            applicationBuilder.UseSwaggerUI(
-                options => options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion)
-            );
+            applicationBuilder.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint(swaggerEndpointUrl, swaggerApiVersion);
+                options.OAuthClientId(Configuration["GoogleApi:ClientId"]);
+                options.OAuthClientSecret(Configuration["GoogleApi:ClientSecret"]);
+                options.OAuthAppName("TripFlip");
+                options.OAuthScopeSeparator(" ");
+                options.OAuthUsePkce();
+            });
 
             tripFlipDbContext.Database.Migrate();
         }
