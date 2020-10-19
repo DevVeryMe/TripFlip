@@ -16,6 +16,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.BindJwtConfiguration(configuration);
 
+            services.BindSendGridConfiguration(configuration);
+
             services.AddTransient<ITaskService, TaskService>();
 
             services.AddTransient<ITripService, TripService>();

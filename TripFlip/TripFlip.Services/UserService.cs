@@ -8,6 +8,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
@@ -21,6 +23,7 @@ using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
+using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services
 {

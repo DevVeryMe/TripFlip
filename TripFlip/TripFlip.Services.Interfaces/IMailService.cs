@@ -1,7 +1,10 @@
-﻿namespace TripFlip.Services.Interfaces
+﻿using System.Threading.Tasks;
+using TripFlip.Services.Interfaces.Models;
+
+namespace TripFlip.Services.Interfaces
 {
     public interface IMailService
     {
-        void Send();
+        Task SendAsync(EmailMessage emailMessage);
     }
 }
