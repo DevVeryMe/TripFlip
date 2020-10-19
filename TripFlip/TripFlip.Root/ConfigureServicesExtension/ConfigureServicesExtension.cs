@@ -16,6 +16,10 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.BindJwtConfiguration(configuration);
 
+            services.BindGoogleApiConfiguration(configuration);
+
+            services.AddHttpClient();
+
             services.AddTransient<ITaskService, TaskService>();
 
             services.AddTransient<ITripService, TripService>();

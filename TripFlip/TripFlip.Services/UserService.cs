@@ -174,7 +174,12 @@ namespace TripFlip.Services
             AuthenticatedUserDto authenticatedUserDto = 
                 _mapper.Map<AuthenticatedUserDto>(userEntity);
 
-            authenticatedUserDto.Token = GenerateJsonWebToken(userEntity);
+            authenticatedUserDto.Token = JsonWebTokenHelper.GenerateJsonWebToken(
+                userIncludingRoles: userEntity,
+                issuer: _jwtConfiguration.Issuer,
+                audience: _jwtConfiguration.Audience,
+                secretKey: _jwtConfiguration.SecretKey,
+                tokenLifetime: _jwtConfiguration.TokenLifetime);
 
             return authenticatedUserDto;
         }
@@ -653,47 +658,6 @@ namespace TripFlip.Services
             var tripWithRoutesDto = _mapper.Map<List<TripWithRoutesAndUserRolesDto>>(tripSubscriberEntities);
 
             return tripWithRoutesDto;
-        }
-
-        /// <summary>
-        /// Generates JWT.
-        /// </summary>
-        /// <param name="userIncludingRoles">User entity with included roles.</param>
-        /// <returns>Encoded JWT.</returns>
-        private string GenerateJsonWebToken(UserEntity userIncludingRoles)
-        {
-            var encodedSecretKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(_jwtConfiguration.SecretKey));
-                var credentials = new SigningCredentials(
-                encodedSecretKey,
-                SecurityAlgorithms.HmacSha256
-                );
-
-            int expirationTime = _jwtConfiguration.TokenLifetime;
-
-            var roles = userIncludingRoles.ApplicationRoles
-                .Select(role => new Claim(ClaimTypes.Role, role.ApplicationRole.Name));
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, userIncludingRoles.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, userIncludingRoles.Email)
-            };
-
-            claims.AddRange(roles);
-
-            // creating JWT
-            var jwt = new JwtSecurityToken(
-                issuer: _jwtConfiguration.Issuer,
-                audience: _jwtConfiguration.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(expirationTime),
-                signingCredentials: credentials
-                );
-
-            string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            return encodedJwt;
         }
 
         /// <summary>
