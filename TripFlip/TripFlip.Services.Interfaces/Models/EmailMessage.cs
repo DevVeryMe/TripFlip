@@ -1,5 +1,4 @@
-﻿
-using SendGrid.Helpers.Mail;
+﻿using SendGrid.Helpers.Mail;
 
 namespace TripFlip.Services.Interfaces.Models
 {
