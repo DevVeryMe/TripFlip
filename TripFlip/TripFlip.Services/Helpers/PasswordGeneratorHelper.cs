@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace TripFlip.Services.Helpers
 {
@@ -22,36 +23,40 @@ namespace TripFlip.Services.Helpers
             bool useNumbers, bool useSpecial, int passwordSize)
         {
             char[] password = new char[passwordSize];
-            string charSet = string.Empty;
+            StringBuilder charSetBuilder = new StringBuilder();
             Random random = new Random();
             int counter;
 
             if (useLowercase)
             {
-                charSet += LowerCase;
+                charSetBuilder.Append(LowerCase);
             }
 
             if (useUppercase)
             {
-                charSet += UpperCase;
+                charSetBuilder.Append(UpperCase);
             }
 
             if (useNumbers)
             {
-                charSet += Numbers;
+                charSetBuilder.Append(Numbers);
             }
 
             if (useSpecial)
             {
-                charSet += Specials;
+                charSetBuilder.Append(Specials);
             }
+
+            var charSet = charSetBuilder.ToString();
 
             for (counter = 0; counter < passwordSize; counter++)
             {
                 password[counter] = charSet[random.Next(charSet.Length - 1)];
             }
+            
+            var passwordAsString = new string(password);
 
-            return String.Join(null, password);
+            return passwordAsString;
         }
     }
 }
