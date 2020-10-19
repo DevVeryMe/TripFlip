@@ -10,7 +10,7 @@ namespace TripFlip.WebApi.Controllers
     public class GoogleApiUsersController : ControllerBase
     {
         [AllowAnonymous]
-        [HttpPost("signin-google")]
+        [HttpGet("signin-google")]
         public async Task<IActionResult> SignInWithGoogleAsync()
         {
             return Ok();
