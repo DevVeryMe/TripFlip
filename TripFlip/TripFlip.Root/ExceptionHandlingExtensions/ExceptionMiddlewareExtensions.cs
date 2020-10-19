@@ -34,7 +34,8 @@ namespace TripFlip.Root.ExceptionHandlingExtensions
                     {
                         logger.Error(exception);
 
-                        if (exception.Error is ArgumentException)
+                        if (exception.Error is ArgumentException ||
+                            exception.Error is InvalidOperationException)
                         {
                             context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                         }

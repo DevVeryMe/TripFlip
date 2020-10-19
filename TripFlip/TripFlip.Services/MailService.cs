@@ -1,4 +1,5 @@
-﻿using SendGrid;
+﻿using System;
+using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
 using TripFlip.Services.Configurations;
@@ -18,19 +19,26 @@ namespace TripFlip.Services
 
         public async Task SendAsync(EmailMessage emailMessage)
         {
-            var sendGridClient = new SendGridClient(_sendGridConfiguration.ApiKey);
-
-            var message = new SendGridMessage()
+            try
             {
-                From = emailMessage.From,
-                Subject = emailMessage.Subject,
-                PlainTextContent = emailMessage.PlainTextContent,
-                HtmlContent = emailMessage.HtmlContent
-            };
+                var sendGridClient = new SendGridClient(_sendGridConfiguration.ApiKey);
 
-            message.AddTo(emailMessage.To);
+                var message = new SendGridMessage()
+                {
+                    From = emailMessage.From,
+                    Subject = emailMessage.Subject,
+                    PlainTextContent = emailMessage.PlainTextContent,
+                    HtmlContent = emailMessage.HtmlContent
+                };
 
-            await sendGridClient.SendEmailAsync(message);
+                message.AddTo(emailMessage.To);
+
+                await sendGridClient.SendEmailAsync(message);
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException(exception.Message);
+            }
         }
     }
 }
