@@ -239,9 +239,9 @@ namespace TripFlip.Services
         /// required in order to authenticate user.</returns>
         private string GetAuthRequiredResponseType(string[] supportedResponseTypes)
         {
-            string authorizationCodeResponseType = "code";
+            string authorizationCodeResponseType = Constants.RequiredAuthorizationCodeResponseType;
 
-            if (!supportedResponseTypes.Contains(Constants.RequiredAuthorizationCodeResponseType))
+            if (!supportedResponseTypes.Contains(authorizationCodeResponseType))
             {
                 throw new Exception(ErrorConstants.GoogleInvalidAuthResponseType);
             }
