@@ -4,13 +4,13 @@ namespace TripFlip.Services.Helpers
 {
     public static class PasswordGeneratorHelper
     {
-        const string LOWER_CASE = "abcdefghijklmnopqursuvwxyz";
-        const string UPPER_CASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const string NUMBERS = "123456789";
-        const string SPECIALS = @"!@£$%^&*()#€";
+        private static readonly string LowerCase = "abcdefghijklmnopqursuvwxyz";
+        private static readonly string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private static readonly string Numbers = "123456789";
+        private static readonly string Specials = @"!@£$%^&*()#€";
 
         /// <summary>
-        /// Generates random password.
+        /// Generates random password, use of symbols noted in parameters is not guaranteed.
         /// </summary>
         /// <param name="useLowercase">Parameter to note a use of lower case letters.</param>
         /// <param name="useUppercase">Parameter to note a use of upper case letters.</param>
@@ -21,26 +21,37 @@ namespace TripFlip.Services.Helpers
         public static string GeneratePassword(bool useLowercase, bool useUppercase,
             bool useNumbers, bool useSpecial, int passwordSize)
         {
-            char[] _password = new char[passwordSize];
-            string charSet = ""; // Initialise to blank
-            Random _random = new Random();
+            char[] password = new char[passwordSize];
+            string charSet = string.Empty;
+            Random random = new Random();
             int counter;
 
-            // Build up the character set to choose from
-            if (useLowercase) charSet += LOWER_CASE;
+            if (useLowercase)
+            {
+                charSet += LowerCase;
+            }
 
-            if (useUppercase) charSet += UPPER_CASE;
+            if (useUppercase)
+            {
+                charSet += UpperCase;
+            }
 
-            if (useNumbers) charSet += NUMBERS;
+            if (useNumbers)
+            {
+                charSet += Numbers;
+            }
 
-            if (useSpecial) charSet += SPECIALS;
+            if (useSpecial)
+            {
+                charSet += Specials;
+            }
 
             for (counter = 0; counter < passwordSize; counter++)
             {
-                _password[counter] = charSet[_random.Next(charSet.Length - 1)];
+                password[counter] = charSet[random.Next(charSet.Length - 1)];
             }
 
-            return String.Join(null, _password);
+            return String.Join(null, password);
         }
     }
 }
