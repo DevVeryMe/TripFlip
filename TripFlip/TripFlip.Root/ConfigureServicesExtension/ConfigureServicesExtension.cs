@@ -32,6 +32,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IGoogleApiUserService, GoogleApiUserService>();
 
+            services.AddTransient<IMailService, MailService>();
+
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
             services.AddDbContext<TripFlipDbContext>(options =>
