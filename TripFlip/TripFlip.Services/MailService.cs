@@ -30,7 +30,7 @@ namespace TripFlip.Services
 
             message.AddTo(emailMessage.To);
 
-            var response = await sendGridClient.SendEmailAsync(message);
+            await sendGridClient.SendEmailAsync(message);
         }
     }
 }
