@@ -17,6 +17,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
             services.BindJwtConfiguration(configuration);
 
             services.BindSendGridConfiguration(configuration);
+            
             services.BindGoogleApiConfiguration(configuration);
 
             services.AddHttpClient();
