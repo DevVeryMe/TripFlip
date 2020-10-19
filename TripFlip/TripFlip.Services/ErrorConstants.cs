@@ -61,5 +61,17 @@
         public static readonly string NotRouteAdmin = "Current user is not granted with route admin role.";
 
         public static readonly string NotRouteSubscriber = "Current user is not a subscriber of a specified route.";
+
+        public static readonly string GoogleFailedToReturnOpenIdConfig = "Google failed to return it's OpenID configuration values.";
+
+        public static readonly string GoogleInvalidAuthResponseType = "Invalid OpenID configuration object, or it no longer supports " +
+            "\"authorization code\" response type for authentication.";
+
+        public static readonly string GoogleInvalidAuthorizationCode = "Invalid authorization code.";
+
+        public static readonly string GoogleFailedToExchangeAuthCodeForTokens = "Failed to exchange given authorizationCode for " +
+                    "Google's access and id tokens.";
+
+        public static readonly string GoogleNoEmailInIdToken = "Google's Id token does not contain email.";
     }
 }
