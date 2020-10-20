@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
 using TripFlip.Services.Configurations;
@@ -23,7 +17,6 @@ using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
 using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.Services.Interfaces.Helpers.Extensions;
-using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services
 {
@@ -38,8 +31,6 @@ namespace TripFlip.Services
 
         private readonly ICurrentUserService _currentUserService;
 
-        private readonly IMailService _mailService;
-
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
@@ -50,13 +41,12 @@ namespace TripFlip.Services
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
             JwtConfiguration jwtConfiguration,
-            ICurrentUserService currentUserService, IMailService mailService)
+            ICurrentUserService currentUserService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jwtConfiguration = jwtConfiguration;
             _currentUserService = currentUserService;
-            _mailService = mailService;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -210,17 +200,6 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(userEntity);
-
-            var message = new EmailMessage()
-            {
-                From = null,
-                To = null,
-                HtmlContent = null,
-                PlainTextContent = null,
-                Subject = null
-            };
-
-            await _mailService.SendAsync(message);
 
             return userDto;
         }
