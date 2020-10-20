@@ -38,6 +38,8 @@ namespace TripFlip.Services
 
         private readonly ICurrentUserService _currentUserService;
 
+        private readonly IMailService _mailService;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
@@ -48,12 +50,13 @@ namespace TripFlip.Services
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
             JwtConfiguration jwtConfiguration,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService, IMailService mailService)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jwtConfiguration = jwtConfiguration;
             _currentUserService = currentUserService;
+            _mailService = mailService;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -207,6 +210,17 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(userEntity);
+
+            var message = new EmailMessage()
+            {
+                From = null,
+                To = null,
+                HtmlContent = null,
+                PlainTextContent = null,
+                Subject = null
+            };
+
+            await _mailService.SendAsync(message);
 
             return userDto;
         }
