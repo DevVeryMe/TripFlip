@@ -73,5 +73,7 @@
                     "Google's access and id tokens.";
 
         public static readonly string GoogleNoEmailInIdToken = "Google's Id token does not contain email.";
+
+        public static readonly string CannotSendMailMessage = "Cannot send mail message.";
     }
 }

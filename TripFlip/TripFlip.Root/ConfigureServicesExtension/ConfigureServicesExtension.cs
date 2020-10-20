@@ -16,6 +16,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.BindJwtConfiguration(configuration);
 
+            services.BindSendGridConfiguration(configuration);
+
             services.BindGoogleApiConfiguration(configuration);
 
             services.AddHttpClient();
@@ -35,6 +37,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
             services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IGoogleApiUserService, GoogleApiUserService>();
+
+            services.AddTransient<IMailService, MailService>();
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 

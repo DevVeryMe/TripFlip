@@ -6,6 +6,8 @@
 
         public static readonly string JwtSection = "Jwt";
 
+        public static readonly string SendGridSection = "SendGrid";
+
         public static readonly string GoogleApiSection = "GoogleApi";
     }
 }
