@@ -37,7 +37,7 @@ namespace TripFlip.Services
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException(Constants.CannotSendMailMessage, exception);
+                throw new InvalidOperationException(ErrorConstants.CannotSendMailMessage, exception);
             }
         }
     }
