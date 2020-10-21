@@ -13,9 +13,11 @@ namespace TripFlip.Services.Extensions
         /// </summary>
         /// <param name="message">EmailMessage instance.</param>
         /// <param name="from">Email message sender.</param>
-        public static void SetEmailFrom(this EmailMessage message, EmailAddress from)
+        public static EmailMessage SetEmailFrom(this EmailMessage message, EmailAddress from)
         {
             message.From = from;
+
+            return message;
         }
 
         /// <summary>
@@ -23,9 +25,11 @@ namespace TripFlip.Services.Extensions
         /// </summary>
         /// <param name="message">EmailMessage instance.</param>
         /// <param name="to">Email message receiver.</param>
-        public static void SetEmailTo(this EmailMessage message, EmailAddress to)
+        public static EmailMessage SetEmailTo(this EmailMessage message, EmailAddress to)
         {
             message.To = to;
+
+            return message;
         }
 
         /// <summary>
@@ -33,9 +37,11 @@ namespace TripFlip.Services.Extensions
         /// </summary>
         /// <param name="message">EmailMessage instance.</param>
         /// <param name="subject">Email message subject.</param>
-        public static void SetEmailSubject(this EmailMessage message, string subject)
+        public static EmailMessage SetEmailSubject(this EmailMessage message, string subject)
         {
             message.Subject = subject;
+
+            return message;
         }
 
         /// <summary>
@@ -43,9 +49,11 @@ namespace TripFlip.Services.Extensions
         /// </summary>
         /// <param name="message">EmailMessage instance.</param>
         /// <param name="htmlContent">Email message html content.</param>
-        public static void SetEmailHtmlContent(this EmailMessage message, string htmlContent)
+        public static EmailMessage SetEmailHtmlContent(this EmailMessage message, string htmlContent)
         {
             message.HtmlContent = htmlContent;
+
+            return message;
         }
 
         /// <summary>
@@ -53,9 +61,11 @@ namespace TripFlip.Services.Extensions
         /// </summary>
         /// <param name="message">EmailMessage instance.</param>
         /// <param name="plainTextContent">Email message plain text content.</param>
-        public static void SetEmailPlainTextContent(this EmailMessage message, string plainTextContent)
+        public static EmailMessage SetEmailPlainTextContent(this EmailMessage message, string plainTextContent)
         {
             message.PlainTextContent = plainTextContent;
+
+            return message;
         }
     }
 }
