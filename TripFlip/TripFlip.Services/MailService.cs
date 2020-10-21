@@ -8,20 +8,21 @@ using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services
 {
+    ///<inheritdoc cref="IMailService"/>
     public class MailService : IMailService
     {
-        private readonly SendGridConfiguration _sendGridConfiguration;
+        private readonly MailServiceConfiguration _mailServiceConfiguration;
 
-        public MailService(SendGridConfiguration sendGridConfiguration)
+        public MailService(MailServiceConfiguration mailServiceConfiguration)
         {
-            _sendGridConfiguration = sendGridConfiguration;
+            _mailServiceConfiguration = mailServiceConfiguration;
         }
 
         public async Task SendAsync(EmailMessage emailMessage)
         {
             try
             {
-                var sendGridClient = new SendGridClient(_sendGridConfiguration.ApiKey);
+                var sendGridClient = new SendGridClient(_mailServiceConfiguration.SendGridApiKey);
 
                 var message = new SendGridMessage()
                 {

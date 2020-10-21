@@ -10,10 +10,10 @@ namespace TripFlip.Root.ConfigureServicesExtension
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var sendGridConfiguration = new SendGridConfiguration();
+            var mailServiceConfiguration = new MailServiceConfiguration();
 
-            configuration.GetSection(Constants.SendGridSection).Bind(sendGridConfiguration);
-            services.AddSingleton(sendGridConfiguration);
+            configuration.GetSection(Constants.MailServiceSection).Bind(mailServiceConfiguration);
+            services.AddSingleton(mailServiceConfiguration);
         }
     }
 }
