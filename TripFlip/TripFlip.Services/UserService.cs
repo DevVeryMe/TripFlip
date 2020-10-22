@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace TripFlip.Services
 
         private readonly ICurrentUserService _currentUserService;
 
+        private readonly IWebHostEnvironment _environment;
+
+        private readonly IMailService _mailService;
+
+        private readonly MailServiceConfiguration _mailServiceConfiguration;
+
         /// <summary>
         /// Initializes database context and automapper.
         /// </summary>
@@ -38,15 +45,25 @@ namespace TripFlip.Services
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
         /// <param name="jwtConfiguration">JwtConfiguration instance.</param>
         /// <param name="currentUserService">ICurrentUserService instance.</param>
+        /// <param name="environment">Instance of web host environment.</param>
+        /// <param name="mailService">Instance of mail service.</param>
+        /// <param name="mailServiceConfiguration">Object that encapsulates configurations for
+        /// mail service.</param>
         public UserService(IMapper mapper,
             TripFlipDbContext tripFlipDbContext,
             JwtConfiguration jwtConfiguration,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            IWebHostEnvironment environment,
+            IMailService mailService,
+            MailServiceConfiguration mailServiceConfiguration)
         {
             _mapper = mapper;
             _tripFlipDbContext = tripFlipDbContext;
             _jwtConfiguration = jwtConfiguration;
             _currentUserService = currentUserService;
+            _environment = environment;
+            _mailService = mailService;
+            _mailServiceConfiguration = mailServiceConfiguration;
         }
 
         public async Task<PagedList<UserDto>> GetAllAsync(
@@ -198,6 +215,9 @@ namespace TripFlip.Services
 
             _tripFlipDbContext.Users.Add(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
+
+            await EmailUserNotifierHelper.NotifyRegisteredUser(
+                userEntity.Email, _environment, _mailService, _mailServiceConfiguration);
 
             var userDto = _mapper.Map<UserDto>(userEntity);
 

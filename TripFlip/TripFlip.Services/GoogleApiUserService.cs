@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TripFlip.DataAccess;
@@ -15,7 +16,7 @@ using TripFlip.Services.Models;
 
 namespace TripFlip.Services
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IGoogleApiUserService"/>
     public class GoogleApiUserService : IGoogleApiUserService
     {
         private readonly TripFlipDbContext _tripFlipDbContext;
@@ -25,6 +26,12 @@ namespace TripFlip.Services
         private readonly GoogleApiConfiguration _googleApiConfiguration;
 
         private readonly JwtConfiguration _jwtConfiguration;
+
+        private readonly IWebHostEnvironment _environment;
+
+        private readonly IMailService _mailService;
+
+        private readonly MailServiceConfiguration _mailServiceConfiguration;
 
         private GoogleOpenIdConfiguration _googleOpenIdConfiguration;
 
@@ -36,11 +43,18 @@ namespace TripFlip.Services
         /// <param name="googleApiConfiguration">Object that encapsulates configurations for
         /// Google API.</param>
         /// <param name="jwtConfiguration">Object that encapsulates configurations for JWT.</param>
+        /// <param name="environment">Instance of web host environment.</param>
+        /// <param name="mailService">Instance of mail service.</param>
+        /// <param name="mailServiceConfiguration">Object that encapsulates configurations for
+        /// mail service.</param>
         public GoogleApiUserService(
             TripFlipDbContext tripFlipDbContext,
             IHttpClientFactory httpClientFactory,
             GoogleApiConfiguration googleApiConfiguration,
-            JwtConfiguration jwtConfiguration)
+            JwtConfiguration jwtConfiguration,
+            IWebHostEnvironment environment,
+            IMailService mailService,
+            MailServiceConfiguration mailServiceConfiguration)
         {
             _tripFlipDbContext = tripFlipDbContext;
 
@@ -49,9 +63,14 @@ namespace TripFlip.Services
             _googleApiConfiguration = googleApiConfiguration;
 
             _jwtConfiguration = jwtConfiguration;
+
+            _environment = environment;
+
+            _mailService = mailService;
+
+            _mailServiceConfiguration = mailServiceConfiguration;
         }
 
-        /// <inheritdoc/>
         public async Task<string> GetAuthorizationUrlWithParamsAsync()
         {
             await GetGoogleOpenIdConfigurationAsync();
@@ -283,6 +302,9 @@ namespace TripFlip.Services
 
             await _tripFlipDbContext.Users.AddAsync(userToRegister);
             await _tripFlipDbContext.SaveChangesAsync();
+
+            await EmailUserNotifierHelper.NotifyRegisteredUser(
+                email, _environment, _mailService, _mailServiceConfiguration);
 
             return userToRegister;
         }
