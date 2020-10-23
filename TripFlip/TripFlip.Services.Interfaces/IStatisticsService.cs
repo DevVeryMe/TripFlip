@@ -6,6 +6,8 @@ namespace TripFlip.Services.Interfaces
 {
     public interface IStatisticsService
     {
-        public Task<UserStatisticsDto> GetUserStatisticsById(Guid userId);
+        public Task<UserStatisticsDto> GetUserMonthStatisticsById(Guid userId);
+
+        public Task<UserStatisticsDto> GetUserTotalStatisticsById(Guid userId);
     }
 }

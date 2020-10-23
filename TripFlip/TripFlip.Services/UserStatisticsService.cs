@@ -7,7 +7,12 @@ namespace TripFlip.Services
 {
     public class StatisticsService : IStatisticsService
     {
-        public async Task<UserStatisticsDto> GetUserStatisticsById(Guid userId)
+        public async Task<UserStatisticsDto> GetUserMonthStatisticsById(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<UserStatisticsDto> GetUserTotalStatisticsById(Guid userId)
         {
             throw new NotImplementedException();
         }
