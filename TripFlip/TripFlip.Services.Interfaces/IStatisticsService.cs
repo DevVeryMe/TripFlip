@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TripFlip.Services.Dto.UserStatisticsDtos;
+using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services.Interfaces
 {
     public interface IStatisticsService
     {
-        public Task<UserStatisticsDto> GetUserMonthStatisticsById(Guid userId);
+        public Task<UserStatisticsModel> GetUserMonthStatisticsById(Guid userId);
 
-        public Task<UserStatisticsDto> GetUserTotalStatisticsById(Guid userId);
+        public Task<UserStatisticsModel> GetUserTotalStatisticsById(Guid userId);
     }
 }

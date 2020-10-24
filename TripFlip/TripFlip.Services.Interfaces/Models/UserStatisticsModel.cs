@@ -1,8 +1,8 @@
 ﻿using TripFlip.Services.Dto.UserDtos;
 
-namespace TripFlip.Services.Dto.UserStatisticsDtos
+namespace TripFlip.Services.Interfaces.Models
 {
-    public class UserStatisticsDto
+    public class UserStatisticsModel
     {
         public UserDto User { get; set; }
 
