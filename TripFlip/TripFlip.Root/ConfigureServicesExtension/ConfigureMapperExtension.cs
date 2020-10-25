@@ -16,7 +16,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
                 mc.AddProfile<ViewModelFromDto>();
             });
 
-            var mapper = mappingConfig.CreateMapper();
+            IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
         }
     }
