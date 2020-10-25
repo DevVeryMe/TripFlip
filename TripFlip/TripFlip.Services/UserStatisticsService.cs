@@ -85,13 +85,13 @@ namespace TripFlip.Services
             {
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
-                RoutesWhereHasAdminRoleCount = routeSubscriptions.Sum(
+                RoutesWhereHasAdminRoleCount = routeSubscriptions.Count(
                     routeSubscription =>
-                        routeSubscription.RouteRoles.Count(routeRole =>
+                        routeSubscription.RouteRoles.Any(routeRole =>
                             routeRole.RouteRoleId == (int) RouteRoles.Admin)),
-                RoutesWhereNotAdminCount = routeSubscriptions.Sum(
+                RoutesWhereNotAdminCount = routeSubscriptions.Count(
                     routeSubscription =>
-                        routeSubscription.RouteRoles.Count(routeRole =>
+                        routeSubscription.RouteRoles.All(routeRole =>
                             routeRole.RouteRoleId != (int) RouteRoles.Admin)),
                 CompletedTasksCount = routeSubscriptions.Sum(routeSubscription =>
                     routeSubscription.AssignedTasks
