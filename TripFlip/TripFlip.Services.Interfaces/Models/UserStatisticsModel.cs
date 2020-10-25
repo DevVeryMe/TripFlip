@@ -4,7 +4,7 @@ namespace TripFlip.Services.Interfaces.Models
 {
     public class UserStatisticsModel
     {
-        public UserDto User { get; set; }
+        public string Email { get; set; }
 
         public int RoutesCountWhereHasAdminRole { get; set; }
 
