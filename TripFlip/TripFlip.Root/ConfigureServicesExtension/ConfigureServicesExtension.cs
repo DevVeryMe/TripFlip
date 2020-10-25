@@ -40,6 +40,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IMailService, MailService>();
 
+            services.AddTransient<IStatisticsService, StatisticsService>();
+
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
             services.AddDbContext<TripFlipDbContext>(options =>

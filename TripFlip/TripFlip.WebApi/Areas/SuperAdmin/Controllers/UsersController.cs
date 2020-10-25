@@ -16,7 +16,7 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 {
     [Area(AreaName.SuperAdmin)]
     [Route("api/super-admin/users")]
-    [Authorize(Roles = ApplicationRoleName.SuperAdminAndAdminRoles)]
+    //[Authorize(Roles = ApplicationRoleName.SuperAdminAndAdminRoles)]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -24,10 +24,13 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 
         private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        private readonly IStatisticsService _statisticsService;
+
+        public UsersController(IUserService userService, IMapper mapper, IStatisticsService statisticsService)
         {
             _userService = userService;
             _mapper = mapper;
+            _statisticsService = statisticsService;
         }
 
         /// <summary>
@@ -117,7 +120,9 @@ namespace TripFlip.WebApi.Areas.SuperAdmin.Controllers
 
             var userViewModel = _mapper.Map<UserViewModel>(userDto);
 
-            return Ok(userViewModel);
+            var stat = await _statisticsService.GetUserMonthStatisticsById(id);
+
+            return Ok(stat);
         }
     }
 }

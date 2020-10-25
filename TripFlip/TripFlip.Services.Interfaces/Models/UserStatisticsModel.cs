@@ -6,9 +6,11 @@ namespace TripFlip.Services.Interfaces.Models
     {
         public string Email { get; set; }
 
-        public int RoutesCountWhereHasAdminRole { get; set; }
+        public string FirstName { get; set; }
 
-        public int RoutesCountWhereNotAdmin { get; set; }
+        public int RoutesWhereHasAdminRoleCount { get; set; }
+
+        public int RoutesWhereNotAdminCount { get; set; }
 
         public int CompletedTasksCount { get; set; }
 
