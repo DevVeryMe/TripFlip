@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
+using TripFlip.Domain.Entities;
 using TripFlip.Services.Enums;
 using TripFlip.Services.Helpers;
 using TripFlip.Services.Interfaces;
@@ -10,6 +11,7 @@ using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services
 {
+    /// <inheritdoc />
     public class StatisticsService : IStatisticsService
     {
         private readonly TripFlipDbContext _tripFlipDbContext;
@@ -35,7 +37,13 @@ namespace TripFlip.Services
             return await GetUserStatisticsModel(userId, DateTimeOffset.MinValue);
         }
 
-        private async Task<UserStatisticsModel> GetUserStatisticsModel(Guid userId, DateTimeOffset statisticsFrom)
+        /// <summary>
+        /// Finds database user entry by id including trip subscriptions, route subscriptions,
+        /// route roles, assigned tasks and items with item lists.
+        /// </summary>
+        /// <param name="userId">Id of user to find.</param>
+        /// <returns>Found user entity.</returns>
+        private async Task<UserEntity> GetUserEntityIncludingSubEntitiesForStatistics(Guid userId)
         {
             var userEntity = await _tripFlipDbContext
                 .Users
@@ -55,6 +63,19 @@ namespace TripFlip.Services
                 .FirstOrDefaultAsync(user => user.Id == userId);
 
             EntityValidationHelper.ValidateEntityNotNull(userEntity, ErrorConstants.UserNotFound);
+
+            return userEntity;
+        }
+
+        /// <summary>
+        /// Creates UserStatisticsModel instance and sets statistics data.
+        /// </summary>
+        /// <param name="userId">Id of user to find.</param>
+        /// <param name="statisticsFrom">Start date to get statistics from.</param>
+        /// <returns>UserStatisticsModel instance, which represents user statistics data.</returns>
+        private async Task<UserStatisticsModel> GetUserStatisticsModel(Guid userId, DateTimeOffset statisticsFrom)
+        {
+            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistics(userId);
 
             var routeSubscriptions = userEntity.TripSubscriptions.SelectMany(tripSubscription =>
                 tripSubscription.RouteSubscriptions.Where(routeSubscription =>
