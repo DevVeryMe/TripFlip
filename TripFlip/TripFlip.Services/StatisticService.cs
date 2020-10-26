@@ -89,21 +89,29 @@ namespace TripFlip.Services
 
                 FirstName = userEntity.FirstName,
 
-                LastMonthRoutesWhereHasAdminRoleCount = CountRoutesWhereHasAdminRole(lastMonthRouteSubscriptions),
+                LastMonthRoutesWhereHasAdminRoleCount = 
+                    CountRoutesWhereHasAdminRole(lastMonthRouteSubscriptions),
 
-                LastMonthRoutesWhereNotAdminCount = CountRoutesWhereNotAdmin(lastMonthRouteSubscriptions),
+                LastMonthRoutesWhereNotAdminCount = 
+                    CountRoutesWhereNotAdmin(lastMonthRouteSubscriptions),
 
-                LastMonthCompletedTasksCount = CountCompletedTasksForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
+                LastMonthCompletedTasksCount = 
+                    CountCompletedTasksForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
 
-                LastMonthCompletedItemsCount = CountCompletedItemsForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
+                LastMonthCompletedItemsCount = 
+                    CountCompletedItemsForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
 
-                TotalRoutesWhereHasAdminRoleCount = CountRoutesWhereHasAdminRole(totalRouteSubscriptions),
+                TotalRoutesWhereHasAdminRoleCount = 
+                    CountRoutesWhereHasAdminRole(totalRouteSubscriptions),
 
-                TotalRoutesWhereNotAdminCount = CountRoutesWhereNotAdmin(totalRouteSubscriptions),
+                TotalRoutesWhereNotAdminCount = 
+                    CountRoutesWhereNotAdmin(totalRouteSubscriptions),
 
-                TotalCompletedTasksCount = CountCompletedTasksForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue),
+                TotalCompletedTasksCount = 
+                    CountCompletedTasksForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue),
 
-                TotalCompletedItemsCount = CountCompletedItemsForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue)
+                TotalCompletedItemsCount = 
+                    CountCompletedItemsForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue)
             };
 
             return userStatisticModel;
