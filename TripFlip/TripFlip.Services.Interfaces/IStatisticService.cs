@@ -10,7 +10,7 @@ namespace TripFlip.Services.Interfaces
     public interface IStatisticService
     {
         /// <summary>
-        /// Gets user statistic data for the last month.
+        /// Gets user statistic data.
         /// </summary>
         /// <param name="userId">Id of user to get statistic data for.</param>
         /// <returns>UserStatisticModel instance, which represents user statistic data.</returns>
