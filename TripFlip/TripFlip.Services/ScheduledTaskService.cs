@@ -44,7 +44,7 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Gets a statistic data
+        /// Gets statistic data
         /// and uses <see cref="IMailService"/> to send it to appropriate user.
         /// </summary>
         public async Task SendUserStatisticAsync()
