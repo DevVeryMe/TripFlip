@@ -40,7 +40,7 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddTransient<IMailService, MailService>();
 
-            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IStatisticService, StatisticService>();
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 

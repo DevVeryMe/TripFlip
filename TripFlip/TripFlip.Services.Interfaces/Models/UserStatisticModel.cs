@@ -2,7 +2,7 @@
 
 namespace TripFlip.Services.Interfaces.Models
 {
-    public class UserStatisticsModel
+    public class UserStatisticModel
     {
         public string Email { get; set; }
 

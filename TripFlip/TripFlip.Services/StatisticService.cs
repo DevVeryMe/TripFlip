@@ -12,7 +12,7 @@ using TripFlip.Services.Interfaces.Models;
 namespace TripFlip.Services
 {
     /// <inheritdoc />
-    public class StatisticsService : IStatisticsService
+    public class StatisticService : IStatisticService
     {
         private readonly TripFlipDbContext _tripFlipDbContext;
 
@@ -20,21 +20,21 @@ namespace TripFlip.Services
         /// Initializes database context.
         /// </summary>
         /// <param name="tripFlipDbContext">TripFlipDbContext instance.</param>
-        public StatisticsService(TripFlipDbContext tripFlipDbContext)
+        public StatisticService(TripFlipDbContext tripFlipDbContext)
         {
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<UserStatisticsModel> GetUserMonthStatisticsById(Guid userId)
+        public async Task<UserStatisticModel> GetUserMonthStatisticById(Guid userId)
         {
             var oneMonthAgo = DateTimeOffset.Now.AddMonths(-1);
 
-            return await GetUserStatisticsModel(userId, oneMonthAgo);
+            return await GetUserStatisticModel(userId, oneMonthAgo);
         }
 
-        public async Task<UserStatisticsModel> GetUserTotalStatisticsById(Guid userId)
+        public async Task<UserStatisticModel> GetUserTotalStatisticById(Guid userId)
         {
-            return await GetUserStatisticsModel(userId, DateTimeOffset.MinValue);
+            return await GetUserStatisticModel(userId, DateTimeOffset.MinValue);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="userId">Id of user to find.</param>
         /// <returns>Found user entity.</returns>
-        private async Task<UserEntity> GetUserEntityIncludingSubEntitiesForStatistics(Guid userId)
+        private async Task<UserEntity> GetUserEntityIncludingSubEntitiesForStatistic(Guid userId)
         {
             var userEntity = await _tripFlipDbContext
                 .Users
@@ -73,15 +73,15 @@ namespace TripFlip.Services
         /// <param name="userId">Id of user to find.</param>
         /// <param name="statisticsFrom">Start date to get statistics from.</param>
         /// <returns>UserStatisticsModel instance, which represents user statistics data.</returns>
-        private async Task<UserStatisticsModel> GetUserStatisticsModel(Guid userId, DateTimeOffset statisticsFrom)
+        private async Task<UserStatisticModel> GetUserStatisticModel(Guid userId, DateTimeOffset statisticsFrom)
         {
-            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistics(userId);
+            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistic(userId);
 
             var routeSubscriptions = userEntity.TripSubscriptions.SelectMany(tripSubscription =>
                 tripSubscription.RouteSubscriptions.Where(routeSubscription =>
                     routeSubscription.DateSubscribed >= statisticsFrom)).ToList();
 
-            var userStatisticsModel = new UserStatisticsModel()
+            var userStatisticModel = new UserStatisticModel()
             {
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
@@ -105,7 +105,7 @@ namespace TripFlip.Services
                                 assignedItem.Item.IsCompleted))
             };
 
-            return userStatisticsModel;
+            return userStatisticModel;
         }
     }
 }
