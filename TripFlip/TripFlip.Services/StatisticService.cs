@@ -34,8 +34,17 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Finds database entry about user specified by id, including trip subscriptions, route subscriptions,
-        /// route roles, assigned tasks and items with item lists.
+        /// Finds database entry about user specified by id, including:
+        /// <list type="bullet">
+        /// <item>trip subscriptions</item>
+        /// <item>route subscriptions</item>
+        /// <item>trips</item>
+        /// <item>routes and their subscribers</item>
+        /// <item>trip roles</item>
+        /// <item>route roles</item>
+        /// <item>assigned tasks</item>
+        /// <item>assigned items with item lists</item>
+        /// </list>
         /// </summary>
         /// <param name="userId">Id of user to find.</param>
         /// <returns>Found user entity.</returns>
@@ -43,6 +52,12 @@ namespace TripFlip.Services
         {
             var userEntity = await _tripFlipDbContext
                 .Users
+                .Include(user => user.TripSubscriptions)
+                    .ThenInclude(tripSubscriber => tripSubscriber.TripRoles)
+                .Include(user => user.TripSubscriptions)
+                    .ThenInclude(tripSubscriber => tripSubscriber.Trip)
+                        .ThenInclude(trip => trip.Routes)
+                            .ThenInclude(route => route.RouteSubscribers)
                 .Include(user => user.TripSubscriptions)
                     .ThenInclude(tripSubscription => tripSubscription.RouteSubscriptions)
                         .ThenInclude(routeSubscription => routeSubscription.RouteRoles)
@@ -83,23 +98,36 @@ namespace TripFlip.Services
                 .TripSubscriptions
                 .SelectMany(tripSubscription => tripSubscription.RouteSubscriptions).ToList();
 
+            var tripSubscriptions = userEntity
+                .TripSubscriptions
+                .ToList();
+
             var userStatisticModel = new UserStatisticModel()
             {
                 Email = userEntity.Email,
 
                 FirstName = userEntity.FirstName,
 
-                LastMonthRoutesWhereHasAdminRoleCount = 
+                LastMonthTripsWhereHasAdminRoleCount =
+                    CountTripsWhereHasAdminRole(tripSubscriptions, oneMonthAgo),
+
+                LastMonthRoutesWhereHasAdminRoleCount =
                     CountRoutesWhereHasAdminRole(lastMonthRouteSubscriptions),
 
-                LastMonthRoutesWhereNotAdminCount = 
+                LastMonthRoutesWhereNotAdminCount =
                     CountRoutesWhereNotAdmin(lastMonthRouteSubscriptions),
 
-                LastMonthCompletedTasksCount = 
+                LastMonthCompletedTasksCount =
                     CountCompletedTasksForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
 
-                LastMonthCompletedItemsCount = 
+                LastMonthCompletedItemsCount =
                     CountCompletedItemsForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
+
+                LastMonthUsersInHisRoutesCount =
+                    CountUsersInHisRoutes(tripSubscriptions, oneMonthAgo),
+
+                TotalTripsWhereHasAdminRoleCount =
+                    CountTripsWhereHasAdminRole(tripSubscriptions, DateTimeOffset.MinValue),
 
                 TotalRoutesWhereHasAdminRoleCount = 
                     CountRoutesWhereHasAdminRole(totalRouteSubscriptions),
@@ -111,7 +139,10 @@ namespace TripFlip.Services
                     CountCompletedTasksForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue),
 
                 TotalCompletedItemsCount = 
-                    CountCompletedItemsForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue)
+                    CountCompletedItemsForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue),
+
+                TotalUsersInHisRoutesCount = 
+                    CountUsersInHisRoutes(tripSubscriptions, DateTimeOffset.MinValue)
             };
 
             return userStatisticModel;
@@ -145,6 +176,41 @@ namespace TripFlip.Services
                 routeSubscription.AssignedItems
                     .Where(assignedItem => assignedItem.Item.ItemList.DateCreated >= startDate)
                     .Count(assignedItem => assignedItem.Item.IsCompleted));
+        }
+
+        private static int CountTripsWhereHasAdminRole(
+            IEnumerable<TripSubscriberEntity> tripSubscriptions,
+            DateTimeOffset startDate)
+        {
+            return tripSubscriptions
+                .Where(tripSubscriber => tripSubscriber.DateSubscribed >= startDate)
+                .Count(tripSubscriber => tripSubscriber.TripRoles.Any(
+                    tripSubscriberRole => tripSubscriberRole.TripRoleId == (int)TripRoles.Admin));
+        }
+
+        private static int CountUsersInHisRoutes(
+            IEnumerable<TripSubscriberEntity> tripSubscriptions,
+            DateTimeOffset startDate)
+        {
+            var tripSubscribtionsWhereUserIsAdmin = tripSubscriptions
+                .Where(tripSubscriber => tripSubscriber.DateSubscribed >= startDate)
+                .Where(tripSubscriber => tripSubscriber.TripRoles.Any(
+                    tripSubscriber => tripSubscriber.TripRoleId == (int)TripRoles.Admin));
+
+            int usersCount = 0;
+
+            foreach (var tripSubscription in tripSubscribtionsWhereUserIsAdmin)
+            {
+                int tripSubscriberIdOfCurrentUser = tripSubscription.Id;
+
+                var routesOfTripWhereUserIsAdmin = tripSubscription.Trip.Routes;
+
+                usersCount += routesOfTripWhereUserIsAdmin
+                    .Sum(route => route.RouteSubscribers.Count(
+                        routeSubscriber => routeSubscriber.TripSubscriberId != tripSubscriberIdOfCurrentUser));
+            }
+
+            return usersCount;
         }
     }
 }
