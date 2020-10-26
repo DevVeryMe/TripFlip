@@ -192,14 +192,14 @@ namespace TripFlip.Services
             IEnumerable<TripSubscriberEntity> tripSubscriptions,
             DateTimeOffset startDate)
         {
-            var tripSubscribtionsWhereUserIsAdmin = tripSubscriptions
+            var tripSubscriptionsWhereUserIsAdmin = tripSubscriptions
                 .Where(tripSubscriber => tripSubscriber.DateSubscribed >= startDate)
                 .Where(tripSubscriber => tripSubscriber.TripRoles.Any(
-                    tripSubscriber => tripSubscriber.TripRoleId == (int)TripRoles.Admin));
+                    tripSubscriberRole => tripSubscriberRole.TripRoleId == (int)TripRoles.Admin));
 
             int usersCount = 0;
 
-            foreach (var tripSubscription in tripSubscribtionsWhereUserIsAdmin)
+            foreach (var tripSubscription in tripSubscriptionsWhereUserIsAdmin)
             {
                 int tripSubscriberIdOfCurrentUser = tripSubscription.Id;
 
