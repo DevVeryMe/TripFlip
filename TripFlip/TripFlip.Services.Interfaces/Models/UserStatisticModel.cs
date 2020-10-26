@@ -1,6 +1,4 @@
-﻿using TripFlip.Services.Dto.UserDtos;
-
-namespace TripFlip.Services.Interfaces.Models
+﻿namespace TripFlip.Services.Interfaces.Models
 {
     public class UserStatisticModel
     {
@@ -8,12 +6,20 @@ namespace TripFlip.Services.Interfaces.Models
 
         public string FirstName { get; set; }
 
-        public int RoutesWhereHasAdminRoleCount { get; set; }
+        public int TotalRoutesWhereHasAdminRoleCount { get; set; }
 
-        public int RoutesWhereNotAdminCount { get; set; }
+        public int TotalRoutesWhereNotAdminCount { get; set; }
 
-        public int CompletedTasksCount { get; set; }
+        public int TotalCompletedTasksCount { get; set; }
 
-        public int CompletedItemsCount { get; set; }
+        public int TotalCompletedItemsCount { get; set; }
+
+        public int LastMonthRoutesWhereHasAdminRoleCount { get; set; }
+
+        public int LastMonthRoutesWhereNotAdminCount { get; set; }
+
+        public int LastMonthCompletedTasksCount { get; set; }
+
+        public int LastMonthCompletedItemsCount { get; set; }
     }
 }

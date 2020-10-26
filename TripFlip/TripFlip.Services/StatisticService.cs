@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -25,20 +26,15 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<UserStatisticModel> GetUserMonthStatisticById(Guid userId)
+        public async Task<UserStatisticModel> GetUserStatisticById(Guid userId)
         {
-            var oneMonthAgo = DateTimeOffset.Now.AddMonths(-1);
+            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistic(userId);
 
-            return await GetUserStatisticModel(userId, oneMonthAgo);
-        }
-
-        public async Task<UserStatisticModel> GetUserTotalStatisticById(Guid userId)
-        {
-            return await GetUserStatisticModel(userId, DateTimeOffset.MinValue);
+            return GetUserStatisticModel(userEntity);
         }
 
         /// <summary>
-        /// Finds database user entry by id including trip subscriptions, route subscriptions,
+        /// Finds database entry about user specified by id, including trip subscriptions, route subscriptions,
         /// route roles, assigned tasks and items with item lists.
         /// </summary>
         /// <param name="userId">Id of user to find.</param>
@@ -68,44 +64,79 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Creates UserStatisticsModel instance and sets statistics data.
+        /// Creates UserStatisticModel instance and sets all the statistic data.
         /// </summary>
-        /// <param name="userId">Id of user to find.</param>
-        /// <param name="statisticsFrom">Start date to get statistics from.</param>
-        /// <returns>UserStatisticsModel instance, which represents user statistics data.</returns>
-        private async Task<UserStatisticModel> GetUserStatisticModel(Guid userId, DateTimeOffset statisticsFrom)
+        /// <param name="userEntity">User to get statistic for.</param>
+        /// <returns>UserStatisticModel instance, which represents user statistic data.</returns>
+        private static UserStatisticModel GetUserStatisticModel(UserEntity userEntity)
         {
-            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistic(userId);
+            var oneMonthAgo = DateTimeOffset.Now.AddMonths(-1);
 
-            var routeSubscriptions = userEntity.TripSubscriptions.SelectMany(tripSubscription =>
-                tripSubscription.RouteSubscriptions.Where(routeSubscription =>
-                    routeSubscription.DateSubscribed >= statisticsFrom)).ToList();
+            var lastMonthRouteSubscriptions = userEntity
+                .TripSubscriptions
+                .SelectMany(tripSubscription => 
+                    tripSubscription.RouteSubscriptions
+                        .Where(routeSubscription => 
+                            routeSubscription.DateSubscribed >= oneMonthAgo)).ToList();
+
+            var totalRouteSubscriptions = userEntity
+                .TripSubscriptions
+                .SelectMany(tripSubscription => tripSubscription.RouteSubscriptions).ToList();
 
             var userStatisticModel = new UserStatisticModel()
             {
                 Email = userEntity.Email,
+
                 FirstName = userEntity.FirstName,
-                RoutesWhereHasAdminRoleCount = routeSubscriptions.Count(
-                    routeSubscription =>
-                        routeSubscription.RouteRoles.Any(routeRole =>
-                            routeRole.RouteRoleId == (int) RouteRoles.Admin)),
-                RoutesWhereNotAdminCount = routeSubscriptions.Count(
-                    routeSubscription =>
-                        routeSubscription.RouteRoles.All(routeRole =>
-                            routeRole.RouteRoleId != (int) RouteRoles.Admin)),
-                CompletedTasksCount = routeSubscriptions.Sum(routeSubscription =>
-                    routeSubscription.AssignedTasks
-                        .Where(assignedTask => assignedTask.Task.DateCreated >= statisticsFrom).Count(
-                            assignedTask =>
-                                assignedTask.Task.IsCompleted)),
-                CompletedItemsCount = routeSubscriptions.Sum(routeSubscription =>
-                    routeSubscription.AssignedItems
-                        .Where(assignedItem => assignedItem.Item.ItemList.DateCreated >= statisticsFrom).Count(
-                            assignedItem =>
-                                assignedItem.Item.IsCompleted))
+
+                LastMonthRoutesWhereHasAdminRoleCount = CountRoutesWhereHasAdminRole(lastMonthRouteSubscriptions),
+
+                LastMonthRoutesWhereNotAdminCount = CountRoutesWhereNotAdmin(lastMonthRouteSubscriptions),
+
+                LastMonthCompletedTasksCount = CountCompletedTasksForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
+
+                LastMonthCompletedItemsCount = CountCompletedItemsForPeriod(lastMonthRouteSubscriptions, oneMonthAgo),
+
+                TotalRoutesWhereHasAdminRoleCount = CountRoutesWhereHasAdminRole(totalRouteSubscriptions),
+
+                TotalRoutesWhereNotAdminCount = CountRoutesWhereNotAdmin(totalRouteSubscriptions),
+
+                TotalCompletedTasksCount = CountCompletedTasksForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue),
+
+                TotalCompletedItemsCount = CountCompletedItemsForPeriod(totalRouteSubscriptions, DateTimeOffset.MinValue)
             };
 
             return userStatisticModel;
+        }
+
+        private static int CountRoutesWhereHasAdminRole(IEnumerable<RouteSubscriberEntity> routeSubscriptions)
+        {
+            return routeSubscriptions.Count(routeSubscription =>
+                routeSubscription.RouteRoles.Any(routeRole => routeRole.RouteRoleId == (int) RouteRoles.Admin));
+        }
+
+        private static int CountRoutesWhereNotAdmin(IEnumerable<RouteSubscriberEntity> routeSubscriptions)
+        {
+            return routeSubscriptions.Count(routeSubscription =>
+                routeSubscription.RouteRoles.All(routeRole => routeRole.RouteRoleId != (int)RouteRoles.Admin));
+        }
+
+        private static int CountCompletedTasksForPeriod(IEnumerable<RouteSubscriberEntity> routeSubscriptions,
+            DateTimeOffset startDate)
+        {
+            return routeSubscriptions.Sum(routeSubscription =>
+                routeSubscription.AssignedTasks
+                    .Where(assignedTask => assignedTask.Task.DateCreated >= startDate)
+                    .Count(assignedTask => assignedTask.Task.IsCompleted));
+        }
+
+        private static int CountCompletedItemsForPeriod(IEnumerable<RouteSubscriberEntity> routeSubscriptions,
+            DateTimeOffset startDate)
+        {
+            return routeSubscriptions.Sum(routeSubscription =>
+                routeSubscription.AssignedItems
+                    .Where(assignedItem => assignedItem.Item.ItemList.DateCreated >= startDate)
+                    .Count(assignedItem => assignedItem.Item.IsCompleted));
         }
     }
 }
