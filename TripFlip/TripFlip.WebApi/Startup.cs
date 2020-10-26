@@ -129,6 +129,9 @@ namespace TripFlip.WebApi
             RecurringJob.AddOrUpdate<IScheduledTaskService>(
                 scheduledTask => scheduledTask.GreetBirthdayUsersAsync(),
                 Cron.Daily(hour: 8));
+            RecurringJob.AddOrUpdate<IScheduledTaskService>(
+                scheduledTask => scheduledTask.SendUserStatisticAsync(),
+                Cron.Monthly());
 
             applicationBuilder.UseEndpoints(endpoints =>
             {

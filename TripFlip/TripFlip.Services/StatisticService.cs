@@ -26,7 +26,7 @@ namespace TripFlip.Services
             _tripFlipDbContext = tripFlipDbContext;
         }
 
-        public async Task<UserStatisticModel> GetUserStatisticById(Guid userId)
+        public async Task<UserStatisticModel> GetUserStatisticByIdAsync(Guid userId)
         {
             var userEntity = await GetUserEntityIncludingSubEntitiesForStatistic(userId);
 
