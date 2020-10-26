@@ -42,7 +42,7 @@ namespace TripFlip.Services
             }
         }
 
-        public async Task SendBirthdayConglratulatoryEmailAsync(
+        public async Task SendBirthdayCongratulatoryEmailAsync(
             string email,
             string userName)
         {
