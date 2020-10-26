@@ -44,6 +44,8 @@ namespace TripFlip.Root.ConfigureServicesExtension
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
+            services.AddTransient<IScheduledTaskService, ScheduledTaskService>();
+
             services.AddDbContext<TripFlipDbContext>(options =>
                 options.UseSqlServer(
                     ConfigurationExtensions.GetConnectionString(

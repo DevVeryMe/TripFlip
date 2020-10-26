@@ -10,9 +10,12 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Hangfire;
+using Hangfire.SqlServer;
 using TripFlip.DataAccess;
 using TripFlip.Root.ConfigureServicesExtension;
 using TripFlip.Root.ExceptionHandlingExtensions;
+using TripFlip.Services.Interfaces;
 
 namespace TripFlip.WebApi
 {
@@ -94,6 +97,19 @@ namespace TripFlip.WebApi
                 });
             });
 
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireTasksStorage"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.FromMilliseconds(100),
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+
             services.ConfigureServices(Configuration);
 
             services.AddHttpContextAccessor();
@@ -108,6 +124,11 @@ namespace TripFlip.WebApi
 
             applicationBuilder.UseAuthentication();
             applicationBuilder.UseAuthorization();
+
+            applicationBuilder.UseHangfireDashboard();
+            RecurringJob.AddOrUpdate<IScheduledTaskService>(
+                scheduledTask => scheduledTask.GreetBirthdayUsersAsync(),
+                Cron.Daily(hour: 8));
 
             applicationBuilder.UseEndpoints(endpoints =>
             {
