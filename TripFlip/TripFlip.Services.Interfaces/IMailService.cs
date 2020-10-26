@@ -21,7 +21,7 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="email">User's email address to send letter to.</param>
         /// <param name="userName">User's name.</param>
-        Task SendBirthdayConglratulatoryEmailAsync(string email, string userName);
+        Task SendBirthdayCongratulatoryEmailAsync(string email, string userName);
 
         /// <summary>
         /// Sends email letter with statistic data to appropriate user.

@@ -38,7 +38,7 @@ namespace TripFlip.Services
 
             foreach (var user in birthdayUsers)
             {
-                await _mailService.SendBirthdayConglratulatoryEmailAsync(
+                await _mailService.SendBirthdayCongratulatoryEmailAsync(
                     user.Email, user.FirstName);
             }
         }
