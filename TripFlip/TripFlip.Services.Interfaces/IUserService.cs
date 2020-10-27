@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TripFlip.Domain.Entities;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.TripDtos;
 using TripFlip.Services.Dto.UserDtos;
@@ -123,5 +124,13 @@ namespace TripFlip.Services.Interfaces
         /// in this trips.
         /// </summary>
         Task<IEnumerable<TripWithRoutesAndUserRolesDto>> GetAllSubscribedTripsAsync();
+
+        /// <summary>
+        /// Makes a database query and returns a collection of users that have their 
+        /// birthday today (current day and month matches day and month inside 
+        /// <see cref="UserEntity.DateCreated"/> property.
+        /// </summary>
+        /// <returns>A collection users that have their birthday today.</returns>
+        Task<IEnumerable<UserEntity>> GetUsersWithBirthdayTodayAsync();
     }
 }

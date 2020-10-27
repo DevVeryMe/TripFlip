@@ -676,6 +676,21 @@ namespace TripFlip.Services
             return tripWithRoutesDto;
         }
 
+        public async Task<IEnumerable<UserEntity>> GetUsersWithBirthdayTodayAsync()
+        {
+            int currentDay = DateTimeOffset.Now.Day;
+            int currentMonth = DateTimeOffset.Now.Month;
+
+            var usersWithBirthdays = await _tripFlipDbContext
+                .Users
+                .AsNoTracking()
+                .Where(user => user.BirthDate.Value.Day == currentDay &&
+                    user.BirthDate.Value.Month == currentMonth)
+                .ToListAsync();
+
+            return usersWithBirthdays;
+        }
+
         /// <summary>
         /// Validates whether there is more than one admin
         /// among trip subscribers.

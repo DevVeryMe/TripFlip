@@ -41,5 +41,12 @@ namespace TripFlip.Services
                 throw new InvalidOperationException(ErrorConstants.CannotSendMailMessage, exception);
             }
         }
+
+        public async Task SendBirthdayCongratulatoryEmailAsync(
+            string email,
+            string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
