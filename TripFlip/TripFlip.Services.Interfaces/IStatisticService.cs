@@ -14,6 +14,6 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="userId">Id of user to get statistic data for.</param>
         /// <returns>UserStatisticModel instance, which represents user statistic data.</returns>
-        public Task<UserStatisticModel> GetUserStatisticById(Guid userId);
+        public Task<UserStatisticModel> GetUserStatisticByIdAsync(Guid userId);
     }
 }

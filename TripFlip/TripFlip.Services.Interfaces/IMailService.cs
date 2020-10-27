@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TripFlip.Services.Interfaces.Models;
 
 namespace TripFlip.Services.Interfaces
@@ -21,5 +22,12 @@ namespace TripFlip.Services.Interfaces
         /// <param name="email">User's email address to send letter to.</param>
         /// <param name="userName">User's name.</param>
         Task SendBirthdayCongratulatoryEmailAsync(string email, string userName);
+
+        /// <summary>
+        /// Sends email letter with statistic data to appropriate user.
+        /// </summary>
+        /// <param name="userStatistic">UserStatisticModel instance,
+        /// which carries all needed data to send email.</param>
+        Task SendUserStatisticAsync(UserStatisticModel userStatistic);
     }
 }

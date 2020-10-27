@@ -11,5 +11,10 @@ namespace TripFlip.Services.Interfaces
         /// Method that represents a task of greeting birthday users.
         /// </summary>
         Task GreetBirthdayUsersAsync();
+
+        /// <summary>
+        /// Method that represents a task of sending user statistic.
+        /// </summary>
+        Task SendUserStatisticAsync();
     }
 }

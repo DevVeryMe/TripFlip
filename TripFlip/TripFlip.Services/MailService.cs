@@ -48,5 +48,10 @@ namespace TripFlip.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task SendUserStatisticAsync(UserStatisticModel userStatistic)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

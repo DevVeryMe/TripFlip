@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TripFlip.DataAccess;
 using TripFlip.Services.Interfaces;
 
 namespace TripFlip.Services
@@ -10,12 +11,20 @@ namespace TripFlip.Services
 
         readonly IUserService _userService;
 
+        private readonly IStatisticService _statisticService;
+
+        private readonly TripFlipDbContext _tripFlipDbContext;
+
         public ScheduledTaskService(
             IMailService mailService,
-            IUserService userService)
+            IUserService userService,
+            IStatisticService statisticService,
+            TripFlipDbContext tripFlipDbContext)
         {
             _mailService = mailService;
             _userService = userService;
+            _statisticService = statisticService;
+            _tripFlipDbContext = tripFlipDbContext;
         }
 
         /// <summary>
@@ -31,6 +40,20 @@ namespace TripFlip.Services
             {
                 await _mailService.SendBirthdayCongratulatoryEmailAsync(
                     user.Email, user.FirstName);
+            }
+        }
+
+        /// <summary>
+        /// Gets statistic data
+        /// and uses <see cref="IMailService"/> to send it to appropriate user.
+        /// </summary>
+        public async Task SendUserStatisticAsync()
+        {
+            foreach (var user in _tripFlipDbContext.Users)
+            {
+                var userStatistic = await _statisticService.GetUserStatisticByIdAsync(user.Id);
+
+                await _mailService.SendUserStatisticAsync(userStatistic);
             }
         }
     }
