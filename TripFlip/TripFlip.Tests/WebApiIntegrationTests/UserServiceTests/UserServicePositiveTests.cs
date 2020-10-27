@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.Services;
+using TripFlip.Services.Configurations;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.Enums;
 using TripFlip.Services.Dto.TripDtos;
@@ -71,9 +74,23 @@ namespace WebApiIntegrationTests.UserServiceTests
         public async Task RegisterAsync_GivenValidUserData_Successful()
         {
             // Arrange.
+            var mockWebHostEnvironment = new Mock<IWebHostEnvironment>();
+            mockWebHostEnvironment.Setup(environment => environment.WebRootPath).Returns(string.Empty);
+
+            var mockMailServiceConfig = new MailServiceConfiguration
+            {
+                RegisteredUserNotificationFilename = string.Empty
+            };
+
             var jwtConfiguration = CreateJwtConfiguration();
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: mockWebHostEnvironment.Object,
+                mailService: null,
+                mailServiceConfiguration: mockMailServiceConfig);
             var registerUserDto = GetRegisterUserDto();
             var comparer = new UserDtoComparer();
 
@@ -91,8 +108,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             Seed(TripFlipDbContext, ValidUser);
             CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
             var jwtConfiguration = CreateJwtConfiguration();
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
             var correctOldPassword = "rel1able-Password";
             var changePasswordDto = GetChangeUserPasswordDto(oldPassword: correctOldPassword);
             var correctNewPassword = "Correctnewpass1@";
@@ -119,8 +142,14 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             var existentTripId = 1;
             var jwtConfiguration = CreateJwtConfiguration();
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
             var usersByTripAndCategorizedByRoleDtoComparer = 
                 new UsersByTripAndCategorizedByRoleDtoComparer();
 
@@ -150,8 +179,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var userToGrantRoles = UserEntitiesToSeed.ToList()[2];
 
@@ -194,8 +229,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.SubscribeToRouteAsync(RouteEntityToSeed.Id);
@@ -222,8 +263,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(NotTripAdminUser.Id,
                 NotTripAdminUser.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.UnsubscribeFromTripAsync(TripEntityToSeed.Id);
@@ -243,8 +290,14 @@ namespace WebApiIntegrationTests.UserServiceTests
 
             Seed(TripFlipDbContext, ValidUser);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var loginDto = GetLoginDto();
             
@@ -269,8 +322,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             var existentUserId = validUser.Id;
             var expectedUserDto = Mapper.Map<UserDto>(validUser);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var userDtoComparer = new UserDtoComparer();
 
@@ -291,8 +350,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             var jwtConfiguration = CreateJwtConfiguration();
             var existentUserId = ValidUser.Id;
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-               jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.DeleteByIdAsync(existentUserId);
@@ -325,8 +390,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(ValidUser.Id,
                 ValidUser.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var grantRouteRolesDto = GetGrantRouteRolesDto(routeRoleIds: ValidRouteRoleIds,
                 userId: userEntityToGrantRoles.Id);
@@ -370,8 +441,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(userEntityToSeed.Id,
                 userEntityToSeed.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.UnsubscribeFromRouteAsync(routeEntityToSeed.Id);
@@ -400,8 +477,14 @@ namespace WebApiIntegrationTests.UserServiceTests
             CurrentUserService = CreateCurrentUserService(
                 validUserThatIsNotTripSub.Id, validUserThatIsNotTripSub.Email);
 
-            var userService = new UserService(Mapper, TripFlipDbContext,
-                jwtConfiguration, CurrentUserService);
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.SubscribeToTripAsync(tripEntity.Id);
@@ -437,7 +520,13 @@ namespace WebApiIntegrationTests.UserServiceTests
             var jwtConfiguration = CreateJwtConfiguration();
 
             var userService = new UserService(
-                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             // Act.
             await userService.GrantApplicationRoleAsync(grantApplicationRolesDto);
@@ -467,7 +556,13 @@ namespace WebApiIntegrationTests.UserServiceTests
             var jwtConfiguration = CreateJwtConfiguration();
 
             var userService = new UserService(
-                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var updateUserProfileDto = Get_UpdateUserProfileDto();
             var expectedUserDto = Mapper.Map<UserDto>(validUser);
@@ -497,7 +592,10 @@ namespace WebApiIntegrationTests.UserServiceTests
                 tripFlipDbContext: TripFlipDbContext,
                 mapper: Mapper,
                 jwtConfiguration: null,
-                currentUserService: null);
+                currentUserService: null,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var expectedPagedUserDtos = Get_Expected_PagedUserDtos();
             var expectedUserDtoList = expectedPagedUserDtos.Items.ToList();
@@ -557,7 +655,13 @@ namespace WebApiIntegrationTests.UserServiceTests
             var jwtConfiguration = CreateJwtConfiguration();
 
             var userService = new UserService(
-                Mapper, TripFlipDbContext, jwtConfiguration, CurrentUserService);
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
 
             var expectedTripWithNestedObjectsDtoEnumerable = Get_Expected_TripWithRoutesAndUserRolesDto();
 
