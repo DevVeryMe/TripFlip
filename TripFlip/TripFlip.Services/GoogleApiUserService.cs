@@ -220,13 +220,13 @@ namespace TripFlip.Services
         /// the matching email address.</returns>
         private async Task<UserEntity> GetUserByEmailAsync(string email)
         {
-            var user = await _tripFlipDbContext
+            var userEntity = await _tripFlipDbContext
                 .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
                 .FirstOrDefaultAsync(user => user.Email == email);
 
-            return user;
+            return userEntity;
         }
 
         /// <summary>

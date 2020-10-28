@@ -205,10 +205,8 @@ namespace TripFlip.Services
                 .Include(task => task.TaskList)
                 .SingleOrDefaultAsync(task => task.Id == id);
 
-            if (taskEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.TaskNotFound);
-            }
+            EntityValidationHelper
+                .ValidateEntityNotNull(taskEntity, ErrorConstants.TaskNotFound);
 
             // Validate current user has route 'Admin' role.
             await EntityValidationHelper.ValidateCurrentUserRouteRoleAsync(
@@ -289,7 +287,7 @@ namespace TripFlip.Services
                     RouteSubscriberId = subscriberId
                 });
 
-            _tripFlipDbContext.TaskAssignees.AddRange(assigneesToAdd);
+            await _tripFlipDbContext.TaskAssignees.AddRangeAsync(assigneesToAdd);
 
             await _tripFlipDbContext.SaveChangesAsync();
         }

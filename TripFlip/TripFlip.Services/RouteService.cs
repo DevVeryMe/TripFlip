@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Domain.Entities;
-using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.RouteDtos;
 using TripFlip.Services.Enums;
@@ -65,11 +63,12 @@ namespace TripFlip.Services
         {
             var tripEntity = await _tripFlipDbContext
                 .Trips
-                .Where(tripEntity => tripEntity.Id == updateRouteDto.TripId)
-                .Include(tripEntity => tripEntity.Routes)
+                .Where(trip => trip.Id == updateRouteDto.TripId)
+                .Include(trip => trip.Routes)
                 .FirstOrDefaultAsync();
 
-            ValidateTripEntityIsNotNull(tripEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
 
             await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
                _currentUserService,
@@ -80,9 +79,10 @@ namespace TripFlip.Services
 
             var routeEntity = tripEntity
                 .Routes
-                .FirstOrDefault(routeEntity => routeEntity.Id == updateRouteDto.Id);
+                .FirstOrDefault(route => route.Id == updateRouteDto.Id);
 
-            ValidateRouteEntityIsNotNull(routeEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
 
             routeEntity.Title = updateRouteDto.Title;
             routeEntity.TripId = updateRouteDto.TripId;
@@ -102,7 +102,8 @@ namespace TripFlip.Services
                 .Include(route => route.TaskLists)
                 .SingleOrDefaultAsync(entity => entity.Id == id);
 
-            ValidateRouteEntityIsNotNull(routeEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
 
             await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
                _currentUserService,
@@ -123,9 +124,10 @@ namespace TripFlip.Services
             var routeEntity = await _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
-                .SingleOrDefaultAsync(routeEntity => routeEntity.Id == id);
+                .SingleOrDefaultAsync(route => route.Id == id);
 
-            ValidateRouteEntityIsNotNull(routeEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
 
             var routeDto = _mapper.Map<RouteDto>(routeEntity);
 
@@ -162,36 +164,6 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Checks if the given <see cref="TripEntity"/> is not null. If null,
-        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="tripEntity">Object that should be checked.</param>
-        void ValidateTripEntityIsNotNull(TripEntity tripEntity)
-        {
-
-            if (tripEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.TripNotFound);
-            }
-
-        }
-
-        /// <summary>
-        /// Checks if the given <see cref="RouteEntity"/> is not null. If null,
-        /// then throws an <see cref="NotFoundException"/> with a corresponding message.
-        /// </summary>
-        /// <param name="routeEntity">Object that should be checked.</param>
-        void ValidateRouteEntityIsNotNull(RouteEntity routeEntity)
-        {
-
-            if (routeEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.RouteNotFound);
-            }
-
-        }
-
-        /// <summary>
         /// Checks if Trip exists by making a database query.
         /// </summary>
         async Task ValidateTripExistsAsync(int tripId)
@@ -199,13 +171,9 @@ namespace TripFlip.Services
             var tripEntity = await _tripFlipDbContext
                 .Trips
                 .AsNoTracking()
-                .SingleOrDefaultAsync(tripEntity => tripId == tripEntity.Id);
+                .SingleOrDefaultAsync(trip => tripId == trip.Id);
 
-            if (tripEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.TripNotFound);
-            }
-
+            EntityValidationHelper.ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
         }
     }
 }

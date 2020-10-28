@@ -70,7 +70,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == id);
 
-            ValidateTripEntityNotNull(tripEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
 
             var tripDto = _mapper.Map<TripDto>(tripEntity);
 
@@ -116,7 +117,8 @@ namespace TripFlip.Services
 
             var tripEntity = await _tripFlipDbContext.Trips.FindAsync(updateTripDto.Id);
 
-            ValidateTripEntityNotNull(tripEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
 
             tripEntity.Description = updateTripDto.Description;
             tripEntity.Title = updateTripDto.Title;
@@ -142,20 +144,13 @@ namespace TripFlip.Services
                 .Include(trip => trip.Routes)
                 .FirstOrDefaultAsync(trip => trip.Id == id);
 
-            ValidateTripEntityNotNull(tripEntity);
+            EntityValidationHelper
+                .ValidateEntityNotNull(tripEntity, ErrorConstants.TripNotFound);
 
             _tripFlipDbContext.RemoveRange(tripEntity.Routes);
             _tripFlipDbContext.Remove(tripEntity);
             
             await _tripFlipDbContext.SaveChangesAsync();
-        }
-
-        private void ValidateTripEntityNotNull(TripEntity tripEntity)
-        {
-            if (tripEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.TripNotFound);
-            }
         }
 
         private async Task ValidateUserExistsById(Guid userId)

@@ -213,7 +213,7 @@ namespace TripFlip.Services
             userEntity.PasswordHash = 
                 PasswordHasherHelper.HashPassword(registerUserDto.Password);
 
-            _tripFlipDbContext.Users.Add(userEntity);
+            await _tripFlipDbContext.Users.AddAsync(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
             await EmailUserNotifierHelper.NotifyRegisteredUser(
@@ -324,10 +324,11 @@ namespace TripFlip.Services
             grantApplicationRolesDto.ApplicationRoleIds = grantApplicationRolesDto
                 .ApplicationRoleIds
                 .Distinct()
-                .Where(requestedId => existingApplicationRolesIds.Contains(requestedId));
+                .Where(requestedId => existingApplicationRolesIds.Contains(requestedId))
+                .ToList();
 
             // Add requested set of roles to user.
-            bool collectionHasRolesToAdd = grantApplicationRolesDto.ApplicationRoleIds.Count() > 0;
+            bool collectionHasRolesToAdd = grantApplicationRolesDto.ApplicationRoleIds.Any();
             if (collectionHasRolesToAdd)
             {
                 var rolesToAdd = new List<ApplicationUserRoleEntity>();
@@ -337,11 +338,11 @@ namespace TripFlip.Services
                     rolesToAdd.Add(new ApplicationUserRoleEntity()
                     {
                         UserId = userToGrantRoles.Id,
-                        ApplicationRoleId = (int)requestedRole
+                        ApplicationRoleId = requestedRole
                     });
                 }
 
-                _tripFlipDbContext.ApplicationUsersRoles.AddRange(rolesToAdd);
+                await _tripFlipDbContext.ApplicationUsersRoles.AddRangeAsync(rolesToAdd);
             }
             
             await _tripFlipDbContext.SaveChangesAsync();
@@ -349,11 +350,10 @@ namespace TripFlip.Services
 
         public async Task GrantTripRoleAsync(GrantTripRolesDto grantTripRolesDto)
         {
-            var currentUserId = _currentUserService.UserId;
-
             // Validate user-to-grant-role-to exists.
             var userToGrantRole = await _tripFlipDbContext.Users
                 .SingleOrDefaultAsync(user => user.Id == grantTripRolesDto.UserId);
+
             EntityValidationHelper.ValidateEntityNotNull(
                 userToGrantRole, ErrorConstants.UserNotFound);
 
@@ -362,8 +362,9 @@ namespace TripFlip.Services
                 .Include(t => t.TripSubscribers)
                 .ThenInclude(subscribers => subscribers.TripRoles)
                 .FirstOrDefaultAsync(t => t.Id == grantTripRolesDto.TripId);
+
             EntityValidationHelper.
-                ValidateEntityNotNull<TripEntity>(trip, ErrorConstants.TripNotFound);
+                ValidateEntityNotNull(trip, ErrorConstants.TripNotFound);
 
             // Validate current user is trip admin.
             await EntityValidationHelper.ValidateCurrentUserTripRoleAsync(
@@ -401,7 +402,7 @@ namespace TripFlip.Services
             }
 
             // Add requested set of roles to subscriber.
-            bool collectionHasRolesToAdd = grantTripRolesDto.TripRoleIds.Count() > 0;
+            bool collectionHasRolesToAdd = grantTripRolesDto.TripRoleIds.Any();
             if (collectionHasRolesToAdd)
             {
                 var rolesToAdd = new List<TripSubscriberRoleEntity>();
@@ -415,7 +416,7 @@ namespace TripFlip.Services
                     });
                 }
 
-                _tripFlipDbContext.TripSubscribersRoles.AddRange(rolesToAdd);
+                await _tripFlipDbContext.TripSubscribersRoles.AddRangeAsync(rolesToAdd);
             }
             
             await _tripFlipDbContext.SaveChangesAsync();
@@ -423,8 +424,6 @@ namespace TripFlip.Services
 
         public async Task GrantRouteRoleAsync(GrantRouteRolesDto grantRouteRolesDto)
         {
-            var currentUserId = _currentUserService.UserId;
-
             var routeEntity = await _tripFlipDbContext.Routes
                 .Include(route => route.Trip)
                     .ThenInclude(trip => trip.TripSubscribers)
@@ -662,7 +661,7 @@ namespace TripFlip.Services
                         .ThenInclude(routeEntity => routeEntity.ItemLists)
                             .ThenInclude(itemListEntity => itemListEntity.Items)
                                 .ThenInclude(itemEntity => itemEntity.ItemAssignees)
-                                    .ThenInclude(ItemAssigneeEntity => ItemAssigneeEntity.RouteSubscriber)
+                                    .ThenInclude(itemAssigneeEntity => itemAssigneeEntity.RouteSubscriber)
                 .Include(tripSubscriberEntity => tripSubscriberEntity.Trip)
                     .ThenInclude(tripEntity => tripEntity.Routes)
                         .ThenInclude(routeEntity => routeEntity.RoutePoints)
@@ -705,11 +704,11 @@ namespace TripFlip.Services
                     .Count(roles =>
                         roles.Any(role => role.TripRoleId == (int)TripRoles.Admin));
 
-                // If there is the only one admin trip, no permission to delete trip.
-                if (tripAdminsCount == Constants.MinimumTripAdminCount)
-                {
-                    throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeFromTrip);
-                }
+            // If there is the only one admin trip, no permission to delete trip.
+            if (tripAdminsCount == Constants.MinimumTripAdminCount)
+            {
+                throw new ArgumentException(ErrorConstants.SingleAdminTryToUnsubscribeFromTrip);
+            }
         }
     }
 }

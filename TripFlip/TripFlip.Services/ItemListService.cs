@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
@@ -45,7 +44,7 @@ namespace TripFlip.Services
             var itemListEntity = await _tripFlipDbContext
                 .ItemLists
                 .AsNoTracking()
-                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == id);
+                .SingleOrDefaultAsync(itemList => itemList.Id == id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
@@ -112,7 +111,7 @@ namespace TripFlip.Services
         {
             var itemListEntity = await _tripFlipDbContext
                 .ItemLists
-                .SingleOrDefaultAsync(itemListEntity => itemListEntity.Id == updateItemListDto.Id);
+                .SingleOrDefaultAsync(itemList => itemList.Id == updateItemListDto.Id);
 
             EntityValidationHelper
                 .ValidateEntityNotNull(itemListEntity, ErrorConstants.ItemListNotFound);
@@ -164,13 +163,10 @@ namespace TripFlip.Services
             var routeEntity = await _tripFlipDbContext
                 .Routes
                 .AsNoTracking()
-                .SingleOrDefaultAsync(routeEntity => routeId == routeEntity.Id);
+                .SingleOrDefaultAsync(route => routeId == route.Id);
 
-            if (routeEntity == null)
-            {
-                throw new NotFoundException(ErrorConstants.RouteNotFound);
-            }
-
+            EntityValidationHelper
+                .ValidateEntityNotNull(routeEntity, ErrorConstants.RouteNotFound);
         }
     }
 }

@@ -167,21 +167,8 @@ namespace TripFlip.Services
                 .AsNoTracking()
                 .SingleOrDefaultAsync(r => r.Id == routeId);
 
-            if (routeEntity is null)
-            {
-                throw new NotFoundException(ErrorConstants.AddingTaskListToNotExistingRoute);
-            }
-
-        }
-
-        private void ValidateTaskListEntityNotNull(TaskListEntity taskList)
-        {
-
-            if (taskList is null)
-            {
-                throw new NotFoundException(ErrorConstants.TaskListNotFound);
-            }
-
+            EntityValidationHelper
+                .ValidateEntityNotNull(routeEntity, ErrorConstants.AddingTaskListToNotExistingRoute);
         }
     }
 }
