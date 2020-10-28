@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Services.Interfaces;
 
@@ -44,16 +46,27 @@ namespace TripFlip.Services
         }
 
         /// <summary>
-        /// Gets statistic data
-        /// and uses <see cref="IMailService"/> to send it to appropriate user.
+        /// Gets statistic data and uses <see cref="IMailService"/> 
+        /// to send it to a corresponding user.
         /// </summary>
         public async Task SendUserStatisticAsync()
         {
-            foreach (var user in _tripFlipDbContext.Users)
-            {
-                var userStatistic = await _statisticService.GetUserStatisticByIdAsync(user.Id);
+            string statisticEmailTemplate = 
+                await _mailService.GetUserStatisticTemplateAsync();
 
-                await _mailService.SendUserStatisticAsync(userStatistic);
+            if (!string.IsNullOrWhiteSpace(statisticEmailTemplate))
+            {
+                var users = await _tripFlipDbContext.Users.AsNoTracking().ToListAsync();
+
+                foreach (var user in users)
+                {
+                    var userStatistic = await _statisticService.GetUserStatisticByIdAsync(user.Id);
+
+                    string userStatisticString = 
+                        _mailService.BuildUserStatisticString(userStatistic, statisticEmailTemplate);
+
+                    await _mailService.SendUserStatisticAsync(userStatistic.Email, userStatisticString);
+                }
             }
         }
     }
