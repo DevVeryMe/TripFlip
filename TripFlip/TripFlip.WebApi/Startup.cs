@@ -133,6 +133,8 @@ namespace TripFlip.WebApi
                 scheduledTask => scheduledTask.SendUserStatisticAsync(),
                 Cron.Monthly());
 
+            applicationBuilder.UseHangfireServer();
+
             applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

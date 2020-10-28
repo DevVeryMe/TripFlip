@@ -24,10 +24,31 @@ namespace TripFlip.Services.Interfaces
         Task SendBirthdayCongratulatoryEmailAsync(string email, string userName);
 
         /// <summary>
-        /// Sends email letter with statistic data to appropriate user.
+        /// Sends a given statistic message to a user with a given
+        /// email address.
         /// </summary>
-        /// <param name="userStatistic">UserStatisticModel instance,
-        /// which carries all needed data to send email.</param>
-        Task SendUserStatisticAsync(UserStatisticModel userStatistic);
+        /// <param name="userStatisticMessage">A string that represents
+        /// a complete message that contains user's statistic.</param>
+        Task SendUserStatisticAsync(string email, string userStatisticMessage);
+
+        /// <summary>
+        /// Builds user statistic by inserting given <see cref="UserStatisticModel"/>
+        /// object (that encapsulates user's statistic) into given statistic template.
+        /// </summary>
+        /// <param name="userStatistic">Object that encapsulates user's statistic.</param>
+        /// <param name="statisticTemplate">User statistic template.</param>
+        /// <returns>A user-friendly string view of user's statistic.</returns>
+        string BuildUserStatisticString(
+            UserStatisticModel userStatistic,
+            string statisticTemplate);
+
+        /// <summary>
+        /// Gets user statistic template to put statistic data into.
+        /// </summary>
+        /// <returns>A string that represents a template
+        /// to put user statistic data into.</returns>
+        Task<string> GetUserStatisticTemplateAsync();
+
+
     }
 }
