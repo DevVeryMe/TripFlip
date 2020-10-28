@@ -279,7 +279,7 @@ namespace TripFlip.WebApi.Controllers
         /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]
-        public async Task<IActionResult> GetAllSubscribedTrips()
+        public async Task<IActionResult> GetAllSubscribedTripsAsync()
         {
             var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();
 

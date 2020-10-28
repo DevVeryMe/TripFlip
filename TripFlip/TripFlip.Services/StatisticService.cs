@@ -28,7 +28,7 @@ namespace TripFlip.Services
 
         public async Task<UserStatisticModel> GetUserStatisticByIdAsync(Guid userId)
         {
-            var userEntity = await GetUserEntityIncludingSubEntitiesForStatistic(userId);
+            var userEntity = await GetUserEntityIncludingSubEntitiesForStatisticAsync(userId);
 
             return GetUserStatisticModel(userEntity);
         }
@@ -48,7 +48,7 @@ namespace TripFlip.Services
         /// </summary>
         /// <param name="userId">Id of user to find.</param>
         /// <returns>Found user entity.</returns>
-        private async Task<UserEntity> GetUserEntityIncludingSubEntitiesForStatistic(Guid userId)
+        private async Task<UserEntity> GetUserEntityIncludingSubEntitiesForStatisticAsync(Guid userId)
         {
             var userEntity = await _tripFlipDbContext
                 .Users

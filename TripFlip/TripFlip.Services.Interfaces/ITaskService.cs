@@ -68,6 +68,6 @@ namespace TripFlip.Services.Interfaces
         /// </summary>
         /// <param name="taskAssigneesDto">Data with task id
         /// and route subscribers' ids to assign task to.</param>
-        Task SetTaskAssignees(TaskAssigneesDto taskAssigneesDto);
+        Task SetTaskAssigneesAsync(TaskAssigneesDto taskAssigneesDto);
     }
 }

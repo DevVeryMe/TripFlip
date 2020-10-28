@@ -83,8 +83,8 @@ namespace TripFlip.Services
             var tripEntity = _mapper.Map<TripEntity>(createTripDto);
             var currentUserId = _currentUserService.UserId;
 
-            await ValidateUserExistsById(currentUserId);
-            await ValidateTripRoleExistsById((int)TripRoles.Admin);
+            await ValidateUserExistsByIdAsync(currentUserId);
+            await ValidateTripRoleExistsByIdAsync((int)TripRoles.Admin);
 
             var tripSubscriberEntity = new TripSubscriberEntity()
             {
@@ -153,7 +153,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        private async Task ValidateUserExistsById(Guid userId)
+        private async Task ValidateUserExistsByIdAsync(Guid userId)
         {
             bool userExists = await _tripFlipDbContext
                 .Users
@@ -166,7 +166,7 @@ namespace TripFlip.Services
             }
         }
 
-        private async Task ValidateTripRoleExistsById(int tripRoleId)
+        private async Task ValidateTripRoleExistsByIdAsync(int tripRoleId)
         {
             bool tripRoleExists = await _tripFlipDbContext
                 .TripRoles

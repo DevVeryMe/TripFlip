@@ -220,7 +220,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
-        public async Task SetTaskAssignees(TaskAssigneesDto taskAssigneesDto)
+        public async Task SetTaskAssigneesAsync(TaskAssigneesDto taskAssigneesDto)
         {
             // Validate task to set assignees exists.
             var taskToSetAssignees = await _tripFlipDbContext

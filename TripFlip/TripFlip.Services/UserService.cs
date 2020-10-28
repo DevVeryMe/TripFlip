@@ -216,7 +216,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.Users.AddAsync(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            await EmailUserNotifierHelper.NotifyRegisteredUser(
+            await EmailUserNotifierHelper.NotifyRegisteredUserAsync(
                 userEntity.Email, _environment, _mailService, _mailServiceConfiguration);
 
             var userDto = _mapper.Map<UserDto>(userEntity);
