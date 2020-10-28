@@ -8,6 +8,8 @@
 
         public string UserStatisticMessageFilename { get; set; }
 
+        public string BirthdayCongratulationFilename { get; set; }
+
         public string AppFromEmail { get; set; }
 
         public string AppFromName { get; set; }
