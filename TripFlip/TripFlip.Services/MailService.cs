@@ -61,7 +61,7 @@ namespace TripFlip.Services
             var emailMessage = EmailMessageBuilder.Build(
                 from: appEmailAddress,
                 to: userEmailAddress,
-                subject: Constants.OnRegistrationNotificationEmailSubject,
+                subject: Constants.BirthdayCongratulationEmailSubject,
                 htmlContent: congratulationMessage,
                 plainTextContent: null);
 

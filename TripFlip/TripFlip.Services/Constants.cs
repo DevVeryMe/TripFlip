@@ -12,6 +12,8 @@
 
         public static readonly string UserStatisticEmailSubject = "Your monthly TripFlip statistic";
 
+        public static readonly string BirthdayCongratulationEmailSubject = "TripFlip Birthday congratulation";
+
         public static readonly string TripFlipUser = "TripFlip User";
     }
 }
