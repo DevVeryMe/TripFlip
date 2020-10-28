@@ -277,6 +277,9 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(Guid id)
         {
+            await EntityValidationHelper
+                .ValidateCurrentUserIsSuperAdminAsync(_currentUserService, _tripFlipDbContext);
+
             var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
 
             EntityValidationHelper.ValidateEntityNotNull(

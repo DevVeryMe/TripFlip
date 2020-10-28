@@ -1,11 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TripFlip.Services;
 using TripFlip.Services.CustomExceptions;
 using TripFlip.Services.Dto.Enums;
-using TripFlip.Services.Interfaces;
 
 namespace WebApiIntegrationTests.UserServiceTests
 {
@@ -441,9 +439,40 @@ namespace WebApiIntegrationTests.UserServiceTests
         }
 
         [TestMethod]
+        public async Task DeleteByIdAsync_CurrentUserIsNotSuperAdmin_ExceptionThrown()
+        {
+            // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
+            var existentUserId = ValidUser.Id;
+
+            var jwtConfiguration = CreateJwtConfiguration();
+
+            var userService = new UserService(
+                mapper: Mapper,
+                tripFlipDbContext: TripFlipDbContext,
+                jwtConfiguration: jwtConfiguration,
+                currentUserService: CurrentUserService,
+                environment: null,
+                mailService: null,
+                mailServiceConfiguration: null);
+
+            // Act + Assert.
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
+                await userService.DeleteByIdAsync(existentUserId));
+        }
+
+        [TestMethod]
         public async Task DeleteByIdAsync_NonExistentUserId_ExceptionThrown()
         {
             // Arrange.
+            Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, ApplicationSuperAdminUserRoleToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
+
             var nonExistentUserId = InvalidUser.Id;
 
             var jwtConfiguration = CreateJwtConfiguration();

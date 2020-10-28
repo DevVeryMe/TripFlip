@@ -6,10 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
-using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
@@ -152,19 +150,6 @@ namespace TripFlip.WebApi.Controllers
             var registeredUserViewModel = _mapper.Map<UserViewModel>(registeredUserDto);
 
             return Ok(registeredUserViewModel);
-        }
-
-        /// <summary>
-        /// Deletes User.
-        /// </summary>
-        /// <param name="id">User id.</param>
-        /// <returns>No content (HTTP code 204).</returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteByIdAsync(Guid id)
-        {
-            await _userService.DeleteByIdAsync(id);
-
-            return NoContent();
         }
 
         /// <summary>

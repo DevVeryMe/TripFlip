@@ -346,6 +346,9 @@ namespace WebApiIntegrationTests.UserServiceTests
         {
             // Arrange.
             Seed(TripFlipDbContext, ValidUser);
+            Seed(TripFlipDbContext, ApplicationSuperAdminUserRoleToSeed);
+
+            CurrentUserService = CreateCurrentUserService(ValidUser.Id, ValidUser.Email);
 
             var jwtConfiguration = CreateJwtConfiguration();
             var existentUserId = ValidUser.Id;
