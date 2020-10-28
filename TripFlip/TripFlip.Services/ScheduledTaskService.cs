@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TripFlip.DataAccess;
 using TripFlip.Services.Interfaces;
@@ -38,10 +38,23 @@ namespace TripFlip.Services
         {
             var birthdayUsers = await _userService.GetUsersWithBirthdayTodayAsync();
 
+            var birthdayCongratulationHtmlTemplate =
+                await _mailService.GetBirthdayCongratulationTemplateAsync();
+
+            if (string.IsNullOrEmpty(birthdayCongratulationHtmlTemplate))
+            {
+                throw new ArgumentException(ErrorConstants.BirthdayCongratulationTemplateIsEmpty);
+            }
+
             foreach (var user in birthdayUsers)
             {
+                var birthdayCongratulationString =
+                    _mailService.BuildBirthdayCongratulationString(
+                        user.FirstName, 
+                        birthdayCongratulationHtmlTemplate);
+
                 await _mailService.SendBirthdayCongratulatoryEmailAsync(
-                    user.Email, user.FirstName);
+                    user.Email, birthdayCongratulationString);
             }
         }
 

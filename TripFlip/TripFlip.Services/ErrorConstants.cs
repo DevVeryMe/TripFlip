@@ -75,5 +75,11 @@
         public static readonly string GoogleNoEmailInIdToken = "Google's Id token does not contain email.";
 
         public static readonly string CannotSendMailMessage = "Cannot send mail message.";
+
+        public static readonly string BirthdayCongratulationTemplateFileNotFound = 
+            "Birthday congratulation template html file is not found.";
+
+        public static readonly string BirthdayCongratulationTemplateIsEmpty =
+            "Birthday congratulation template is null or empty.";
     }
 }
