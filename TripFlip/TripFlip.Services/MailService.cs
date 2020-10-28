@@ -90,7 +90,7 @@ namespace TripFlip.Services
         {
             return string.Format(
                 statisticTemplate,
-                userStatistic.FirstName,
+                userStatistic.FirstName ?? userStatistic.Email,
                 userStatistic.LastMonthTripsWhereHasAdminRoleCount,
                 userStatistic.TotalTripsWhereHasAdminRoleCount,
                 userStatistic.LastMonthUsersInHisRoutesCount,
