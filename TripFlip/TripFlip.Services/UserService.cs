@@ -402,23 +402,13 @@ namespace TripFlip.Services
             }
 
             // Add requested set of roles to subscriber.
-            bool collectionHasRolesToAdd = grantTripRolesDto.TripRoleIds.Any();
-            if (collectionHasRolesToAdd)
-            {
-                var rolesToAdd = new List<TripSubscriberRoleEntity>();
-
-                foreach (int requestedRoleId in grantTripRolesDto.TripRoleIds)
+            tripSubscriber.TripRoles = grantTripRolesDto.TripRoleIds
+                .Select(tripRoleId => new TripSubscriberRoleEntity()
                 {
-                    rolesToAdd.Add(new TripSubscriberRoleEntity()
-                    {
-                        TripSubscriber = tripSubscriber,
-                        TripRoleId = requestedRoleId
-                    });
-                }
+                    TripRoleId = tripRoleId,
+                    TripSubscriber = tripSubscriber
+                }).ToList();
 
-                await _tripFlipDbContext.TripSubscribersRoles.AddRangeAsync(rolesToAdd);
-            }
-            
             await _tripFlipDbContext.SaveChangesAsync();
         }
 
