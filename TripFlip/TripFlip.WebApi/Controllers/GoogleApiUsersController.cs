@@ -56,7 +56,7 @@ namespace TripFlip.WebApi.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet("get-authorization-code")]
-        public async Task<IActionResult> GetAuthorizationCode()
+        public async Task<IActionResult> GetAuthorizationCodeAsync()
         {
             string googleAuthUriWithParams =
                 await _googleApiUserService.GetAuthorizationUrlWithParamsAsync();

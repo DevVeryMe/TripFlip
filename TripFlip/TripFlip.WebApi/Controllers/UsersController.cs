@@ -6,10 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using TripFlip.Services.Dto;
 using TripFlip.Services.Dto.UserDtos;
 using TripFlip.Services.Interfaces;
-using TripFlip.Services.Interfaces.Helpers;
 using TripFlip.ViewModels;
 using TripFlip.ViewModels.TripViewModels;
 using TripFlip.ViewModels.UserViewModels;
@@ -155,19 +153,6 @@ namespace TripFlip.WebApi.Controllers
         }
 
         /// <summary>
-        /// Deletes User.
-        /// </summary>
-        /// <param name="id">User id.</param>
-        /// <returns>No content (HTTP code 204).</returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteByIdAsync(Guid id)
-        {
-            await _userService.DeleteByIdAsync(id);
-
-            return NoContent();
-        }
-
-        /// <summary>
         /// Grants roles to trip subscriber.
         /// </summary>
         /// <param name="grantTripRolesViewModel">Data with trip id,
@@ -279,7 +264,7 @@ namespace TripFlip.WebApi.Controllers
         /// current user in these trips.
         /// </summary>
         [HttpPut("subscribed-trips")]
-        public async Task<IActionResult> GetAllSubscribedTrips()
+        public async Task<IActionResult> GetAllSubscribedTripsAsync()
         {
             var tripWithRoutesDto = await _userService.GetAllSubscribedTripsAsync();
 

@@ -21,7 +21,7 @@ namespace TripFlip.Services.Helpers
         /// <param name="mailService">Instance of mail service.</param>
         /// <param name="mailServiceConfiguration">Object that encapsulates configurations for
         /// mail service.</param>
-        public static async Task NotifyRegisteredUser(
+        public static async Task NotifyRegisteredUserAsync(
             string email,
             IWebHostEnvironment environment,
             IMailService mailService,

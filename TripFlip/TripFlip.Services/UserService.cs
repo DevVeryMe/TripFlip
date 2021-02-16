@@ -216,7 +216,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.Users.AddAsync(userEntity);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            await EmailUserNotifierHelper.NotifyRegisteredUser(
+            await EmailUserNotifierHelper.NotifyRegisteredUserAsync(
                 userEntity.Email, _environment, _mailService, _mailServiceConfiguration);
 
             var userDto = _mapper.Map<UserDto>(userEntity);
@@ -277,6 +277,9 @@ namespace TripFlip.Services
 
         public async Task DeleteByIdAsync(Guid id)
         {
+            await EntityValidationHelper
+                .ValidateCurrentUserIsSuperAdminAsync(_currentUserService, _tripFlipDbContext);
+
             var userEntity = await _tripFlipDbContext.Users.FindAsync(id);
 
             EntityValidationHelper.ValidateEntityNotNull(
@@ -402,23 +405,13 @@ namespace TripFlip.Services
             }
 
             // Add requested set of roles to subscriber.
-            bool collectionHasRolesToAdd = grantTripRolesDto.TripRoleIds.Any();
-            if (collectionHasRolesToAdd)
-            {
-                var rolesToAdd = new List<TripSubscriberRoleEntity>();
-
-                foreach (int requestedRoleId in grantTripRolesDto.TripRoleIds)
+            tripSubscriber.TripRoles = grantTripRolesDto.TripRoleIds
+                .Select(tripRoleId => new TripSubscriberRoleEntity()
                 {
-                    rolesToAdd.Add(new TripSubscriberRoleEntity()
-                    {
-                        TripSubscriber = tripSubscriber,
-                        TripRoleId = requestedRoleId
-                    });
-                }
+                    TripRoleId = tripRoleId,
+                    TripSubscriber = tripSubscriber
+                }).ToList();
 
-                await _tripFlipDbContext.TripSubscribersRoles.AddRangeAsync(rolesToAdd);
-            }
-            
             await _tripFlipDbContext.SaveChangesAsync();
         }
 

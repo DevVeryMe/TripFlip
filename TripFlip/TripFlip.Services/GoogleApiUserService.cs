@@ -171,7 +171,7 @@ namespace TripFlip.Services
 
             var requestMessage = new HttpRequestMessage(
                 method: HttpMethod.Post,
-                requestUri: _googleOpenIdConfiguration.TokenEndpoint)
+                requestUri: _googleOpenIdConfiguration.TokenEndpoint) 
             {
                 Content = formUrlEncodedContent
             };
@@ -224,6 +224,7 @@ namespace TripFlip.Services
                 .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
+                .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == email);
 
             return userEntity;
@@ -303,7 +304,7 @@ namespace TripFlip.Services
             await _tripFlipDbContext.Users.AddAsync(userToRegister);
             await _tripFlipDbContext.SaveChangesAsync();
 
-            await EmailUserNotifierHelper.NotifyRegisteredUser(
+            await EmailUserNotifierHelper.NotifyRegisteredUserAsync(
                 email, _environment, _mailService, _mailServiceConfiguration);
 
             return userToRegister;

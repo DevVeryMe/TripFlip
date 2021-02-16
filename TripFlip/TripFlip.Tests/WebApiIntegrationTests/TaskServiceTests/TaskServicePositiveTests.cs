@@ -192,7 +192,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
                 CurrentUserService);
 
             // Act.
-            await taskService.SetTaskAssignees(taskAssigneesDto);
+            await taskService.SetTaskAssigneesAsync(taskAssigneesDto);
 
             // Assert.
 

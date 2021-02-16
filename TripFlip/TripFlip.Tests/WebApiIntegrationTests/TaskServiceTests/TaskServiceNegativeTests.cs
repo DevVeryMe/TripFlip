@@ -233,7 +233,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
-                await taskService.SetTaskAssignees(taskAssigneesDto));
+                await taskService.SetTaskAssigneesAsync(taskAssigneesDto));
         }
 
         [DataTestMethod]
@@ -261,7 +261,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<NotFoundException>(async () =>
-                await taskService.SetTaskAssignees(taskAssigneesDto), displayName);
+                await taskService.SetTaskAssigneesAsync(taskAssigneesDto), displayName);
         }
 
         [TestMethod]
@@ -289,7 +289,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
-                await taskService.SetTaskAssignees(taskAssigneesDto));
+                await taskService.SetTaskAssigneesAsync(taskAssigneesDto));
         }
 
         [TestMethod]
@@ -320,7 +320,7 @@ namespace WebApiIntegrationTests.TaskServiceTests
 
             // Act + Assert.
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
-                await taskService.SetTaskAssignees(taskAssigneesDto));
+                await taskService.SetTaskAssigneesAsync(taskAssigneesDto));
         }
 
         [TestMethod]

@@ -203,13 +203,13 @@ namespace TripFlip.WebApi.Controllers
         ///     }
         /// </remarks>
         [HttpPut("set-task-assignees")]
-        public async Task<IActionResult> SetTaskAssignees(
+        public async Task<IActionResult> SetTaskAssigneesAsync(
             [FromBody] TaskAssigneesViewModel taskAssigneesViewModel)
         {
             var taskAssigneesDto =
                 _mapper.Map<TaskAssigneesDto>(taskAssigneesViewModel);
 
-            await _taskService.SetTaskAssignees(taskAssigneesDto);
+            await _taskService.SetTaskAssigneesAsync(taskAssigneesDto);
 
             return Ok();
         }
