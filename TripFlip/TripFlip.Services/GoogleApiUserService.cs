@@ -224,6 +224,7 @@ namespace TripFlip.Services
                 .Users
                 .AsNoTracking()
                 .Include(user => user.ApplicationRoles)
+                .ThenInclude(usersRoles => usersRoles.ApplicationRole)
                 .FirstOrDefaultAsync(user => user.Email == email);
 
             return userEntity;
